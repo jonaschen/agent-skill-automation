@@ -33,7 +33,7 @@ scope of responsibility.
 
 ### Stage 1: Requirements Analysis
 1. Fully restate the user's requirements to confirm correct understanding
-2. Determine whether to create a Sub-agent or a Skill (follow the decision tree)
+2. Determine whether to create a Sub-agent or a Skill (follow the decision tree in Section 4.3 of the dev plan)
 3. If requirements are ambiguous, ask these key clarifying questions:
    - Is this agent primarily executing tasks or providing knowledge?
    - Does this agent need to be delegated tasks by other agents?
@@ -48,7 +48,7 @@ scope of responsibility.
 - Any exceptions must be explicitly justified
 
 ### Stage 4: Generate & Write
-- Generate the complete SKILL.md from the standard template
+- Generate the complete SKILL.md from the three-layer template (Level 1 YAML frontmatter + Level 2 markdown body + Level 3 scripts/references)
 - Use the Write tool to write to the correct directory path
 
 ### Stage 5: MCP Integration (if applicable)
