@@ -36,6 +36,7 @@ Repo setup  Factory     Validator   AutoResearch  Closed loop
 
 - ✅ `find .claude/ -type f` shows the full directory tree matching the spec in Section 5.2 of the dev plan
 - ✅ `eval/run_eval.sh` exists and exits non-zero (not yet implemented, but wired up)
+- ✅ `~/.claude/@lib/agents/` exists with initial role definitions
 
 ---
 
@@ -48,7 +49,7 @@ SKILL.md files from natural language requirements.
 
 #### 1.1 SKILL.md authoring (the agent itself)
 - [x] Write `.claude/agents/meta-agent-factory.md` using the full template from Section 11.3 of the dev plan
-- [ ] Validate the description field: ≤ 1024 characters, includes trigger verbs and exclusion contexts
+- [x] Validate the description field: ≤ 1024 characters, includes trigger verbs and exclusion contexts (550 chars ✅)
 - [ ] Manually test all four example trigger prompts from Section 3.1 and confirm correct routing
 
 #### 1.2 Permission validation logic
@@ -86,13 +87,13 @@ SKILL.md files from natural language requirements.
 - [ ] Build equivalent test sets (≥ 20 cases each) for each Skill as they are deployed
 
 #### 2.2 `skill-quality-validator` agent
-- [ ] Write `.claude/agents/skill-quality-validator.md`
+- [ ] Implement `.claude/agents/skill-quality-validator.md` (stub exists — complete with full 5-step pipeline)
 - [ ] Implement the 5-step validation pipeline (frontmatter parse → description quality → test set generation → baseline → trigger rate measure)
 - [ ] Output a JSON report: `{ "trigger_rate": 0.xx, "security_score": x, "recommendations": [...] }`
 - [ ] Implement the 90%/75% threshold logic (Pass / Conditional / Fail)
 
 #### 2.3 `agentic-cicd-gate` agent
-- [ ] Write `.claude/agents/agentic-cicd-gate.md`
+- [ ] Implement `.claude/agents/agentic-cicd-gate.md` (stub exists — complete with full gate logic)
 - [ ] Implement `.claude/hooks/pre-deploy.sh` that calls the validator and blocks deploys below threshold
 - [ ] Implement Bayesian flaky test detector (`eval/flaky_detector.py`) with ≥ 5 run history requirement
 - [ ] Implement git-based autonomous rollback: detect trigger rate drop > 10% → `git revert`

@@ -14,6 +14,7 @@ tools:
   - Bash
   - Glob
   - Grep
+  - Task
 model: claude-opus-4-6
 ---
 

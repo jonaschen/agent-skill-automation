@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repository contains the design specification and development plan for an **Agent Skill Automation Pipeline** — a three-layer system for autonomously building, validating, optimizing, and deploying Claude Code Agent Skills.
 
-**Current status:** Specification phase complete. Phase 0 (repository bootstrap) is the immediate next step — see `ROADMAP.md`.
+**Current status:** Phase 0 complete, Phase 1 in progress. See `ROADMAP.md` for current tasks.
 
 ## Key Documents
 
@@ -73,7 +73,7 @@ skill-quality-validator (trigger rate test)
 | **Changeling mode** | A single agent dynamically loading different role definitions for different tasks |
 | **AutoResearch loop** | Iterative cycle: read → hypothesize → modify → evaluate → commit/revert |
 
-## Directory Structure (target, after Phase 0)
+## Directory Structure
 
 ```
 .claude/
@@ -82,9 +82,10 @@ skill-quality-validator (trigger rate test)
 └── hooks/           # pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
 ├── run_eval.sh      # Eval runner — prints a single float pass rate (critical Phase 2 artifact)
+├── check-permissions.sh  # Static YAML validator: enforces mutually exclusive permission rules
 ├── prompts/         # Fixed test prompts (test_1.txt … test_N.txt)
 └── expected/        # Expected outputs for binary eval
-~/.claude/@lib/agents/  # Changeling role library (read-only, global)
+~/.claude/@lib/agents/   # Changeling role library (read-only, global)
 ```
 
 ## Acceptance KPIs
