@@ -94,8 +94,10 @@ if echo "$LOWER_NAME" | grep -qE '(validat|review|audit|quality|check|inspect|an
 fi
 
 # Check if execution agent (directly modifies code/files/state, NOT orchestration)
-# Orchestration agents (factory, router) are excluded — they design and delegate
-if echo "$LOWER_NAME" | grep -qE '(executor|builder|optimizer|deploy)'; then
+# Orchestration agents (factory, router, autoresearch-optimizer) are excluded —
+# they design and delegate. autoresearch-optimizer needs Task for Phase 3
+# parallel branch evaluations via sub-agents (per dev plan Section 3.3).
+if echo "$LOWER_NAME" | grep -qE '(executor|builder|deploy)'; then
   IS_EXECUTION_AGENT=1
 fi
 
