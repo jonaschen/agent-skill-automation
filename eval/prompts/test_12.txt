@@ -1,0 +1,1 @@
+Create an agent that integrates with our Jira board — it needs to read tickets, check sprint status, and update issue fields.

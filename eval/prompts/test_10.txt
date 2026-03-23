@@ -1,0 +1,1 @@
+Build me an agent that generates OpenAPI documentation from TypeScript source code.

@@ -1,0 +1,1 @@
+I need an agent that acts as a Scrum Master — tracking sprints, facilitating standups, coordinating work across agents.

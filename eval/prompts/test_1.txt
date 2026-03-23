@@ -1,0 +1,1 @@
+I need an agent for reviewing Python code quality and style — it should only read files, never modify them.

@@ -1,0 +1,1 @@
+Create a QA agent that analyzes test coverage reports and identifies untested code paths — read-only.

@@ -81,8 +81,8 @@ SKILL.md files from natural language requirements.
 ### Tasks
 
 #### 2.1 Eval runner (the most critical piece of Phase 2)
-- [ ] Implement `eval/run_eval.sh <skill-path>` — runs 30 fixed test prompts, prints a single float pass rate
-- [ ] Build `eval/prompts/test_{1..30}.txt` and `eval/expected/test_{1..30}.txt` for `meta-agent-factory`
+- [x] Implement `eval/run_eval.sh <skill-path>` — runs 30 fixed test prompts, prints a single float pass rate
+- [x] Build `eval/prompts/test_{1..30}.txt` and `eval/expected/test_{1..30}.txt` for `meta-agent-factory`
 - [ ] Confirm two runs on the same Skill differ by ≤ 5% (repeatability requirement)
 - [ ] Build equivalent test sets (≥ 20 cases each) for each Skill as they are deployed
 

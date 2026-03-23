@@ -1,0 +1,1 @@
+Build me an agent that monitors Postgres database performance and suggests query optimizations.

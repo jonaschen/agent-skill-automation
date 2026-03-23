@@ -1,0 +1,1 @@
+Fix the memory leak in my React component — the useEffect is not cleaning up properly.

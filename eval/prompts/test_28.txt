@@ -1,0 +1,1 @@
+Explain how Kubernetes pod networking and DNS resolution works.

@@ -1,0 +1,1 @@
+Optimize this SQL query to reduce execution time: SELECT * FROM orders WHERE created_at > '2024-01-01'

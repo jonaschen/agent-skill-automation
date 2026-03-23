@@ -1,0 +1,1 @@
+I need a Skill for GraphQL schema design and resolver optimization guidance.

@@ -1,0 +1,1 @@
+I want a Changeling role definition for a data scientist persona that analyzes datasets and interprets model outputs.

@@ -1,0 +1,1 @@
+I need an agent that can refactor Go code to follow idiomatic patterns — it should read and write files.

@@ -1,0 +1,3 @@
+EXPECT_TRIGGER=yes
+EXPECT_TYPE=Skill
+EXPECT_CONTAINS=Agent generation complete

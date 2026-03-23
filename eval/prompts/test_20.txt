@@ -1,0 +1,1 @@
+Can you set up a workflow automation that reads GitHub issues and delegates them to the appropriate specialist agent?

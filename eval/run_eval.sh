@@ -1,26 +1,36 @@
 #!/bin/bash
 # run_eval.sh — Binary evaluation runner for Agent Skills
 #
-# Usage: run_eval.sh <skill-path>
+# Usage: run_eval.sh <skill-path> [--verbose]
 #
-# Runs a set of fixed test prompts against a Skill and outputs a single
+# Runs the fixed 30-prompt test set against a Skill and outputs a single
 # float pass rate (0.0–1.0). Each test case is evaluated as binary:
 #   1 = Skill triggered correctly AND output matches expected structure
-#   0 = Skill not triggered, or output does not match expectation
+#   0 = Skill not triggered, or triggered incorrectly
+#
+# Expected file format (eval/expected/test_N.txt):
+#   EXPECT_TRIGGER=yes|no
+#   EXPECT_TYPE=Sub-agent|Skill|Changeling role   (only when EXPECT_TRIGGER=yes)
+#   EXPECT_CONTAINS=<string to grep for>          (only when EXPECT_TRIGGER=yes)
 #
 # Exit codes:
-#   0 = evaluation completed successfully (check pass rate output)
-#   1 = error or not yet implemented
+#   0 = evaluation completed, pass rate printed to stdout
+#   1 = error (missing files, claude not found, etc.)
 
 set -euo pipefail
 
 SKILL_PATH="${1:-}"
+VERBOSE="${2:-}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PROMPTS_DIR="$SCRIPT_DIR/prompts"
 EXPECTED_DIR="$SCRIPT_DIR/expected"
+TIMEOUT_PER_TEST=120   # seconds per claude invocation
+
+# --- Preflight checks ---
 
 if [ -z "$SKILL_PATH" ]; then
-  echo "❌ Usage: run_eval.sh <skill-path>" >&2
+  echo "❌ Usage: run_eval.sh <skill-path> [--verbose]" >&2
   exit 1
 fi
 
@@ -29,67 +39,131 @@ if [ ! -f "$SKILL_PATH" ]; then
   exit 1
 fi
 
-# Count available test cases
-PROMPT_COUNT=$(find "$PROMPTS_DIR" -name "test_*.txt" 2>/dev/null | wc -l)
+if ! command -v claude &>/dev/null; then
+  echo "❌ claude CLI not found in PATH" >&2
+  exit 1
+fi
+
+PROMPT_COUNT=$(find "$PROMPTS_DIR" -name "test_*.txt" 2>/dev/null | wc -l | tr -d ' ')
 
 if [ "$PROMPT_COUNT" -eq 0 ]; then
   echo "❌ No test prompts found in $PROMPTS_DIR" >&2
-  echo "   Create test_1.txt ... test_N.txt prompt files first" >&2
   exit 1
 fi
 
-echo "📊 Running binary evaluation for: $SKILL_PATH"
-echo "   Test cases: $PROMPT_COUNT"
-echo ""
+# --- Helpers ---
 
-# TODO (Phase 2): Implement the full binary eval loop
-# For each test case:
-#   1. Execute in isolated sandbox (no memory contamination)
-#   2. Check if correct Skill was triggered
-#   3. Validate output structure against expected schema
-#   4. Record binary result (1 = pass, 0 = fail)
-#
-# Output: single float pass rate
+read_field() {
+  # read_field <file> <key>  →  prints value of KEY=value line
+  local file="$1" key="$2"
+  grep "^${key}=" "$file" 2>/dev/null | cut -d= -f2-
+}
+
+run_prompt() {
+  # Run a single prompt through claude from the repo root.
+  # Returns claude's stdout; exits with claude's exit code.
+  local prompt="$1"
+  timeout "$TIMEOUT_PER_TEST" \
+    claude --dangerously-skip-permissions -p "$prompt" \
+    2>/dev/null || true
+}
+
+evaluate_case() {
+  # evaluate_case <test_num>  →  prints PASS or FAIL with reason
+  local n="$1"
+  local prompt_file="$PROMPTS_DIR/test_${n}.txt"
+  local expected_file="$EXPECTED_DIR/test_${n}.txt"
+
+  if [ ! -f "$prompt_file" ]; then
+    echo "FAIL:missing-prompt"
+    return
+  fi
+  if [ ! -f "$expected_file" ]; then
+    echo "FAIL:missing-expected"
+    return
+  fi
+
+  local expect_trigger expect_contains
+  expect_trigger=$(read_field "$expected_file" "EXPECT_TRIGGER")
+  expect_contains=$(read_field "$expected_file" "EXPECT_CONTAINS")
+
+  local prompt output
+  prompt=$(cat "$prompt_file")
+
+  # Run claude from repo root so .claude/ skills are loaded
+  output=$(cd "$REPO_ROOT" && run_prompt "$prompt")
+
+  if [ "$expect_trigger" = "yes" ]; then
+    # Skill should have fired: look for the activation marker
+    if echo "$output" | grep -q "$expect_contains"; then
+      echo "PASS"
+    else
+      echo "FAIL:not-triggered"
+    fi
+  else
+    # Negative case: skill must NOT have fired
+    if echo "$output" | grep -q "Agent generation complete"; then
+      echo "FAIL:false-positive"
+    else
+      echo "PASS"
+    fi
+  fi
+}
+
+# --- Main eval loop ---
+
+echo "📊 Binary eval: $SKILL_PATH"
+echo "   Test cases : $PROMPT_COUNT"
+echo "   Timeout    : ${TIMEOUT_PER_TEST}s per test"
+echo ""
 
 PASSED=0
 TOTAL=0
+FAILURES=()
 
-for PROMPT_FILE in "$PROMPTS_DIR"/test_*.txt; do
+for PROMPT_FILE in $(ls "$PROMPTS_DIR"/test_*.txt | sort -t_ -k2 -n); do
   TEST_NUM=$(basename "$PROMPT_FILE" .txt | sed 's/test_//')
-  EXPECTED_FILE="$EXPECTED_DIR/test_${TEST_NUM}.txt"
-
   TOTAL=$((TOTAL + 1))
 
-  if [ ! -f "$EXPECTED_FILE" ]; then
-    echo "  ⚠️  Test $TEST_NUM: missing expected output file, marking as FAIL"
-    continue
+  RESULT=$(evaluate_case "$TEST_NUM")
+
+  if [ "$RESULT" = "PASS" ]; then
+    PASSED=$((PASSED + 1))
+    [ "$VERBOSE" = "--verbose" ] && echo "  ✅ Test $TEST_NUM: PASS"
+  else
+    REASON="${RESULT#FAIL:}"
+    FAILURES+=("Test $TEST_NUM: $REASON")
+    [ "$VERBOSE" = "--verbose" ] && echo "  ❌ Test $TEST_NUM: FAIL ($REASON)"
   fi
-
-  # TODO (Phase 2): Run actual evaluation
-  # output=$(execute_in_sandbox "$SKILL_PATH" "$PROMPT_FILE")
-  # if validate_output "$output" "$EXPECTED_FILE"; then
-  #   PASSED=$((PASSED + 1))
-  #   echo "  ✅ Test $TEST_NUM: PASS"
-  # else
-  #   echo "  ❌ Test $TEST_NUM: FAIL"
-  # fi
-
-  echo "  ⏳ Test $TEST_NUM: NOT YET IMPLEMENTED"
 done
 
-if [ "$TOTAL" -gt 0 ]; then
-  # Use awk for float division (portable)
-  PASS_RATE=$(awk "BEGIN {printf \"%.2f\", $PASSED / $TOTAL}")
+# --- Results ---
+
+PASS_RATE=$(awk "BEGIN {printf \"%.2f\", $PASSED / $TOTAL}")
+
+echo ""
+echo "─────────────────────────────"
+echo "Pass rate : $PASS_RATE  ($PASSED / $TOTAL)"
+
+if [ ${#FAILURES[@]} -gt 0 ]; then
   echo ""
-  echo "─────────────────────────────"
-  echo "Pass rate: $PASS_RATE ($PASSED/$TOTAL)"
-  echo "─────────────────────────────"
-else
-  echo "❌ No test cases executed" >&2
-  exit 1
+  echo "Failures:"
+  for f in "${FAILURES[@]}"; do
+    echo "  ✗ $f"
+  done
 fi
 
-# Exit non-zero until fully implemented (Phase 0 requirement)
-echo ""
-echo "⚠️  Evaluation runner not yet fully implemented (Phase 2)"
-exit 1
+echo "─────────────────────────────"
+
+# Threshold judgement (mirrors skill-quality-validator thresholds)
+PASS_RATE_INT=$(awk "BEGIN {printf \"%d\", $PASS_RATE * 100}")
+if [ "$PASS_RATE_INT" -ge 90 ]; then
+  echo "✅ PASS  — trigger rate ≥ 90% (deployment allowed)"
+  exit 0
+elif [ "$PASS_RATE_INT" -ge 75 ]; then
+  echo "⚠️  CONDITIONAL — trigger rate 75–89% (deploy with warning)"
+  exit 0
+else
+  echo "❌ FAIL  — trigger rate < 75% (autoresearch-optimizer required)"
+  exit 2
+fi

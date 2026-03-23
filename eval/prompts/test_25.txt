@@ -1,0 +1,1 @@
+Can you help me debug why my Python script is throwing a KeyError on line 42?

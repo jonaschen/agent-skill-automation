@@ -1,0 +1,1 @@
+Create a read-only security code auditor agent — it should only inspect code, never edit or execute anything.

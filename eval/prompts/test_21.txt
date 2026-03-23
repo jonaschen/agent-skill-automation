@@ -1,0 +1,1 @@
+I want to create an AOSP hardware bring-up expert for our team's Claude setup — knowledge-only, no code execution.

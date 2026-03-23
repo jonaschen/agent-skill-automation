@@ -1,0 +1,1 @@
+I need a coordinating agent for managing our software release process — it needs to delegate work to other agents and track progress.
