@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-03-23: Specification phase complete. No implementation yet.**
+**Status as of 2026-03-23: Phase 0 complete. Phase 1 in progress.**
 
 ---
 
@@ -19,27 +19,27 @@ Repo setup  Factory     Validator   AutoResearch  Closed loop
 
 ---
 
-## Phase 0: Repository Bootstrap *(current — do this first)*
+## Phase 0: Repository Bootstrap *(complete ✅)*
 
 **Goal:** Establish the directory structure and skeleton files so Phase 1 can begin immediately.
 
 ### Tasks
 
-- [ ] Create `.claude/agents/` directory with empty placeholder files for all five agents
-- [ ] Create `.claude/skills/` directory structure (one subdirectory per Skill)
-- [ ] Create `.claude/hooks/` directory with stub `pre-deploy.sh`, `post-tool-use.sh`, `stop.sh`
-- [ ] Create `eval/` directory with stub `run_eval.sh` and empty `prompts/` and `expected/` subdirs
-- [ ] Create `~/.claude/@lib/agents/` as the Changeling role library (read-only, global)
-- [ ] Write a bare-minimum `.mcp.json` template file
+- [x] Create `.claude/agents/` directory with empty placeholder files for all five agents
+- [x] Create `.claude/skills/` directory structure (one subdirectory per Skill)
+- [x] Create `.claude/hooks/` directory with stub `pre-deploy.sh`, `post-tool-use.sh`, `stop.sh`
+- [x] Create `eval/` directory with stub `run_eval.sh` and empty `prompts/` and `expected/` subdirs
+- [x] Create `~/.claude/@lib/agents/` as the Changeling role library (read-only, global)
+- [x] Write a bare-minimum `.mcp.json` template file
 
 ### Done When
 
-- `find .claude/ -type f` shows the full directory tree matching the spec in Section 5.2 of the dev plan
-- `eval/run_eval.sh` exists and exits non-zero (not yet implemented, but wired up)
+- ✅ `find .claude/ -type f` shows the full directory tree matching the spec in Section 5.2 of the dev plan
+- ✅ `eval/run_eval.sh` exists and exits non-zero (not yet implemented, but wired up)
 
 ---
 
-## Phase 1: Meta-Agent Factory *(Months 1–2)*
+## Phase 1: Meta-Agent Factory *(in progress)*
 
 **Goal:** A working `meta-agent-factory` agent that can generate format-compliant, permission-correct
 SKILL.md files from natural language requirements.
@@ -47,16 +47,16 @@ SKILL.md files from natural language requirements.
 ### Tasks
 
 #### 1.1 SKILL.md authoring (the agent itself)
-- [ ] Write `.claude/agents/meta-agent-factory.md` using the full template from Section 11.3 of the dev plan
+- [x] Write `.claude/agents/meta-agent-factory.md` using the full template from Section 11.3 of the dev plan
 - [ ] Validate the description field: ≤ 1024 characters, includes trigger verbs and exclusion contexts
 - [ ] Manually test all four example trigger prompts from Section 3.1 and confirm correct routing
 
 #### 1.2 Permission validation logic
-- [ ] Write a static shell script `eval/check-permissions.sh` that reads a SKILL.md and fails if:
+- [x] Write a static shell script `eval/check-permissions.sh` that reads a SKILL.md and fails if:
   - A review/validation agent has `Write` or `Edit` in its tools list
   - An execution agent has `Task` in its tools list
   - The `description` field exceeds 1024 characters
-- [ ] Test with deliberately broken SKILL.md files to confirm 100% catch rate
+- [x] Test with deliberately broken SKILL.md files to confirm 100% catch rate
 
 #### 1.3 End-to-end generation tests
 - [ ] Test case 1: Generate a read-only architect Sub-agent → verify it lacks Write/Edit/Bash
@@ -216,6 +216,6 @@ SKILL.md files from natural language requirements.
 
 ## Immediate Next Actions
 
-1. **Today**: Complete Phase 0 — create the directory skeleton
-2. **This week**: Write `meta-agent-factory.md` and manually test all four trigger prompts
+1. ~~**Today**: Complete Phase 0 — create the directory skeleton~~ ✅ Done
+2. **This week**: ~~Write `meta-agent-factory.md`~~ ✅ Done — manually test all four trigger prompts
 3. **Before Phase 2**: Build `eval/run_eval.sh` — the eval runner is the foundation everything else depends on
