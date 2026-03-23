@@ -40,7 +40,7 @@ Repo setup  Factory     Validator   AutoResearch  Closed loop
 
 ---
 
-## Phase 1: Meta-Agent Factory *(in progress)*
+## Phase 1: Meta-Agent Factory *(complete ✅)*
 
 **Goal:** A working `meta-agent-factory` agent that can generate format-compliant, permission-correct
 SKILL.md files from natural language requirements.
@@ -50,7 +50,7 @@ SKILL.md files from natural language requirements.
 #### 1.1 SKILL.md authoring (the agent itself)
 - [x] Write `.claude/agents/meta-agent-factory.md` using the full template from Section 11.3 of the dev plan
 - [x] Validate the description field: ≤ 1024 characters, includes trigger verbs and exclusion contexts (550 chars ✅)
-- [ ] Manually test all four example trigger prompts from Section 3.1 and confirm correct routing
+- [x] Manually test all four example trigger prompts from Section 3.1 and confirm correct routing
 
 #### 1.2 Permission validation logic
 - [x] Write a static shell script `eval/check-permissions.sh` that reads a SKILL.md and fails if:
@@ -60,10 +60,10 @@ SKILL.md files from natural language requirements.
 - [x] Test with deliberately broken SKILL.md files to confirm 100% catch rate
 
 #### 1.3 End-to-end generation tests
-- [ ] Test case 1: Generate a read-only architect Sub-agent → verify it lacks Write/Edit/Bash
-- [ ] Test case 2: Generate an execution agent with Bash → verify it lacks Task
-- [ ] Test case 3: Generate an agent requiring MCP → verify `.mcp.json` update is proposed
-- [ ] Test case 4: Generate a Changeling role definition → verify it writes to `~/.claude/@lib/agents/`
+- [x] Test case 1: Generate a read-only architect Sub-agent → verify it lacks Write/Edit/Bash
+- [x] Test case 2: Generate an execution agent with Bash → verify it lacks Task
+- [x] Test case 3: Generate an agent requiring MCP → verify `.mcp.json` update is proposed
+- [x] Test case 4: Generate a Changeling role definition → verify it writes to `~/.claude/@lib/agents/`
 
 ### Acceptance Criteria
 | Metric | Target |
@@ -74,7 +74,7 @@ SKILL.md files from natural language requirements.
 
 ---
 
-## Phase 2: Quality Validator + CI/CD Gate *(Months 3–4)*
+## Phase 2: Quality Validator + CI/CD Gate *(current)*
 
 **Goal:** Objective, automated quality gating. No Skill deploys with trigger rate < 90% without human override.
 
@@ -217,6 +217,6 @@ SKILL.md files from natural language requirements.
 
 ## Immediate Next Actions
 
-1. ~~**Today**: Complete Phase 0 — create the directory skeleton~~ ✅ Done
-2. **This week**: ~~Write `meta-agent-factory.md`~~ ✅ Done — manually test all four trigger prompts
-3. **Before Phase 2**: Build `eval/run_eval.sh` — the eval runner is the foundation everything else depends on
+1. ~~Phase 0: Repository bootstrap~~ ✅ Done
+2. ~~Phase 1: Meta-agent factory~~ ✅ Done
+3. **Now**: Build `eval/run_eval.sh` with 30 real test prompts for `meta-agent-factory` — the eval runner is the foundation Phase 2 depends on
