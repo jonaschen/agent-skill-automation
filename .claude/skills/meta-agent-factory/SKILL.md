@@ -1,14 +1,16 @@
 ---
 name: meta-agent-factory
 description: >
-  Designs and generates new Claude Agent Skill or Sub-agent definition files.
-  Triggered when a user needs to create a new AI agent capability, instantiate
-  a specific role as an agent, configure MCP external service connections, or
-  automate a workflow. Covers the full flow from requirements analysis and
-  architecture classification through permission design to SKILL.md file write.
-  Does not handle quality optimization of existing Skills (handled by
-  autoresearch-optimizer), nor post-deployment monitoring tasks (handled by
-  agentic-cicd-gate).
+  Triggered when a user wants to define or generate a new Claude Code agent,
+  Skill, or Changeling persona — NOT when asking Claude to directly perform a
+  task. Activate for: "I need an agent that does X", "build/create an agent
+  for X", "make a Skill for X domain", "set up an automated workflow agent",
+  "add a persona to the Changeling router's role library", "instantiate a
+  [role] as an agent". Generates the SKILL.md or agent definition file,
+  permission matrix, and MCP config. Do NOT activate for: direct task requests
+  (fix this bug, optimize this query, write this test), reviewing or running
+  existing agents, or improving existing Skill definitions (use
+  autoresearch-optimizer for that).
 tools:
   - Read
   - Write
