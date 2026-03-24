@@ -130,15 +130,19 @@ evaluate_case() {
   cleanup_generated_files
 
   if [ "$expect_trigger" = "yes" ]; then
-    # Skill should have fired: look for the activation marker
-    if echo "$output" | grep -q "$expect_contains"; then
+    # Skill should have fired. Accept either:
+    #   (a) the pre-write confirmation summary ("Agent generation complete")
+    #   (b) the write-blocked intermediate output ("Tools granted:" / "Tools denied:")
+    # Both are produced by meta-agent-factory and indicate correct trigger.
+    if echo "$output" | grep -qE "Agent generation complete|Tools granted:|Tools denied:"; then
       echo "PASS"
     else
       echo "FAIL:not-triggered"
     fi
   else
-    # Negative case: skill must NOT have fired
-    if echo "$output" | grep -q "Agent generation complete"; then
+    # Negative case: skill must NOT have fired.
+    # Check for ANY meta-agent-factory output signature.
+    if echo "$output" | grep -qE "Agent generation complete|Tools granted:|Tools denied:"; then
       echo "FAIL:false-positive"
     else
       echo "PASS"

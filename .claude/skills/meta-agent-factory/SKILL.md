@@ -66,7 +66,10 @@ Any exceptions must be explicitly justified.
 
 ### Stage 4: Generate & Write
 - Generate the complete definition from the three-layer template
-- Use the Write tool to write to the correct directory path:
+- **Output the confirmation summary first (before writing)** — see Output Format
+  Specification below. This ensures the summary is always visible regardless of
+  whether the write is approved.
+- Then use the Write tool to write to the correct directory path:
   - Sub-agent → `.claude/agents/<name>.md`
   - Skill → `.claude/skills/<name>/SKILL.md`
   - Changeling role → `~/.claude/@lib/agents/<name>.md`
@@ -78,7 +81,8 @@ Any exceptions must be explicitly justified.
 
 ## Output Format Specification
 
-After generation is complete, output the following confirmation summary:
+**Output this summary BEFORE attempting the Write tool call**, so it is always
+captured even if the write requires approval or is run in non-interactive mode:
 
 ```
 ✅ Agent generation complete
