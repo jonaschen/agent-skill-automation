@@ -26,6 +26,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PROMPTS_DIR="$SCRIPT_DIR/prompts"
 EXPECTED_DIR="$SCRIPT_DIR/expected"
 TIMEOUT_PER_TEST=120   # seconds per claude invocation
+SLEEP_BETWEEN_TESTS=${EVAL_SLEEP:-3}   # seconds between API calls; override with EVAL_SLEEP=0
 
 # --- Preflight checks ---
 
@@ -129,20 +130,24 @@ evaluate_case() {
   # Clean up any files generated during this test before evaluating result
   cleanup_generated_files
 
+  # Trigger detection: look for any meta-agent-factory output signature.
+  # "skill-quality-validator" appears in the recommended-next-step line of
+  # every meta-agent-factory response regardless of output format variation.
+  # Also accept the full confirmation table and write-blocked intermediate format.
+  local triggered=0
+  if echo "$output" | grep -qE \
+    "skill-quality-validator|Agent generation complete|Tools granted:|Tools denied:"; then
+    triggered=1
+  fi
+
   if [ "$expect_trigger" = "yes" ]; then
-    # Skill should have fired. Accept either:
-    #   (a) the pre-write confirmation summary ("Agent generation complete")
-    #   (b) the write-blocked intermediate output ("Tools granted:" / "Tools denied:")
-    # Both are produced by meta-agent-factory and indicate correct trigger.
-    if echo "$output" | grep -qE "Agent generation complete|Tools granted:|Tools denied:"; then
+    if [ "$triggered" -eq 1 ]; then
       echo "PASS"
     else
       echo "FAIL:not-triggered"
     fi
   else
-    # Negative case: skill must NOT have fired.
-    # Check for ANY meta-agent-factory output signature.
-    if echo "$output" | grep -qE "Agent generation complete|Tools granted:|Tools denied:"; then
+    if [ "$triggered" -eq 1 ]; then
       echo "FAIL:false-positive"
     else
       echo "PASS"
@@ -175,6 +180,8 @@ for PROMPT_FILE in $(ls "$PROMPTS_DIR"/test_*.txt | sort -t_ -k2 -n); do
     FAILURES+=("Test $TEST_NUM: $REASON")
     [ "$VERBOSE" = "--verbose" ] && echo "  ❌ Test $TEST_NUM: FAIL ($REASON)"
   fi
+
+  sleep "$SLEEP_BETWEEN_TESTS"
 done
 
 # --- Results ---
