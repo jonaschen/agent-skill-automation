@@ -3,6 +3,10 @@ eval/flaky_history.json
 eval/deploy_history.json
 eval/experiment_log.json
 
+# Python bytecode
+__pycache__/
+*.pyc
+
 # Temporary files
 *.eval.tmp
 /tmp/skill-eval-*
