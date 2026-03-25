@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-03-23: Phase 0 complete. Phase 1 in progress.**
+**Status as of 2026-03-25: Phase 0 complete. Phase 1 complete. Phase 2 in progress — core components implemented.**
 
 ---
 
@@ -74,7 +74,7 @@ SKILL.md files from natural language requirements.
 
 ---
 
-## Phase 2: Quality Validator + CI/CD Gate *(current)*
+## Phase 2: Quality Validator + CI/CD Gate *(in progress)*
 
 **Goal:** Objective, automated quality gating. No Skill deploys with trigger rate < 90% without human override.
 
@@ -83,25 +83,27 @@ SKILL.md files from natural language requirements.
 #### 2.1 Eval runner (the most critical piece of Phase 2)
 - [x] Implement `eval/run_eval.sh <skill-path>` — runs 30 fixed test prompts, prints a single float pass rate
 - [x] Build `eval/prompts/test_{1..30}.txt` and `eval/expected/test_{1..30}.txt` for `meta-agent-factory`
-- [ ] Confirm two runs on the same Skill differ by ≤ 5% (repeatability requirement)
-- [ ] Build equivalent test sets (≥ 20 cases each) for each Skill as they are deployed
+- [x] Build `eval/check_repeatability.sh` — runs eval multiple times, confirms ≤ 5% diff between runs
+- [x] Build test set for `skill-quality-validator` (25 cases: 15 positive + 10 negative triggers)
+- [ ] Confirm two runs on the same Skill differ by ≤ 5% (requires live claude CLI)
+- [ ] Build equivalent test sets (≥ 20 cases each) for remaining Skills as they are deployed
 
 #### 2.2 `skill-quality-validator` agent
-- [ ] Implement `.claude/agents/skill-quality-validator.md` (stub exists — complete with full 5-step pipeline)
-- [ ] Implement the 5-step validation pipeline (frontmatter parse → description quality → test set generation → baseline → trigger rate measure)
-- [ ] Output a JSON report: `{ "trigger_rate": 0.xx, "security_score": x, "recommendations": [...] }`
-- [ ] Implement the 90%/75% threshold logic (Pass / Conditional / Fail)
+- [x] Implement `.claude/agents/skill-quality-validator.md` with full 5-step validation pipeline
+- [x] Implement the 5-step validation pipeline (frontmatter parse → description quality → test set generation → security audit → trigger rate measure)
+- [x] Output a JSON report: `{ "trigger_rate": 0.xx, "security_score": x, "recommendations": [...] }`
+- [x] Implement the 90%/75% threshold logic (Pass / Conditional / Fail)
 
 #### 2.3 `agentic-cicd-gate` agent
-- [ ] Implement `.claude/agents/agentic-cicd-gate.md` (stub exists — complete with full gate logic)
-- [ ] Implement `.claude/hooks/pre-deploy.sh` that calls the validator and blocks deploys below threshold
-- [ ] Implement Bayesian flaky test detector (`eval/flaky_detector.py`) with ≥ 5 run history requirement
-- [ ] Implement git-based autonomous rollback: detect trigger rate drop > 10% → `git revert`
-- [ ] Wire `post-tool-use.sh` and `stop.sh` hooks into the deployment monitoring flow
+- [x] Implement `.claude/agents/agentic-cicd-gate.md` with full 5-stage deployment pipeline
+- [x] Implement `.claude/hooks/pre-deploy.sh` that runs eval + permission checks and blocks deploys below threshold
+- [x] Implement Bayesian flaky test detector (`eval/flaky_detector.py`) with ≥ 5 run history requirement
+- [x] Implement git-based autonomous rollback logic in agent definition (detect trigger rate drop > 10% → `git revert`)
+- [x] Wire `post-tool-use.sh` and `stop.sh` hooks into the deployment monitoring flow
 
 #### 2.4 Benchmark dataset
-- [ ] Build hallucination risk test cases (deliberately misleading inputs) for each Skill
-- [ ] Build cross-domain semantic conflict tests (ensure Skills do not over-trigger each other)
+- [x] Build hallucination risk test cases (10 deliberately misleading inputs)
+- [x] Build cross-domain semantic conflict tests (10 prompts targeting multi-Skill overlap)
 
 ### Acceptance Criteria
 | Metric | Target |
@@ -219,4 +221,5 @@ SKILL.md files from natural language requirements.
 
 1. ~~Phase 0: Repository bootstrap~~ ✅ Done
 2. ~~Phase 1: Meta-agent factory~~ ✅ Done
-3. **Now**: Build `eval/run_eval.sh` with 30 real test prompts for `meta-agent-factory` — the eval runner is the foundation Phase 2 depends on
+3. ~~Phase 2 core: Build eval runner, skill-quality-validator, agentic-cicd-gate, flaky detector, hooks, benchmarks~~ ✅ Done
+4. **Now**: Confirm eval repeatability with live claude CLI runs, build test sets for remaining Skills (autoresearch-optimizer, changeling-router), then begin Phase 3 AutoResearch optimizer
