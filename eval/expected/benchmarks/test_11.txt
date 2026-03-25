@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=meta-agent-factory
+EXPECT_CONTAINS=SKILL.md
+NOTES=Cross-domain conflict: "create a new quality checker agent" overlaps factory (creation) and validator (quality checking). Primary intent is agent creation, so meta-agent-factory wins.

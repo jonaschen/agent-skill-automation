@@ -1,0 +1,1 @@
+Switch to the AOSP integration expert persona and then validate that its skill definition file has the correct trigger descriptions and tool permissions.

@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=autoresearch-optimizer
+EXPECT_CONTAINS=pass rate
+NOTES=Cross-domain conflict: names agentic-cicd-gate directly but the intent is to optimize its accuracy. Improving a Skill's pass rate is autoresearch-optimizer's domain.

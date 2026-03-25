@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "deploy to production" and "rolling updates" mimic agentic-cicd-gate vocabulary but refer to application deployment, not Skill deployment gating.

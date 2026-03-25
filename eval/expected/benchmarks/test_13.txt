@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=autoresearch-optimizer
+EXPECT_CONTAINS=trigger rate
+NOTES=Cross-domain conflict: references skill-quality-validator by name but the intent is to fix a failing Skill (60% trigger rate). Optimization of a failing Skill is autoresearch-optimizer's domain.

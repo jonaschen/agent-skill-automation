@@ -1,0 +1,1 @@
+Design a new agent definition that includes both deployment gating logic and quality validation checks in a single unified workflow.

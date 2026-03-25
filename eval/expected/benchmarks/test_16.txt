@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=skill-quality-validator
+EXPECT_CONTAINS=trigger descriptions
+NOTES=Cross-domain conflict: names autoresearch-optimizer as the target but the intent is to validate a SKILL.md's structure and correctness. Static validation routes to skill-quality-validator.

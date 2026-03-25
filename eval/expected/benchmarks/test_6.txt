@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "build a factory pattern" uses the word "factory" which is central to meta-agent-factory, but this is a Java design pattern implementation.

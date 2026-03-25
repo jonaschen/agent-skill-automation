@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=meta-agent-factory
+EXPECT_CONTAINS=SKILL.md
+NOTES=Cross-domain conflict: "dynamically switch between roles" overlaps changeling-router, but the primary intent is to create a new agent definition. Agent creation routes to meta-agent-factory.

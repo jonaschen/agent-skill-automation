@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=meta-agent-factory
+EXPECT_CONTAINS=SKILL.md
+NOTES=Cross-domain conflict: three-way overlap among factory (design agent), cicd-gate (deployment gating), and validator (quality checks). Designing a new agent definition is meta-agent-factory's domain.

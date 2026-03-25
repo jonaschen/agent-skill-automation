@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "optimize" and "reduce execution time" mimic autoresearch-optimizer language but refer to SQL query optimization, not Skill trigger-rate optimization.

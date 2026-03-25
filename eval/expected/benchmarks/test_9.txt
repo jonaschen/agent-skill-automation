@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "generate a new skill tree" uses both "generate" (meta-agent-factory) and "skill" (core pipeline term), but this is about game development UI.

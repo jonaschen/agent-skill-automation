@@ -1,0 +1,1 @@
+Validate the SKILL.md for the autoresearch-optimizer and check that its trigger descriptions, tool permissions, and output templates are correct.

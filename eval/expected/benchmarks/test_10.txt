@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "roll back" is a key agentic-cicd-gate capability, but this refers to database schema migration rollback, not Skill deployment rollback.

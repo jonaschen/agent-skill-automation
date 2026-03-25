@@ -1,0 +1,1 @@
+Research the best transformer model architecture for our image classification pipeline and iterate on hyperparameters until accuracy exceeds 95%.

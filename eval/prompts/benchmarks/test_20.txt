@@ -1,0 +1,1 @@
+Review the meta-agent-factory's output quality and then optimize its trigger rate from the current 72% to at least 95% using the binary eval loop.

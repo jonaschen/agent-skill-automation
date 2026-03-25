@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=meta-agent-factory
+EXPECT_CONTAINS=SKILL.md
+NOTES=Cross-domain conflict: "build a deployment automation agent" overlaps factory (building agents) and cicd-gate (deployment management). Primary intent is building a new agent, so meta-agent-factory wins.

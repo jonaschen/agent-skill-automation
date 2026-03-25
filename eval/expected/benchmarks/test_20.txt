@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=autoresearch-optimizer
+EXPECT_CONTAINS=binary eval loop
+NOTES=Cross-domain conflict: three-way overlap among validator (review quality), optimizer (trigger rate), and factory (meta-agent-factory named). "Optimize trigger rate via binary eval loop" is the decisive signal for autoresearch-optimizer.

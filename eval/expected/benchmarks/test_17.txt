@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=agentic-cicd-gate
+EXPECT_CONTAINS=deploy
+NOTES=Cross-domain conflict: names changeling-router as the target but the primary action is deploying a Skill version to production. Deployment gating routes to agentic-cicd-gate.

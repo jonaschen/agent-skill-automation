@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "quality gate" and "CI/CD pipeline" combine vocabulary from both skill-quality-validator and agentic-cicd-gate, but refer to Jenkins pipeline configuration.

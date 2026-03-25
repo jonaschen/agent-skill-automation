@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "create a new route" overlaps with meta-agent-factory ("create new") and changeling-router ("route"), but refers to Express.js HTTP routing.

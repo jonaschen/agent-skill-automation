@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "validate my Python code" mimics skill-quality-validator language but refers to general code linting, not SKILL.md validation.

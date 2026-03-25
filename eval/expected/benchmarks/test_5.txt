@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "research" and "iterate on hyperparameters" mimic autoresearch-optimizer's iterative loop pattern, but this is ML model research, not Skill optimization.

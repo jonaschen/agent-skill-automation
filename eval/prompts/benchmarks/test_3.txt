@@ -1,0 +1,1 @@
+Optimize this SQL query to reduce execution time from 30 seconds to under 5 seconds — it's scanning the full table instead of using the index.

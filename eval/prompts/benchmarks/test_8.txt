@@ -1,0 +1,1 @@
+Run a quality gate check on my Jenkins CI/CD pipeline configuration to make sure all stages pass before the artifact is published.

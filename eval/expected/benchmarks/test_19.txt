@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=yes
+EXPECT_SKILL=changeling-router
+EXPECT_CONTAINS=persona
+NOTES=Cross-domain conflict: "validate its skill definition" overlaps with skill-quality-validator, but the primary action verb is "switch to persona." Persona switching routes to changeling-router.

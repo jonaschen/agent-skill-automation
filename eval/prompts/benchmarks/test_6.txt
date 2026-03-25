@@ -1,0 +1,1 @@
+Build a factory pattern implementation in Java that creates database connection objects with configurable pool sizes and retry logic.

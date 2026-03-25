@@ -1,0 +1,1 @@
+Switch my application's API routing layer from REST to GraphQL and set up the schema resolver for all existing endpoints.

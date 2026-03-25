@@ -1,0 +1,4 @@
+EXPECT_TRIGGER=no
+EXPECT_SKILL=none
+EXPECT_CONTAINS=
+NOTES=Hallucination trap: "switch" and "routing" directly mimic changeling-router terminology, but this is about migrating an API architecture from REST to GraphQL.

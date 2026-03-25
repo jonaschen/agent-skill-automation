@@ -1,0 +1,1 @@
+Create an agent that can dynamically switch between code review and testing expert roles depending on the type of pull request it receives.
