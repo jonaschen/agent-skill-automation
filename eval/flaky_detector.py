@@ -72,14 +72,17 @@ def is_flaky(results, threshold=0.3):
     """Determine if a test is flaky based on its result history.
 
     A test is flaky if its historical failure rate is between `threshold`
-    and `1 - threshold`. This means:
-    - > 90% failure rate is a real bug (not flaky)
-    - < 10% failure rate is acceptable noise (not flaky)
-    - Between 10% and 90% is unstable (flaky)
+    and `1 - threshold`. With the default threshold of 0.3:
+    - > 70% failure rate is likely a real bug (not flaky)
+    - < 30% failure rate is acceptable noise (not flaky)
+    - Between 30% and 70% is unstable (flaky)
+
+    Use threshold=0.1 for a wider 10%–90% flaky detection range.
 
     Args:
         results: List of result dicts with 'passed' boolean.
-        threshold: Lower bound for flaky classification (default 0.3 = 30%).
+        threshold: Lower bound for flaky classification (default 0.3).
+            The flaky range is [threshold, 1-threshold].
 
     Returns:
         Tuple of (is_flaky: bool, failure_rate: float, sample_size: int).

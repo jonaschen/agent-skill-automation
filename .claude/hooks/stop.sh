@@ -15,6 +15,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 EVAL_DIR="$REPO_ROOT/eval"
+SANDBOX_DIR="/tmp/skill-eval-sandbox"
+SANDBOX_TMP_PATTERN="/tmp/skill-eval-*"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 echo "🛑 Graceful shutdown initiated: $TIMESTAMP"
@@ -59,7 +61,6 @@ else
 fi
 
 # --- Step 3: Clean up temporary sandbox environments ---
-SANDBOX_DIR="/tmp/skill-eval-sandbox"
 if [ -d "$SANDBOX_DIR" ]; then
   rm -rf "$SANDBOX_DIR"
   echo "  ✅ Cleaned up sandbox: $SANDBOX_DIR"
@@ -70,7 +71,7 @@ fi
 # --- Step 4: Clean up any test-generated files ---
 # Remove temporary files created during eval runs
 find "$REPO_ROOT" -name "*.eval.tmp" -type f -delete 2>/dev/null || true
-find /tmp -name "skill-eval-*" -type f -mmin +60 -delete 2>/dev/null || true
+find /tmp -name "${SANDBOX_TMP_PATTERN##/tmp/}" -type f -mmin +60 -delete 2>/dev/null || true
 echo "  ✅ Temporary files cleaned up"
 
 # --- Step 5: Log shutdown event ---

@@ -57,7 +57,7 @@ for i in $(seq 1 "$NUM_RUNS"); do
     exit 1
   fi
 
-  RATE_PCT=$(awk "BEGIN {printf \"%d\", $RATE * 100}")
+  RATE_PCT=$(awk "BEGIN {printf \"%d\", $RATE * 100 + 0.5}")
   echo "   Pass rate: $RATE ($RATE_PCT%)"
   RATES+=("$RATE")
 
@@ -92,7 +92,7 @@ FAILED=0
 for i in "${!RATES[@]}"; do
   for j in "${!RATES[@]}"; do
     if [ "$i" -lt "$j" ]; then
-      DIFF=$(awk "BEGIN {d = (${RATES[$i]} - ${RATES[$j]}); if (d < 0) d = -d; printf \"%d\", d * 100}")
+      DIFF=$(awk "BEGIN {d = (${RATES[$i]} - ${RATES[$j]}); if (d < 0) d = -d; printf \"%d\", d * 100 + 0.5}")
       echo "  Run $((i+1)) vs Run $((j+1)): ${DIFF}% difference"
       if [ "$DIFF" -gt "$MAX_DIFF" ]; then
         echo "  ❌ Exceeds ${MAX_DIFF}% threshold!"

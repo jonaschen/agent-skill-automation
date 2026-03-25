@@ -65,7 +65,7 @@ if [ -x "$EVAL_DIR/run_eval.sh" ]; then
     exit 2
   fi
 
-  PASS_RATE_INT=$(awk "BEGIN {printf \"%d\", $PASS_RATE * 100}")
+  PASS_RATE_INT=$(awk "BEGIN {printf \"%d\", $PASS_RATE * 100 + 0.5}")
   echo "   Trigger rate: $PASS_RATE ($PASS_RATE_INT%)"
 
   if [ "$PASS_RATE_INT" -ge "$THRESHOLD" ]; then
