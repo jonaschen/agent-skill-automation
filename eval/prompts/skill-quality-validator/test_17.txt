@@ -1,0 +1,1 @@
+Build me a SKILL.md from scratch for a database migration assistant

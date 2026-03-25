@@ -1,0 +1,1 @@
+Assess this Skill definition for description quality — is the trigger description specific enough to avoid false positives?

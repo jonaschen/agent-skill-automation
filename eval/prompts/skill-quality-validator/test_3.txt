@@ -1,0 +1,1 @@
+Is this Skill ready for deployment? Check its trigger rate

@@ -1,0 +1,1 @@
+Generate the MCP configuration and agent definition files for a new documentation-writer Skill

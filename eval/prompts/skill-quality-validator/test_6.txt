@@ -1,0 +1,1 @@
+I just updated the SKILL.md frontmatter — can you verify the format is still valid?

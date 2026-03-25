@@ -1,0 +1,1 @@
+Run a static analysis on all Skill definitions in the .claude/skills directory

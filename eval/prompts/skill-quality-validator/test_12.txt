@@ -1,0 +1,1 @@
+Test whether the new pdf-parser Skill triggers on the correct set of prompts and report the pass rate

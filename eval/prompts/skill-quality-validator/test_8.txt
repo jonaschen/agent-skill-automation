@@ -1,0 +1,1 @@
+Does the agentic-cicd-gate Skill have any mutually exclusive permission violations?

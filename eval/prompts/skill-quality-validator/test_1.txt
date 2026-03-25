@@ -1,0 +1,1 @@
+Validate the quality of this SKILL.md before deploying it

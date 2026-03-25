@@ -1,0 +1,1 @@
+Inspect the YAML frontmatter in .claude/skills/code-reviewer/SKILL.md and flag any missing required fields

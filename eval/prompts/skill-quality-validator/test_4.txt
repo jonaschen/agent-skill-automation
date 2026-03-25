@@ -1,0 +1,1 @@
+Audit the permissions declared in the changeling-router SKILL.md for security issues
