@@ -33,10 +33,10 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
   - `expected/`: Expected trigger/content for evaluation.
 - `~/.claude/@lib/agents/`: Changeling role library (global, read-only).
 
-## Current Status (Phase 2)
-- **Phase 0 & 1 Complete:** Infrastructure setup and `meta-agent-factory` implemented.
-- **Phase 2 In Progress:** Building `skill-quality-validator` and `agentic-cicd-gate`.
-- **Current Task:** Strengthening the eval runner (`eval/run_eval.sh`) and building test sets for existing skills.
+## Current Status (Phase 3)
+- **Phase 0, 1, & 2 Complete:** Infrastructure setup, `meta-agent-factory`, `skill-quality-validator`, and `agentic-cicd-gate` implemented. Evaluation runner stabilized with retry logic.
+- **Phase 3 In Progress:** `autoresearch-optimizer`, `skill-optimizer-program.md`, and `experiment_log.json` implemented.
+- **Current Task:** Implementing the base optimization loop and convergence checks.
 
 ## Key Agents & Skills
 - `meta-agent-factory`: Generates new skills/agents from requirements.

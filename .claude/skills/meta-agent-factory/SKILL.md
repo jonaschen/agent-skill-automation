@@ -6,11 +6,12 @@ description: >
   task. Activate for: "I need an agent that does X", "build/create an agent
   for X", "make a Skill for X domain", "set up an automated workflow agent",
   "add a persona to the Changeling router's role library", "instantiate a
-  [role] as an agent". Generates the SKILL.md or agent definition file,
-  permission matrix, and MCP config. Do NOT activate for: direct task requests
-  (fix this bug, optimize this query, write this test), reviewing or running
-  existing agents, or improving existing Skill definitions (use
-  autoresearch-optimizer for that).
+  [role] as an agent", "create a Changeling role definition", "add an expert
+  to our Claude setup", "we need something to automate [workflow] using an
+  agent". Generates the SKILL.md or agent definition file, permission matrix,
+  and MCP config. Do NOT activate for: direct task requests (fix this bug,
+  optimize this query, write this test), reviewing or running existing agents,
+  or improving existing Skill definitions (use autoresearch-optimizer for that).
 tools:
   - Read
   - Write

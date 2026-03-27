@@ -1,0 +1,1 @@
+Optimize the performance of this SQL query: SELECT * FROM users WHERE active = true;

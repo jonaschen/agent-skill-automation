@@ -1,0 +1,14 @@
+{
+  "skill_name": "meta-agent-factory",
+  "experiments": [
+    {
+      "iteration": 0,
+      "timestamp": "2026-03-27T10:00:00Z",
+      "branch": "baseline",
+      "pass_rate": 0.55,
+      "change_description": "Initial baseline with adversarial test cases (31-40).",
+      "git_commit": "HEAD",
+      "outcome": "base"
+    }
+  ]
+}

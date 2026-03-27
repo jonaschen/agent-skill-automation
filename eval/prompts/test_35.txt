@@ -1,0 +1,1 @@
+I need to set up a new GitHub Action to run my tests on every push.

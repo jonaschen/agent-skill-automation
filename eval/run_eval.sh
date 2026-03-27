@@ -27,6 +27,8 @@ PROMPTS_DIR="$SCRIPT_DIR/prompts"
 EXPECTED_DIR="$SCRIPT_DIR/expected"
 TIMEOUT_PER_TEST=120   # seconds per claude invocation
 SLEEP_BETWEEN_TESTS=${EVAL_SLEEP:-3}   # seconds between API calls; override with EVAL_SLEEP=0
+MAX_RETRIES=3
+RETRY_SLEEP=10
 
 # --- Preflight checks ---
 
@@ -66,9 +68,27 @@ run_prompt() {
   # "here's what I would have written" message (containing the confirmation
   # summary) to stderr. We need it for trigger detection.
   local prompt="$1"
-  timeout "$TIMEOUT_PER_TEST" \
-    claude --dangerously-skip-permissions -p "$prompt" \
-    2>&1 || true
+  local attempt=0
+  local output=""
+  
+  while [ $attempt -le $MAX_RETRIES ]; do
+    output=$(timeout "$TIMEOUT_PER_TEST" \
+      claude --dangerously-skip-permissions -p "$prompt" \
+      2>&1 || true)
+    
+    # Check for rate limit or overloaded errors
+    if echo "$output" | grep -qE "rate_limit_error|overloaded_error|Overloaded\."; then
+      attempt=$((attempt + 1))
+      if [ $attempt -le $MAX_RETRIES ]; then
+        [ "$VERBOSE" = "--verbose" ] && echo "    (Rate limited/Overloaded, retrying in ${RETRY_SLEEP}s... attempt $attempt/$MAX_RETRIES)" >&2
+        sleep $RETRY_SLEEP
+        continue
+      fi
+    fi
+    break
+  done
+  
+  echo "$output"
 }
 
 cleanup_generated_files() {
@@ -118,6 +138,12 @@ evaluate_case() {
 
   # Run claude from repo root so .claude/ skills are loaded
   output=$(cd "$REPO_ROOT" && run_prompt "$prompt")
+  
+  # Check if we still have a rate limit error after retries
+  if echo "$output" | grep -qE "rate_limit_error|overloaded_error|Overloaded\."; then
+    echo "SKIP:rate-limit"
+    return
+  fi
 
   # Clean up any files generated during this test before evaluating result
   cleanup_generated_files
@@ -155,19 +181,25 @@ echo "   Timeout    : ${TIMEOUT_PER_TEST}s per test"
 echo ""
 
 PASSED=0
-TOTAL=0
+TOTAL_EXECUTED=0
+SKIPPED=0
 FAILURES=()
 
 for PROMPT_FILE in $(ls "$PROMPTS_DIR"/test_*.txt | sort -t_ -k2 -n); do
   TEST_NUM=$(basename "$PROMPT_FILE" .txt | sed 's/test_//')
-  TOTAL=$((TOTAL + 1))
 
   RESULT=$(evaluate_case "$TEST_NUM")
 
   if [ "$RESULT" = "PASS" ]; then
     PASSED=$((PASSED + 1))
+    TOTAL_EXECUTED=$((TOTAL_EXECUTED + 1))
     [ "$VERBOSE" = "--verbose" ] && echo "  ✅ Test $TEST_NUM: PASS"
+  elif [[ "$RESULT" == SKIP:* ]]; then
+    SKIPPED=$((SKIPPED + 1))
+    REASON="${RESULT#SKIP:}"
+    [ "$VERBOSE" = "--verbose" ] && echo "  ⏭️  Test $TEST_NUM: SKIP ($REASON)"
   else
+    TOTAL_EXECUTED=$((TOTAL_EXECUTED + 1))
     REASON="${RESULT#FAIL:}"
     FAILURES+=("Test $TEST_NUM: $REASON")
     [ "$VERBOSE" = "--verbose" ] && echo "  ❌ Test $TEST_NUM: FAIL ($REASON)"
@@ -178,11 +210,18 @@ done
 
 # --- Results ---
 
-PASS_RATE=$(awk "BEGIN {printf \"%.2f\", $PASSED / $TOTAL}")
+if [ "$TOTAL_EXECUTED" -gt 0 ]; then
+  PASS_RATE=$(awk "BEGIN {printf \"%.2f\", $PASSED / $TOTAL_EXECUTED}")
+else
+  PASS_RATE="0.00"
+fi
 
 echo ""
 echo "─────────────────────────────"
-echo "Pass rate : $PASS_RATE  ($PASSED / $TOTAL)"
+echo "Pass rate : $PASS_RATE  ($PASSED / $TOTAL_EXECUTED)"
+if [ "$SKIPPED" -gt 0 ]; then
+  echo "Skipped   : $SKIPPED"
+fi
 
 if [ ${#FAILURES[@]} -gt 0 ]; then
   echo ""

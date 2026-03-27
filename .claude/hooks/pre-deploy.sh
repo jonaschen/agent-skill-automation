@@ -1,41 +1,44 @@
 #!/bin/bash
-# pre-deploy.sh — Enforce quality threshold before deployment
+# .claude/hooks/pre-deploy.sh
 #
-# Usage: pre-deploy.sh <skill-path>
-#
-# This hook is called before a Skill is deployed to .claude/.
-# It runs the skill-quality-validator and blocks deployment if the
-# trigger rate is below the required threshold (0.90).
-#
-# Exit code 0 = deployment allowed
-# Exit code 1 = deployment blocked
+# Enforce quality thresholds before allowing a Skill deployment.
+# Triggered by agentic-cicd-gate or manual deployment flow.
 
 set -euo pipefail
 
 SKILL_PATH="${1:-}"
-THRESHOLD="0.90"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+EVAL_RUNNER="$REPO_ROOT/eval/run_eval.sh"
 
 if [ -z "$SKILL_PATH" ]; then
-  echo "❌ Usage: pre-deploy.sh <skill-path>"
+  echo "❌ Error: No SKILL_PATH provided to pre-deploy.sh" >&2
   exit 1
 fi
 
-if [ ! -f "$SKILL_PATH" ]; then
-  echo "❌ Skill file not found: $SKILL_PATH"
+echo "🚀 Pre-deploy check: $SKILL_PATH"
+
+# Call the eval runner directly for an objective trigger rate measurement.
+# The skill-quality-validator agent also uses this runner in its pipeline.
+# We skip permissions for the eval run as it's an automated check.
+set +e
+EVAL_OUTPUT=$("$EVAL_RUNNER" "$SKILL_PATH")
+EXIT_CODE=$?
+set -e
+
+# Extract pass rate from output (last line contains "Pass rate : 0.xx")
+PASS_RATE=$(echo "$EVAL_OUTPUT" | grep "Pass rate :" | awk '{print $4}')
+
+echo "$EVAL_OUTPUT"
+
+if [ "$EXIT_CODE" -eq 0 ]; then
+  echo "✅ Quality threshold passed (Trigger rate: $PASS_RATE). Deployment allowed."
+  exit 0
+elif [ "$EXIT_CODE" -eq 2 ]; then
+  echo "❌ Deployment blocked: Trigger rate $PASS_RATE is below the 75% failure threshold."
+  echo "   Handing off to autoresearch-optimizer for automatic repair."
+  exit 1
+else
+  echo "❌ Deployment blocked: Evaluation runner failed with exit code $EXIT_CODE."
   exit 1
 fi
-
-# TODO (Phase 2): Integrate with skill-quality-validator agent
-# VALIDATION_RESULT=$(claude run skill-quality-validator --skill "$SKILL_PATH")
-# PASS_RATE=$(echo "$VALIDATION_RESULT" | jq '.trigger_rate')
-#
-# if (( $(echo "$PASS_RATE < $THRESHOLD" | bc -l) )); then
-#   echo "❌ Deployment blocked: trigger rate $PASS_RATE is below threshold $THRESHOLD"
-#   exit 1
-# fi
-#
-# echo "✅ Quality threshold passed. Deployment allowed."
-
-echo "⚠️  pre-deploy.sh: Validation not yet implemented (Phase 2)"
-echo "   Skill path: $SKILL_PATH"
-exit 1

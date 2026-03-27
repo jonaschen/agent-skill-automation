@@ -1,0 +1,1 @@
+I want to instantiate a new class called DatabaseManager in my app.
