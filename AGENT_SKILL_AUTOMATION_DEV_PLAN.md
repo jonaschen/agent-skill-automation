@@ -1,26 +1,31 @@
 # Enterprise-Grade Agent Skill Set Automation Development & Evolution Pipeline
-## Meta-Agent Factory × AutoResearch Optimization Engine — Development Plan & Blueprint
+## Meta-Agent Factory × AutoResearch Optimization Engine — Development Plan & Blueprint (Phases 1–7)
 
-> **Document Version:** v1.0
+> **Document Version:** v2.0
 > **Created:** 2026-03-23
+> **Last Updated:** 2026-03-29 (merged AGENT_SKILL_AUTOMATION_UPGRADE_PLAN.md v1.1)
 > **Reference:** Enterprise AI Agent Legion Architecture & Automation Pipeline: A Deep Research Report on Meta-Agent Ecosystems Based on Claude Code Skills and AutoResearch
-> **Audience:** AI Agent Platform Development Team, System Architects, DevOps Engineers, Skill Developers
+> **Audience:** AI Agent Platform Development Team, System Architects, DevOps Engineers, Edge AI Engineers, Platform Ops
 
 ---
 
 ## Table of Contents
 
 1. [Strategic Background & Development Intent](#1-strategic-background--development-intent)
-2. [Skill Set Overall Architecture](#2-skill-set-overall-architecture)
-3. [Core Skill Specifications](#3-core-skill-specifications)
-4. [Four-Phase Development Blueprint](#4-four-phase-development-blueprint)
-5. [Technology Stack & Toolchain](#5-technology-stack--toolchain)
-6. [Meta-Agent Factory Five-Stage Pipeline Design](#6-meta-agent-factory-five-stage-pipeline-design)
-7. [AutoResearch Optimization Engine Design](#7-autoresearch-optimization-engine-design)
-8. [Agentic CI/CD Validation Pipeline](#8-agentic-cicd-validation-pipeline)
-9. [Milestones & Acceptance Criteria](#9-milestones--acceptance-criteria)
-10. [Risk Management Matrix](#10-risk-management-matrix)
-11. [Appendix: SKILL.md Authoring Standards & Templates](#11-appendix-skillmd-authoring-standards--templates)
+2. [Complete System Architecture (Phases 1–7)](#2-complete-system-architecture-phases-17)
+3. [Skill Set Overall Architecture](#3-skill-set-overall-architecture)
+4. [Core Skill Specifications — Phases 1–4](#4-core-skill-specifications--phases-14)
+5. [Extended Skill Specifications — Phases 5–7](#5-extended-skill-specifications--phases-57)
+6. [Seven-Phase Development Blueprint](#6-seven-phase-development-blueprint)
+7. [Technology Stack & Toolchain](#7-technology-stack--toolchain)
+8. [Meta-Agent Factory Five-Stage Pipeline Design](#8-meta-agent-factory-five-stage-pipeline-design)
+9. [AutoResearch Optimization Engine Design](#9-autoresearch-optimization-engine-design)
+10. [Agentic CI/CD Validation Pipeline](#10-agentic-cicd-validation-pipeline)
+11. [Defensive Architecture: Cascade Hallucination Prevention & Infinite Loop Containment](#11-defensive-architecture-cascade-hallucination-prevention--infinite-loop-containment)
+12. [Milestones & Acceptance Criteria](#12-milestones--acceptance-criteria)
+13. [Risk Management Matrix](#13-risk-management-matrix)
+14. [Appendix A: SKILL.md Authoring Standards & Templates](#14-appendix-a-skillmd-authoring-standards--templates)
+15. [Appendix B: TCI Algorithm Specification & Topology Decision Tree](#15-appendix-b-tci-algorithm-specification--topology-decision-tree)
 
 ---
 
@@ -50,7 +55,27 @@ Layer 1: Agentic CI/CD Validation Pipeline
          ↑ Trigger rate testing, hallucination detection, Bayesian flakiness analysis, deployment gating
 ```
 
-### 1.3 Core Design Principles
+### 1.3 Strategic Evolution: Beyond Phase 4
+
+By the end of Phase 4, the system is capable of autonomously designing, deploying, validating, and continuously optimizing individual Agent Skills. The Meta-Agent Factory generates format-compliant Skills from natural language requirements. The AutoResearch loop improves trigger rates overnight without human intervention. The CI/CD gate enforces quality thresholds before deployment. The Changeling Router enables a single agent instance to assume multiple personas on demand.
+
+This is a highly capable single-soldier system. Every Skill is sharp. Every agent operates with precision within its defined boundary. The automation pipeline from requirements input to deployment runs in under four hours.
+
+What it cannot yet do is operate as a coordinated team at scale, make intelligent decisions about when team coordination helps versus hurts, survive disconnected from cloud infrastructure, or sustain a commercial service relationship with enterprise customers across multiple regions and regulatory jurisdictions. Three problems remain:
+
+**Problem 1 — From Solo Agent to Coordinated Team, With Topology Intelligence**
+
+Naive multi-agent systems create a new failure mode: the Sequential Penalty. When a task has deep cross-module dependencies, routing it to a Scrum team of parallel agents generates massive inter-agent communication overhead, context fragmentation, and state synchronization errors. The agents spend more time coordinating than executing. The correct architecture is not always multi-agent — sometimes a single flagship model with a long context window is faster, cheaper, and more accurate. The system must develop the intelligence to know which topology to use before committing to either.
+
+**Problem 2 — From Cloud-Only to Cloud-Edge Hybrid**
+
+The distillation work in Phase 3 produces lightweight models capable of running on constrained hardware. But producing a distilled model and deploying it to an edge device are two entirely different engineering problems. Edge devices have no reliable network, limited memory, no GPU, and security requirements that prevent cloud API calls for sensitive data. A production system that cannot operate at the edge cannot serve industrial IoT, medical device, on-premises enterprise, or consumer hardware markets.
+
+**Problem 3 — From Technical Platform to Commercial Service**
+
+A technically excellent system that cannot bill customers, maintain service agreements, produce compliance audit trails, or scale across jurisdictions is not a commercial product. It is a proof of concept. Phase 7 exists to close this gap: to build the billing engine, the multi-tenancy layer, the compliance infrastructure, and the regional deployment architecture that turns the agent platform into an Agent-as-a-Service business.
+
+### 1.4 Core Design Principles
 
 | Principle | Description |
 |-----------|-------------|
@@ -60,33 +85,89 @@ Layer 1: Agentic CI/CD Validation Pipeline
 | **Mutually exclusive permissions principle** | Each Skill holds only the minimum tool set required for its responsibility; generation agents do not hold review agent permissions |
 | **Scalar metric-driven optimization** | The AutoResearch engine uses binary test pass rate as the sole objective reward function, eliminating subjective judgment |
 | **Sandbox isolation guarantees comparability** | Every Skill version evaluation runs in a fresh isolated context, ensuring absolute fairness across version comparisons |
+| **Topology before execution** | No multi-agent task is dispatched before the Task Coupling Indexer has computed a TCI score and selected a topology track. Execution never precedes routing. |
+| **Defensive architecture is not optional** | Every agent interaction that can modify state, consume budget, or call external services must pass through a deterministic guard — a Watchdog, a circuit breaker, or a mandatory pre-execution reflection step. Optimism is a liability in production. |
+| **Edge-first privacy by default** | Any data that can be processed locally must be processed locally. Cloud escalation is the exception, not the baseline. Sensitive data never crosses a regional boundary without explicit architectural justification. |
 
 ---
 
-## 2. Skill Set Overall Architecture
+## 2. Complete System Architecture (Phases 1–7)
 
-### 2.1 Skill Classification Overview
+```
+Commercial Layer (Phase 7)
+├── Multi-Tenant Billing Engine (Outcome-Based Pricing)
+├── Cross-Regional High-Availability Deployment
+├── SSO / Enterprise Permission Management
+└── Compliance Audit Trail (ISO 27001 / APPI)
+          ↑
+Edge Integration Layer (Phase 6)
+├── Edge Talker (System 1) — on-device, zero-latency
+├── Cloud Reasoner (System 2) — async, deep reasoning
+├── Cloud-Edge State Synchronization (MQTT/gRPC)
+└── BSP Integration for Hardware-Accelerated Inference
+          ↑
+Orchestration Layer (Phase 5)
+├── Task Coupling Indexer (TCI)
+├── Topology Router — Track A (Multi-Agent) / Track B (Monolithic Flagship)
+├── A2A Communication Bus
+└── Watchdog Process + Token Budget Circuit Breaker
+          ↑
+Automation Foundation (Phases 1–4)
+├── Meta-Agent Factory
+├── Skill Quality Validator
+├── AutoResearch Optimizer
+├── Agentic CI/CD Gate
+└── Changeling Router
+```
+
+---
+
+## 3. Skill Set Overall Architecture
+
+### 3.1 Complete Skill Inventory (Phases 1–7)
 
 ```
 Agent Skill Automation Skill Set
 │
-├── 🏭 [ORCHESTRATOR] meta-agent-factory
-│   └── Requirements analysis, architecture design, Skill/Sub-agent generation, MCP config, directory writes
+├── [Phases 1–4 — Automation Foundation]
+│   ├── 🏭 [ORCHESTRATOR] meta-agent-factory
+│   │   └── Requirements analysis, architecture design, Skill/Sub-agent generation, MCP config, directory writes
+│   │
+│   ├── 🧪 [VALIDATOR] skill-quality-validator
+│   │   └── SKILL.md static analysis, trigger rate evaluation, boundary condition testing, hallucination detection
+│   │
+│   ├── 🔄 [OPTIMIZER] autoresearch-optimizer
+│   │   └── Binary eval loop, parallel version search, instruction distillation, model adaptation tuning
+│   │
+│   ├── 🚦 [CICD] agentic-cicd-gate
+│   │   └── Change impact prediction, flaky test isolation, deployment gating, autonomous rollback
+│   │
+│   └── 🎭 [UTILITY] changeling-router
+│       └── Dynamic identity switching, single-agent multi-persona routing, context window efficiency optimization
 │
-├── 🧪 [VALIDATOR] skill-quality-validator
-│   └── SKILL.md static analysis, trigger rate evaluation, boundary condition testing, hallucination detection
+├── [Phase 5 — Orchestration Layer]
+│   ├── 🔀 [ROUTER] topology-aware-router
+│   │   └── TCI computation, Dual-Track routing, monolithic flagship escalation
+│   │
+│   ├── 🤝 [ORCHESTRATOR] scrum-team-orchestrator
+│   │   └── A2A communication bus, PO/Dev/QA agent coordination, sprint execution
+│   │
+│   └── 🐕 [GUARDIAN] watchdog-circuit-breaker
+│       └── Loop detection, token budget monitoring, forced thread termination, HITL escalation
 │
-├── 🔄 [OPTIMIZER] autoresearch-optimizer
-│   └── Binary eval loop, parallel version search, instruction distillation, model adaptation tuning
+├── [Phase 6 — Edge Integration Layer]
+│   ├── 📡 [EDGE] edge-talker-agent
+│   │   └── On-device NLU, sensor data filtering, local state management, async cloud escalation
+│   │
+│   └── ☁️  [EDGE] cloud-reasoner-agent
+│       └── Deep reasoning for escalated tasks, knowledge retrieval, Track B processing for edge
 │
-├── 🚦 [CICD] agentic-cicd-gate
-│   └── Change impact prediction, flaky test isolation, deployment gating, autonomous rollback
-│
-└── 🎭 [UTILITY] changeling-router
-    └── Dynamic identity switching, single-agent multi-persona routing, context window efficiency optimization
+└── [Phase 7 — Commercial Layer]
+    └── 💰 [OPS] outcome-billing-engine
+        └── Interaction metering, outcome-based billing, token cost/margin dashboard
 ```
 
-### 2.2 Skill Interaction Diagram
+### 3.2 Skill Interaction Diagram (Phases 1–4 Core Pipeline)
 
 ```
 Human Developer (natural language requirement)
@@ -120,9 +201,9 @@ meta-agent-factory (entry, design, generation)
 
 ---
 
-## 3. Core Skill Specifications
+## 4. Core Skill Specifications — Phases 1–4
 
-### 3.1 Skill: `meta-agent-factory` (Meta-Agent Factory)
+### 4.1 Skill: `meta-agent-factory` (Meta-Agent Factory)
 
 **Role:** System entry point, agent designer, Skill generator, MCP configurator
 
@@ -156,7 +237,7 @@ model: claude-opus-4-6
 - Automatically detect required external data connections for new agents and update `.mcp.json` to register services
 - Support Changeling mode: write role definitions to the read-only `~/.claude/@lib/agents/` repository
 
-**Five-Stage Generation Flow (see Section 6 for detail):**
+**Five-Stage Generation Flow (see Section 8 for detail):**
 
 ```
 ① Analyze (requirements analysis) → ② Design (architecture classification) → ③ Configure (permission setup)
@@ -184,7 +265,7 @@ model: claude-opus-4-6
 
 ---
 
-### 3.2 Skill: `skill-quality-validator` (Skill Quality Validator)
+### 4.2 Skill: `skill-quality-validator` (Skill Quality Validator)
 
 **Role:** Static quality review, trigger rate testing, boundary condition evaluation, hallucination risk detection
 
@@ -242,7 +323,7 @@ Input: Target SKILL.md file path
 
 ---
 
-### 3.3 Skill: `autoresearch-optimizer` (AutoResearch Optimization Engine)
+### 4.3 Skill: `autoresearch-optimizer` (AutoResearch Optimization Engine)
 
 **Role:** Unattended Skill quality optimization loop, automated prompt engineering, heterogeneous model distillation
 
@@ -266,7 +347,7 @@ model: claude-opus-4-6
 ---
 ```
 
-**Core Optimization Strategies (see Section 7 for detail):**
+**Core Optimization Strategies (see Section 9 for detail):**
 
 - **Greedy hill-climbing**: Iteratively modify Skill descriptions, comparing eval pass rate of each new version against the previous
 - **Parallel version search**: Simultaneously generate multiple modification branches (exhaustive boundary conditions version, minimal + external validation script version, few-shot reinforced version) and select the best
@@ -302,7 +383,7 @@ def autoresearch_loop(skill_path: str, test_set: list, target_model: str):
 
 ---
 
-### 3.4 Skill: `agentic-cicd-gate` (Agentic CI/CD Gate)
+### 4.4 Skill: `agentic-cicd-gate` (Agentic CI/CD Gate)
 
 **Role:** Deployment gating, change impact prediction, flaky test isolation, autonomous rollback
 
@@ -352,7 +433,7 @@ echo "✅ Quality threshold passed. Deployment allowed."
 
 ---
 
-### 3.5 Skill: `changeling-router` (Changeling Router)
+### 4.5 Skill: `changeling-router` (Changeling Router)
 
 **Role:** Dynamic identity switching, single-agent multi-persona routing, context window efficiency optimization
 
@@ -401,7 +482,86 @@ changeling-router analyzes task type
 
 ---
 
-## 4. Four-Phase Development Blueprint
+## 5. Extended Skill Specifications — Phases 5–7
+
+### 5.1 Skill: `topology-aware-router` (Phase 5)
+
+**Role:** Pre-execution routing decision engine; computes TCI score and selects execution topology
+
+```yaml
+---
+name: topology-aware-router
+description: >
+  Computes the Task Coupling Index (TCI) for an incoming task and routes it
+  to the appropriate execution topology: Track A (multi-agent parallel Scrum team)
+  or Track B (monolithic flagship model). Triggered before any multi-step
+  development task is executed. Not triggered for single-agent informational
+  queries, simple read-only tasks, or tasks already assigned a topology by
+  an upstream orchestrator.
+tools:
+  - Read
+  - Grep
+  - Glob
+  - Task
+model: claude-sonnet-4-6
+---
+```
+
+### 5.2 Skill: `scrum-team-orchestrator` (Phase 5)
+
+**Role:** Manages the lifecycle of a parallel AI Scrum team execution
+
+```yaml
+---
+name: scrum-team-orchestrator
+description: >
+  Manages the lifecycle of a parallel AI Scrum team execution. Receives a
+  Track A routing decision from topology-aware-router and orchestrates
+  Product Owner, Developer, and QA sub-agents via the A2A communication bus.
+  Handles task decomposition, context slicing, inter-agent message routing,
+  output aggregation, and sprint closure. Does not execute code directly.
+tools:
+  - Read
+  - Task
+  - Write
+model: claude-sonnet-4-6
+---
+```
+
+### 5.3 Skill: `watchdog-circuit-breaker` (Phase 5 / Cross-Cutting)
+
+**Role:** Monitors agent task threads for infinite loop patterns and token budget violations
+
+```yaml
+---
+name: watchdog-circuit-breaker
+description: >
+  Monitors all active agent task threads for infinite loop patterns and
+  token budget violations. Runs as a background process alongside all
+  multi-agent Track A executions and high-cost Track B flagship invocations.
+  Triggered automatically by the topology-aware-router at task initiation.
+  Emits WATCHDOG_HALT messages to the A2A bus when thresholds are exceeded.
+  Does not participate in task execution. Observes only.
+tools:
+  - Read
+  - Bash
+model: claude-haiku-4-5
+---
+```
+
+The Watchdog intentionally runs on Claude Haiku — the cheapest, fastest model. It does no reasoning about task content. It monitors two numbers and compares them against thresholds.
+
+### 5.4 Skills: `edge-talker-agent` and `cloud-reasoner-agent` (Phase 6)
+
+The Edge Talker is the on-device System 1; the Cloud Reasoner is the async System 2. Their architecture is described in full in the Phase 6 section of the development blueprint (Section 6.6).
+
+### 5.5 Skill: `outcome-billing-engine` (Phase 7)
+
+The billing engine instruments all agent activity via OpenTelemetry spans and maps outcomes to billable units. Its architecture is described in full in the Phase 7 section of the development blueprint (Section 6.7).
+
+---
+
+## 6. Seven-Phase Development Blueprint
 
 ### Phase 1: Infrastructure Setup & Meta-Agent Factory Core Development
 **Duration: Months 1–2**
@@ -540,34 +700,432 @@ Goal: Complete closed-loop integration of the entire ecosystem; achieve fully un
 
 ---
 
-## 5. Technology Stack & Toolchain
+### Phase 5: AI Craft — Multi-Agent Orchestration & Topology-Aware Routing
+**Duration: Months 8–9**
 
-### 5.1 Core Technology Stack
+```
+Goal: Upgrade from dynamic identity switching to a parallel-collaborative AI Scrum Team.
+      Implement the Topology-Aware Router to dynamically select between multi-agent
+      collaboration and monolithic flagship execution, preventing the Sequential Penalty
+      in highly coupled tasks.
+```
 
-| Layer | Technology | Purpose | Alternative |
-|-------|-----------|---------|-------------|
-| **LLM inference (design layer)** | Claude Opus 4.6 | Meta-agent factory, AutoResearch optimization | — |
-| **LLM inference (execution layer)** | Claude Sonnet 4.6 | Validator, CI/CD gate, Changeling router | — |
-| **LLM inference (tool layer)** | Claude Haiku 4.5 | Fast queries, data extraction, distillation target model | GPT-5.4 nano |
-| **Version control** | Git | Skill history tracking, rollback mechanism | — |
-| **MCP tool integration** | Model Context Protocol | External service connections (Jira, GitHub, Slack) | LangChain Tools |
-| **Parallelization** | SkyPilot + Kubernetes | AutoResearch parallel experiment branches | Local multi-process |
-| **Testing framework** | Custom Eval Runner | Trigger rate measurement, binary eval loop | — |
-| **CI/CD** | Lifecycle Hooks + Shell | Deployment gating enforcement | GitHub Actions |
-| **Observability** | Prometheus + Grafana | Agent legion health monitoring dashboard | — |
-| **Data format** | JSON / TOON | Structured evaluation reports, experiment trajectory records | — |
+#### 5.1 Task Coupling Indexer (TCI)
 
-### 5.2 Directory Structure Standard
+The TCI is the decision engine that routes every task before execution begins. It computes a scalar coupling score between 0.0 (perfectly parallelizable) and 1.0 (completely sequential) by evaluating four dimensions of the incoming task.
+
+**TCI Scoring Dimensions:**
+
+| Dimension | Weight | What It Measures | Signals |
+|-----------|--------|-----------------|---------|
+| **Cross-module dependency depth** | 35% | How many separate modules does the task touch, and how deeply are they coupled? | Imports, shared state, API contracts, database schemas |
+| **State rollback probability** | 25% | If this task fails partway through, how expensive is rollback? | Irreversible writes, migrations, compiled artifacts |
+| **Context coherence requirement** | 25% | Does correct execution require holding the entire context simultaneously, or can subtasks run in isolation? | Global refactors, architectural changes, security audits |
+| **Historical parallel failure rate** | 15% | Have similar tasks failed previously when routed to multi-agent execution? | AutoResearch trajectory database |
+
+**TCI Score Interpretation:**
+
+```
+TCI = 0.0 – 0.35  →  Low coupling  →  Route to Track A (Multi-Agent Scrum)
+TCI = 0.35 – 0.65 →  Medium coupling  →  Conservative default: Track B with confidence warning logged
+TCI = 0.65 – 1.0  →  High coupling  →  Route to Track B (Monolithic Flagship)
+```
+
+The medium-coupling band defaults to Track B conservatively. The cost of a wrong Track A assignment on a high-coupling task (fragmented context, synchronization errors, wasted tokens) is significantly higher than the cost of a wrong Track B assignment on a parallelizable task. Err toward Track B when uncertain.
+
+**TCI Computation Pipeline:**
+
+```python
+def compute_tci(task: UserStory, codebase_graph: DependencyGraph,
+                history: ExperimentDB) -> float:
+
+    # Dimension 1: Cross-module dependency depth
+    affected_modules = codebase_graph.trace_impact(task.touch_points)
+    dep_score = min(len(affected_modules) / MAX_MODULE_DEPTH, 1.0)
+
+    # Dimension 2: State rollback probability
+    rollback_score = estimate_rollback_cost(task.operations) / MAX_ROLLBACK_COST
+
+    # Dimension 3: Context coherence requirement
+    coherence_score = assess_context_atomicity(task.description)
+
+    # Dimension 4: Historical parallel failure rate
+    similar = history.find_similar_tasks(task)
+    failure_rate = similar.parallel_failure_rate if similar else 0.5  # neutral prior
+
+    tci = (
+        0.35 * dep_score +
+        0.25 * rollback_score +
+        0.25 * coherence_score +
+        0.15 * failure_rate
+    )
+
+    return round(tci, 4)
+```
+
+#### 5.2 Dual-Track Topology Routing
+
+**Track A: Distributed Collaboration Mode (Multi-Agent Scrum)**
+
+- **Trigger condition:** TCI score < 0.35 — task is highly parallelizable
+- **Activation sequence:** `topology-aware-router` activates `scrum-team-orchestrator`, which instantiates the appropriate sub-agents (Product Owner, Developer, QA Reviewer) via the A2A communication bus
+- **Agent instantiation:** Sub-agents are spawned with context-forked, isolated 200K token windows. Each receives only the slice of context relevant to its role. No agent can see another agent's full working context.
+- **Communication protocol:** All inter-agent messages pass through a typed message schema (task assignment, partial output, review request, approval/rejection). Unstructured agent-to-agent chat is prohibited.
+- **Use cases:** Frontend UI and backend API developed in parallel; independent microservice implementations; parallel test suite generation; documentation written concurrently with code
+
+**Track B: Monolithic Flagship Mode (Topology Downgrade)**
+
+- **Trigger condition:** TCI score ≥ 0.35 — task has coupling risk
+- **Activation sequence:** `topology-aware-router` freezes all lateral A2A communication channels. The complete task context is packaged and routed to a single flagship-class model (Claude Opus 4.6) with a long context window as its sole execution environment.
+- **Why this is faster:** For high-coupling tasks, the overhead of inter-agent message passing, partial context reconstruction at each node, and state synchronization between agents can consume more tokens than simply giving the full context to one model.
+- **Token budget enforcement:** Track B invocations are subject to a hard token ceiling enforced by the Watchdog.
+- **Use cases:** Global dependency refactoring across a large codebase; security audit requiring full code comprehension; architectural redesign touching shared infrastructure; complex debugging where the bug spans multiple abstraction layers
+
+#### 5.3 A2A Communication Bus
+
+All communication between agents in Track A mode is mediated through a typed message bus. Direct agent-to-agent calls are prohibited.
+
+```json
+{
+  "message_id": "uuid-xxxx",
+  "timestamp": "2026-03-28T10:30:00Z",
+  "from_agent": "dev-agent-typescript",
+  "to_agent": "qa-agent-reviewer",
+  "message_type": "REVIEW_REQUEST",
+  "payload": {
+    "artifact_path": ".claude/skills/new-skill/SKILL.md",
+    "description": "Requesting review of generated SKILL.md trigger description",
+    "context_ref": "task-id-0042"
+  },
+  "reply_deadline_ms": 30000,
+  "token_budget_remaining": 12400
+}
+```
+
+**Message types (exhaustive — no other types are valid):**
+
+| Type | Direction | Description |
+|------|-----------|-------------|
+| `TASK_ASSIGNMENT` | Orchestrator → Agent | Assigns a subtask with scoped context |
+| `PARTIAL_OUTPUT` | Agent → Orchestrator | Returns a completed subtask artifact |
+| `REVIEW_REQUEST` | Agent A → Agent B | Requests peer review of an artifact |
+| `REVIEW_RESULT` | Agent B → Agent A | Returns approved / rejected with rationale |
+| `ESCALATION` | Any → Orchestrator | Signals that a subtask exceeds the agent's capability |
+| `WATCHDOG_HALT` | Watchdog → All | Immediate unconditional stop — budget or loop threshold hit |
+
+**Phase 5 Acceptance Criteria:**
+
+| Metric | Target | Measurement Method |
+|--------|--------|--------------------|
+| TCI computation speed | ≤ 5 seconds per task | End-to-end timestamp |
+| TCI routing accuracy | ≥ 95% correct track selection | Benchmark test set (50 labeled tasks: 25 low-coupling, 25 high-coupling) |
+| Track B token savings vs. Track A on high-coupling tasks | ≥ 40% fewer tokens | Controlled A/B benchmark on 10 high-coupling reference tasks |
+| Track B compilation success rate vs. Track A | ≥ 25% higher | Same benchmark: compile-and-test pass rate |
+| A2A message loss rate in Track A | 0% | Message log completeness audit |
+| A2A infinite loop occurrence rate | < 1% | Watchdog trigger event log |
+| Watchdog false positive rate (halting valid tasks) | < 2% | Human review of Watchdog halt events |
+
+---
+
+### Phase 6: Edge AI Integration & Cloud-Edge Hybrid Deployment
+**Duration: Months 10–11**
+
+```
+Goal: Deploy distilled lightweight agent Skills to resource-constrained Edge AI devices.
+      Implement the Talker-Reasoner dual-track architecture for zero-latency local
+      interaction and async cloud escalation. Establish cloud-edge state synchronization.
+```
+
+#### 6.1 Talker-Reasoner Dual-Track Architecture
+
+The cloud-edge architecture is modeled on the dual-process theory of cognition: a fast, automatic System 1 (the Edge Talker) and a slow, deliberate System 2 (the Cloud Reasoner). The two systems operate asynchronously. The Edge Talker never blocks waiting for the Cloud Reasoner.
+
+```
+User / Device
+    │
+    ▼
+Edge Talker (System 1) — runs on-device
+├── Zero-latency NLU and intent classification
+├── Real-time sensor data filtering and local event detection
+├── Local state management (belief state cache)
+├── Immediate response for high-confidence, low-complexity interactions
+├── Async task queue: stages complex tasks for Cloud Reasoner
+└── Handles disconnected operation indefinitely for in-scope local tasks
+    │
+    │ (async, when network available, for complex tasks or TCI escalation)
+    ▼
+Cloud Reasoner (System 2) — runs in cloud
+├── Deep logical reasoning and multi-step planning
+├── Large knowledge base retrieval (RAG, GraphDB)
+├── Track B topology processing for tasks escalated from edge
+├── Model weight updates pushed back to Edge Talker
+└── Aggregated insight synthesis across multiple edge nodes
+```
+
+**Escalation Triggers (Edge Talker → Cloud Reasoner):**
+
+| Trigger | Condition | Action |
+|---------|-----------|--------|
+| Complexity threshold | Task TCI > 0.35 (computed locally) | Queue for async Cloud Reasoner processing |
+| Knowledge gap | Local knowledge base confidence < 70% | Async retrieval request to cloud RAG |
+| State conflict | Local belief state contradicts last known cloud state | Sync request with conflict resolution |
+| Security boundary | Task requires credential, external API, or privileged operation | Mandatory cloud escalation (never execute locally) |
+| Model confidence | Local model output probability < configured threshold | Escalate with partial output for cloud correction |
+
+#### 6.2 Edge-Ready Skill Packaging & BSP Integration
+
+**Edge Readiness Criteria:**
+
+| Criterion | Requirement | Disqualifier |
+|-----------|-------------|--------------|
+| Model size | Inference model ≤ hardware memory budget (typically ≤ 4GB) | Any model requiring cloud API at inference time |
+| Tool dependencies | All required tools must have local equivalents | Any Skill with a mandatory MCP cloud service call |
+| Latency requirement | P99 inference latency ≤ 200ms on target hardware | Any Skill requiring multi-step chained API calls |
+| Data classification | Input data must be classifiable as non-sensitive locally | Any Skill that processes PII without local encryption |
+| State management | Skill must operate correctly from a local belief state snapshot | Any Skill requiring real-time global state |
+
+**Skill Packaging Pipeline (Cloud → Edge):**
+
+```
+Phase 3 distilled SKILL.md + lightweight model
+    │
+    ├── Step 1: Edge Readiness Assessment (pass/fail gate)
+    │
+    ├── Step 2: Model export to hardware-optimized format
+    │   ├── ONNX for CPU/NPU acceleration
+    │   ├── TensorRT for NVIDIA-class edge GPUs
+    │   └── llama.cpp / GGUF for ARM/Apple Silicon
+    │
+    ├── Step 3: BSP integration layer
+    │   ├── Map Skill's Bash tools to local hardware resource APIs
+    │   ├── Define hardware capability manifest (available NPU ops, memory limits)
+    │   └── Security sandbox: constrain Skill to declared hardware access scope
+    │
+    ├── Step 4: Local SKILL.md adaptation
+    │   ├── Replace cloud MCP calls with local tool equivalents
+    │   ├── Add offline fallback behavior for each network-dependent operation
+    │   └── Define escalation conditions in YAML Frontmatter
+    │
+    └── Step 5: Edge deployment package (.edge-skill bundle)
+        ├── Optimized model weights
+        ├── Local SKILL.md (edge-adapted)
+        ├── BSP hardware manifest
+        └── Sync state schema (for cloud reconciliation)
+```
+
+#### 6.3 Cloud-Edge State Synchronization
+
+```
+Edge Talker local belief state
+    │
+    ├── ON CONNECT: Pull delta since last sync timestamp
+    │   Protocol: gRPC streaming (compressed JSON delta)
+    │   Conflict resolution: Cloud state wins for shared fields;
+    │                        Edge state wins for device-local fields
+    │
+    ├── ON DISCONNECT: Continue operating from local snapshot
+    │   Log all state mutations with UTC timestamps
+    │   Queue mutations for upload on reconnect
+    │
+    ├── PERIODIC SYNC (when connected): Push local mutations every 60s
+    │   Use MQTT QoS 1 for guaranteed at-least-once delivery
+    │   Deduplicate on cloud side using message_id
+    │
+    └── ON MODEL UPDATE: Pull new edge model weights via secure OTA
+        Verify integrity (SHA-256 + code signing)
+        Apply atomically (swap, not in-place patch)
+        Roll back to previous version if post-update eval fails
+```
+
+**Phase 6 Acceptance Criteria:**
+
+| Metric | Target | Measurement Method |
+|--------|--------|--------------------|
+| Edge Talker offline functionality | Maintains basic interaction and local task execution with no network | Network isolation test (30-minute disconnection) |
+| End-to-end Edge-to-Cloud decision latency reduction | ≥ 40% vs. cloud-only baseline | Controlled latency benchmark |
+| Edge task success rate vs. cloud flagship | ≥ 85% | Parallel execution comparison on 100-task benchmark set |
+| Edge model package size | ≤ target hardware memory budget | Hardware constraint test |
+| State synchronization consistency | Zero data loss across reconnection cycle | Mutation log audit |
+| OTA update rollback success rate | 100% on failed post-update eval | Automated update regression test |
+
+---
+
+### Phase 7: AaaS Commercialization Infrastructure & Cross-Regional Operations Readiness
+**Duration: Month 12 onward**
+
+```
+Goal: Build multi-tenant, high-availability commercial platform infrastructure.
+      Implement Outcome-Based Pricing. Achieve cross-regional operational resilience
+      and regulatory compliance for Taiwan, Japan, and equivalent jurisdictions.
+```
+
+#### 7.1 Outcome-Based Billing Engine
+
+**Billable Outcome Units:**
+
+| Outcome Type | Billing Unit | Measurement Signal |
+|-------------|-------------|-------------------|
+| Skill successfully deployed | Per deployment event | `agentic-cicd-gate` deployment confirmation |
+| Agent task completed | Per task (weighted by TCI complexity) | Task closure event in A2A bus or Track B completion signal |
+| Skill quality improvement | Per trigger rate improvement point above baseline | AutoResearch eval log: before/after pass rate delta |
+| Edge task processed locally | Per successful edge execution (discounted vs. cloud) | Edge Talker task completion event |
+| Human escalation avoided | Per HITL event that was resolved without human intervention | Watchdog log: auto-resolved vs. human-escalated |
+
+**Billing Engine Architecture:**
+
+```
+All agent activity events
+    │
+    ▼
+OpenTelemetry instrumentation layer
+(every Skill invocation, task event, and tool call emits a structured span)
+    │
+    ▼
+outcome-billing-engine Skill
+├── Event classifier: maps spans to billable outcome units
+├── Tenant attribution: assigns events to customer accounts
+├── Deduplication: idempotent processing of duplicate spans
+├── Rate engine: applies pricing tiers based on volume and SLA
+├── Real-time dashboard: token cost / outcome / margin per tenant
+└── Invoice generation: monthly reconciliation export
+    │
+    ▼
+Stripe API (payment processing) + customer portal
+```
+
+#### 7.2 Cross-Regional High-Availability Architecture
+
+```
+Global Load Balancer (GeoDNS)
+    │
+    ├── Region: Taiwan (Primary)
+    │   ├── Kubernetes cluster: 3-zone AZ deployment
+    │   ├── Data residency: All Taiwan customer data stays in Taiwan
+    │   ├── Compliance scope: PDPA (Personal Data Protection Act)
+    │   └── Latency target: ≤ 50ms for Taiwan customers
+    │
+    ├── Region: Japan
+    │   ├── Kubernetes cluster: 3-zone AZ deployment
+    │   ├── Data residency: All Japan customer data stays in Japan
+    │   ├── Compliance scope: APPI (Act on Protection of Personal Information)
+    │   └── Latency target: ≤ 50ms for Japan customers
+    │
+    └── Region: Global Fallback
+        ├── Read-only replica for non-sensitive metadata
+        └── Cross-regional traffic: metadata and billing only (never customer data)
+```
+
+**Multi-Tenant Isolation Architecture:**
+
+Each enterprise customer receives a fully isolated tenant namespace:
+
+```
+Tenant namespace: <customer-id>
+├── .claude/agents/        → tenant-specific sub-agent definitions
+├── .claude/skills/        → tenant-specific Skill library
+├── .mcp.json              → tenant-specific MCP service connections
+├── eval/                  → tenant-specific test sets and baselines
+├── audit-logs/            → encrypted, tamper-evident event log
+└── billing-events/        → OpenTelemetry spans for billing attribution
+```
+
+#### 7.3 Enterprise Compliance & Audit Trail Infrastructure
+
+**Audit Event Schema:**
+
+```json
+{
+  "audit_id": "uuid-xxxx",
+  "timestamp": "2026-03-28T10:30:00.000Z",
+  "tenant_id": "acme-corp",
+  "agent_id": "meta-agent-factory",
+  "skill_invoked": "meta-agent-factory",
+  "action_type": "TOOL_CALL",
+  "tool_name": "Write",
+  "tool_args_hash": "sha256:aabbcc...",
+  "target_resource": ".claude/agents/new-agent.md",
+  "outcome": "SUCCESS",
+  "tokens_consumed": 1240,
+  "human_approval_required": false,
+  "human_approval_received": null,
+  "region": "tw",
+  "data_classification": "INTERNAL",
+  "compliance_flags": []
+}
+```
+
+**SSO Integration & Agent Permission Management:**
+
+```
+Enterprise Identity Provider (e.g., Azure AD, Okta)
+    │
+    ↓ SAML/OIDC
+Agent Permission Manager
+├── Agent identity registry (agent ID ↔ permission profile)
+├── Skill authorization matrix (which agents can use which Skills)
+├── MCP service access control (which agents can call which external services)
+├── Human approval routing (which agents require HITL for which operation classes)
+└── Offboarding workflow (revoke all agent permissions on project closure)
+```
+
+**Phase 7 Acceptance Criteria:**
+
+| Metric | Target | Measurement Method |
+|--------|--------|--------------------|
+| Billing accuracy | 100% of successful agent interactions billed | Reconciliation audit: billing events vs. task logs |
+| Cross-regional availability | 99.99% uptime (≤ 52.6 min/year downtime) | External uptime monitor (30-second check interval) |
+| Regional data residency | Zero cross-border customer data transfer | Network egress audit log |
+| Audit report compliance | Meets ISO 27001 and APPI baseline requirements | Third-party compliance audit |
+| SSO integration | All agent permission changes propagated within 60 seconds | Permission sync latency test |
+| Localized Skill load time | ≤ 500ms for locale-aware Skill extension loading | P99 latency measurement |
+| Tenant namespace isolation | Zero cross-tenant data access events | Penetration test + access log audit |
+
+---
+
+## 7. Technology Stack & Toolchain
+
+### 7.1 Core Technology Stack (All Phases)
+
+| Layer | Technology | Purpose | Phase Introduced |
+|-------|-----------|---------|-----------------|
+| **LLM inference (design layer)** | Claude Opus 4.6 | Meta-agent factory, AutoResearch optimization, Track B flagship | 1 |
+| **LLM inference (execution layer)** | Claude Sonnet 4.6 | Validator, CI/CD gate, Changeling router, TCI router | 1 |
+| **LLM inference (tool layer)** | Claude Haiku 4.5 | Fast queries, data extraction, distillation target, Watchdog | 1 |
+| **Version control** | Git | Skill history tracking, rollback mechanism | 1 |
+| **MCP tool integration** | Model Context Protocol | External service connections (Jira, GitHub, Slack) | 1 |
+| **Testing framework** | Custom Eval Runner | Trigger rate measurement, binary eval loop | 1 |
+| **CI/CD** | Lifecycle Hooks + Shell | Deployment gating enforcement | 2 |
+| **Observability** | Prometheus + Grafana | Agent legion health monitoring dashboard | 2 |
+| **Data format** | JSON / TOON | Structured evaluation reports, experiment trajectory records | 2 |
+| **Parallelization** | SkyPilot + Kubernetes | AutoResearch parallel experiment branches | 3 |
+| **Routing / Logic** | Python + NetworkX | Task Coupling Indexer, static dependency graph analysis | 5 |
+| **Multi-Agent** | LangGraph / AutoGen | A2A communication bus, Track A coordination topology | 5 |
+| **Edge AI inference** | ONNX / TensorRT / llama.cpp | Lightweight model inference acceleration on target hardware | 6 |
+| **Edge sync** | MQTT (QoS 1) + gRPC streaming | Low-bandwidth cloud-edge state synchronization | 6 |
+| **OTA delivery** | Secure OTA (SHA-256 + code signing) | Edge model weight updates | 6 |
+| **Billing** | Stripe API + custom outcome engine | Outcome-Based Pricing, invoice generation, tenant metering | 7 |
+| **Multi-region infra** | Kubernetes (multi-region) + GeoDNS | Cross-regional high availability, data residency enforcement | 7 |
+| **Identity & Access** | OIDC / SAML (Azure AD, Okta) | SSO integration for agent permission management | 7 |
+| **Compliance logging** | Immutable append-only log (WORM storage) | Tamper-evident audit trail for ISO 27001 / APPI | 7 |
+| **Billing instrumentation** | OpenTelemetry (spans + metrics) | Universal instrumentation for billing attribution and debugging | 7 |
+
+### 7.2 Directory Structure Standard
 
 ```
 <project-root>/
 ├── .claude/
 │   ├── agents/                          # Sub-agent definition directory
-│   │   ├── meta-agent-factory.md        # Meta-agent factory (system entry)
+│   │   ├── meta-agent-factory.md
 │   │   ├── skill-quality-validator.md
 │   │   ├── autoresearch-optimizer.md
 │   │   ├── agentic-cicd-gate.md
-│   │   └── changeling-router.md
+│   │   ├── changeling-router.md
+│   │   ├── topology-aware-router.md     # Phase 5
+│   │   ├── scrum-team-orchestrator.md   # Phase 5
+│   │   ├── watchdog-circuit-breaker.md  # Phase 5
+│   │   ├── edge-talker-agent.md         # Phase 6
+│   │   ├── cloud-reasoner-agent.md      # Phase 6
+│   │   └── outcome-billing-engine.md    # Phase 7
 │   ├── skills/                          # Skill definition directory
 │   │   └── <skill-name>/
 │   │       ├── SKILL.md                 # Level 1 + Level 2 definition
@@ -589,9 +1147,9 @@ Goal: Complete closed-loop integration of the entire ecosystem; achieve fully un
 
 ---
 
-## 6. Meta-Agent Factory Five-Stage Pipeline Design
+## 8. Meta-Agent Factory Five-Stage Pipeline Design
 
-### 6.1 Stage 1: Requirements Analysis & Clarification (Analyze & Define)
+### 8.1 Stage 1: Requirements Analysis & Clarification (Analyze & Define)
 
 **Goal:** Extract structured design specifications from natural language requirements
 
@@ -613,7 +1171,7 @@ Requirements input
         └── YES → Create role definition (~/.claude/@lib/agents/<n>.md)
 ```
 
-### 6.2 Stage 2: Architecture Design & Semantic Naming (Design & Classify)
+### 8.2 Stage 2: Architecture Design & Semantic Naming (Design & Classify)
 
 **Naming Conventions:**
 
@@ -640,7 +1198,7 @@ Does not handle JavaScript runtime errors or Node.js backend performance problem
 "TypeScript performance related work"  ← Too vague; low and imprecise trigger rate
 ```
 
-### 6.3 Stage 3: Mutually Exclusive Permission Configuration Matrix (Configure)
+### 8.3 Stage 3: Mutually Exclusive Permission Configuration Matrix (Configure)
 
 | Agent Role Type | Allowed Tools | Explicitly Denied Tools | Design Rationale |
 |----------------|---------------|------------------------|-----------------|
@@ -650,7 +1208,7 @@ Does not handle JavaScript runtime errors or Node.js backend performance problem
 | Review/validation (QA) | Read, Bash (restricted) | Write, Edit, Task | Preserve review objectivity |
 | Tool/extraction | Read, Grep, WebFetch | Write, Task | Minimum attack surface |
 
-### 6.4 Stage 4: SKILL.md Auto-Generation (Generate & Save)
+### 8.4 Stage 4: SKILL.md Auto-Generation (Generate & Save)
 
 **Standard SKILL.md Generation Template:**
 
@@ -696,7 +1254,7 @@ model: <Selected based on task complexity>
 <Common failure modes and corresponding handling strategies>
 ```
 
-### 6.5 Stage 5: MCP Integration & Service Registration (Register)
+### 8.5 Stage 5: MCP Integration & Service Registration (Register)
 
 **`.mcp.json` Auto-Update Logic:**
 
@@ -717,9 +1275,9 @@ model: <Selected based on task complexity>
 
 ---
 
-## 7. AutoResearch Optimization Engine Design
+## 9. AutoResearch Optimization Engine Design
 
-### 7.1 Mapping from Machine Learning to Agent Skill Optimization
+### 9.1 Mapping from Machine Learning to Agent Skill Optimization
 
 | AutoResearch Original Architecture (ML) | Agent Skill Optimization Architecture | Mechanism |
 |-----------------------------------------|---------------------------------------|-----------|
@@ -729,7 +1287,7 @@ model: <Selected based on task complexity>
 | Gradient descent updates model weights | Language-driven updates to Skill instruction text | LLM acts as the optimizer |
 | Validation set `val_loss` | Validation set trigger rate + task completion rate | Composite evaluation metric |
 
-### 7.2 Evaluation Metric Definitions
+### 9.2 Evaluation Metric Definitions
 
 **Primary Metric: Binary Eval Pass Rate**
 
@@ -760,7 +1318,7 @@ def calculate_pass_rate(skill_path: str, eval_set: list) -> float:
 - **Trigger recall**: `correct triggers / expected triggers` (prevents under-triggering)
 - **Token efficiency**: `average tokens required to complete a task` (lower is better)
 
-### 7.3 Parallel Search Strategy
+### 9.3 Parallel Search Strategy
 
 ```
 Baseline SKILL.md (trigger rate = 62%)
@@ -785,7 +1343,7 @@ Select Branch B, commit as new version (trigger rate +26%)
 Enter next iteration...
 ```
 
-### 7.4 Heterogeneous Model Distillation Process
+### 9.4 Heterogeneous Model Distillation Process
 
 ```
 Phase 1: Establish flagship model baseline
@@ -809,9 +1367,9 @@ Phase 4: Cost-efficiency validation
 
 ---
 
-## 8. Agentic CI/CD Validation Pipeline
+## 10. Agentic CI/CD Validation Pipeline
 
-### 8.1 Complete Deployment Pipeline Diagram
+### 10.1 Complete Deployment Pipeline Diagram
 
 ```
 Developer submits new/modified SKILL.md
@@ -839,7 +1397,7 @@ Post-deployment monitoring (24 hours)
     │ Behavior normal           → Mark as Stable version
 ```
 
-### 8.2 Bayesian Flaky Test Detection
+### 10.2 Bayesian Flaky Test Detection
 
 ```python
 class BayesianFlakyDetector:
@@ -871,12 +1429,135 @@ class BayesianFlakyDetector:
 
 ---
 
-## 9. Milestones & Acceptance Criteria
+## 11. Defensive Architecture: Cascade Hallucination Prevention & Infinite Loop Containment
 
-### 9.1 Development Milestone Timeline
+In single-agent systems, a hallucination produces wrong text. In multi-agent production systems with MCP tool access, a hallucination produces wrong actions — and wrong actions at the edge, in billing systems, or in customer data pipelines produce consequences that cannot be fully rolled back. These defensive mechanisms are prerequisites for production deployment.
+
+### 11.1 Cascade Hallucination Prevention
+
+**The Problem**
+
+When an agent with tool permissions hallucinates a plan and then executes it through a destructive MCP tool (database write, file overwrite, external API call), the error has left the system. Standard rollback mechanisms (git revert, context reset) cannot undo a destructive external action.
+
+In multi-agent systems, this risk compounds: Agent A hallucinates a specification, passes it to Agent B as a TASK_ASSIGNMENT, Agent B executes it faithfully, passes the (hallucinated) result to Agent C for QA. By the time the hallucination is detected, three agents have processed the bad state and multiple external tool calls may have been made.
+
+**Mitigation 1: Mandatory Pre-Execution Reflection for Destructive Operations**
+
+Any Skill that includes a tool call classified as `DESTRUCTIVE` (Write, Edit, database mutations, external API POST/PUT/DELETE) must include a mandatory pre-execution reflection step enforced at the Lifecycle Hook level (`PreToolUse`).
+
+```python
+# PreToolUse hook: mandatory reflection gate for DESTRUCTIVE tools
+def pre_tool_use_hook(tool_name: str, tool_args: dict, agent_context: dict) -> HookResult:
+    DESTRUCTIVE_TOOLS = {"Write", "Edit", "Bash", "mcp_*_write", "mcp_*_delete", "mcp_*_update"}
+
+    if tool_name not in DESTRUCTIVE_TOOLS:
+        return HookResult.ALLOW
+
+    # Force a read-only dry-run or simulation before executing
+    simulation_result = execute_simulation(tool_name, tool_args)
+
+    # Agent must explicitly confirm the simulation matches intent
+    confirmation = agent_reflect(
+        prompt=f"You are about to execute: {tool_name} with args: {tool_args}. "
+               f"Simulation result: {simulation_result}. "
+               f"Does this match your intent? State explicitly what will change and why. "
+               f"If anything is uncertain, respond HALT.",
+        context=agent_context
+    )
+
+    if "HALT" in confirmation or confidence_score(confirmation) < 0.85:
+        return HookResult.BLOCK(reason=confirmation)
+
+    return HookResult.ALLOW
+```
+
+**Mitigation 2: Tiered Human-in-the-Loop (HITL) Gates**
+
+| Tier | Operation Class | HITL Requirement | Example |
+|------|----------------|-----------------|---------|
+| **Tier 0** | Read-only, informational | None | Skill trigger rate query, log read |
+| **Tier 1** | Reversible state change | Auto-approve + audit log | SKILL.md update, test run |
+| **Tier 2** | Consequential but recoverable | Async notification (auto-proceeds after 10 min no response) | New Sub-agent deployment, MCP service registration |
+| **Tier 3** | Irreversible or high-blast-radius | Synchronous human approval required | Core architecture change, billing schema migration, external service credential update, production data write |
+
+The operation class of every tool call is defined statically in the Skill's YAML Frontmatter:
+
+```yaml
+# In any Skill's YAML Frontmatter
+operation_classifications:
+  Write: TIER_1        # Reversible — git revert available
+  mcp_jira_create: TIER_2    # Consequential — creates external record
+  mcp_database_write: TIER_3  # Irreversible — requires human approval
+```
+
+### 11.2 Infinite Loop Containment: Watchdog & Budget Circuit Breaker
+
+**The Problem**
+
+In a multi-agent Scrum team, the most common runaway scenario is the Dev-QA loop: Dev generates code with a logic flaw; QA rejects it with an error report; Dev revises with a different logic flaw; QA rejects again. This loop can run indefinitely — each iteration consumes tokens, produces no usable output, and accelerates toward budget exhaustion.
+
+**Watchdog Monitoring Logic:**
+
+```python
+class WatchdogCircuitBreaker:
+
+    def __init__(self, task_id: str, config: WatchdogConfig):
+        self.task_id = task_id
+        self.message_counts = {}        # {agent_pair: count}
+        self.token_velocity_window = [] # rolling 60s window of token consumption events
+        self.config = config
+
+    def on_message(self, msg: A2AMessage):
+        pair_key = f"{msg.from_agent}→{msg.to_agent}"
+        self.message_counts[pair_key] = self.message_counts.get(pair_key, 0) + 1
+
+        if self.message_counts[pair_key] > self.config.MAX_MESSAGES_PER_PAIR:
+            self._trigger_halt(
+                reason=f"Loop detected: {pair_key} exchanged "
+                       f"{self.message_counts[pair_key]} messages (limit: {self.config.MAX_MESSAGES_PER_PAIR})",
+                severity="LOOP"
+            )
+
+    def on_token_event(self, tokens_consumed: int):
+        now = time.time()
+        self.token_velocity_window = [
+            (t, c) for t, c in self.token_velocity_window if now - t < 60
+        ]
+        self.token_velocity_window.append((now, tokens_consumed))
+
+        velocity = sum(c for _, c in self.token_velocity_window)
+
+        if velocity > self.config.MAX_TOKENS_PER_MINUTE:
+            self._trigger_halt(
+                reason=f"Token velocity {velocity}/min exceeds limit "
+                       f"{self.config.MAX_TOKENS_PER_MINUTE}/min",
+                severity="BUDGET"
+            )
+
+    def _trigger_halt(self, reason: str, severity: str):
+        broadcast_halt(self.task_id, reason)
+        freeze_task_thread(self.task_id)
+        snapshot = capture_belief_state(self.task_id)
+        escalate_to_human(self.task_id, reason, severity, snapshot)
+```
+
+**Default Watchdog Thresholds:**
+
+| Parameter | Default Value | Rationale |
+|-----------|---------------|-----------|
+| `MAX_MESSAGES_PER_PAIR` | 8 messages between any two agents | A legitimate review cycle should resolve in ≤ 3 rounds; 8 is a generous ceiling |
+| `MAX_TOKENS_PER_MINUTE` | 5,000 tokens/min (Track A), 15,000 tokens/min (Track B) | Track B is more expensive by design but has a higher ceiling due to flagship model context load |
+| `MAX_TOTAL_TASK_BUDGET` | Set per task at routing time, based on TCI score and task classification | Prevents individual tasks from consuming disproportionate share of monthly budget |
+| `HALT_ESCALATION_TIMEOUT` | 15 minutes for human response | After 15 minutes without human resolution, Watchdog logs the task as failed and releases the frozen agent contexts |
+
+---
+
+## 12. Milestones & Acceptance Criteria
+
+### 12.1 Full Development Milestone Timeline (Months 1–13+)
 
 ```
-Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7+
+Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7
    │          │          │          │          │          │          │
    ├──────────┤          │          │          │          │          │
    │ Phase 1  │          │          │          │          │          │
@@ -894,27 +1575,60 @@ Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7+
    │          │                     │                      ├──────────►
    │          │                     │                      │  Phase 4
    │          │                     │                      │  Closed Loop
-   │          │                     │                      │  + Scale
+
+Month 8    Month 9    Month 10   Month 11   Month 12   Month 13+
+   │          │          │          │          │          │
+   ├──────────┤          │          │          │          │
+   │ Phase 5  │          │          │          │          │
+   │ TCI +    │          │          │          │          │
+   │ Topology │          │          │          │          │
+   │ Routing  │          │          │          │          │
+   │ + Scrum  │          │          │          │          │
+   │ Team     │          │          │          │          │
+   │          ├──────────┤          │          │          │
+   │          │ Phase 5  │          │          │          │
+   │          │ Watchdog │          │          │          │
+   │          │ + Def.   │          │          │          │
+   │          │ Arch.    │          │          │          │
+   │          │          ├──────────┤          │          │
+   │          │          │ Phase 6  │          │          │
+   │          │          │ Edge AI  │          │          │
+   │          │          │ + Cloud- │          │          │
+   │          │          │ Edge     │          │          │
+   │          │          │ Hybrid   │          │          │
+   │          │          │          ├──────────►          │
+   │          │          │          │ Phase 7  │          │
+   │          │          │          │ AaaS     │          │
+   │          │          │          │ Infra +  ├──────────►
+   │          │          │          │ Launch   │ Continuous
+   │          │          │          │          │ Commercial
+   │          │          │          │          │ Operations
 ```
 
-### 9.2 Overall Acceptance KPIs
+### 12.2 Cumulative KPI Summary (Phases 1–7)
 
-| Category | Metric | Target | Measurement Method |
-|----------|--------|--------|--------------------|
-| **Generation quality** | First-attempt format compliance rate from meta-agent factory | ≥ 90% | Static analyzer auto-scoring |
-| **Generation quality** | Mutually exclusive permission design error rate | 0% | Security audit auto-scan |
-| **Trigger accuracy** | Average trigger rate of deployed Skills | ≥ 90% | Weekly automated evaluation |
-| **Trigger accuracy** | Over-trigger rate (Skill fires when it should not) | ≤ 5% | Negative test set evaluation |
-| **Optimization performance** | AutoResearch success rate: raising < 75% to ≥ 90% | ≥ 80% | Optimization case tracking |
-| **Optimization performance** | Average optimization convergence iteration count | ≤ 50 | Experiment trajectory statistics |
-| **Cost efficiency** | Distilled lightweight model performance vs. flagship | ≥ 90% | Controlled evaluation |
-| **System stability** | Quality regression events caused by new Skill deployment | 0 | Regression test monitoring |
-| **Automation degree** | Proportion of Skill optimization tasks completed autonomously | ≥ 70% | Operations log statistics |
-| **End-to-end efficiency** | Pipeline time: requirements input → deployment complete | ≤ 4 hours | End-to-end timestamps |
+| Category | Metric | Phase 1–4 Target | Phase 5–7 Added Target |
+|----------|--------|-----------------|----------------------|
+| **Agent generation** | First-attempt format compliance | ≥ 90% | Maintained |
+| **Generation quality** | Mutually exclusive permission design error rate | 0% | Maintained |
+| **Trigger accuracy** | Average deployed Skill trigger rate | ≥ 90% | Maintained across all tenants |
+| **Trigger accuracy** | Over-trigger rate | ≤ 5% | Maintained |
+| **Optimization** | AutoResearch convergence success rate | ≥ 80% | Extended to edge-deployed Skills |
+| **Optimization** | Average optimization convergence iterations | ≤ 50 | Maintained |
+| **Cost efficiency** | Distilled lightweight model performance vs. flagship | ≥ 90% | Maintained |
+| **Routing intelligence** | TCI track selection accuracy | N/A | ≥ 95% |
+| **Multi-agent efficiency** | Token savings on high-coupling tasks (Track B vs. Track A) | N/A | ≥ 40% |
+| **Defensive reliability** | Loop-triggered Watchdog halts auto-resolved (no human needed) | N/A | ≥ 85% |
+| **Edge performance** | Edge task success rate vs. cloud | N/A | ≥ 85% |
+| **Commercial** | Billing accuracy | N/A | 100% |
+| **Commercial** | Cross-regional availability | N/A | 99.99% |
+| **System stability** | Quality regression events caused by new Skill deployment | 0 | 0 |
+| **Automation degree** | Skill optimization tasks without human intervention | ≥ 70% | ≥ 80% (Phase 7+) |
+| **End-to-end efficiency** | Pipeline time: requirements input → deployment complete | ≤ 4 hours | ≤ 4 hours |
 
 ---
 
-## 10. Risk Management Matrix
+## 13. Risk Management Matrix
 
 | Risk Item | Probability | Impact | Mitigation Strategy |
 |-----------|-------------|--------|---------------------|
@@ -926,12 +1640,20 @@ Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7+
 | MCP service misconfiguration causes agent to unexpectedly access unauthorized external systems | Low | High | Meta-agent factory requires human confirmation before writing `.mcp.json` (high-risk services require explicit human approval) |
 | Single point of failure for the entire ecosystem (meta-agent factory itself crashes) | Low | Critical | Design meta-agent factory conservatively (minimum tools, strictest output format); maintain manual fallback process documentation |
 | Engineer resistance to fully automated Skill deployment (concern about quality loss of control) | Medium | Medium | Maintain human review steps during Phases 1–2; gradually increase automation ratio after building trust through acceptance KPIs |
+| **A2A communication deadlock**: agents mutually waiting for responses, halting task progress | Medium | High | TCI routes high-risk tasks to Track B before deadlock is possible; strict `reply_deadline_ms` on all A2A messages; Watchdog halts and escalates on timeout |
+| **TCI misclassification** — high-coupling task routed to Track A: context fragmentation, sync failures, wasted tokens | Medium | High | Conservative medium-coupling band defaults to Track B; TCI confidence score logged; AutoResearch continuously improves TCI using execution outcome data |
+| **Edge device OOM on complex Skill**: lightweight model exceeds device memory budget | High | Medium | Edge Readiness Assessment gates deployment; Skill complexity strictly bounded per device profile; dynamic downgrade to Cloud Reasoner on OOM event |
+| **Cascade hallucination via destructive MCP tool**: hallucinated plan executed as external action | Medium | Critical | Mandatory Pre-Execution Reflection hook for all DESTRUCTIVE tools; TIER_3 HITL gate for irreversible operations; simulation-before-execution enforced at Lifecycle Hook level |
+| **Dev-QA infinite loop** — token budget exhaustion: multi-agent loop burns entire monthly budget | High | High | Watchdog monitors message pair counts and token velocity in real time; loop threshold triggers WATCHDOG_HALT in ≤ 1 minute of threshold breach |
+| **Cross-regional data residency violation**: customer data crosses regional boundary | Low | Critical | Architectural enforcement: tenant data never leaves regional cluster; cross-border traffic restricted to non-sensitive metadata and billing aggregates only; quarterly network egress audit |
+| **Outcome-based billing dispute**: customer contests billed outcome count | Medium | Medium | All billing events sourced from immutable OpenTelemetry spans; full audit trail available for dispute resolution; reconciliation dashboard visible to customer in portal |
+| **Watchdog false positive halting valid task**: aggressive threshold triggers on legitimate high-volume task | Medium | Medium | Watchdog thresholds configurable per task class; initial deployment uses conservative (high) thresholds; thresholds tightened gradually based on production data |
 
 ---
 
-## 11. Appendix: SKILL.md Authoring Standards & Templates
+## 14. Appendix A: SKILL.md Authoring Standards & Templates
 
-### 11.1 Three-Layer Architecture Token Budget Standards
+### 14.1 Three-Layer Architecture Token Budget Standards
 
 | Layer | Component | Character/Token Limit | Key Constraint |
 |-------|-----------|----------------------|----------------|
@@ -939,7 +1661,7 @@ Month 1    Month 2    Month 3    Month 4    Month 5    Month 6    Month 7+
 | Level 2 | Markdown body (SKILL.md) | ≤ 500 lines / 5000 tokens | Contains complete operational instructions, output templates, error handling |
 | Level 3 | `scripts/` and `references/` | Unlimited | Accessed by the agent only when Level 2 instructions explicitly direct it |
 
-### 11.2 Description Field Required Elements Checklist
+### 14.2 Description Field Required Elements Checklist
 
 After authoring, confirm all of the following elements are present:
 
@@ -949,7 +1671,7 @@ After authoring, confirm all of the following elements are present:
 - [ ] **Exclusion contexts** (≥ 1, strongly recommended): "does not handle…", "not applicable to…"
 - [ ] **Avoid overly broad statements**: Never use "all AI-related tasks", "any code problem", etc.
 
-### 11.3 Complete SKILL.md Template (using `meta-agent-factory` as example)
+### 14.3 Complete SKILL.md Template (using `meta-agent-factory` as example)
 
 ```markdown
 ---
@@ -1045,12 +1767,66 @@ Recommended next step: Delegate to skill-quality-validator for trigger rate test
 
 ---
 
+## 15. Appendix B: TCI Algorithm Specification & Topology Decision Tree
+
+### 15.1 TCI Labeling Benchmark (50-Task Reference Set)
+
+For Phase 5 acceptance validation, the TCI routing accuracy target (≥ 95%) is measured against a human-labeled 50-task benchmark:
+
+- **25 low-coupling tasks (TCI ground truth < 0.35):** Independent API endpoint implementations; isolated UI component creation; new Skill authoring with no existing Skill dependencies; standalone documentation tasks; independent test suite generation
+- **25 high-coupling tasks (TCI ground truth ≥ 0.65):** Global refactoring of a shared authentication module; migration of a database schema with downstream API contract changes; security audit requiring full codebase comprehension; architectural redesign of the A2A message bus; AutoResearch optimizer rewrite touching eval framework and scoring algorithm simultaneously
+
+Each task in the benchmark is labeled by two independent senior engineers. Disagreements are resolved by a third reviewer. The benchmark is frozen at Phase 5 initiation and never modified during evaluation.
+
+### 15.2 Full Topology Decision Tree
+
+```
+New task arrives
+    │
+    ▼
+Is this task a single-agent read-only query?
+    ├── YES → Execute directly, no TCI needed
+    └── NO  ↓
+    │
+    ▼
+Compute TCI score (target: ≤ 5 seconds)
+    │
+    ├── TCI < 0.35 (low coupling)
+    │   └── Track A: Activate scrum-team-orchestrator
+    │           │
+    │           ├── Activate Watchdog (Track A thresholds)
+    │           ├── Fork context → assign to PO / Dev / QA
+    │           ├── Open A2A bus (typed schema only)
+    │           └── Execute in parallel → aggregate → close bus
+    │
+    ├── 0.35 ≤ TCI < 0.65 (medium coupling — conservative default)
+    │   └── Track B: Log confidence warning + route to flagship
+    │           (same flow as TCI ≥ 0.65)
+    │
+    └── TCI ≥ 0.65 (high coupling)
+        └── Track B: Freeze A2A bus → package full context
+                │
+                ├── Activate Watchdog (Track B thresholds)
+                ├── Apply token ceiling (based on TCI × task class budget)
+                ├── Route to flagship model (claude-opus-4-6)
+                └── Execute → validate output → return result
+
+Throughout all tracks:
+    ├── Pre-Execution Reflection gate active for all DESTRUCTIVE tool calls
+    ├── HITL tier classification enforced per tool via YAML Frontmatter
+    ├── All events emitted as OpenTelemetry spans (billing + audit)
+    └── Watchdog has WATCHDOG_HALT authority over all active threads
+```
+
+---
+
 ## Revision History
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
 | v1.0 | 2026-03-23 | AI Agent Platform Development Team | Initial version. Based on enterprise AI agent legion deep research report. Covers five Skill specifications, four-phase development blueprint, AutoResearch optimization engine design, and Agentic CI/CD pipeline architecture. |
+| v2.0 | 2026-03-29 | AI Agent Platform Development Team | Merged AGENT_SKILL_AUTOMATION_UPGRADE_PLAN.md (v1.1). Added Phases 5–7: multi-agent orchestration with TCI topology routing (Phase 5), cloud-edge hybrid deployment with Talker-Reasoner architecture (Phase 6), AaaS commercialization with Outcome-Based Pricing and cross-regional HA (Phase 7). Added six new Skill specifications, Defensive Architecture section (Pre-Execution Reflection, HITL tiers, Watchdog circuit breaker), updated tech stack, extended milestones to Month 13+, and merged risk matrices. |
 
 ---
 
-*This document is based on the "Enterprise-Grade AI Agent Legion Architecture & Automation Pipeline: A Deep Research Report on Meta-Agent Ecosystems Based on Claude Code Skills and AutoResearch." All architectural designs are grounded in the core principles of progressive disclosure, mutually exclusive permissions, and scalar metric-driven optimization.*
+*This document covers the complete seven-phase development lifecycle of the Enterprise-Grade Agent Skill Set Automation Pipeline. All architectural designs are grounded in the core principles of progressive disclosure, mutually exclusive permissions, scalar metric-driven optimization, topology-aware routing, edge-first privacy, and defensive architecture.*
