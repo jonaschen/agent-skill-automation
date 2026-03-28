@@ -3,12 +3,39 @@
   "experiments": [
     {
       "iteration": 0,
-      "timestamp": "2026-03-27T10:00:00Z",
+      "timestamp": "2026-03-28T16:00:00Z",
       "branch": "baseline",
-      "pass_rate": 0.55,
-      "change_description": "Initial baseline with adversarial test cases (31-40).",
+      "pass_rate": 0.50,
+      "posterior_mean": 0.50,
+      "ci_lower": 0.358,
+      "ci_upper": 0.642,
+      "change_description": "Confirmed baseline from G7 Run 2.",
       "git_commit": "HEAD",
       "outcome": "base"
+    },
+    {
+      "iteration": 1,
+      "timestamp": "2026-03-28T17:00:00Z",
+      "branch": "A",
+      "pass_rate": 0.457,
+      "posterior_mean": 0.457,
+      "ci_lower": 0.317,
+      "ci_upper": 0.600,
+      "change_description": "Simplified and made trigger more aggressive.",
+      "git_commit": "REVERTED",
+      "outcome": "revert"
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-03-28T17:30:00Z",
+      "branch": "B",
+      "pass_rate": 0.457,
+      "posterior_mean": 0.457,
+      "ci_lower": 0.317,
+      "ci_upper": 0.600,
+      "change_description": "Strengthened NEW vs EXISTING distinction.",
+      "git_commit": "REVERTED",
+      "outcome": "revert"
     }
   ]
 }

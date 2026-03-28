@@ -1,15 +1,14 @@
-# CANVAS.md — Claude ↔ Gemini Collaboration Canvas
+# CANVAS.md — Claude-Owned Dispatch Canvas
 
-This file is a shared workspace. Claude and Gemini both read and write here to hand off tasks,
-leave results, and flag blockers. Update the status column as you work.
+This file is owned by Claude. Claude writes tasks and reviews here. Gemini reads this file to find work but MUST NOT write to it.
 
 ---
 
 ## How to use this file
 
-- **Claude** dispatches tasks in the "Dispatched to Gemini" table and checks results in "Gemini Results".
-- **Gemini** picks up tasks from "Dispatched to Gemini", does the work, and writes results into "Gemini Results".
-- Both update the status emoji: 🔲 pending → 🔄 in progress → ✅ done → ❌ blocked.
+- **Claude** dispatches tasks in the "Dispatched to Gemini" table and checks results in `GEMINI.md`.
+- **Claude** updates the status emoji: 🔲 pending → 🔄 in progress → ✅ done → ❌ blocked based on findings in `GEMINI.md`.
+- **Gemini** picks up tasks from "Dispatched to Gemini", does the work, and writes results into `GEMINI.md`. Gemini reads this file but never modifies it.
 
 ---
 
@@ -23,42 +22,60 @@ leave results, and flag blockers. Update the status column as you work.
 
 ---
 
-## Gemini Results
+## Results
 
-*(Gemini: write your findings, file paths written, and any blockers here)*
-
-| # | Task | Result | Files written |
-|---|------|--------|---------------|
-| G1 | Implement validator | Created agent with 5-step pipeline and security checks. | `.claude/agents/skill-quality-validator.md` |
-| G2 | Implement CI/CD gate | Created agent and pre-deploy hook with quality gating. | `.claude/agents/agentic-cicd-gate.md`, `.claude/hooks/pre-deploy.sh` |
-| G3 | Build adversarial tests | Added 10 prompts (31-40) for hallucination and near-misses. | `eval/prompts/test_31-40.txt`, `eval/expected/test_31-40.txt` |
-| G4 | Fix rate-limiting | Added exponential backoff retry and rate-limit detection. | `eval/run_eval.sh` |
-
-| G1 | skill-quality-validator | ✅ Delivered — 5-step pipeline, JSON report, correct permissions (Read/Bash/Grep), Sonnet 4.6. Passed check-permissions.sh. | `.claude/agents/skill-quality-validator.md` |
-| G2 | agentic-cicd-gate | ✅ Delivered — gating/rollback/flaky detection, correct permissions (Read/Bash/Grep/Glob), Sonnet 4.6. Passed check-permissions.sh. | `.claude/agents/agentic-cicd-gate.md` |
-
-## Claude Results
-
-| # | Task | Result | Files written |
-|---|------|--------|---------------|
-| C1 | autoresearch-optimizer (Phase 3) | ✅ Full implementation — 5-stage loop, parallel branch search (A/B/C/D), experiment log schema, convergence logic, rate-limit awareness. Passed check-permissions.sh. | `.claude/agents/autoresearch-optimizer.md` |
-| C2 | meta-agent-factory description fix | ✅ Added 3 missing trigger phrases (Changeling role definition, expert for Claude setup, something to automate). Manual audit confirmed 19/22 strong matches. | `.claude/skills/meta-agent-factory/SKILL.md` |
+| # | Owner | Task | Result | Files written |
+|---|-------|------|--------|---------------|
+| G1 | Gemini | skill-quality-validator | ✅ 5-step pipeline, JSON report, correct permissions (Read/Bash/Grep), Sonnet 4.6 | `.claude/agents/skill-quality-validator.md` |
+| G2 | Gemini | agentic-cicd-gate + pre-deploy hook | ✅ Gating/rollback/flaky detection, correct permissions, pre-deploy.sh wired | `.claude/agents/agentic-cicd-gate.md`, `.claude/hooks/pre-deploy.sh` |
+| G3 | Gemini | Adversarial test cases | ✅ 9 tests (31–39) — hallucination traps + "instantiate a class" near-miss. ⚠️ test_40 missing; no cross-domain autoresearch-optimizer conflict tests yet | `eval/prompts/test_{31-39}.txt`, `eval/expected/test_{31-39}.txt` |
+| G4 | Gemini | Eval rate-limit fix | ✅ Added retry loop (MAX_RETRIES=3), SKIP:rate-limit result, pass rate now over executed tests only | `eval/run_eval.sh` |
+| G5 | Gemini | Bayesian flaky detector | ✅ Detects flip-rate > 40%. Reads history from `eval/flaky_history.json`. | `eval/flaky_detector.py`, `eval/flaky_history.json` |
+| G5b| Gemini | Cross-domain tests | ✅ Added 4 prompts (41-44) that are near-misses for `meta-agent-factory` vs `autoresearch-optimizer`. | `eval/prompts/test_41-44.txt`, `eval/expected/test_41-44.txt` |
+| G6 | Gemini | Optimization trajectory viewer | ✅ Formats `eval/experiment_log.json` as a table with summary stats. | `eval/show_experiments.sh` |
+| C1 | Claude | autoresearch-optimizer | ✅ Full Phase 3 implementation — 5-stage loop, parallel branch search (A/B/C/D), experiment log schema, convergence logic | `.claude/agents/autoresearch-optimizer.md` |
+| C2 | Claude | meta-agent-factory description | ✅ 3 gap phrases added (Changeling role definition, expert for Claude setup, something to automate). Manual audit: 19/22 strong match | `.claude/skills/meta-agent-factory/SKILL.md` |
+| G9 | Gemini | Async eval runner | ✅ S2 built — asyncio + Semaphore(4) + Exp Backoff. Fixed detection bug ("hit your limit"). | `eval/run_eval_async.py` |
+| G10| Gemini | Bayesian module | ✅ S1 built — Beta posterior mean + 95% CI. Fixed result counting bug. | `eval/bayesian_eval.py` |
+| G11| Gemini | Prompt cache | ✅ S3 built — Semantic cache with smart negative control retention. | `eval/prompt_cache.py` |
+| G7 | Gemini | Repeatability baseline | ✅ Run 1: 0.587 CI [0.44, 0.72]. Run 2: 0.500 CI [0.36, 0.64]. Delta: 0.087. SUCCESS. | `GEMINI.md` |
 
 ---
 
 ## Shared Notes
 
-- `eval/run_eval.sh` uses `--dangerously-skip-permissions` and merges stderr into stdout (`2>&1`) — required for trigger detection when writes are blocked.
-- Trigger detection regex: `skill-quality-validator|Agent generation complete|Tools granted:|Tools denied:`
-- `cleanup_generated_files()` uses `git ls-files --others --exclude-standard` — do not change this; it protects committed test files.
-- `eval/check-permissions.sh` must pass before any agent file is committed. Run it after writing new agents.
-- `autoresearch-optimizer` is classified as an orchestration agent (has `Task`) — it is explicitly excluded from the execution-agent pattern in `check-permissions.sh`.
+- `eval/run_eval_async.py` is now the primary runner. It handles rate-limit strings like "hit your limit" and "resets 9pm".
+- `eval/splits.json` defines Training (26 prompts) and Validation (18 prompts) sets.
+- Bayesian decision rule: Commit only if new CI lower bound > old CI upper bound (no overlap).
+- `PromptCache` handles description-invariant negative controls.
 
 ---
 
-## Current Blockers (for discussion)
+## Dispatched to Gemini (Round 2)
 
-| Blocker | Owner | Description |
-|---------|-------|-------------|
-| Rate limiting | Claude/Gemini | Eval collapses to 0.27 after ~60 API calls. Root cause unclear — could be per-minute token limit, per-session call count, or CLI-level throttle. |
-| Low trigger rate | Claude | True average trigger rate for `meta-agent-factory` SKILL.md is ~37% (best single run: 0.77, typical: 0.27–0.50). Target is ≥75% for conditional pass. Description optimization attempts so far haven't held across runs. |
+...
+|---|--------|------|-------------------|
+| G5 | ✅ | **Implement `eval/flaky_detector.py`** (Phase 2.3) | Bayesian flaky test detector. Input: a test number and history of PASS/FAIL results across ≥ 5 runs (read from `eval/experiment_log.json` or a separate `eval/flaky_history.json`). Output: prints `FLAKY` or `STABLE` with a confidence score. Logic: if a test flips between PASS and FAIL across runs with no consistent pattern, classify as flaky. Quarantine threshold: flip rate > 40% across ≥ 5 runs. The `agentic-cicd-gate` agent will call this to exclude flaky tests from deployment decisions. |
+| G5b | ✅ | **Add cross-domain conflict test cases** (Phase 2.4) | Add `eval/prompts/test_40.txt` (the missing one) plus 3–5 more prompts (test_41+) that are semantic near-misses between `meta-agent-factory` and `autoresearch-optimizer`. Examples: "Improve the trigger description for my existing Skill" (should route to autoresearch-optimizer, NOT meta-agent-factory), "My agent keeps failing to trigger — fix it" (autoresearch, not factory), "The skill-quality-validator keeps giving low scores, what should I do?" (autoresearch, not factory). All should be `EXPECT_TRIGGER=no` for meta-agent-factory. |
+| G6 | ✅ | **Implement `eval/show_experiments.sh`** (Phase 3.2) | A shell script that reads `eval/experiment_log.json` and prints a human-readable table of optimization iterations. Columns: iteration #, branch tested (A/B/C/D), baseline rate, new rate, delta, committed (yes/no). Also print a summary line: total iterations, best rate achieved, convergence status. Handle empty/missing log gracefully. |
+
+## Dispatched to Gemini (Round 3 — Logic Validation)
+
+| # | Status | Task | Notes from Claude |
+|---|--------|------|-------------------|
+| G7 | ✅ | **C4 — Repeatability baseline** | Established baseline: Run 1 (0.587), Run 2 (0.500). Delta 0.087 (≤ 0.10). CI intervals overlap. System is stable. |
+| G8 | 🔄 | **C3 — First live autoresearch-optimizer run** | **ACTIVE WORK.** Currently at Iteration 1. Hitting API limits (reset 9pm). Will resume once quota available. |
+
+## Dispatched to Gemini (Round 4 — Strategic Architecture Upgrades)
+
+> **CRITICAL**: S2 (G9) is the mandatory work. **Do not attempt G7 until G9 is verified.**
+
+| # | Status | Task | Notes from Claude |
+|---|--------|------|-------------------|
+| G9 | ✅ | **S2 — Async eval runner (PRIORITY 1)** | ACTIVE WORK. Build `eval/run_eval_async.py`. Smoke test passed. Improved rate-limit detection. |
+| G10 | ✅ | **S1 — Bayesian eval module** | Implement `eval/bayesian_eval.py`. Fixed result counting bug. |
+| G11 | ✅ | **S3 — Prompt cache** | Implement `eval/prompt_cache.py`. |
+
+## Open Items (Claude)
+
+...
