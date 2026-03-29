@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-03-29: Phase 2 complete. Phase 3 in progress (agent written; base loop not yet running code). Phases 5–7 planned.**
+**Status as of 2026-03-30: Phase 3 core complete (eval infra verified, first optimizer iteration T=0.921 V=0.800). Phase 4 starting.**
 
 ---
 
@@ -117,7 +117,7 @@ SKILL.md files from natural language requirements.
 
 ---
 
-## Phase 3: AutoResearch Optimizer + Async Architecture *(current)*
+## Phase 3: AutoResearch Optimizer + Async Architecture *(core complete ✅)*
 
 **Goal:** Unattended overnight optimization and reliable, async evaluation. A failing Skill (< 75%) is automatically repaired to ≥ 90% without human intervention.
 
@@ -165,7 +165,7 @@ SKILL.md files from natural language requirements.
 
 ---
 
-## Phase 4: Changeling Router + Full Closed Loop *(Month 7+, continuous)*
+## Phase 4: Changeling Router + Full Closed Loop *(current)*
 
 **Goal:** Fully unattended pipeline from natural language requirement to deployed Skill. Human role = experimental designer, not experimenter.
 

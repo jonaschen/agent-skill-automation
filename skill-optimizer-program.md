@@ -14,8 +14,8 @@
 - Files outside the target Skill's directory tree (except for git commits).
 
 ## Evaluation Budget
-- **Fixed test set**: Run `python3 eval/run_eval_async.py` exactly once per experiment.
-- The test set is fixed at 44 prompts (26 Training, 18 Validation). Use `eval/splits.json`.
+- **Fixed test set**: Run `python3 eval/run_eval_async.py --inter-test-delay 15` exactly once per experiment.
+- The test set is fixed at 54 prompts (36 Training, 18 Validation). Use `eval/splits.json`.
 
 ## Stopping criteria
 - Stop when **posterior_mean >= 0.90**.

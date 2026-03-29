@@ -19,7 +19,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 Seven-phase pipeline for autonomously designing, validating, optimizing, and deploying Claude Code Agent Skills. Phases 1–4 build the core automation loop; Phases 5–7 extend to multi-agent topology, edge AI, and commercial AaaS.
 
-**Current status (2026-03-29):** Phase 2 complete. Phase 3 in progress — async eval architecture built (G9/G10/G11 verified), first live optimization run (G7/G8) pending quota reset.
+**Current status (2026-03-30):** Phase 3 core complete. Eval infrastructure verified, first optimizer iteration achieved T=0.921 V=0.800. Phase 4 (closed loop) starting.
 
 **Key documents:**
 - `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
@@ -37,8 +37,8 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | 0 — Bootstrap | Repo structure, stubs | ✅ Complete |
 | 1 — Meta-Agent Factory | Generate format-compliant Skills from natural language | ✅ Complete |
 | 2 — Validator + CI/CD Gate | Objective quality gating, eval runner, adversarial tests | ✅ Complete |
-| 3 — AutoResearch Optimizer | Unattended trigger rate optimization, async eval, Bayesian scoring | 🔄 Current |
-| 4 — Changeling Router + Closed Loop | Fully unattended factory→validate→optimize→deploy | 🔲 Pending |
+| 3 — AutoResearch Optimizer | Unattended trigger rate optimization, async eval, Bayesian scoring | ✅ Core complete |
+| 4 — Changeling Router + Closed Loop | Fully unattended factory→validate→optimize→deploy | 🔄 Current |
 | 5 — Topology-Aware Multi-Agent | TCI routing, Scrum team orchestration, watchdog circuit breaker | 🔲 Pending |
 | 6 — Edge AI + Cloud-Edge Hybrid | Talker-Reasoner, ONNX/GGUF packaging, OTA | 🔲 Pending |
 | 7 — AaaS Commercialization | Outcome billing, multi-tenancy, cross-regional HA, compliance | 🔲 Pending |

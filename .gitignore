@@ -1,0 +1,6 @@
+__pycache__/
+eval/.prompt_cache.json
+eval/__pycache__/
+*.pyc
+node_modules/
+.docusaurus/
