@@ -12,6 +12,11 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
 
 ## Core Mandates & Principles
 
+### 0. Model-Agnostic Standard (Primary)
+- **Objective**: Develop agent skills compatible with ANY model supporting the Anthropic Agent Skill standard (SKILL.md).
+- **Tooling**: All evaluation, optimization, and routing logic must prioritize the **Standard** over model-specific quirks. `run_eval_async.py` supports multiple backends via the `--engine` flag.
+- **Goal**: Autonomous cross-model optimization (e.g., using Gemini to optimize a Skill for Claude).
+
 ### 1. Three-Layer SKILL.md Architecture
 - **Level 1 (YAML Frontmatter):** `name`, `description`, `tools`, `model`. The **sole routing signal**. Description must be ≤ 1024 characters.
 - **Level 2 (Markdown Body):** Full operational instructions, output templates, error handling.

@@ -42,8 +42,16 @@ class AsyncEvalRunner:
             with open(splits_path) as f: return json.load(f)
         return {"train": [], "validation": []}
 
-    async def call_claude(self, prompt):
-        cmd = ["claude", "--dangerously-skip-permissions", "-p", prompt]
+    async def _call_engine(self, prompt, engine="claude"):
+        """
+        Executes the prompt against the specified AI engine.
+        Currently supports: claude (CLI)
+        """
+        if engine == "claude":
+            cmd = ["claude", "--dangerously-skip-permissions", "-p", prompt]
+        else:
+            return f"ERROR: Unsupported engine: {engine}"
+
         try:
             proc = await asyncio.create_subprocess_exec(
                 *cmd,
@@ -58,21 +66,24 @@ class AsyncEvalRunner:
         except Exception as e:
             return f"EXECUTION_ERROR: {e}"
 
-    async def run_test(self, test_id, prompt, expect_trigger):
+    async def run_test(self, test_id, prompt, expect_trigger, engine="claude"):
         if not self.no_cache:
+            # Cache key now includes engine to distinguish performance profiles
             cached = self.cache.get(prompt, self.description, expect_trigger)
+            # Future: add engine-sensitivity to cache if needed
             if cached:
                 if self.verbose: print(f"  ⚡ Test {test_id}: CACHE HIT")
                 return cached["result"]
 
         async with self.semaphore:
             for attempt in range(MAX_RETRIES):
-                output = await self.call_claude(prompt)
+                output = await self._call_engine(prompt, engine)
                 
-                # Rate limit detection
-                if any(x in output for x in ["rate_limit_error", "overloaded_error", "Overloaded.", "hit your limit", "resets 9pm"]):
+                # Rate limit detection (engine-specific strings)
+                rate_limit_hits = ["rate_limit_error", "overloaded_error", "Overloaded.", "hit your limit", "resets 9pm"]
+                if any(x in output for x in rate_limit_hits):
                     wait = (2 ** attempt) + random.uniform(0, 1)
-                    if self.verbose: print(f"    (Test {test_id} rate-limited, retry {attempt+1}/{MAX_RETRIES} in {wait:.1f}s)", file=sys.stderr)
+                    if self.verbose: print(f"    (Test {test_id} {engine} rate-limited, retry {attempt+1}/{MAX_RETRIES} in {wait:.1f}s)", file=sys.stderr)
                     await asyncio.sleep(wait)
                     continue
                 
@@ -80,12 +91,10 @@ class AsyncEvalRunner:
                 if not self.no_cache:
                     self.cache.set(prompt, self.description, expect_trigger, result)
                 
-                # Cleanup disk pollution (safe because we only grep stdout/stderr)
                 self._cleanup()
-                
                 return result
             
-            return "SKIP:rate-limit"
+            return f"SKIP:rate-limit:{engine}"
 
     def _evaluate(self, output, expect_trigger):
         import re
@@ -152,7 +161,7 @@ class AsyncEvalRunner:
         except Exception as e:
             if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
 
-    async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None):
+    async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None, engine="claude"):
         if not prompts_dir:
             prompts_dir = os.path.join(self.repo_root, "eval/prompts")
         if not expected_dir:
@@ -173,7 +182,7 @@ class AsyncEvalRunner:
             print("Error: No test prompts found matching criteria.")
             return 1
 
-        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)} (Split: {split_filter or 'ALL'})")
+        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)} (Engine: {engine}, Split: {split_filter or 'ALL'})")
         
         tasks = []
         test_ids = []
@@ -182,7 +191,7 @@ class AsyncEvalRunner:
             with open(os.path.join(prompts_dir, f)) as pf: prompt = pf.read().strip()
             with open(os.path.join(expected_dir, f)) as ef: 
                 exp = "yes" if "EXPECT_TRIGGER=yes" in ef.read() else "no"
-            tasks.append(self.run_test(tid, prompt, exp))
+            tasks.append(self.run_test(tid, prompt, exp, engine))
             test_ids.append(tid)
 
         results = await asyncio.gather(*tasks)
@@ -221,13 +230,14 @@ async def main():
     parser.add_argument("skill_path")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--no-cache", action="store_true")
+    parser.add_argument("--engine", default="claude", help="AI engine to use (default: claude)")
     parser.add_argument("--split", choices=["train", "validation"], help="Run only a specific split")
     parser.add_argument("--prompts-dir", help="Custom prompts directory")
     parser.add_argument("--expected-dir", help="Custom expected directory")
     args = parser.parse_args()
     
     runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache)
-    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split))
+    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split, args.engine))
 
 if __name__ == "__main__":
     asyncio.run(main())
