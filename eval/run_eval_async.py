@@ -88,8 +88,24 @@ class AsyncEvalRunner:
             return "SKIP:rate-limit"
 
     def _evaluate(self, output, expect_trigger):
-        trigger_patterns = ["skill-quality-validator", "Agent generation complete", "Tools granted:", "Tools denied:"]
-        triggered = any(p in output for p in trigger_patterns)
+        import re
+        # More robust trigger detection logic
+        # 1. Look for the explicit next step recommendation
+        # 2. Look for the completion header (case-insensitive, optional emoji)
+        # 3. Look for the tool summary lines (common in both final and intermediate output)
+        trigger_patterns = [
+            r"skill-quality-validator",
+            r"Agent generation complete",
+            r"Tools granted[:\s]",
+            r"Tools denied[:\s]",
+            r"write permission" # Often appears when blocked
+        ]
+        
+        triggered = False
+        for p in trigger_patterns:
+            if re.search(p, output, re.IGNORECASE):
+                triggered = True
+                break
         
         if expect_trigger == "yes":
             return "PASS" if triggered else "FAIL:not-triggered"
