@@ -8,13 +8,10 @@ This file provides guidance to Claude Code when working in this repository.
 
 | File | Claude | Gemini |
 |------|--------|--------|
-| `CANVAS.md` | **Write only** — dispatch tasks, update status, guardian log | Read only |
-| `GEMINI.md` | Read only — check Gemini's status and results | **Write only** |
+| `ROADMAP.md` | **Primary** — dispatch tasks, update status, mark ✅/❌ | Both coordinate |
 | `AGENTS.md` | Read only | Read only |
-| `CHALLENGES.md` | Write only | Read only |
-| `ROADMAP.md` | Both coordinate | Both coordinate |
 
-**Task lifecycle**: Claude writes 🔲 task to `CANVAS.md` → Gemini reads and executes → Gemini writes result to `GEMINI.md` → Claude reads `GEMINI.md`, reviews, then marks ✅/❌ in `CANVAS.md`.
+**Task lifecycle**: Tasks are tracked in `ROADMAP.md` under the relevant Phase section. Mark ✅/❌ as tasks complete.
 
 ---
 
@@ -25,11 +22,8 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 **Current status (2026-03-29):** Phase 2 complete. Phase 3 in progress — async eval architecture built (G9/G10/G11 verified), first live optimization run (G7/G8) pending quota reset.
 
 **Key documents:**
-- `ROADMAP.md` — Seven-phase plan with acceptance criteria per phase
+- `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
 - `AGENT_SKILL_AUTOMATION_DEV_PLAN.md` — Full blueprint v2.0 (Phases 1–7)
-- `CHALLENGES.md` — Measurement challenges and the four strategic solutions (S1–S4)
-- `CANVAS.md` — Active task dispatch board (Claude's workspace)
-- `GEMINI.md` — Gemini's working memory and results (read-only for Claude)
 - `AGENTS.md` — Collaboration protocol
 
 ---

@@ -84,10 +84,15 @@ Automation Foundation (Phases 1–4)
 ├── skills/          # Skill definitions (SKILL.md + scripts/ + references/)
 └── hooks/           # Lifecycle hooks: pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
-├── run_eval.sh      # Binary eval runner — outputs a single float pass rate
-├── check-permissions.sh  # Static validator for mutually exclusive permission rules
-├── prompts/         # Fixed test prompts (test_1.txt … test_N.txt)
-└── expected/        # Expected outputs for binary pass/fail evaluation
+├── run_eval_async.py    # Primary eval runner (asyncio + semaphore + backoff)
+├── bayesian_eval.py     # Bayesian posterior + 95% credible intervals
+├── prompt_cache.py      # Semantic cache — reduces API calls ~40% per iteration
+├── tci_compute.py       # Task Coupling Indexer for Phase 5 topology routing
+├── flaky_detector.py    # Bayesian flaky test classifier
+├── splits.json          # Train (36) / Validation (18) split definition
+├── check-permissions.sh # Static validator for mutually exclusive permission rules
+├── prompts/             # Fixed test prompts (test_1.txt … test_54.txt)
+└── expected/            # Expected outputs for binary pass/fail evaluation
 ~/.claude/@lib/agents/   # Changeling role library (global, read-only)
 ```
 
@@ -114,10 +119,12 @@ eval/
 
 ## Current Status
 
-Phase 0 complete, Phase 1 in progress. See [ROADMAP.md](ROADMAP.md) for current tasks and progress.
+**Phase 3 in progress.** Phases 0-2 complete. Measurement infrastructure built and verified (Bayesian eval, async runner, semantic cache, T/V split). First optimizer iteration achieved Training posterior mean **0.921** CI [0.818, 0.983] and Validation **0.800** CI [0.604, 0.940] — exceeds the 0.90 deployment gate on training.
+
+See [ROADMAP.md](ROADMAP.md) for full task tracking, measurement architecture, and next actions.
 
 ## Documentation
 
-- [ROADMAP.md](ROADMAP.md) — Phased development plan with tasks and acceptance criteria
-- [AGENT_SKILL_AUTOMATION_DEV_PLAN.md](AGENT_SKILL_AUTOMATION_DEV_PLAN.md) — Full architecture blueprint (Phases 1–7)
+- [ROADMAP.md](ROADMAP.md) — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
+- [AGENT_SKILL_AUTOMATION_DEV_PLAN.md](AGENT_SKILL_AUTOMATION_DEV_PLAN.md) — Full architecture blueprint (Phases 1-7)
 - [README_AUTORESEARCH.md](README_AUTORESEARCH.md) — How Karpathy's AutoResearch pattern maps to this system

@@ -1,17 +1,21 @@
 ---
 name: meta-agent-factory
 description: >
-  Triggered when a user wants to define or generate a new Claude Code agent,
-  Skill, or Changeling persona — NOT when asking Claude to directly perform a
-  task. Activate for: "I need an agent that does X", "build/create an agent
-  for X", "make a Skill for X domain", "set up an automated workflow agent",
-  "add a persona to the Changeling router's role library", "instantiate a
-  [role] as an agent", "create a Changeling role definition", "add an expert
+  Triggered when a user wants to define, generate, or set up a new Claude Code
+  agent, Skill, workflow automation, or Changeling persona — NOT when asking
+  Claude to directly perform a task itself. Activate for: "I need an agent/Skill
+  that does X", "build/create an agent for X", "make a Skill for X domain",
+  "I need a Skill for X", "set up a workflow automation that...", "set up an
+  automated workflow agent", "add a persona to the Changeling router's role
+  library", "instantiate a [role] as an agent", "create a Changeling role
+  definition for X", "create an X expert for our Claude setup", "add an expert
   to our Claude setup", "we need something to automate [workflow] using an
-  agent". Generates the SKILL.md or agent definition file, permission matrix,
-  and MCP config. Do NOT activate for: direct task requests (fix this bug,
-  optimize this query, write this test), reviewing or running existing agents,
-  or improving existing Skill definitions (use autoresearch-optimizer for that).
+  agent", "build an agent that [does X]". Generates the SKILL.md or agent
+  definition file, permission matrix, and MCP config. Do NOT activate for:
+  direct task requests (fix this bug, optimize this query, write this test),
+  reviewing/debugging/fixing an existing agent or Skill, improving or optimizing
+  existing Skill trigger descriptions (use autoresearch-optimizer instead), or
+  analyzing why a Skill/agent is underperforming.
 tools:
   - Read
   - Write

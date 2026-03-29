@@ -14,10 +14,11 @@ MAX_RETRIES = 5
 TIMEOUT = 150 # seconds per test
 
 class AsyncEvalRunner:
-    def __init__(self, skill_path, verbose=False, no_cache=False):
+    def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0):
         self.skill_path = os.path.abspath(skill_path)
         self.verbose = verbose
         self.no_cache = no_cache
+        self.inter_test_delay = inter_test_delay
         self.cache = PromptCache()
         self.semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         self.repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -78,7 +79,7 @@ class AsyncEvalRunner:
         async with self.semaphore:
             for attempt in range(MAX_RETRIES):
                 output = await self._call_engine(prompt, engine)
-                
+
                 # Rate limit detection (engine-specific strings)
                 rate_limit_hits = ["rate_limit_error", "overloaded_error", "Overloaded.", "hit your limit", "resets 9pm"]
                 if any(x in output for x in rate_limit_hits):
@@ -86,14 +87,17 @@ class AsyncEvalRunner:
                     if self.verbose: print(f"    (Test {test_id} {engine} rate-limited, retry {attempt+1}/{MAX_RETRIES} in {wait:.1f}s)", file=sys.stderr)
                     await asyncio.sleep(wait)
                     continue
-                
+
                 result = self._evaluate(output, expect_trigger)
                 if not self.no_cache:
                     self.cache.set(prompt, self.description, expect_trigger, result)
-                
+
                 self._cleanup()
+                if self.inter_test_delay > 0:
+                    if self.verbose: print(f"    (inter-test delay {self.inter_test_delay}s)", file=sys.stderr)
+                    await asyncio.sleep(self.inter_test_delay)
                 return result
-            
+
             return f"SKIP:rate-limit:{engine}"
 
     def _evaluate(self, output, expect_trigger):
@@ -234,9 +238,11 @@ async def main():
     parser.add_argument("--split", choices=["train", "validation"], help="Run only a specific split")
     parser.add_argument("--prompts-dir", help="Custom prompts directory")
     parser.add_argument("--expected-dir", help="Custom expected directory")
+    parser.add_argument("--inter-test-delay", type=float, default=0,
+                        help="Seconds to wait between tests (default 0). Use 30-60 on free-tier to avoid quota burst.")
     args = parser.parse_args()
-    
-    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache)
+
+    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache, args.inter_test_delay)
     sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split, args.engine))
 
 if __name__ == "__main__":
