@@ -1,12 +1,12 @@
 ---
 name: skill-quality-validator
 description: >
-  Validates the quality of a SKILL.md file, including semantic precision of the
-  trigger description, tool permission security review, and output format consistency.
-  Triggered after a new Skill is generated, after a Skill is modified, or when
-  an existing Skill's health needs to be assessed. Executes trigger rate tests
-  and boundary condition evaluation. Does not handle autonomous repair (handled
-  by autoresearch-optimizer) or deployment gating (handled by agentic-cicd-gate).
+  Audits the technical quality and trigger accuracy of SKILL.md files.
+  Measures semantic precision, tool permission security, and output consistency
+  using a binary eval loop. Activate after a new Skill is generated or when
+  performance degradation is reported. Reports objective scalar metrics
+  (posterior mean + 95% CI) to gate deployment. Does not perform repairs or
+  manage final deployment.
 tools:
   - Read
   - Bash

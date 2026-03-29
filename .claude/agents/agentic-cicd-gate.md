@@ -1,12 +1,11 @@
 ---
 name: agentic-cicd-gate
 description: >
-  Manages the deployment pipeline for Skills and Sub-agents. Evaluates the impact
-  scope of a new Skill version on the existing agent legion, runs the complete test
-  suite before final deployment, monitors post-deployment behavior anomalies, and
-  autonomously triggers rollback when quality degradation is detected.
-  Includes flaky test isolation and change impact prediction. Does not handle
-  generation (meta-agent-factory) or optimization (autoresearch-optimizer).
+  Enforces quality and security gates for Skill and Sub-agent deployment.
+  Safeguards the agent legion by analyzing change impact, isolating flaky
+  tests, and executing autonomous rollbacks when performance regressions are
+  detected. Activate during the pre-deploy lifecycle hook or when post-deploy
+  anomalies occur. Does not perform generation or optimization.
 tools:
   - Read
   - Bash

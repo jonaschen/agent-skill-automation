@@ -1,11 +1,12 @@
 ---
 name: autoresearch-optimizer
 description: >
-  Runs automatic optimization on SKILL.md files that have not met quality thresholds.
-  Receives under-performing Skills and their failing test cases, runs parallel version
-  experiments in an isolated sandbox, and uses a binary eval loop to find the
-  highest-pass-rate version. Can also perform lightweight model distillation to
-  produce optimal instructions for lower-cost models.
+  Evolves and optimizes SKILL.md instruction sets to maximize trigger accuracy.
+  Iteratively repairs under-performing Skills by analyzing Training-set (T)
+  failures and discovering optimal semantic patterns. Uses a Bayesian commit
+  rule (no CI overlap) to ensure statistically significant improvements.
+  Activate when trigger rate falls below 75% or when distilling flagship
+  behavior into cheaper models.
 tools:
   - Read
   - Write

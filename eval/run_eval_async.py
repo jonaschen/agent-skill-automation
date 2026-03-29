@@ -152,7 +152,7 @@ class AsyncEvalRunner:
         except Exception as e:
             if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
 
-    async def run_all(self, prompts_dir=None, expected_dir=None):
+    async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None):
         if not prompts_dir:
             prompts_dir = os.path.join(self.repo_root, "eval/prompts")
         if not expected_dir:
@@ -160,6 +160,20 @@ class AsyncEvalRunner:
         
         test_files = sorted([f for f in os.listdir(prompts_dir) if f.startswith("test_")], 
                             key=lambda x: int(x.split('_')[1].split('.')[0]))
+        
+        # Apply split filter if requested
+        if split_filter:
+            allowed_ids = self.splits.get(split_filter, [])
+            if not allowed_ids:
+                print(f"Error: Split '{split_filter}' not found or empty in splits.json.")
+                return 1
+            test_files = [f for f in test_files if int(f.split('_')[1].split('.')[0]) in allowed_ids]
+
+        if not test_files:
+            print("Error: No test prompts found matching criteria.")
+            return 1
+
+        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)} (Split: {split_filter or 'ALL'})")
         
         tasks = []
         test_ids = []
@@ -171,23 +185,29 @@ class AsyncEvalRunner:
             tasks.append(self.run_test(tid, prompt, exp))
             test_ids.append(tid)
 
-        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)}")
         results = await asyncio.gather(*tasks)
         
-        # Split analysis
-        train_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("train", [])]
-        val_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("validation", [])]
-        
-        full_stats = get_stats(results)
-        train_stats = get_stats(train_results)
-        val_stats = get_stats(val_results)
+        # Split analysis (only if running all, otherwise just show current set)
+        if not split_filter:
+            train_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("train", [])]
+            val_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("validation", [])]
+            
+            full_stats = get_stats(results)
+            train_stats = get_stats(train_results)
+            val_stats = get_stats(val_results)
 
-        print("\n" + "="*40)
-        print(f"OVERALL: {full_stats['posterior_mean']:.3f} CI [{full_stats['ci_lower']:.3f}, {full_stats['ci_upper']:.3f}]")
-        print(f"TRAIN:   {train_stats['posterior_mean']:.3f} CI [{train_stats['ci_lower']:.3f}, {train_stats['ci_upper']:.3f}]")
-        print(f"VAL:     {val_stats['posterior_mean']:.3f} CI [{val_stats['ci_lower']:.3f}, {val_stats['ci_upper']:.3f}]")
-        print("="*40)
-        
+            print("\n" + "="*40)
+            print(f"OVERALL: {full_stats['posterior_mean']:.3f} CI [{full_stats['ci_lower']:.3f}, {full_stats['ci_upper']:.3f}]")
+            print(f"TRAIN:   {train_stats['posterior_mean']:.3f} CI [{train_stats['ci_lower']:.3f}, {train_stats['ci_upper']:.3f}]")
+            print(f"VAL:     {val_stats['posterior_mean']:.3f} CI [{val_stats['ci_lower']:.3f}, {val_stats['ci_upper']:.3f}]")
+            print("="*40)
+        else:
+            stats = get_stats(results)
+            print("\n" + "="*40)
+            print(f"SPLIT ({split_filter.upper()}): {stats['posterior_mean']:.3f} CI [{stats['ci_lower']:.3f}, {stats['ci_upper']:.3f}]")
+            print("="*40)
+            full_stats = stats # for threshold check
+
         if self.verbose:
             for tid, res in zip(test_ids, results):
                 print(f"Test {tid:2d}: {res}")
@@ -201,12 +221,13 @@ async def main():
     parser.add_argument("skill_path")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--no-cache", action="store_true")
+    parser.add_argument("--split", choices=["train", "validation"], help="Run only a specific split")
     parser.add_argument("--prompts-dir", help="Custom prompts directory")
     parser.add_argument("--expected-dir", help="Custom expected directory")
     args = parser.parse_args()
     
     runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache)
-    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir))
+    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split))
 
 if __name__ == "__main__":
     asyncio.run(main())

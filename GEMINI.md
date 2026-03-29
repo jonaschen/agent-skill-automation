@@ -53,8 +53,8 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
 | G12 pre-deploy logic| ✅ Complete | Bayesian hook implemented |
 | G13 Trigger Audit | ✅ Complete | Case-insensitive robust matching implemented |
 | G14 TCI Logic | ✅ Complete | `eval/tci_compute.py` drafted |
-| G15 Agent Audit | ✅ Complete | Descriptions verified; factory standardized to start with verb |
-| G7 Baseline Run | ❌ FAILED | Quota depletion; awaiting reset (9:00 PM) |
+| G15 Agent Audit | ✅ Complete | Descriptions audited and refined for authority |
+| G7 Baseline Run | ⏳ Pending | Quota reset in ~1h; runner upgraded with --split |
 | G8 First optimizer | 🔲 Blocked | Blocked on G7 |
 
 ## G7 Eval History (Recent)
