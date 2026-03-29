@@ -79,14 +79,14 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 | Tool | Purpose | Status |
 |------|---------|--------|
-| `eval/run_eval_async.py` | Primary eval runner — asyncio + Semaphore(4) + exp backoff | ✅ Verified |
+| `eval/run_eval_async.py` | Primary eval runner — asyncio + Semaphore(1) + exp backoff | ✅ Verified |
 | `eval/bayesian_eval.py` | Bayesian posterior + 95% CI; `--compare` for CI non-overlap test | ✅ Verified |
 | `eval/prompt_cache.py` | Semantic cache — reduces API calls ~40% per optimizer iteration | ✅ Verified |
 | `eval/splits.json` | Train (26) / Validation (18) split — prevents optimizer overfitting | ✅ Verified |
 | `eval/run_eval.sh` | Legacy bash runner — still functional but not rate-limit safe at scale | ⚠️ Legacy |
 | `eval/check-permissions.sh` | Static YAML validator — enforces mutually exclusive permission rules | ✅ Active |
 | `eval/flaky_detector.py` | Bayesian flaky test classifier — reads `eval/flaky_history.json` | ✅ Active |
-| `.claude/hooks/pre-deploy.sh` | Deployment gate — **pending update to use Bayesian runner (G12)** | ⚠️ Stale |
+| `.claude/hooks/pre-deploy.sh` | Deployment gate — enforces Bayesian posterior mean ≥ 0.90 | ✅ Active |
 
 ### Measurement Decision Rules
 

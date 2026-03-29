@@ -49,13 +49,16 @@ production environment without meeting the mandatory quality thresholds.
 - Ensure a 60/40 training/validation split for future optimization cycles.
 
 ### Step 4: Baseline & Trigger Rate Measurement
-- Execute the Skill against the fixed test set using `eval/run_eval.sh`.
-- Measure the binary pass rate (correct trigger + correct output structure).
-- Record token consumption and average latency.
+- Execute the Skill against the fixed test set using `python3 eval/run_eval_async.py`.
+- Measure the Bayesian posterior trigger rate (mean and 95% credible interval).
+- Record token consumption and detect quota-related skips.
 
 ### Step 5: Final Report Generation
 - Synthesize findings into a structured JSON report.
-- Assign a verdict based on thresholds: ≥ 90% (Pass), 75–89% (Conditional), < 75% (Fail).
+- Assign a verdict based on Bayesian thresholds: 
+  - PASS: Posterior mean ≥ 0.90 AND CI lower bound ≥ 0.80.
+  - CONDITIONAL: Posterior mean ≥ 0.75.
+  - FAIL: Posterior mean < 0.75.
 
 ## Output Format Specification
 

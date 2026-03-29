@@ -56,8 +56,8 @@ The DEV PLAN transplants the AutoResearch loop into the domain of Claude Agent S
 | AutoResearch (original) | This DEV PLAN (transplanted) | Why the substitution works |
 |------------------------|------------------------------|---------------------------|
 | `train.py` — Python training code | `SKILL.md` — Markdown instruction file | Both are single mutable text files that fully define the system's behavior. Each modification produces a clean, reviewable git diff. |
-| `val_bpb` — bits per byte on validation set | **Binary eval pass rate** — does the Skill trigger correctly AND produce valid structured output? | Both are scalar numbers with a clear direction (lower bpb = better; higher pass rate = better). Neither requires subjective human judgment. |
-| 5-minute GPU training budget | **Fixed test set** — the same N test cases run every evaluation, without exception | Both enforce identical evaluation conditions across all experiments. This is what makes version A and version B directly comparable. |
+| `val_bpb` — bits per byte on validation set | **Bayesian posterior trigger rate** — the statistical mean and 95% credible interval of the Skill's trigger accuracy. | Both are scalar numbers with a clear direction. Neither requires subjective human judgment. The Bayesian approach filters out measurement noise. |
+| 5-minute GPU training budget | **Fixed test set** — the same 44 test prompts (Training + Validation split) run every evaluation | Both enforce identical evaluation conditions across all experiments. This is what makes version A and version B directly comparable. |
 | Agent modifies Python code syntax | Agent modifies natural language instruction text | The optimization target shifts from syntax to semantics, but the loop structure is identical. The LLM itself acts as the optimizer. |
 
 The loop in the DEV PLAN's `autoresearch-optimizer` Skill is structurally identical to Karpathy's original:

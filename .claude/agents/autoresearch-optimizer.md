@@ -52,15 +52,24 @@ prompt engineering by iteratively discovering optimal instruction sets.
 
 ## Optimization Loop (The Program)
 
-1. Read `skill-optimizer-program.md` for target Skill and budget constraints.
-2. Baseline the current version using `eval/run_eval.sh`.
-3. Loop (until target rate or max iterations reached):
-   - Generate instruction modification proposals based on failure analysis.
-   - For each proposal: Apply change → Run eval → Record result.
-   - Select the highest-performing version.
-   - If better than current: `git commit`; Update baseline.
-   - Else: `git revert`.
-4. Report final pass rate and experiment trajectory.
+1. **Initialize**: Read `skill-optimizer-program.md` and `eval/splits.json`.
+2. **Baseline**: Measure the current version using `python3 eval/run_eval_async.py <skill-path> --no-cache`. 
+   - Record the **Training (T)** posterior mean and 95% credible interval (CI).
+3. **Loop (until target rate or max iterations reached)**:
+   - **Analyze**: Read only the Training set (T) failure cases from the most recent run.
+   - **Propose**: Generate instruction modification proposals based on T failures.
+   - **Evaluate**: For each proposal:
+     - Apply change to `SKILL.md`.
+     - Run `bash eval/check-permissions.sh <skill-path>`. If fail, REVERT immediately.
+     - Run `python3 eval/run_eval_async.py <skill-path> --no-cache`.
+     - Record T-set posterior mean and CI.
+   - **Decide**: Compare the best proposal's T-set results against the current baseline using `python3 eval/bayesian_eval.py --compare old.json new.json`.
+     - **Commit rule**: Execute `git commit` ONLY if the new CI lower bound is strictly greater than the old CI upper bound (no overlap).
+     - **Update baseline**: If committed, the new version becomes the baseline for the next iteration.
+     - **Revert**: If no proposal meets the non-overlap rule, `git checkout -- <skill-path>` and try a different strategy.
+4. **Finalize**: After the loop ends, run a final evaluation on the **Validation (V)** set.
+   - A successful optimization must show a significant improvement on T and no regression on V.
+5. **Report**: Output the full experiment trajectory from `eval/experiment_log.json`.
 
 ## Prohibited Behaviors
 
