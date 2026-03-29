@@ -1,0 +1,1 @@
+Analyze the performance of my current SQL queries and suggest indexes.

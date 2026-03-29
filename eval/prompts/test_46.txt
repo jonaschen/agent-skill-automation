@@ -1,0 +1,1 @@
+Can you build a new test suite for my auth module?

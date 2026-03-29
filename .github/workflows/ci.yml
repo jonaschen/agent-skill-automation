@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  permission-checks:
+    name: SKILL.md Permission Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: chmod +x eval/check-permissions.sh
+
+      - name: Run permission checks on all SKILL.md files
+        run: |
+          FAILED=0
+          for skill in .claude/skills/*/SKILL.md; do
+            echo "=== $skill ==="
+            if ! eval/check-permissions.sh "$skill"; then
+              FAILED=1
+            fi
+            echo ""
+          done
+          exit $FAILED

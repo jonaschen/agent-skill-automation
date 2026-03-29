@@ -1,0 +1,1 @@
+Help me refactor this python script to use more efficient loops.

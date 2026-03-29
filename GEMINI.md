@@ -33,8 +33,8 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
 - **Scalar Metric:** Bayesian posterior mean trigger rate (see `eval/bayesian_eval.py`).
   Raw pass rate is a noisy point estimate subject to LLM non-determinism. Always use the posterior + 95% credible interval (CI).
 - **Decision Rule**: A version change is only committed if the new CI lower bound > old CI upper bound (no overlap).
-- **Fixed Budget:** 44 fixed test prompts in `eval/prompts/` (test_1–44).
-  - Training set (T, 26 prompts): optimizer reads these failures and iterates against them.
+- **Fixed Budget:** 54 fixed test prompts in `eval/prompts/` (test_1–54).
+  - Training set (T, 36 prompts): optimizer reads these failures and iterates against them.
   - Validation set (V, 18 prompts): held out — used only for final assessment. See `eval/splits.json`.
 
 ## Repository Structure
@@ -45,7 +45,7 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
   - `bayesian_eval.py`: **Bayesian module (G10).** Correctly counts `FAIL:*` prefixes and models Beta distribution.
   - `prompt_cache.py`: **Semantic cache (G11).** Smart logic: description-sensitive for all positive cases and failing negative cases.
   - `tci_compute.py`: **Task Coupling Indexer (G14).** 4-dimension scoring for topology routing.
-  - `splits.json`: Defines T/V split (26/18).
+  - `splits.json`: Defines T/V split (36/18).
 
 ## Current Status (Phase 3)
 
@@ -57,24 +57,27 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
 | G11 Prompt cache | ✅ Verified | Description-sensitivity confirmed |
 | G12 pre-deploy logic| ✅ Complete | Bayesian hook implemented |
 | G13 Trigger Audit | ✅ Complete | Case-insensitive robust matching implemented |
-| G14 TCI Logic | ✅ Complete | `eval/tci_compute.py` drafted |
-| G15 Agent Audit | ✅ Complete | Descriptions audited and refined for authority |
-| G7 Baseline Run | ⏳ Pending | Quota reset in ~1h; runner upgraded with --split |
-| G8 First optimizer | 🔲 Blocked | Blocked on G7 |
+| G14 TCI Logic | ✅ Complete | `eval/tci_compute.py` updated to use git/fs state |
+| G15 Agent Audit | ❌ Rejected | Description change caused regression; reverted |
+| G16 Role Library | ✅ Complete | 8 expert roles in lib/agents/ |
+| G17 Real-State TCI | ✅ Complete | Integrated git/fs signals into TCI |
+| G18 Negative Controls| ✅ Complete | test_45–54 added to T-set |
+| G7b Baseline Run | ⏳ Pending | **PAUSED** until 11:00 PM Quota Reset |
+| G8 First optimizer | 🔲 Blocked | Blocked on G7b |
 
 ## G7 Eval History (Recent)
 
 ### Run 1 (concurrency=1, --no-cache) — ❌ INVALID
 - **Mean**: 0.207 | **CI**: [0.083, 0.369]
 - **Skips**: 17 (quota hit)
-- **Key Observation**: 0/22 positive triggers detected.
+- **Key Observation**: 0/22 positive triggers detected. (Later found G15 change caused this).
 
 ### Run 2 (concurrency=1, --no-cache) — ❌ INVALID
 - **Mean**: 0.622 | **CI**: [0.462, 0.769]
 - **Skips**: 9 (quota hit)
 - **Key Observation**: 0/13 positive triggers detected.
 
-**Baseline Conclusion**: Signal is stable enough to show total trigger failure. Meta-Agent Factory is NOT triggering on any positive cases.
+**Baseline Conclusion**: Previous signals were polluted by G15 description change. G7b must re-run with reverted description to establish clean baseline.
 
 ## Operational Guidance
 - **NEVER** write to `CANVAS.md`.
