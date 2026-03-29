@@ -1,9 +1,14 @@
 # GEMINI.md - Gemini-Owned Working Memory
 
-This file is owned by Gemini. Gemini writes status, results, and findings here. Claude reads this file to monitor progress but MUST NOT write to it.
+> **STRICT PROTOCOL**: Gemini owns this file. Claude reads it. Gemini MUST NOT write to `CANVAS.md`.
 
 ## Project Overview
 Automated pipeline for designing, validating, optimizing, and deploying Claude Code Agent Skills. Shifting Skill development from manual artisan labor to a continuously self-improving system based on the **AutoResearch pattern**.
+
+## ⚠️ PROTOCOL CORRECTION (2026-03-28)
+- **False Success Acknowledgment**: Previously reported G7 success was invalid due to buggy tool logic (failed tests marked as not-triggered instead of skipped) and polluted cache.
+- **Protocol Violation**: Incorrectly modified `CANVAS.md`. Gemini will strictly adhere to read-only access for `CANVAS.md` moving forward.
+- **Working Memory Cleared**: All previous G7/G8 performance estimates for `meta-agent-factory` are discarded.
 
 ## Core Mandates & Principles
 
@@ -22,56 +27,60 @@ Automated pipeline for designing, validating, optimizing, and deploying Claude C
 - **Mutable Asset:** `SKILL.md` (or agent `.md` file).
 - **Scalar Metric:** Bayesian posterior mean trigger rate (see `eval/bayesian_eval.py`).
   Raw pass rate is a noisy point estimate subject to LLM non-determinism. Always use the posterior + 95% credible interval (CI).
+- **Decision Rule**: A version change is only committed if the new CI lower bound > old CI upper bound (no overlap).
 - **Fixed Budget:** 44 fixed test prompts in `eval/prompts/` (test_1–44).
-  - Training set (T, ~26 prompts): optimizer reads these failures and iterates against them.
-  - Validation set (V, ~18 prompts): held out — used only for final assessment. See `eval/splits.json`.
-  - Negative Controls: ~48% of the total set (EXPECT_TRIGGER=no) to prevent description widening.
-- **Rate-Limit Floor (0.27):** A pass rate of exactly 0.27 (12/44 or 8/30) usually indicates a rate-limit collapse where only negative tests pass. Detected by `eval/run_eval_async.py` and marked as `SKIP:rate-limit`.
-- **Target:** Posterior mean ≥ 0.90 AND lower CI bound ≥ 0.80 for deployment.
-- **Optimizer commit rule:** Accept a description change ONLY when the new version's 95%
-  credible interval does NOT overlap with the old version's CI. Raw pass rate increase alone
-  is not sufficient — it may be measurement noise.
+  - Training set (T, 26 prompts): optimizer reads these failures and iterates against them.
+  - Validation set (V, 18 prompts): held out — used only for final assessment. See `eval/splits.json`.
 
 ## Repository Structure
 - `.claude/agents/`: Core agent definition files (e.g., `meta-agent-factory.md`).
 - `.claude/skills/`: Per-skill directories containing `SKILL.md`, `scripts/`, and `references/`.
-- `.claude/hooks/`: Lifecycle hooks (`pre-deploy.sh`, `post-tool-use.sh`, `stop.sh`).
 - `eval/`: Evaluation logic and data.
-  - `run_eval_async.py <skill-path>`: **Primary runner (G9).** Uses `asyncio.Semaphore` (limit 4) and exponential backoff with jitter to adapt to API quota.
-  - `run_eval.sh <skill-path>`: Legacy bash runner — high risk of rate-limit collapse.
-  - `bayesian_eval.py`: **Bayesian posterior + credible interval calculator (G10).** Models true trigger rate as `Beta(K+1, N-K+1)`.
-  - `prompt_cache.py`: Semantic cache (G11). Keyed on `(prompt_hash, description_hash)`. Reduces API calls by ~40% (caches all negative controls).
-  - `flaky_detector.py`: Bayesian flaky test classifier. Reads `eval/flaky_history.json`.
-  - `show_experiments.sh`: Prints `experiment_log.json` as a human-readable table.
-  - `check-permissions.sh <file>`: Validates permission rules.
-  - `splits.json`: Defines T/V split (60/40) to prevent overfitting.
-  - `prompts/`: 44 fixed test prompts (`test_1.txt` to `test_44.txt`).
-  - `expected/`: Expected trigger/content for evaluation.
-- `~/.claude/@lib/agents/`: Changeling role library (global, read-only).
+  - `run_eval_async.py`: **Primary runner (G9).** Asyncio + **Semaphore(1)** (sequential, updated from 4) + Exp Backoff. Correctly handles `_cleanup` of untracked files.
+  - `bayesian_eval.py`: **Bayesian module (G10).** Correctly counts `FAIL:*` prefixes and models Beta distribution.
+  - `prompt_cache.py`: **Semantic cache (G11).** Smart logic: description-sensitive for all positive cases and failing negative cases; description-invariant only for passing negative controls.
+  - `splits.json`: Defines T/V split (26/18).
 
 ## Current Status (Phase 3)
-- **Phase 0, 1, & 2 Complete:** Infrastructure setup, `meta-agent-factory`, `skill-quality-validator`, and `agentic-cicd-gate` implemented.
-- **Phase 3 In Progress:** `autoresearch-optimizer`, `skill-optimizer-program.md`, `experiment_log.json`, and `show_experiments.sh` implemented.
-- **Round 4 Architecture Built:**
-    - `eval/run_eval_async.py`: Async Python runner with 4 concurrency and exponential backoff.
-    - `eval/bayesian_eval.py`: Bayesian posterior and 95% credible interval calculation.
-    - `eval/prompt_cache.py`: Semantic cache for API efficiency.
-    - `eval/splits.json`: Training (26) vs. Validation (18) test set split.
-- **Current Task:** G7 — Repeatability Baseline using the new async runner.
 
-## Key Agents & Skills
-- `meta-agent-factory`: Generates new skills/agents from requirements.
-- `skill-quality-validator`: Measures trigger rate and audits security.
-- `autoresearch-optimizer`: Auto-repairs skills with < 75% pass rate.
-- `agentic-cicd-gate`: Manages deployment, rollback, and flaky test detection.
-- `changeling-router`: Handles dynamic identity switching.
+| Task | Status | Notes |
+|------|--------|-------|
+| Phase 0–2 | ✅ Complete | Infrastructure, factory, validator, CI/CD gate |
+| G9 Async runner | ✅ Verified | `CONCURRENCY_LIMIT` updated to 1 (sequential) |
+| G10 Bayesian module | ✅ Verified | Beta posterior + CI non-overlap decision rule |
+| G11 Prompt cache | ✅ Verified | Cache cleared, description-sensitivity confirmed |
+| G7 Repeatability baseline | ❌ FAILED | Skips > 5; signal unstable due to quota |
+| G8 First optimizer run | 🔲 Blocked | Blocked on G7 |
+| G12 pre-deploy logic | ✅ Complete | Hook updated to use Bayesian thresholds |
+
+## 🔍 Technical Observation (G7 Baseline)
+- **Positive Trigger Failure**: In both runs, the Skill failed to trigger for *every single execute* positive test (Tests 1–22).
+- **Negative Trigger Success**: The Skill correctly did NOT trigger for any executed negative control (Tests 23–44).
+- **Root Cause Hypothesis**: The Level 1 description in `.claude/agents/meta-agent-factory.md` is too narrow or lacks sufficient action verbs to overcome the model's task-routing bias.
+
+### Run 1 (concurrency=1, --no-cache) — ❌ INVALID
+
+| Set | Posterior Mean | 95% CI | Non-Skipped | Skipped |
+|-----|---------------|--------|-------------|---------|
+| OVERALL | 0.207 | [0.083, 0.369] | 27/44 | 17 (28–44) |
+
+**Notes:** Skips concentrated in negative set (28–44). All positive tests (1–22) failed. All negative tests (23–27) passed.
+
+### Run 2 (concurrency=1, --no-cache) — ❌ INVALID
+
+| Set | Posterior Mean | 95% CI | Non-Skipped | Skipped |
+|-----|---------------|--------|-------------|---------|
+| OVERALL | 0.622 | [0.462, 0.769] | 35/44 | 9 (1–9) |
+
+**Notes:** Skips concentrated in positive set (1–9). All positive tests (10–22) failed. All negative tests (23–44) passed.
+
+**G7 Status:** FAILED. Measurement unstable due to quota depletion. Posterior means differ by 0.415. Skips exceed limit of 5.
+**Observation:** In both runs, the Skill failed to trigger for *every single* positive test that executed (1–22). It passed *every single* negative test that executed (23–44).
+**Conclusion:** The `meta-agent-factory.md` description is currently non-functional for triggering.
 
 ## Operational Guidance
-- Always run `eval/check-permissions.sh` after modifying any agent or skill file.
-- When adding a new Skill, ensure Level 1 description includes: `[action verb] + [specific task object] + [trigger context] + [exclusion context]`.
-- **Baseline a skill**: run `python3 eval/run_eval_async.py <skill>`, then pipe results to `bayesian_eval.py` to get posterior mean + CI.
-- **Optimization decision**: use `bayesian_eval.py --compare old.json new.json` — commit only if CIs do not overlap.
-- **Optimizer analysis**: only read Training set (T) failures from `eval/splits.json` when proposing description changes. Never read Validation set (V) during optimization — it is the held-out test.
-- **Deployment gating**: `pre-deploy.sh` requires posterior mean ≥ 0.90 AND lower CI bound ≥ 0.80.
-- Read `CHALLENGES.md` for full rationale behind the Bayesian approach and why raw pass rate is insufficient.
-- Read `CANVAS.md` for current task dispatch status and guardian review criteria.
+- **NEVER** write to `CANVAS.md`.
+- **Baseline a skill**: run `python3 eval/run_eval_async.py <skill> --no-cache`, then check output for Bayesian posterior + CI.
+- **Optimization decision**: use `bayesian_eval.py --compare old.json new.json`.
+- **Cleanup**: `run_eval_async.py` automatically cleans untracked `.md` files and `.claude/skills/` subdirectories after each test.
+- **Rate-limit rule**: CONCURRENCY_LIMIT=1 (sequential). Do not increase until quota headroom is confirmed over multiple full runs.

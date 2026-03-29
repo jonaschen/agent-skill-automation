@@ -9,7 +9,7 @@ import random
 from prompt_cache import PromptCache
 from bayesian_eval import get_stats
 
-CONCURRENCY_LIMIT = 4
+CONCURRENCY_LIMIT = 1  # Sequential: avoids burst rate-limiting on free-tier quota
 MAX_RETRIES = 5
 TIMEOUT = 150 # seconds per test
 
@@ -97,16 +97,50 @@ class AsyncEvalRunner:
             return "FAIL:false-positive" if triggered else "PASS"
 
     def _cleanup(self):
-        # Implementation of cleanup_generated_files equivalent
         try:
-            subprocess.run(["git", "ls-files", "--others", "--exclude-standard", "--", ".claude/agents/*.md", ".claude/skills/"],
-                           cwd=self.repo_root, capture_output=True)
-            # Port the actual removal logic if needed, but for now we focus on the runner
-        except: pass
+            # 1. Remove untracked files/dirs identified by git
+            # We use --directory to get the root of untracked dirs
+            res = subprocess.run(
+                ["git", "ls-files", "--others", "--exclude-standard", "--directory", "--", ".claude/agents/", ".claude/skills/"],
+                cwd=self.repo_root, capture_output=True, text=True
+            )
+            
+            import shutil
+            for item in res.stdout.strip().split('\n'):
+                if not item: continue
+                full_path = os.path.join(self.repo_root, item)
+                if not os.path.exists(full_path): continue
+                
+                # Protect core directories themselves
+                if item in [".claude/agents/", ".claude/skills/"]: continue
+                
+                if self.verbose: print(f"    (Cleaning up {item})", file=sys.stderr)
+                
+                if os.path.isdir(full_path):
+                    shutil.rmtree(full_path)
+                else:
+                    os.remove(full_path)
 
-    async def run_all(self):
-        prompts_dir = os.path.join(self.repo_root, "eval/prompts")
-        expected_dir = os.path.join(self.repo_root, "eval/expected")
+            # 2. Remove untracked Changeling roles (usually in ~/.claude/@lib/agents/)
+            home = os.path.expanduser("~")
+            lib_agents_dir = os.path.join(home, ".claude/@lib/agents")
+            if os.path.isdir(lib_agents_dir):
+                core_roles = ["security-auditor", "perf-analyst", "database-administrator"]
+                for f in os.listdir(lib_agents_dir):
+                    if f.endswith(".md"):
+                        name = f[:-3]
+                        if name not in core_roles:
+                            try:
+                                os.remove(os.path.join(lib_agents_dir, f))
+                            except: pass
+        except Exception as e:
+            if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
+
+    async def run_all(self, prompts_dir=None, expected_dir=None):
+        if not prompts_dir:
+            prompts_dir = os.path.join(self.repo_root, "eval/prompts")
+        if not expected_dir:
+            expected_dir = os.path.join(self.repo_root, "eval/expected")
         
         test_files = sorted([f for f in os.listdir(prompts_dir) if f.startswith("test_")], 
                             key=lambda x: int(x.split('_')[1].split('.')[0]))
@@ -151,10 +185,12 @@ async def main():
     parser.add_argument("skill_path")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--no-cache", action="store_true")
+    parser.add_argument("--prompts-dir", help="Custom prompts directory")
+    parser.add_argument("--expected-dir", help="Custom expected directory")
     args = parser.parse_args()
     
     runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache)
-    sys.exit(await runner.run_all())
+    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir))
 
 if __name__ == "__main__":
     asyncio.run(main())

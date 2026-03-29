@@ -33,24 +33,28 @@ class PromptCache:
         p_hash = self._hash(prompt)
         d_hash = self._hash(description)
         
-        # Rule: Key includes description for positive cases (they might flip)
-        # For negative cases, they are unlikely to flip if description improves
-        if expect_trigger == "yes":
-            key = f"pos:{p_hash}:{d_hash}"
-        else:
-            # Negative cases are cached based on prompt only (description-invariant)
-            key = f"neg:{p_hash}"
-            
-        return self.data.get(key)
+        # 1. Try prompt-only cache (description-invariant)
+        # Only used for successful negative controls (they stay PASS)
+        key_inv = f"inv:{p_hash}"
+        cached_inv = self.data.get(key_inv)
+        if cached_inv and cached_inv["result"] == "PASS":
+            return cached_inv
+
+        # 2. Try description-sensitive cache
+        # Used for all positive cases AND failing negative cases (to see if they flip to PASS)
+        key_sens = f"sens:{p_hash}:{d_hash}"
+        return self.data.get(key_sens)
 
     def set(self, prompt, description, expect_trigger, result):
         p_hash = self._hash(prompt)
         d_hash = self._hash(description)
         
-        if expect_trigger == "yes":
-            key = f"pos:{p_hash}:{d_hash}"
+        # Rule: Successful negative controls are stored description-invariantly
+        if expect_trigger == "no" and result == "PASS":
+            key = f"inv:{p_hash}"
         else:
-            key = f"neg:{p_hash}"
+            # All positive cases and failing negative cases are description-sensitive
+            key = f"sens:{p_hash}:{d_hash}"
             
         self.data[key] = {
             "result": result,

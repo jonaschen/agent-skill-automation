@@ -122,14 +122,15 @@ SKILL.md files from natural language requirements.
 ### Tasks
 
 #### 3.1 Async Architecture (Mandatory Gate)
-- [ ] **S2 (G9)**: Implement `eval/run_eval_async.py` (asyncio + semaphore + backoff). **Status: 🔄 (ACTIVE — PRIORITY 1)**
-- [ ] **S1 (G10)**: Implement `eval/bayesian_eval.py` (posterior + credible intervals). **Status: 🔲**
-- [ ] **S3 (G11)**: Implement `eval/prompt_cache.py` (semantic cache). **Status: 🔲**
+- [x] **S2 (G9)**: Implement `eval/run_eval_async.py` (asyncio + semaphore + backoff). **Status: ✅**
+- [x] **S1 (G10)**: Implement `eval/bayesian_eval.py` (posterior + credible intervals). **Status: ✅**
+- [x] **S3 (G11)**: Implement `eval/prompt_cache.py` (semantic cache). **Status: ✅**
+- [x] **G12**: Update `pre-deploy.sh` to enforce Bayesian gates. **Status: ✅**
 
 #### 3.2 `autoresearch-optimizer` agent
 - [x] Write `.claude/agents/autoresearch-optimizer.md` — full 5-stage loop with parallel branch search (A/B/C/D)
 - [x] Write `skill-optimizer-program.md` — defines target Skill, metric, budget, stop criteria
-- [ ] First live run: execute the optimizer against `meta-agent-factory` SKILL.md *(Claude, C3)* **Status: 🔲 (BLOCKED — Pending G9/G7)**
+- [ ] First live run: execute the optimizer against `meta-agent-factory` SKILL.md *(Claude, C3)* **Status: 🔲 (BLOCKED — Pending G7)**
 - [ ] Validate parallel branch search actually runs all 4 branches per iteration *(after C3)*
 
 #### 3.3 Experiment tracking
