@@ -36,6 +36,34 @@
       "change_description": "Strengthened NEW vs EXISTING distinction.",
       "git_commit": "REVERTED",
       "outcome": "revert"
+    },
+    {
+      "iteration": 5,
+      "timestamp": "2026-03-29T00:00:00Z",
+      "branch": "G8-iter1",
+      "pass_rate": 0.921,
+      "posterior_mean": 0.921,
+      "ci_lower": 0.818,
+      "ci_upper": 0.983,
+      "train_posterior": 0.921,
+      "val_posterior": 0.800,
+      "change_description": "G8 Iter 1: Added 'I need a Skill for X', 'workflow automation', 'create an X expert' triggers. Strengthened exclusions for fix/debug/analyze existing.",
+      "git_commit": "25d0f9c",
+      "outcome": "commit"
+    },
+    {
+      "iteration": 6,
+      "timestamp": "2026-03-31T00:00:00Z",
+      "branch": "G8-iter2",
+      "pass_rate": 0.895,
+      "posterior_mean": 0.895,
+      "ci_lower": 0.781,
+      "ci_upper": 0.970,
+      "train_posterior": 0.895,
+      "val_posterior": 0.900,
+      "change_description": "G8 Iter 2: Added ROUTING RULE (create/build intent always routes here even when domain agents exist), EXCLUSION RULE (existing Skill modification routes elsewhere), explicit Changeling/AOSP domain disambiguation. V pushed from 0.800 to 0.900.",
+      "git_commit": "8dae856",
+      "outcome": "commit"
     }
   ]
 }

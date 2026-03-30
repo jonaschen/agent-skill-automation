@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-03-30: Phase 3 core complete (eval infra verified, first optimizer iteration T=0.921 V=0.800). Phase 4 starting.**
+**Status as of 2026-03-31: Phase 3 optimization ongoing. G8 Iter 2 — description refined with ROUTING RULE + EXCLUSION RULE + domain disambiguation. Training: 0.895 CI [0.781, 0.970], Validation: 0.900 CI [0.740, 0.987]. Phase 4 starting.**
 
 ---
 
@@ -134,6 +134,7 @@ SKILL.md files from natural language requirements.
 - [x] Write `skill-optimizer-program.md` — defines target Skill, metric, budget, stop criteria
 - [x] **G7b**: Repeatability baseline — Training: 0.895 CI [0.781, 0.970], 33/36 PASS, 0 skips. Validation: 0.600 CI [0.384, 0.797], 11/18 PASS. `--inter-test-delay 15` eliminated quota burst. ✅
 - [x] **G8 Iter 1**: Description refined — added "I need a Skill for X", "workflow automation", "create an X expert" triggers; strengthened exclusions for fix/debug/analyze existing. Training: **0.921** CI [0.818, 0.983], 34/36. Validation: **0.800** CI [0.604, 0.940], 15/18. ✅
+- [x] **G8 Iter 2**: Added ROUTING RULE (create/build intent always routes to meta-agent-factory even when domain agents exist), EXCLUSION RULE (existing agent/Skill modification routes elsewhere), explicit domain disambiguation (AOSP, Changeling examples). Training: **0.895** CI [0.781, 0.970], 33/36. Validation: **0.900** CI [0.740, 0.987], 17/18. Remaining failures: Test 11 (Changeling routing conflict), Test 41 (false positive on existing Skill improvement), stochastic noise on 1–2 positives. ✅
 - [ ] Validate parallel branch search actually runs all 4 branches per iteration *(after G8)*
 
 #### 3.3 Experiment tracking
@@ -445,7 +446,8 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 
 1. ~~G7b~~ ✅ Baseline confirmed: T=0.895, V=0.600
 2. ~~G8 Iter 1~~ ✅ Description optimized: T=0.921, V=0.800. Exceeds deployment gate (T ≥ 0.90).
-3. **Next**: G8 Iter 2+ — push V above 0.85 overfit threshold (currently 0.800)
-4. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
-5. **Phase 4 prep**: Expand role library from 8 to ≥ 20 definitions
-6. **Phase 5 prep**: Build 50-task TCI benchmark dataset
+3. ~~G8 Iter 2~~ ✅ V pushed to 0.900 (above 0.85 overfit threshold). T=0.895.
+4. **Next**: G8 Iter 3 — push T back above 0.90 (persistent failures: Test 11 Changeling conflict, Test 41 false positive)
+5. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
+6. **Phase 4 prep**: Expand role library from 8 to ≥ 20 definitions
+7. **Phase 5 prep**: Build 50-task TCI benchmark dataset

@@ -1,14 +1,17 @@
 ---
 name: meta-agent-factory
 description: >
-  Designs and generates new Claude Agent Skill or Sub-agent definition files.
-  Triggered when a user needs to create a new AI agent capability, instantiate
-  a specific role as an agent, configure MCP external service connections, or
-  automate a workflow. Covers the full flow from requirements analysis and
-  architecture classification through permission design to SKILL.md file write.
-  Does not handle quality optimization of existing Skills (handled by
-  autoresearch-optimizer), nor post-deployment monitoring tasks (handled by
-  agentic-cicd-gate).
+  Designs and generates new Claude Agent Skill, Sub-agent, or Changeling role
+  definition files. ROUTING RULE: Any request whose primary intent is to CREATE,
+  BUILD, DEFINE, or ADD a new agent, Skill, persona, expert, or role MUST route
+  here — even when an existing domain agent covers that topic (e.g. "create an
+  AOSP expert" routes here, not to aosp-integration-expert; "add a persona to
+  the Changeling role library" routes here, not to changeling-router). Covers requirements
+  analysis, architecture classification, permission design, and SKILL.md file
+  write. EXCLUSION: Does NOT activate for modifying, improving, or debugging
+  EXISTING agents/Skills (route to autoresearch-optimizer), nor for
+  post-deployment monitoring (route to agentic-cicd-gate), nor for direct
+  task execution.
 tools:
   - Read
   - Write

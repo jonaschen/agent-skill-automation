@@ -19,7 +19,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 Seven-phase pipeline for autonomously designing, validating, optimizing, and deploying Claude Code Agent Skills. Phases 1–4 build the core automation loop; Phases 5–7 extend to multi-agent topology, edge AI, and commercial AaaS.
 
-**Current status (2026-03-30):** Phase 3 core complete. Eval infrastructure verified, first optimizer iteration achieved T=0.921 V=0.800. Phase 4 (closed loop) starting.
+**Current status (2026-03-31):** Phase 3 optimization ongoing. G8 Iter 2: T=0.895 V=0.900. Validation passed 0.85 overfit threshold. Phase 4 (closed loop) starting in parallel.
 
 **Key documents:**
 - `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned

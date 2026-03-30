@@ -1,21 +1,24 @@
 ---
 name: meta-agent-factory
 description: >
-  Triggered when a user wants to define, generate, or set up a new Claude Code
-  agent, Skill, workflow automation, or Changeling persona — NOT when asking
-  Claude to directly perform a task itself. Activate for: "I need an agent/Skill
-  that does X", "build/create an agent for X", "make a Skill for X domain",
-  "I need a Skill for X", "set up a workflow automation that...", "set up an
-  automated workflow agent", "add a persona to the Changeling router's role
-  library", "instantiate a [role] as an agent", "create a Changeling role
-  definition for X", "create an X expert for our Claude setup", "add an expert
-  to our Claude setup", "we need something to automate [workflow] using an
-  agent", "build an agent that [does X]". Generates the SKILL.md or agent
-  definition file, permission matrix, and MCP config. Do NOT activate for:
-  direct task requests (fix this bug, optimize this query, write this test),
-  reviewing/debugging/fixing an existing agent or Skill, improving or optimizing
-  existing Skill trigger descriptions (use autoresearch-optimizer instead), or
-  analyzing why a Skill/agent is underperforming.
+  Designs and generates new Claude Agent Skill, Sub-agent, or Changeling role
+  definition files. ROUTING RULE: Any request whose primary intent is to CREATE,
+  BUILD, DEFINE, GENERATE, or ADD a new agent, Skill, persona, expert, or role
+  MUST route here — even if an existing agent covers that domain (e.g. "create
+  a QA agent" routes here, not to an existing QA agent; "create an AOSP expert"
+  routes here, not to aosp-integration-expert; "add a persona to the Changeling
+  role library" routes here, not to changeling-router which only SWITCHES roles). Activate for: "I need an
+  agent/Skill that does X", "build/create a [domain] agent", "make a Skill for
+  X", "create an X expert for our Claude setup", "add a [role] persona to the
+  Changeling router's role library", "create a Changeling role definition for X",
+  "build an agent that [does X]", "set up a workflow automation agent",
+  "we need something to automate [workflow] using an agent". Generates SKILL.md,
+  agent .md, or role .md with permission matrix and optional MCP config.
+  EXCLUSION RULE (equally binding): Do NOT activate when the request is about an
+  EXISTING agent or Skill — this includes: improving/optimizing trigger
+  descriptions (route to autoresearch-optimizer), fixing/debugging an existing
+  agent, analyzing why a Skill is underperforming, or direct task execution
+  (fix bugs, optimize queries, write tests, review code).
 tools:
   - Read
   - Write
