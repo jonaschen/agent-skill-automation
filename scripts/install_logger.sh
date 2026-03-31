@@ -43,62 +43,61 @@ chmod +x "$TARGET/.claude/hooks/skill_logger_hook.sh"
 # Create or update settings.local.json (project-local, gitignored)
 SETTINGS="$TARGET/.claude/settings.local.json"
 
-if [ -f "$SETTINGS" ]; then
-  # Merge hooks into existing settings
-  EXISTING=$(cat "$SETTINGS")
-else
-  EXISTING="{}"
-fi
+# Write the hooks configuration — read file directly in Python to avoid escaping issues
+python3 - "$SETTINGS" <<'PYEOF'
+import json, sys
 
-# Write the hooks configuration
-python3 -c "
-import json
+settings_path = sys.argv[1]
 
-settings = json.loads('''$EXISTING''')
+try:
+    with open(settings_path) as f:
+        settings = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    settings = {}
 
-if 'hooks' not in settings:
-    settings['hooks'] = {}
+if "hooks" not in settings:
+    settings["hooks"] = {}
 
-hooks = settings['hooks']
+hooks = settings["hooks"]
 
 # UserPromptSubmit — capture user prompt
-hooks['UserPromptSubmit'] = [{
-    'matcher': '',
-    'hooks': [{
-        'type': 'command',
-        'command': '.claude/hooks/skill_logger_hook.sh'
+hooks["UserPromptSubmit"] = [{
+    "matcher": "",
+    "hooks": [{
+        "type": "command",
+        "command": ".claude/hooks/skill_logger_hook.sh"
     }]
 }]
 
 # SubagentStop — capture which subagent finished
-hooks['SubagentStop'] = [{
-    'matcher': '',
-    'hooks': [{
-        'type': 'command',
-        'command': '.claude/hooks/skill_logger_hook.sh'
+hooks["SubagentStop"] = [{
+    "matcher": "",
+    "hooks": [{
+        "type": "command",
+        "command": ".claude/hooks/skill_logger_hook.sh"
     }]
 }]
 
 # PostToolUse — capture Skill/Agent tool calls
-hooks['PostToolUse'] = hooks.get('PostToolUse', [])
+hooks["PostToolUse"] = hooks.get("PostToolUse", [])
 
 # Add skill logger if not already present
 skill_logger_present = any(
-    any(h.get('command', '').endswith('skill_logger_hook.sh') for h in entry.get('hooks', []))
-    for entry in hooks['PostToolUse']
+    any(h.get("command", "").endswith("skill_logger_hook.sh") for h in entry.get("hooks", []))
+    for entry in hooks["PostToolUse"]
 )
 if not skill_logger_present:
-    hooks['PostToolUse'].append({
-        'matcher': 'Agent|Skill',
-        'hooks': [{
-            'type': 'command',
-            'command': '.claude/hooks/skill_logger_hook.sh'
+    hooks["PostToolUse"].append({
+        "matcher": "Agent|Skill",
+        "hooks": [{
+            "type": "command",
+            "command": ".claude/hooks/skill_logger_hook.sh"
         }]
     })
 
-with open('$SETTINGS', 'w') as f:
+with open(settings_path, "w") as f:
     json.dump(settings, f, indent=2)
-"
+PYEOF
 
 # Add log file to gitignore if not already there
 GITIGNORE="$TARGET/.gitignore"
