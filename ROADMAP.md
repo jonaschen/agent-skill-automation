@@ -174,20 +174,24 @@ SKILL.md files from natural language requirements.
 
 #### 4.1 `changeling-router` agent
 - [x] Write `.claude/agents/changeling-router.md` (stub — full implementation Phase 4)
-- [ ] Build `~/.claude/@lib/agents/` enterprise role library with ≥ 20 standard role definitions
+- [x] Build `~/.claude/@lib/agents/` enterprise role library with ≥ 20 standard role definitions
   - [x] **G16**: Initial 8 roles built: security-auditor, perf-analyst, database-administrator, frontend-expert, devops-specialist, python-architect, qa-engineer, product-owner ✅
-- [ ] Implement task type auto-identification: maps incoming task → correct role definition to load
+  - [x] **Phase 4**: Expanded to 23 roles — added api-designer, cloud-architect, data-engineer, ml-engineer, mobile-developer, network-engineer, technical-writer, compliance-officer, site-reliability-engineer, backend-architect, accessibility-specialist, cost-analyst, golang-expert, rust-expert, incident-commander ✅
+  - [x] Fixed eval cleanup bug — snapshot-based cleanup protects pre-existing roles ✅
+- [x] Implement task type auto-identification: two-phase routing (keyword match → semantic disambiguation) with 23-row routing table ✅
 - [ ] Validate role switching latency ≤ 2 seconds and full context reset between switches
 
 #### 4.2 End-to-end closed-loop stress test
+- [x] Build closed-loop orchestrator (`scripts/closed_loop.sh`) — factory→validate→optimize→deploy pipeline ✅
 - [ ] Stress test: generate, validate, optimize, and deploy 50 new Skills within 24 hours
 - [ ] Regression test: confirm no existing agent trigger rates degrade after new Skill deploy
 - [ ] Cost analysis: measure full pipeline token consumption and wall-clock time per Skill
 
 #### 4.3 Observability
-- [ ] Build agent legion health dashboard (trigger rate trends, hallucination rates, cost by model)
-- [ ] Implement Skill lifecycle tracking (created → validated → optimized → deployed → deprecated)
-- [ ] Set up anomaly alerting (trigger rate drops, unexpected tool use patterns)
+- [x] Build agent legion health dashboard (`scripts/health_dashboard.py`) ✅
+- [x] Implement Skill lifecycle tracking (`eval/lifecycle_tracker.py`) ✅
+- [x] Set up anomaly alerting (`scripts/anomaly_alerter.py`) — regression, stall, cost detection ✅
+- [x] Implement hooks: `post-tool-use.sh` (lifecycle logging + permission check), `stop.sh` (graceful shutdown) ✅
 
 ### Acceptance Criteria
 | Metric | Target |

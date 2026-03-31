@@ -24,6 +24,15 @@ class AsyncEvalRunner:
         self.repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         self.description = self._get_description()
         self.splits = self._get_splits()
+        self._pre_run_roles = self._snapshot_roles()
+
+    def _snapshot_roles(self):
+        """Capture existing role files before eval run so cleanup only removes eval-generated ones."""
+        home = os.path.expanduser("~")
+        lib_agents_dir = os.path.join(home, ".claude/@lib/agents")
+        if os.path.isdir(lib_agents_dir):
+            return set(os.listdir(lib_agents_dir))
+        return set()
 
     def _get_description(self):
         try:
@@ -150,18 +159,16 @@ class AsyncEvalRunner:
                 else:
                     os.remove(full_path)
 
-            # 2. Remove untracked Changeling roles (usually in ~/.claude/@lib/agents/)
+            # 2. Remove ONLY eval-generated Changeling roles (not pre-existing ones)
             home = os.path.expanduser("~")
             lib_agents_dir = os.path.join(home, ".claude/@lib/agents")
             if os.path.isdir(lib_agents_dir):
-                core_roles = ["security-auditor", "perf-analyst", "database-administrator"]
                 for f in os.listdir(lib_agents_dir):
-                    if f.endswith(".md"):
-                        name = f[:-3]
-                        if name not in core_roles:
-                            try:
-                                os.remove(os.path.join(lib_agents_dir, f))
-                            except: pass
+                    if f.endswith(".md") and f not in self._pre_run_roles:
+                        if self.verbose: print(f"    (Cleaning up eval-generated role: {f})", file=sys.stderr)
+                        try:
+                            os.remove(os.path.join(lib_agents_dir, f))
+                        except: pass
         except Exception as e:
             if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
 
