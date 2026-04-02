@@ -20,28 +20,37 @@ mkdir -p "$LOG_DIR"
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 
-# Run the research sweep
+# Run the research sweep — split into Anthropic and Google tracks to avoid timeouts
 cd "$REPO_ROOT"
-"$CLAUDE" --dangerously-skip-permissions -p "$(cat <<'PROMPT'
-You are the agentic-ai-researcher. Run a full research sweep (Mode 2).
 
-Instructions:
-1. Read .claude/agents/agentic-ai-researcher.md for the full execution flow
-2. Read knowledge_base/agentic-ai/INDEX.md to see what was last updated
-3. For each topic in BOTH the Anthropic and Google/DeepMind tracks:
-   - WebSearch for recent developments
-   - WebFetch the top 3 most relevant new results
-   - Write findings to the appropriate KB file under knowledge_base/agentic-ai/
-   - If the file exists, APPEND new findings (never overwrite)
-   - If the file doesn't exist, create it following the KB format
-4. Write a sweep report to knowledge_base/agentic-ai/sweeps/ with today's date
-5. Update INDEX.md with new entries and today's date as last-sweep
-6. Git add all changed files and commit with message "research: daily agentic AI sweep <today's date>"
+echo "" >> "$LOG_FILE"
+echo "--- Anthropic Track ---" >> "$LOG_FILE"
+"$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 
-Follow the knowledge base format and sweep report format defined in the agent definition exactly.
-Always cite sources with URLs. Date every finding.
-PROMPT
-)" >> "$LOG_FILE" 2>&1
+Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, Tool Use, Computer Use, Multi-agent Patterns, Model Releases):
+1. WebSearch for latest developments
+2. WebFetch the top 2 results
+3. Write or append findings to the correct file under knowledge_base/agentic-ai/anthropic/
+4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date." >> "$LOG_FILE" 2>&1 || true
+
+echo "" >> "$LOG_FILE"
+echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
+"$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+
+Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
+1. WebSearch for latest developments
+2. WebFetch the top 2 results
+3. Write or append findings to the correct file under knowledge_base/agentic-ai/google-deepmind/
+4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date." >> "$LOG_FILE" 2>&1 || true
+
+echo "" >> "$LOG_FILE"
+echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
+"$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+
+1. Read all files in knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
+2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
+3. Update knowledge_base/agentic-ai/INDEX.md with today's date for all updated topics
+4. Git add all changed files under knowledge_base/ and commit with message 'research: daily agentic AI sweep $(date +%Y-%m-%d)'" >> "$LOG_FILE" 2>&1 || true
 
 EXIT_CODE=$?
 echo "" >> "$LOG_FILE"
