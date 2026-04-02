@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -8,12 +8,23 @@
 - https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder
 - https://docs.cloud.google.com/agent-builder/agent-engine/overview
 - https://cloud.google.com/blog/products/ai-machine-learning/vertex-ai-memory-bank-in-public-preview
+- https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
 
 ## Overview
 
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-03 -- Code Execution GA, Regional Expansion, Session Rewind, Bidirectional Streaming
+- **What**: Comprehensive release notes update: (1) **Code Execution GA** (Feb 18, 2026) — Agent Engine Code Execution is now Generally Available with sandboxed execution. (2) **Regional expansion** — Agent Engine services now available in 7 additional regions: Zurich, Milan, Hong Kong, Seoul, Jakarta, Toronto, and São Paulo (Dec 2025). (3) **Session rewind** — developers can now rewind to any point in a conversation and invalidate all interactions after that point, removing polluted context without sending a new message. (4) **Bidirectional streaming** — Agent Engine supports bidirectional streaming for real-time agent interactions. (5) **Enterprise security**: Private Service Connect and customer-managed encryption keys (CMEK) now supported. (6) **Agent identity** credentials secured by default through Google-managed Context-Aware Access (CAA) policy. (7) **Cloud API Registry** (Preview, Dec 18 2025) — private registry for admins to curate and govern approved tools for developers across their organization, integrated with MCP servers. (8) **Agent Designer** (Preview, Dec 19 2025) — low-code visual designer for designing and testing agents in the Cloud console.
+- **Significance**: Code Execution GA completes the core Agent Engine service trilogy (Sessions + Memory Bank + Code Execution). Session rewind is a novel debugging/UX feature — no competitor offers mid-conversation state rollback. The 7-region expansion addresses data residency requirements for global enterprises. CMEK + Private Service Connect addresses regulated industry requirements (finance, healthcare).
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes
+
+### 2026-04-02 -- Context Layers, Self-Healing Plugins, Observability, Tool Governance Details (sweep update)
+- **What**: New capabilities announced for Vertex AI Agent Builder: (1) **Configurable context layers** (Static, Turn, User, Cache) via the ADK API give developers granular control over agent context and token usage; (2) **Self-healing plugins framework** enables agents to recover from tool failures using adaptable plugins, including a prebuilt tool-use plugin; (3) **Cloud API Registry integration** for tool governance — admins manage available tools for developers across their organization directly in the Agent Builder Console, with pre-built tools for BigQuery and Google Maps; (4) **Observability dashboard** within Agent Engine runtime tracks token usage, latency, and error rates; (5) **Evaluation layer** simulates user interactions to test agent reliability before production; (6) **Agent identity credentials** secured by default via Google-managed Context-Aware Access (CAA) policy; (7) **Lowered pricing** for Agent Engine runtime.
+- **Significance**: Context layers address the #1 production pain point (token cost). Self-healing plugins are a novel approach to agent reliability — agents can autonomously recover from tool errors without human intervention. The observability dashboard fills a critical gap for production monitoring. CAA-secured agent identity is an enterprise security differentiator.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder, https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
 
 ### 2026-02-11 -- Billing Begins for Sessions, Memory Bank, Code Execution
 - **What**: Usage-based billing started for Agent Engine Sessions, Memory Bank, and Code Execution services (delayed from original January 28 date).

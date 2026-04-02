@@ -1,11 +1,13 @@
 # Project Astra
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
 - https://techcrunch.com/2025/05/20/project-astra-comes-to-google-search-gemini-and-developers/
 - https://blog.google/technology/google-deepmind/gemini-universal-ai-assistant/
+- https://www.tomsguide.com/ai/what-is-project-astra-what-you-need-to-know-about-google-deepminds-ai-initiative
+- https://eu.36kr.com/en/p/3571198300289921
 
 ## Overview
 
@@ -13,10 +15,15 @@ Project Astra is Google DeepMind's research prototype toward building a universa
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-02 -- Astra Powering Production Features (surveyed)
-- **What**: Project Astra capabilities are now embedded in multiple Google products. Experts predict "Agentic-First" applications -- software designed to be navigated by AI rather than humans -- may emerge by late 2026. Astra's desktop-focused variant connects to Project Mariner for professional Chrome/Workspace workflows.
-- **Significance**: The transition from standalone prototype to embedded capability across Google products signals Astra is becoming infrastructure rather than a product. The convergence with Mariner creates a combined vision+browser agent.
-- **Source**: https://deepmind.google/models/project-astra/
+### 2026-04-03 -- Live API Developer Capabilities & Smart Glasses Update
+- **What**: Further details on Project Astra's developer and hardware story: (1) **Live API enhancements**: The developer-facing Live API now supports `stream.video` and `stream.audio` for real-time input, enabling developers to build their own Astra-like agents — visual tutors, AR assistants, real-time translators. Enhanced emotion detection ensures the AI model responds more appropriately to user tone/mood. Now includes thinking capabilities from Gemini's reasoning models for deeper analysis during live interactions. (2) **Smart glasses partnerships**: Google building Astra glasses with Samsung and Warby Parker, but no set launch date yet. An exclusive report (36kr) suggests Foxconn manufacturing with a Q4 2026 target release. The glasses provide an immersive "see the world as you see it" experience with real-time AI overlay. (3) **Cross-device continuity**: Astra conversations persist across phone, desktop, and prototype glasses, maintaining context and memory.
+- **Significance**: The Live API with video+audio streaming is a genuine developer platform — not just a Google-internal feature. Emotion detection adds a dimension competitors lack. The Samsung+Warby Parker+Foxconn glasses supply chain suggests Google is serious about a consumer hardware launch in 2026, which would make Astra the first major multimodal AI assistant deployed on smart glasses at scale.
+- **Source**: https://techcrunch.com/2025/05/20/project-astra-comes-to-google-search-gemini-and-developers/, https://eu.36kr.com/en/p/3571198300289921, https://www.tomsguide.com/ai/what-is-project-astra-what-you-need-to-know-about-google-deepminds-ai-initiative
+
+### 2026-04-02 -- Astra Visual Interpreter & Accessibility Focus (sweep update)
+- **What**: Project Astra capabilities continue to be embedded across Google products. New development: Google is building a **Visual Interpreter** research prototype specifically for the blind and low-vision community, powered by Astra. This variant can describe environments and identify objects. Google has partnered with **Aira** (a visual interpreting service) to refine the technology, with a **Trusted Tester program** offering early access. Astra also demonstrates action intelligence — using tools like Search, Gmail, Calendar, and Maps to complete tasks, and highlighting objects on-screen for context. Cross-device memory enables conversation continuity across phone, desktop, and prototype glasses. Astra remains a research prototype with limited trusted testers; broader access via waitlist. The desktop variant continues to connect to Project Mariner for professional Chrome/Workspace workflows. Experts predict "Agentic-First" applications may emerge by late 2026.
+- **Significance**: The Visual Interpreter for accessibility is a significant social impact application and a strong differentiator — no competitor has an equivalent specialized accessibility agent. The Aira partnership grounds development in real-world user needs. The action intelligence features (tool use with Search, Gmail, Calendar, Maps) show Astra evolving from passive understanding to active agent behavior. Cross-device memory is a key UX advantage.
+- **Source**: https://deepmind.google/models/project-astra/, https://deepmind.google/technologies/gemini/project-astra/
 
 ### 2025-05-20 -- Google I/O 2025: Astra Integrated into Products
 - **What**: Project Astra powers new "Search Live" feature in Google Search. In AI Mode or Lens, users click "Live" to ask questions about what they see through their smartphone camera. Astra streams live video and audio into an AI model and responds with near-zero latency. Also integrated into the Gemini AI app and made available to third-party developers.

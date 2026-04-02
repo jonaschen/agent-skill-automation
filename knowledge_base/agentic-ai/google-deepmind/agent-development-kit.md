@@ -1,19 +1,32 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
 - https://developers.googleblog.com/adk-go-10-arrives/
 - https://developers.googleblog.com/introducing-agent-development-kit-for-typescript-build-ai-agents-with-the-power-of-a-code-first-approach/
 - https://github.com/google/adk-python
-- https://google.github.io/adk-docs/
+- https://adk.dev/ (formerly google.github.io/adk-docs, redirected)
+- https://developers.googleblog.com/building-agents-with-the-adk-and-the-new-interactions-api/
+- https://developers.googleblog.com/announcing-adk-for-java-100-building-the-future-of-ai-agents-in-java/
+- https://google.github.io/adk-docs/release-notes/
 
 ## Overview
 
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-03 -- ADK Java 1.0.0 Detailed Features & Plugin Architecture
+- **What**: ADK Java 1.0.0 (released March 30, 2026) by Guillaume Laforge includes substantial new capabilities: (1) **New tools**: `GoogleMapsTool` (location-based grounding), `UrlContextTool` (web content fetch/summarize), `ContainerCodeExecutor` (Docker-based code execution), `VertexAiCodeExecutor` (cloud sandbox), `ComputerUseTool` (abstract browser/desktop automation interface). (2) **Plugin architecture**: New `App` class as top-level container with built-in plugins — `LoggingPlugin` (structured logging), `ContextFilterPlugin` (context window management), `GlobalInstructionPlugin` (app-wide instructions), extensible via custom `BasePlugin`. (3) **Context engineering**: Event compaction manages token efficiency with configurable intervals, overlap sizes, token thresholds (e.g., 4000 tokens), `LlmEventSummarizer`, and customizable retention strategies. (4) **Human-in-the-Loop (HITL)**: `ToolConfirmation`-based workflow for pausing tool execution for user approval with automatic context cleanup and resumption. (5) **Session/Memory services**: `InMemorySessionService`, `VertexAiSessionService`, `FirestoreSessionService` (community), plus `InMemoryMemoryService`, `FirestoreMemoryService`, and `GcsArtifactService`. (6) **Native A2A**: `RemoteA2AAgent` for consuming remote agents, `AgentExecutor` for exposing agents via JSON-RPC REST, seamless event streaming.
+- **Significance**: The plugin architecture is a major maturity signal — it enables enterprise customization without forking the framework. Context engineering (event compaction, summarization) directly addresses the token cost problem in production agents. The Java SDK reaching feature parity with Python means enterprise Java shops can now adopt ADK without compromise. `ComputerUseTool` in Java signals Google bringing browser automation to enterprise agents.
+- **Source**: https://developers.googleblog.com/announcing-adk-for-java-100-building-the-future-of-ai-agents-in-java/
+
+### 2026-04-02 -- Interactions API Integration & ADK Domain Migration (sweep update)
+- **What**: The new **Interactions API** can now serve as the inference engine for ADK agents, replacing the older `generateContent` endpoint. This provides server-side state management, background execution for long-running tasks, and native thought handling. ADK docs have migrated to a dedicated domain at **adk.dev** (redirected from google.github.io/adk-docs). ADK Java 1.0.0 officially released with bug fixes and enhancements. ADK Python latest release on March 26, 2026. Release cadence is roughly **bi-weekly** across all four language SDKs. The `InteractionsApiTransport` pattern also enables ADK agents to use Google's managed agents as A2A remote agents transparently.
+- **Significance**: Interactions API integration is a significant upgrade — it means ADK agents get server-managed conversation state and can interop with Google's managed agents (Deep Research etc.) seamlessly. The domain migration to adk.dev signals ADK is becoming a standalone product brand, not just a Google Cloud sub-project.
+- **Source**: https://developers.googleblog.com/building-agents-with-the-adk-and-the-new-interactions-api/, https://adk.dev/release-notes/
 
 ### 2025-12 -- ADK for TypeScript Released
 - **What**: Official TypeScript/JavaScript SDK launched, enabling Node.js developers to build agents with ADK. Supports Gemini 3 Pro/Flash, MCP Toolbox for Databases integration, and full multi-agent patterns.

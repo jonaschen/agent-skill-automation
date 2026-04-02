@@ -1,18 +1,61 @@
 # Model Releases
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
+- https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
 - https://en.wikipedia.org/wiki/Claude_(language_model)
 - https://www.anthropic.com/news/claude-opus-4-5
 - https://www.cnbc.com/2026/02/17/anthropic-ai-claude-sonnet-4-6-default-free-pro.html
 - https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/
+- https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
+- https://capybara.com/
 
 ## Overview
 
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-03 -- Claude Haiku 3 Retirement April 19, 2026
+- **What**: Claude Haiku 3 (`claude-3-haiku-20240307`) is scheduled for retirement on April 19, 2026. After that date, all API requests to this model will return an error. Anthropic recommends migrating to Claude Haiku 4.5 ($1/$5 per MTok vs Haiku 3's $0.25/$1.25).
+- **Significance**: Organizations still using legacy Haiku 3 have ~16 days to migrate. This is both a capability upgrade and a 4x price increase for input tokens.
+- **Source**: https://platform.claude.com/docs/en/about-claude/models/overview
+
+### 2026-04-03 -- 1M Context Beta Retiring for Sonnet 4.5 and Sonnet 4 (April 30)
+- **What**: Anthropic is retiring the 1M token context window beta for Claude Sonnet 4.5 and Sonnet 4 on April 30, 2026. The `context-1m-2025-08-07` beta header will have no effect after that date. Users must migrate to Sonnet 4.6 or Opus 4.6 for 1M context at standard pricing.
+- **Significance**: Forces migration to 4.6-generation models for long-context workloads. Clear signal Anthropic is consolidating around the 4.6 generation.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
+
+### 2026-04-03 -- Message Batches API Max Output Raised to 300k Tokens
+- **What**: `max_tokens` cap raised to 300k on Message Batches API for Opus 4.6 and Sonnet 4.6 via `output-300k-2026-03-24` beta header. 2.3x increase over previous 128k limit.
+- **Significance**: Particularly relevant for large-scale code generation and document processing in batch workflows.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
+
+### 2026-04-03 -- Claude Code Leak Confirms Model Codenames and Capybara Tier
+- **What**: The Claude Code source code leak (v2.1.88 npm source map) confirmed internal model codenames: Capybara is a new model tier above Opus ("larger and more intelligent than our Opus models"), Fennec maps to Opus 4.6, and Numbat is an unreleased model still in testing. Capybara is confirmed to be the same model previously leaked as "Mythos." The source also references KAIROS, an autonomous daemon mode feature flag. No official release date for Capybara/Mythos has been announced; it remains available only to a small group of early access customers.
+- **Significance**: Confirms the Mythos/Capybara connection and establishes a new tier hierarchy: Haiku < Sonnet < Opus < Capybara. The KAIROS daemon mode suggests Capybara may ship with persistent background agent capabilities as a differentiator.
+- **Source**: https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/, https://capybara.com/
+
+### 2026-04-03 -- Claude Mythos (Capybara): Safety Concerns and Government Warnings
+- **What**: Anthropic has privately warned senior government officials that Mythos "makes large-scale cyberattacks significantly more likely in 2026." The model is described as "currently far ahead of any other AI model in cyber capabilities." A prior incident is noted: in September 2025, a Chinese state-sponsored group used an earlier Claude model to execute cyberattacks with "80-90% autonomy" across ~30 organizations. Anthropic's planned rollout prioritizes giving cyber defenders early access before broader distribution.
+- **Significance**: Represents a new frontier in AI safety concerns for agentic systems. The defender-first rollout strategy may set precedent for how frontier agentic models are released.
+- **Source**: https://www.pymnts.com/artificial-intelligence-2/2026/anthropics-unreleased-claude-mythos-might-be-the-most-advanced-ai-model-yet/
+
+### 2026-04-02 -- Deep Dive: Claude 4.6 New Features and Breaking Changes
+- **What**: Detailed technical review of all 4.6 launch features, deprecations, and breaking changes from the official "What's New in Claude 4.6" documentation. Key findings below.
+- **Adaptive Thinking**: `thinking: {type: "adaptive"}` is the recommended mode. Claude dynamically decides when and how much to think. Old `thinking: {type: "enabled"}` with `budget_tokens` is deprecated. New `max` effort level on Opus 4.6 provides highest capability.
+- **Fast Mode (beta)**: `speed: "fast"` delivers up to 2.5x faster output generation for Opus at premium pricing ($30/$150 per MTok). Same model, faster inference. Beta header: `fast-mode-2026-02-01`.
+- **Compaction API (beta)**: Server-side context summarization for infinite conversations. Auto-summarizes when context approaches window limit. Available on Opus 4.6.
+- **Free Code Execution**: Code execution is free when used with web search or web fetch tools. Dynamic filtering support with `web_search_20260209` / `web_fetch_20260209` tool versions.
+- **Tools GA**: Code execution, web fetch, programmatic tool calling, tool search, tool use examples, and memory tool all graduated to general availability.
+- **Data Residency**: `inference_geo` parameter supports `"global"` (default) or `"us"`. US-only at 1.1x pricing for models after Feb 1, 2026.
+- **Breaking: Prefill Removal**: Prefilling assistant messages not supported on Opus 4.6. Requests return 400 error. Must use structured outputs or system prompts instead.
+- **Breaking: Tool Parameter Quoting**: Opus 4.6 may produce different JSON string escaping in tool call arguments. Standard parsers handle it; raw string parsers may break.
+- **Deprecation: output_format**: Moved to `output_config.format`. Old parameter still functional but deprecated.
+- **Deprecation: interleaved-thinking beta header**: No longer required on Opus 4.6 (adaptive thinking enables it automatically).
+- **Significance**: These details are critical for migration planning. The prefill removal is a breaking change that affects many existing agentic workflows.
+- **Source**: https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
 
 ### 2026-03-26 -- Mythos Model Leaked
 - **What**: Data leak revealed existence of "Mythos," a next-generation model in internal testing. Anthropic confirmed it represents a "step change" in capabilities, with internal benchmarks showing superiority to Opus 4.6 on complex coding, long-horizon reasoning, and safety.
@@ -64,6 +107,14 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 | Sonnet 4.6 | claude-sonnet-4-6 | 1M | 64K | $3 | $15 | Aug 2025 (reliable) |
 | Haiku 4.5 | claude-haiku-4-5 | 200K | 64K | $1 | $5 | Feb 2025 (reliable) |
 
+### Training Data Cutoffs (vs Reliable Knowledge Cutoffs)
+
+| Model | Reliable Knowledge Cutoff | Training Data Cutoff |
+|-------|--------------------------|---------------------|
+| Opus 4.6 | May 2025 | August 2025 |
+| Sonnet 4.6 | August 2025 | January 2026 |
+| Haiku 4.5 | February 2025 | July 2025 |
+
 ### Legacy Models (still available)
 | Model | API ID | Context | Max Output | Input $/MTok | Output $/MTok |
 |-------|--------|---------|------------|-------------|--------------|
@@ -79,19 +130,38 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 ### Extended Output (Batch API)
 - Opus 4.6 and Sonnet 4.6 support up to 300K output tokens via `output-300k-2026-03-24` beta header on Message Batches API
 
+### Fast Mode (Opus 4.6 only, beta)
+- Premium pricing: $30/$150 per MTok (6x standard)
+- Up to 2.5x faster output token generation
+- Same model intelligence, faster inference
+- Beta header: `fast-mode-2026-02-01`
+
+### Compaction API (Opus 4.6, beta)
+- Server-side context summarization
+- Enables effectively infinite conversations
+- Auto-triggers when context approaches window limit
+
 ### Platform Availability
 - Claude API (direct)
-- AWS Bedrock
-- Google Vertex AI
+- AWS Bedrock (IDs: `anthropic.claude-opus-4-6-v1`, `anthropic.claude-sonnet-4-6`)
+- Google Vertex AI (IDs: `claude-opus-4-6`, `claude-sonnet-4-6`)
 - Microsoft Azure AI Foundry (Opus 4.6/Sonnet 4.6)
 
 ### Key Capability Features (4.6 generation)
 - Extended thinking
-- Adaptive thinking
+- Adaptive thinking (recommended; replaces manual budget_tokens)
+- Effort parameter GA (low/medium/high/max levels)
 - Priority Tier service
 - 1M token context window
 - Computer use (beta)
 - Agent teams / swarm mode
+- Data residency controls (inference_geo)
+- Free code execution with web tools
+
+### Breaking Changes in 4.6
+- **Prefill removal**: Prefilling assistant messages returns 400 on Opus 4.6
+- **Tool parameter quoting**: Different JSON escaping in tool call arguments
+- **output_format deprecated**: Use `output_config.format` instead
 
 ## Comparison Notes
 

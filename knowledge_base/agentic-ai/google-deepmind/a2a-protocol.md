@@ -1,12 +1,14 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/
 - https://cloud.google.com/blog/products/ai-machine-learning/agent2agent-protocol-is-getting-an-upgrade
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
 - https://www.linuxfoundation.org/press/linux-foundation-launches-the-agent2agent-protocol-project-to-enable-secure-intelligent-communication-between-ai-agents
 - https://github.com/a2aproject/A2A
+- https://www.infoworld.com/article/4032776/google-upgrades-agent2agent-protocol-with-grpc-and-enterprise-grade-security.html
+- https://a2a-protocol.org/latest/specification/
 
 ## Overview
 
@@ -14,10 +16,15 @@ Agent2Agent (A2A) is an open protocol created by Google for enabling secure comm
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-02 -- A2A Ecosystem at 150+ Organizations (surveyed)
-- **What**: The A2A ecosystem now includes over 150 organizations spanning hyperscalers, technology providers, and enterprise customers. AWS published a blog on A2A interoperability. A rival protocol (AAIF) has emerged as competition.
-- **Significance**: Broad adoption validates A2A as a potential industry standard, though competing protocols signal the space is not yet settled.
-- **Source**: https://aws.amazon.com/blogs/opensource/open-protocols-for-agent-interoperability-part-4-inter-agent-communication-on-a2a/
+### 2026-04-03 -- A2A v0.3 Enterprise Security Deep Dive & Marketplace Integration
+- **What**: Further details on A2A v0.3 enterprise adoption: (1) **Signed Agent Cards** enable cryptographic identity verification — agents can prove their origin, addressing Fortune 500 requirements that won't deploy agents lacking proof of identity. The signing mechanism ensures "appropriate access control and runtime policies are followed," protecting reputation, trade secrets, and financial performance. (2) **ADK native integration** — A2A is built directly into ADK, so agents built with ADK automatically get A2A communication capabilities without additional configuration. (3) **AI Agents Marketplace** — partners can now sell A2A-supported agents on Google's marketplace; enterprise systems can evaluate A2A-compatible agents through the Vertex GenAI Evaluation Service. (4) **Real-world enterprise pilots**: Tyson Foods and Gordon Food Service are pioneering collaborative A2A systems, creating a real-time channel for their agents to share product data and leads to enhance the food supply chain. (5) **Protocol bindings clarified**: JSON-RPC, gRPC, and HTTP/REST are all equally capable — developers choose based on infrastructure. Service parameters transmitted via HTTP headers for HTTP bindings, gRPC metadata for gRPC bindings.
+- **Significance**: The signed Agent Cards are the most important enterprise security feature — they solve the "who is this agent?" identity problem that has been a blocker for enterprise multi-agent deployments. The marketplace integration creates a commercial flywheel: build A2A agents → sell on marketplace → more adoption → more agents. Tyson/Gordon Food Service shows A2A moving beyond demos to production supply chain use.
+- **Source**: https://www.infoworld.com/article/4032776/google-upgrades-agent2agent-protocol-with-grpc-and-enterprise-grade-security.html, https://a2a-protocol.org/latest/specification/
+
+### 2026-04-02 -- A2A Ecosystem Expansion, Interactions API Bridge, Agentspace (sweep update)
+- **What**: The A2A ecosystem now includes over 150 organizations spanning hyperscalers, technology providers, and enterprise customers. AWS published a blog on A2A interoperability. A rival protocol (AAIF) has emerged as competition. New developments: (1) **InteractionsApiTransport** provides a transparent A2A bridge — treats Google's managed agents as standard remote A2A agents without client refactoring; (2) Google announced A2A support coming to **Agent Engine**, enabling any-framework agents deployed on Agent Engine to become production-ready A2A agents; (3) **Agentspace** integration coming, allowing partners to make A2A agents available as consumable services in the Agentspace platform.
+- **Significance**: The Interactions API bridge is architecturally significant — it means any ADK agent can instantly interop with Google's managed agents (Deep Research, etc.) via A2A. Agent Engine + A2A means the deployment story is now: write in any framework → deploy to Agent Engine → automatically A2A-accessible. Agentspace turns A2A agents into a marketplace.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/agent2agent-protocol-is-getting-an-upgrade, https://developers.googleblog.com/building-agents-with-the-adk-and-the-new-interactions-api/
 
 ### 2025-07 -- A2A v0.3 Released
 - **What**: Version 0.3.0 introduced gRPC support (in addition to JSON-RPC 2.0 and REST), signed Agent Cards for security verification, updated well-known path to `/.well-known/agent-card.json`, and extended Python SDK client-side support.

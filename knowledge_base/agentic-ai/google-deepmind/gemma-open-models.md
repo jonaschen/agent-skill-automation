@@ -1,28 +1,44 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://deepmind.google/models/gemma/
 - https://deepmind.google/models/gemma/gemma-3/
 - https://developers.googleblog.com/en/introducing-gemma-3n/
 - https://blog.google/technology/developers/gemma-3/
 - https://ai.google.dev/gemma/docs/releases
+- https://www.infoq.com/news/2026/01/functiongemma-edge-function-call/
+- https://ai.google.dev/gemma/docs/functiongemma
+- https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/
+- https://developers.googleblog.com/bring-state-of-the-art-agentic-skills-to-the-edge-with-gemma-4/
+- https://9to5google.com/2026/04/02/google-gemma-4/
+- https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
 
 ## Overview
 
-Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 3 (March 2025) is the first version optimized for agentic workflows with function calling and structured output support. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 27B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
+Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-03 -- Gemma 4 Released: Most Capable Open Models
+- **What**: Google DeepMind released **Gemma 4** on April 2, 2026, the most capable open models to date, purpose-built for advanced reasoning and agentic workflows. Four model sizes: **31B Dense** (#3 on Arena AI text leaderboard), **26B MoE** (#6 on Arena AI), **E4B** (Effective 4B), and **E2B** (Effective 2B, runs in <1.5GB memory). Key capabilities: (1) **Native function calling and structured JSON output** for autonomous agents that interact with third-party tools and execute multi-step plans. (2) **On-device agentic skills**: multi-step planning, autonomous action, offline code generation, audio-visual processing — all without specialized fine-tuning. (3) **Agent Skills** demonstrated in Google AI Edge Gallery support knowledge augmentation, content generation, and multi-step task completion. (4) **LiteRT-LM constrained decoding** ensures structured, predictable outputs for tool-calling scripts. (5) **Performance**: processes 4,000 input tokens across 2 skills in under 3 seconds; Raspberry Pi 5: 133 tok/s prefill, 7.6 tok/s decode. (6) **Context windows**: 128K (edge models), 256K (larger models). (7) **140+ languages**. (8) **Apache 2.0 license**. (9) **Platform support**: Android, iOS, Windows, Linux, macOS, web (WebGPU), Raspberry Pi 5, Qualcomm IQ8 NPU. (10) **NVIDIA acceleration**: RTX AI Garage support announced for local agentic AI.
+- **Significance**: Gemma 4 is a generational leap for open agentic models. The 31B Dense ranking #3 on Arena AI puts it in direct competition with proprietary models. Native function calling + structured output without fine-tuning means developers can build tool-using agents out of the box. The E2B at <1.5GB unlocks agent capabilities on extremely constrained devices. For our Phase 6 edge AI plans, Gemma 4 E2B/E4B with native function calling is a significantly better foundation than Gemma 3 + FunctionGemma — it eliminates the need for a separate specialist model.
+- **Source**: https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/, https://developers.googleblog.com/bring-state-of-the-art-agentic-skills-to-the-edge-with-gemma-4/, https://9to5google.com/2026/04/02/google-gemma-4/, https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
+
+### 2026-04-03 -- Gemma 4 on Android: Gemini Nano 4 and ML Kit Integration
+- **What**: Google announced Gemma 4 as the foundation for on-device Android AI: (1) **Gemini Nano 4** (based on Gemma 4) is up to 4x faster and uses 60% less battery than the previous version, now reaching over 140 million Android devices. (2) **ML Kit GenAI Prompt API** enables developers to integrate Gemma 4 directly into Android apps for on-device intelligence. (3) **Android Studio Agent Mode**: Gemma 4 powers local AI code assistance, keeping model and inference entirely on the developer's machine for privacy. (4) Gemma 4 will launch with new flagship Android devices later in 2026 with a Developer Preview available now. (5) Full Apache 2.0 license maintained for open development.
+- **Significance**: The 4x speed / 60% battery improvement is a major practical milestone for on-device agents. 140 million devices gives Gemma 4 unmatched distribution for edge AI. The ML Kit integration provides a production-ready API path for Android developers. For our Phase 6 plans, this confirms Gemma 4 on Android is production-viable, not just research.
+- **Source**: https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
 
 ### 2025-H2 -- Gemma 3n Released (Mobile-First)
 - **What**: Gemma 3n launched in 5B and 8B parameter variants with Per-Layer Embeddings (PLE) innovation reducing effective memory to 2B and 4B equivalent. Features MatFormer training for nested submodels, "mix'n'match" capability for custom submodel creation. Processes audio, text, images, and video. Developed with Qualcomm, MediaTek, and Samsung. Achieves 1.5x faster mobile responses than Gemma 3 4B with better quality.
 - **Significance**: First Gemma model purpose-built for on-device/mobile deployment. The 2-3GB memory footprint enables agent capabilities on smartphones. Audio support opens voice-based agent interactions on-device.
 - **Source**: https://developers.googleblog.com/en/introducing-gemma-3n/
 
-### 2025-12 -- FunctionGemma and Edge Function Calling
-- **What**: FunctionGemma released at 270M parameter size. Google introduced "bespoke function calling" for edge deployment, bringing tool use capabilities to extremely small models.
-- **Significance**: 270M-parameter function calling enables agent-like behavior on the most resource-constrained devices (IoT, embedded systems). This is orders of magnitude smaller than any competing function-calling model.
-- **Source**: https://ai.google.dev/gemma/docs/releases
+### 2025-12 -- FunctionGemma: Edge Function Calling Specialist (updated 2026-04-02)
+- **What**: FunctionGemma released at 270M parameter size, fine-tuned from Gemma 3 270M specifically for translating natural language into structured function/API calls. Uses Gemma's 256K vocabulary for efficient JSON and multilingual tokenization. In Google's "Mobile Actions" evaluation, fine-tuning boosted accuracy from **58% baseline to 85%**. Can run on NVIDIA Jetson Nano and mobile phones. Supports end-to-end agent workflows: parse natural language → identify correct tool → execute (e.g., "Create a calendar event," "Turn on the flashlight"). Published on Hugging Face at `google/functiongemma-270m-it`.
+- **Significance**: 270M-parameter function calling enables agent-like behavior on the most resource-constrained devices (IoT, embedded systems). The 58%→85% accuracy jump from fine-tuning proves that for edge agents, a dedicated trained specialist outperforms general-purpose prompting. This is orders of magnitude smaller than any competing function-calling model and directly relevant to our Phase 6 edge AI plans.
+- **Source**: https://www.infoq.com/news/2026/01/functiongemma-edge-function-call/, https://ai.google.dev/gemma/docs/functiongemma
 
 ### 2025-03-12 -- Gemma 3 Released
 - **What**: Gemma 3 launched in 270M, 1B, 4B, 12B, and 27B sizes. Built on Gemini 2.0 foundation. First Gemma with function calling and structured output support for agentic workflows. 128K token context window. Multimodal (image, text, video) at 4B+. Over 140 language support. Quantization-Aware Training (QAT) enables 27B on consumer GPUs (RTX 3090).
@@ -30,6 +46,22 @@ Gemma is Google DeepMind's family of open-weight models built on the same resear
 - **Source**: https://blog.google/technology/developers/gemma-3/
 
 ## Technical Details
+
+### Gemma 4 Model Family (April 2026)
+
+| Variant | Parameters | Architecture | Context Window | Key Use Case |
+|---------|-----------|-------------|---------------|-------------|
+| 31B Dense | 31B | Dense | 256K | Maximum capability, Arena AI #3 |
+| 26B MoE | 26B | Mixture of Experts | 256K | Balanced performance/efficiency, Arena AI #6 |
+| E4B | ~8B (effective 4B) | MoE w/ PLE | 128K | On-device agentic workflows |
+| E2B | ~5B (effective 2B) | MoE w/ PLE | 128K | Ultra-constrained devices (<1.5GB) |
+
+**Key features**:
+- Native function calling and structured JSON output (no fine-tuning needed)
+- LiteRT-LM constrained decoding for reliable tool-calling
+- 140+ languages
+- Apache 2.0 license
+- Platform: Android, iOS, Windows, Linux, macOS, WebGPU, Raspberry Pi 5, Qualcomm IQ8 NPU
 
 ### Gemma 3 Model Family
 

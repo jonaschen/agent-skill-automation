@@ -1,28 +1,144 @@
 # Claude Code
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
+- https://code.claude.com/docs/en/changelog
+- https://github.com/anthropics/claude-code/releases
+- https://code.claude.com/docs/en/sub-agents
 - https://code.claude.com/docs/en/hooks-guide
 - https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
 - https://claude.com/product/claude-code
 - https://techcrunch.com/2026/02/05/anthropic-releases-opus-4-6-with-new-agent-teams/
 - https://www.nagarro.com/en/blog/claude-code-feb-2026-update-analysis
+- https://claudefa.st/blog/guide/changelog
+- https://releasebot.io/updates/anthropic/claude-code
+- https://www.theregister.com/2026/04/01/claude_code_rule_cap_raises/
+- https://venturebeat.com/technology/claude-codes-source-code-appears-to-have-leaked-heres-what-we-know
+- https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/
+- https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is in the 2.1.x series (latest: 2.1.90).
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.90 (April 1, 2026), with the v2.1.x series seeing 28+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-02 -- Claude Code v2.1.90 (latest observed)
-- **What**: Latest release includes `/powerup` interactive lessons, environment variable support for offline deployments, `.husky` directory protection, and fixes for rate-limit dialog infinite loops, format-on-save hook conflicts, and PowerShell permission hardening.
-- **Significance**: Continued maturation of enterprise deployment features and security hardening.
-- **Source**: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+### 2026-04-03 -- Source Code Leak via npm Source Map (v2.1.88)
+- **What**: A 59.8 MB JavaScript source map file (.map) was inadvertently included in the @anthropic-ai/claude-code npm package (v2.1.88), exposing the full ~512,000-line TypeScript codebase. Discovered by Chaofan Shou (Solayer Labs intern) and mirrored across GitHub within hours. Key revelations: (1) **KAIROS** — a feature flag mentioned 150+ times, representing an autonomous daemon mode where Claude Code operates as an always-on background agent. (2) **Anti-distillation mechanisms** — `anti_distillation: ['fake_tools']` in API requests silently injects decoy tool definitions to prevent model distillation. (3) **Undercover Mode** — enables stealth contributions to public open-source repositories. (4) **Model codenames confirmed**: Capybara = Claude 4.6 variant (new tier above Opus), Fennec = Opus 4.6, Numbat = unreleased model still in testing. Anthropic cited "process errors" and fast release cycle. Concurrent supply-chain attack on axios npm package (v1.14.1/0.30.4 with RAT) occurred hours before, though unrelated.
+- **Significance**: Largest accidental source code exposure from a major AI company. KAIROS reveals Anthropic's roadmap toward persistent background agents. Anti-distillation confirms active defense against model copying. Anthropic's aggressive DMCA response (accidentally taking down thousands of GitHub repos) drew additional criticism. Users who installed Claude Code via npm on March 31 between 00:21-03:29 UTC may have been affected by the axios RAT.
+- **Source**: https://venturebeat.com/technology/claude-codes-source-code-appears-to-have-leaked-heres-what-we-know, https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/, https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
 
-### 2026-03-01 -- v2.1.89: Defer hook decision, named subagents
-- **What**: Added `"defer"` permission decision for PreToolUse hooks (headless sessions can pause at tool calls), named subagents in `@` mention typeahead, `MCP_CONNECTION_NONBLOCKING=true` for pipe mode, `CLAUDE_CODE_NO_FLICKER=1` for flicker-free rendering, and `PermissionDenied` hook with retry capability.
-- **Significance**: Critical for CI/CD pipeline integration -- headless sessions can now pause and resume at tool permission boundaries.
-- **Source**: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+### 2026-04-03 -- Security Disclosure: Deny-Rule Bypass via Long Command Chains
+- **What**: Security firm Adversa disclosed that Claude Code's deny rules (e.g., blocking `curl`) can be bypassed when command chains exceed 50 subcommands, due to a hard-coded constant `MAX_SUBCOMMANDS_FOR_SECURITY_CHECK = 50`. Beyond this threshold, the system falls back to asking user permission instead of enforcing the deny rule. An attacker could craft malicious project files that instruct Claude to build 50+ command pipelines disguised as legitimate build processes.
+- **Significance**: First publicly reported bypass of Claude Code's permission/deny system. Enterprise users running Claude Code in auto-accept modes should audit deny rules and monitor for unusually long command chains.
+- **Source**: https://www.theregister.com/2026/04/01/claude_code_rule_cap_raises/
+
+### 2026-04-03 -- v2.1.90 Additional Details (supplemental)
+- **What**: Beyond what was documented on 2026-04-02, v2.1.90 also includes: (1) Fixed auto mode not respecting explicit user boundaries ("don't push", "wait for X before Y"), (2) Fixed click-to-expand hover text nearly invisible on light terminal themes, (3) Fixed UI crash when malformed tool input reached the permission dialog, (4) Fixed headers disappearing when scrolling `/model`, `/config`, and selection screens, (5) Removed `Get-DnsClientCache` and `ipconfig /displaydns` from the auto-allow list for DNS cache privacy, (6) Changed `--resume` picker to no longer show sessions created by `claude -p` or SDK invocations.
+- **Significance**: The auto-mode boundary fix is notable -- Claude Code was previously ignoring explicit user instructions like "don't push" in auto mode, which could lead to unintended actions in autonomous workflows.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-04-03 -- v2.1.89 Additional Details (supplemental)
+- **What**: Beyond what was documented on 2026-04-02, v2.1.89 also includes: (1) Auto mode denied commands now show a notification and appear in `/permissions` -> Recent tab where you can retry with `r`, (2) Changed Edit to work on files viewed via Bash with `sed -n` or `cat` without requiring a separate Read call, (3) Changed hook output over 50K characters to be saved to disk with a file path + preview instead of injecting directly into context, (4) Changed thinking summaries to no longer be generated by default in interactive sessions (set `showThinkingSummaries: true` to restore), (5) `/env` now applies to PowerShell commands, (6) Pasting `!command` into empty prompt enters bash mode, (7) Fixed Devanagari and combining-mark text truncation, (8) Fixed voice mode failing to request microphone permission on macOS Apple Silicon, (9) Fixed potential OOM crash on Edit of files over 1 GiB.
+- **Significance**: Thinking summaries disabled by default is a behavioral change affecting all interactive users. The Edit-without-Read change reduces friction. The 50K hook output cap prevents context pollution.
+- **Source**: https://github.com/anthropics/claude-code/releases/tag/v2.1.89
+
+### 2026-04-02 -- Comprehensive March-April 2026 Release Analysis (v2.1.63 through v2.1.90)
+- **What**: Major research sweep covering all Claude Code releases from late February through April 1, 2026. This period saw 28+ releases with significant new capabilities across hooks, MCP, CLI, agents, model support, and IDE extensions.
+- **Significance**: Claude Code has shifted from a developer tool to an autonomous engineering platform with multi-agent orchestration, voice control, cron scheduling, and deep MCP/hook integration.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+---
+
+### 2026-04-01 -- v2.1.90: /powerup, performance, security hardening
+- **What**: Added `/powerup` interactive lessons with animated demos. Added `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` for offline environments. Added `.husky` to protected directories. Fixed infinite rate-limit dialog loop, `--resume` prompt-cache miss regression (since v2.1.69), format-on-save hook conflicts with Edit/Write, and PreToolUse stdout+exit-code-2 blocking. Eliminated per-turn JSON.stringify of MCP tool schemas. SSE transport now handles large frames in linear time (was quadratic). SDK long-conversation transcript writes no longer quadratic.
+- **Significance**: Performance fixes for SSE and SDK long sessions are critical for production agent deployments.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-04-01 -- v2.1.89: Defer hook decision, PermissionDenied hook, named subagents
+- **What**: Added `"defer"` permission decision for PreToolUse hooks -- headless sessions can pause at tool calls and resume with `-p --resume` for re-evaluation. Added `PermissionDenied` hook (fires after auto mode classifier denials; return `{retry: true}` to retry). Named subagents appear in `@` mention typeahead. `MCP_CONNECTION_NONBLOCKING=true` for `-p` mode skips MCP wait entirely. `CLAUDE_CODE_NO_FLICKER=1` for flicker-free alt-screen rendering. Fixed StructuredOutput schema cache bug (~50% failure rate with multiple schemas). Fixed autocompact thrash loop (3-attempt circuit breaker). Fixed nested CLAUDE.md re-injection in long sessions.
+- **Significance**: The `defer` decision is transformative for CI/CD -- headless agents can now pause at permission boundaries and be resumed by a human or another system. The PermissionDenied hook enables auto-retry patterns in autonomous workflows.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-03-29 -- v2.1.87: Cowork Dispatch fix
+- **What**: Fixed messages in Cowork Dispatch not getting delivered.
+- **Significance**: Critical fix for multi-agent team communication.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-03-27 -- v2.1.86: Session ID header, VCS exclusions
+- **What**: Added `X-Claude-Code-Session-Id` header to API requests for proxy aggregation. Added `.jj` (Jujutsu) and `.sl` (Sapling) to VCS exclusion lists. Fixed `--resume` failure on pre-v2.1.85 sessions, files outside project root with conditional skills, config corruption from disk writes on every skill invocation (Windows). Reduced startup event-loop stalls with claude.ai MCP connectors (keychain cache 5s to 30s). Skill descriptions capped at 250 chars to reduce context usage.
+- **Significance**: Session ID header enables enterprise proxy monitoring and billing. VCS exclusions show growing support for non-Git version control.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-03-26 -- v2.1.85: Conditional hooks, MCP OAuth RFC 9728, elicitation enhancements
+- **What**: Added conditional `if` field for hooks using permission rule syntax (e.g., `Bash(git *)`). Added `CLAUDE_CODE_MCP_SERVER_NAME` and `CLAUDE_CODE_MCP_SERVER_URL` environment variables for multi-server MCP helper scripts. MCP OAuth now follows RFC 9728 Protected Resource Metadata discovery. PreToolUse hooks can satisfy `AskUserQuestion` by returning `updatedInput` + `permissionDecision: "allow"`. Added timestamp markers for `/loop` and CronCreate. OpenTelemetry tool_parameters gated behind `OTEL_LOG_TOOL_DETAILS=1`. Deep links support 5,000 chars. Fixed Python Agent SDK dropping `type:'sdk'` MCP servers. Replaced WASM yoga-layout with pure TypeScript for scroll performance.
+- **Significance**: Conditional hooks are a major efficiency gain -- hooks only fire when their `if` condition matches, reducing overhead. RFC 9728 compliance signals enterprise-grade OAuth for MCP servers. PreToolUse answering AskUserQuestion enables fully autonomous agent flows.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-26 -- v2.1.84: PowerShell tool, TaskCreated hook, MCP dedup
+- **What**: Added PowerShell tool for Windows (opt-in preview) with hardened permission checks. Added `ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL_SUPPORTS` env vars for Bedrock/Vertex/Foundry capability override. Added `TaskCreated` hook. Added `WorktreeCreate` hook `type: "http"` support. MCP tool descriptions capped at 2KB. MCP deduplication (local config wins over claude.ai). Added `allowedChannelPlugins` managed setting. Token counts >= 1M display as "1.5m". Global system-prompt caching works with ToolSearch.
+- **Significance**: PowerShell tool brings Windows to parity with Unix. MCP deduplication prevents tool conflicts in enterprise deployments with both local and cloud configs.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-25 -- v2.1.83: Managed settings drop-in, reactive hooks, transcript search
+- **What**: Added `managed-settings.d/` drop-in directory for independent policy fragments. Added `CwdChanged` and `FileChanged` hook events for reactive environment management (direnv, auto-reload). Added transcript search (press `/` in Ctrl+O mode). Added `sandbox.failIfUnavailable` to exit on missing sandbox. Added `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` to strip credentials from subprocesses. Agents can declare `initialPrompt` in frontmatter. `chat:killAgents` and `chat:fastMode` now rebindable.
+- **Significance**: Reactive hooks (CwdChanged/FileChanged) enable environment-aware agents that adapt when files or directories change. Managed settings drop-in allows enterprise admins to compose policies from multiple sources without conflict.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-20 -- v2.1.81: --bare flag, --channels permission relay
+- **What**: Added `--bare` flag for scripted `-p` calls -- skips hooks, LSP, plugin sync, skill walks; requires API key (OAuth/keychain disabled). Added `--channels` permission relay -- channel servers can forward tool approval to phone. Fixed multiple concurrent sessions requiring repeated re-auth. Fixed Node.js 18 crash.
+- **Significance**: `--bare` is essential for embedded/scripted use cases where startup overhead must be minimized. Channels permission relay is a step toward mobile-controlled autonomous agents.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-03-19 -- v2.1.80: Rate limit statusline, skill effort, channels preview
+- **What**: Added `rate_limits` statusline field for Claude.ai usage (5-hour/7-day windows). Added `source: 'settings'` plugin marketplace source (inline in settings.json). Added `effort:` frontmatter for skills/commands. Added `--channels` research preview (MCP servers push messages into session). Reduced ~80MB startup memory for 250k-file repos.
+- **Significance**: Rate limit visibility in statusline prevents surprise throttling. Skill effort frontmatter enables per-skill model intensity tuning.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-17 -- v2.1.78: StopFailure hook, line-by-line streaming
+- **What**: Added `StopFailure` hook (fires on API error-caused turn end). Added `${CLAUDE_PLUGIN_DATA}` variable for persistent plugin state. Added plugin agent frontmatter (`effort`, `maxTurns`, `disallowedTools`). Response text now streams line-by-line. Renamed `/fork` to `/branch`. SECURITY: Fixed silent sandbox disable when dependencies missing.
+- **Significance**: StopFailure hook is critical for error recovery in autonomous pipelines. Plugin data persistence enables stateful plugin workflows.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-17 -- v2.1.77: Opus 4.6 output token increase
+- **What**: Increased default output token limit for Opus 4.6 to 64k tokens. Upper bound increased to 128k tokens for both Opus 4.6 and Sonnet 4.6. Added `allowRead` sandbox setting. Fixed auto-updater downloading tens of GB in parallel. Fixed PreToolUse `"allow"` bypassing `deny` rules.
+- **Significance**: 128k output token support is a 16x increase over original limits, enabling much larger code generation in single turns.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-14 -- v2.1.76: MCP Elicitation, session naming, sparse checkout
+- **What**: MCP servers can now request structured user input mid-task via interactive dialog (`Elicitation` and `ElicitationResult` hooks). Added `-n`/`--name` CLI flag for session naming. Added `worktree.sparsePaths` for large monorepo sparse checkout. Added `PostCompact` hook. Added `/effort` command. Background agents can be killed preserving partial results.
+- **Significance**: MCP Elicitation is a paradigm shift -- MCP servers can pause execution and ask the user (or a hook) for structured data, enabling interactive multi-step workflows without pre-planned parameters.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-13 -- v2.1.75: 1M context for Opus 4.6
+- **What**: Opus 4.6 now has 1M context window for Max, Team, and Enterprise plans at standard pricing (no beta header). Added `/color` command. Memory files get last-modified timestamps. Claude now reasons about fresh vs stale memories.
+- **Significance**: 1M context at standard pricing democratizes large-codebase analysis. Memory freshness reasoning improves long-running session quality.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-11 -- v2.1.73: modelOverrides, Bedrock/Vertex default Opus 4.6
+- **What**: Added `modelOverrides` setting to map model picker entries to custom provider model IDs (e.g., Bedrock inference profiles). Bedrock/Vertex/Foundry now default to Opus 4.6 (was 4.1). Deprecated `/output-style` in favor of `/config`.
+- **Significance**: modelOverrides unlocks enterprise custom model routing without forking configuration.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-07 -- v2.1.71: /loop command, cron scheduling
+- **What**: Added `/loop` command for recurring prompts/slash commands on intervals (e.g., `/loop 5m check deploy`). Added cron scheduling tools for session-scoped recurring tasks. Voice keybinding `voice:pushToTalk` now rebindable.
+- **Significance**: /loop and cron bring autonomous monitoring to Claude Code -- agents can self-schedule health checks, deployments, and maintenance tasks.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-05 -- v2.1.69: /claude-api skill, voice expansion, agent improvements
+- **What**: Added `/claude-api` skill for building Claude API applications. Voice STT expanded to 20 languages (added Russian, Polish, Turkish, Dutch, Ukrainian, Greek, Czech, Danish, Swedish, Norwegian). Added `initialPrompt` agent frontmatter. Added `${CLAUDE_SKILL_DIR}` variable. Added `InstructionsLoaded` hook. Added `sandbox.enableWeakerNetworkIsolation` for Go TLS on macOS. Added `includeGitInstructions` setting toggle. MCP `git-subdir` plugin source. MCP server deduplication. SECURITY: Fixed nested skill discovery loading from gitignored directories.
+- **Significance**: 20-language voice support and /claude-api skill signal expansion beyond English-speaking developer markets. InstructionsLoaded hook enables dynamic context injection.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-03-04 -- v2.1.68: Opus 4.6 default effort, model deprecations
+- **What**: Opus 4.6 default effort set to medium for Max/Team. "Ultrathink" keyword re-introduced for high effort on next turn. Opus 4.0 and 4.1 removed from first-party API with auto-migration to 4.6.
+- **Significance**: Opus 4.0/4.1 deprecation forces migration. Medium default effort balances speed and quality for most tasks.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-02-28 -- v2.1.63: HTTP hooks, /simplify, /batch, memory fixes
+- **What**: Added HTTP hooks (POST JSON to URL instead of shell commands). Added `/simplify` and `/batch` commands. Auto memory shared across Git worktrees. Added `ENABLE_CLAUDEAI_MCP_SERVERS=false` opt-out. Extensive memory leak fixes (11+ separate leak patches).
+- **Significance**: HTTP hooks are a major architectural change -- enterprise systems can now receive hook notifications via HTTP instead of local shell execution, enabling cloud-native CI/CD integration.
+- **Source**: https://code.claude.com/docs/en/changelog
 
 ### 2026-02-06 -- Agent Teams (Swarm Mode) shipped with Opus 4.6
 - **What**: Claude Code agent teams officially enabled alongside Opus 4.6 release. Transforms Claude Code from single-agent to multi-agent orchestration: a lead agent plans and delegates to specialist agents (frontend, backend, testing, docs, architecture) working in parallel via independent Git worktrees.
@@ -41,34 +157,126 @@ Claude Code is Anthropic's agentic CLI tool that reads codebases, executes comma
 
 ## Technical Details
 
-### Hooks System
-Hooks guarantee execution of shell commands regardless of model behavior. Available hook types:
-- **PreToolUse**: Runs before any tool call; can block, allow, or defer
-- **PostToolUse**: Runs after tool execution; useful for audit logging
+### Hooks System (as of v2.1.90)
+Hooks guarantee execution of shell commands (or HTTP endpoints) regardless of model behavior. Available hook events:
+- **PreToolUse**: Runs before any tool call; can block (exit 2), allow, or **defer** (pause for later resumption)
+- **PostToolUse**: Runs after tool execution; receives absolute file_path for Write/Edit/Read tools
 - **Stop**: Fires when the agent completes
+- **StopFailure**: Fires when turn ends due to API error (v2.1.78)
 - **SessionStart/SessionEnd**: Lifecycle hooks
 - **UserPromptSubmit**: Pre-processes user input
-- **PermissionDenied**: Fires after auto mode classifier denials; supports `{retry: true}`
+- **PermissionDenied**: Fires after auto mode classifier denials; supports `{retry: true}` (v2.1.89)
+- **TaskCreated**: Fires when task created via TaskCreate (v2.1.84)
+- **CwdChanged**: Fires on working directory change (v2.1.83)
+- **FileChanged**: Fires on file system changes (v2.1.83)
+- **InstructionsLoaded**: Fires when CLAUDE.md or rules loaded (v2.1.69)
+- **Elicitation/ElicitationResult**: Intercept MCP elicitation requests (v2.1.76)
+- **PostCompact**: Fires after context compaction (v2.1.76)
+- **WorktreeCreate**: Supports `type: "http"` with worktreePath output (v2.1.84)
 
-### MCP Integration
-Over 300 MCP integrations available. Claude Code can query databases, create Jira tickets, review GitHub PRs, check Sentry errors, and interact with any API -- all from natural language. MCP connections support nonblocking mode for pipe/headless sessions.
+**Conditional hooks** (v2.1.85): Hooks accept an `if` field using permission rule syntax (e.g., `Bash(git *)`) so they only fire for matching tool calls.
 
-### IDE Integration
-- VS Code: inline diffs, context sharing, side-by-side conversations
-- JetBrains: equivalent integration
-- Browser: Chrome extension for web automation
+**HTTP hooks** (v2.1.63): POST JSON to URL endpoint instead of running shell commands -- enables cloud-native integrations.
 
-### Version History Pattern
-- v2.1.x series (current)
-- Regular releases addressing bugs, security hardening, performance
-- Key performance focus: prompt cache hit rate optimization for Bedrock/Vertex/Foundry
+### MCP Integration (as of v2.1.90)
+- 300+ MCP integrations available
+- **Elicitation** (v2.1.76): MCP servers can pause and request structured user input mid-task
+- **RFC 9728** (v2.1.85): Protected Resource Metadata discovery for OAuth
+- **CIMD/SEP-991** (v2.1.85): Client ID Metadata Document support
+- **Nonblocking connections** (v2.1.89): `MCP_CONNECTION_NONBLOCKING=true` for pipe mode
+- **Server deduplication** (v2.1.84): Local config wins when same server configured locally and via claude.ai
+- **Tool description cap** (v2.1.84): 2KB max per tool description
+- **Environment variables** (v2.1.85): `CLAUDE_CODE_MCP_SERVER_NAME` and `CLAUDE_CODE_MCP_SERVER_URL` for helper scripts
+- **git-subdir source** (v2.1.69): Point to subdirectory within git repo for plugin source
 
-### Agent Teams Architecture
-- Lead agent: plans, delegates, synthesizes (does not write code directly)
-- Specialist agents: each gets fresh context window focused on task
-- Git worktrees: each agent works in independent worktree (no edit collisions)
-- Task board: shared dependency tracking with @mention coordination
-- Sweet spot: 2-5 teammates with 5-6 tasks each (Anthropic's production-tested recommendation)
+### CLI Features (as of v2.1.90)
+- `/powerup` -- interactive lessons with animated demos (v2.1.90)
+- `/loop` -- recurring prompts on interval (v2.1.71)
+- `/effort` -- set model effort level Low/Medium/High (v2.1.76)
+- `/branch` (formerly `/fork`) -- branch conversation (v2.1.78)
+- `/context` -- actionable context optimization tips (v2.1.74)
+- `/color` -- prompt-bar color customization (v2.1.75)
+- `/plan` -- optional description argument (v2.1.72)
+- `/copy N` -- copy Nth-latest response (v2.1.72)
+- `/simplify`, `/batch` -- bundled commands (v2.1.63)
+- `/claude-api` -- skill for building Claude API apps (v2.1.69)
+- `--bare` -- minimal scripted mode, no hooks/LSP/plugins (v2.1.81)
+- `--channels` -- MCP servers push messages into session (v2.1.80)
+- `-n`/`--name` -- session naming (v2.1.76)
+- `--console` -- Anthropic Console (API billing) auth (v2.1.79)
+- Transcript search with `/` in Ctrl+O mode (v2.1.83)
+- Cron scheduling tools within sessions (v2.1.71)
+
+### Model Support (as of v2.1.90)
+- **Opus 4.6**: Default model, 1M context, 64k default / 128k max output tokens, medium default effort
+- **Sonnet 4.6**: 1M context at standard pricing (no beta header)
+- **Opus 4.0/4.1**: Removed from first-party API (auto-migrated to 4.6)
+- **Sonnet 4.5 1M beta**: Retiring April 30, 2026 -- migrate to Sonnet 4.6
+- **modelOverrides** setting: Map picker entries to custom Bedrock/Vertex/Foundry model IDs
+- **"Ultrathink"** keyword: Enables high effort for next turn
+- Voice STT: 20 languages supported
+
+### IDE Integration (as of v2.1.90)
+- **VS Code**: Rate limit warning banner, spark icon for sessions, native MCP management (`/mcp`), plan preview, AI-generated session titles, remote-control bridge, stats screenshot
+- **JetBrains**: equivalent integration
+- **Browser**: Chrome extension for web automation
+- **Deep links**: `claude-cli://` with 5,000 char limit, preferred terminal detection
+
+### Agent Capabilities (as of v2.1.90)
+- **Agent Teams**: Multi-agent with independent Git worktrees, task board, @mention coordination
+- **Named subagents**: Appear in `@` typeahead (v2.1.89)
+- **initialPrompt**: Agents auto-submit first turn (v2.1.83)
+- **model: frontmatter**: Per-agent model selection (v2.1.84)
+- **effort: frontmatter**: Per-skill effort override (v2.1.80)
+- **maxTurns, disallowedTools**: Plugin agent frontmatter (v2.1.78)
+- **Background agents**: Killable with partial result preservation (v2.1.76)
+- **Auto memory**: Persistent project knowledge with freshness reasoning (v2.1.75)
+- **Cowork Dispatch**: Multi-agent message delivery (v2.1.87 fix)
+
+### Security and Sandbox (as of v2.1.90)
+- `sandbox.failIfUnavailable`: Exit on missing sandbox (v2.1.83)
+- `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1`: Strip credentials from subprocesses (v2.1.83)
+- `sandbox.enableWeakerNetworkIsolation`: Allow Go TLS on macOS (v2.1.69)
+- `allowRead`: Re-allow reads within denyRead regions (v2.1.77)
+- DNS cache privacy: Removed auto-allow for DnsClientCache commands (v2.1.90)
+- Protected directories: `.husky` added (v2.1.90)
+- Fixed: Nested skill discovery from gitignored directories (v2.1.69)
+- Fixed: Silent sandbox disable when dependencies missing (v2.1.78)
+
+### Performance Highlights (March-April 2026)
+- SSE transport: linear-time frame handling (was quadratic) (v2.1.90)
+- SDK transcript writes: no longer quadratic in long sessions (v2.1.90)
+- Startup memory: ~80MB reduction for 250k-file repos (v2.1.80), ~18MB general (v2.1.79)
+- macOS startup: ~60ms faster via parallel keychain reads (v2.1.77)
+- `--resume`: up to 45% faster, 100-150MB less memory on large sessions (v2.1.77)
+- Prompt cache: improved hit rates for Bedrock/Vertex/Foundry (v2.1.84, v2.1.86)
+- Bundle size: reduced ~510KB (v2.1.72)
+
+### Version History (March-April 2026)
+| Version | Date | Headline |
+|---------|------|----------|
+| 2.1.90 | Apr 1 | /powerup, SSE linear-time, PowerShell hardening |
+| 2.1.89 | Apr 1 | Defer hooks, PermissionDenied hook, named subagents |
+| 2.1.87 | Mar 29 | Cowork Dispatch fix |
+| 2.1.86 | Mar 27 | Session ID header, VCS exclusions, skill description cap |
+| 2.1.85 | Mar 26 | Conditional hooks, RFC 9728, MCP env vars |
+| 2.1.84 | Mar 26 | PowerShell tool, TaskCreated hook, MCP dedup |
+| 2.1.83 | Mar 25 | Managed settings.d/, CwdChanged/FileChanged hooks, transcript search |
+| 2.1.81 | Mar 20 | --bare flag, --channels relay |
+| 2.1.80 | Mar 19 | Rate limit statusline, skill effort, channels preview |
+| 2.1.79 | Mar 18 | --console auth, turn duration toggle |
+| 2.1.78 | Mar 17 | StopFailure hook, line-by-line streaming, /branch |
+| 2.1.77 | Mar 17 | Opus 64k/128k output tokens, allowRead sandbox |
+| 2.1.76 | Mar 14 | MCP Elicitation, session naming, /effort, PostCompact |
+| 2.1.75 | Mar 13 | 1M Opus context at standard pricing, /color, memory timestamps |
+| 2.1.74 | Mar 12 | /context suggestions, autoMemoryDirectory |
+| 2.1.73 | Mar 11 | modelOverrides, Bedrock/Vertex default Opus 4.6 |
+| 2.1.72 | Mar 10 | /plan description, ExitWorktree, simplified effort |
+| 2.1.71 | Mar 7 | /loop command, cron scheduling |
+| 2.1.70 | Mar 6 | VSCode spark icon, /color reset |
+| 2.1.69 | Mar 5 | /claude-api skill, 20 voice languages, initialPrompt |
+| 2.1.68 | Mar 4 | Opus 4.6 medium effort default, Opus 4.0/4.1 removal |
+| 2.1.63 | Feb 28 | HTTP hooks, /simplify, /batch, 11 memory leak fixes |
 
 ## Comparison Notes
 
@@ -76,4 +284,6 @@ Google's equivalent is the Agent Development Kit (ADK) combined with Gemini Code
 - Claude Code is CLI-first; Gemini Code Assist is IDE-first
 - Claude Code's agent teams use Git worktrees for isolation; Google ADK uses a different orchestration model
 - MCP integration is deeper in Claude Code's ecosystem vs Google's broader Vertex AI agent framework
+- Claude Code's hook system (15+ event types, conditional firing, HTTP hooks, defer/resume) is significantly more mature than Google's agent lifecycle callbacks
 - Claude Code's 4% GitHub commit share indicates significantly higher developer adoption than competitors as of early 2026
+- MCP Elicitation (structured mid-task user input) has no direct equivalent in Google's A2A or ADK

@@ -1,18 +1,46 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-02
+**Last updated**: 2026-04-03
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
 - https://blog.imseankim.com/claude-code-team-mode-multi-agent-orchestration-march-2026/
 - https://www.atcyrus.com/stories/what-is-claude-code-swarm-feature
 - https://claude.com/blog/building-agents-with-the-claude-agent-sdk
+- https://www.anthropic.com/engineering/multi-agent-research-system
+- https://code.claude.com/docs/en/agent-teams
+- https://medium.com/@richardhightower/claude-code-subagents-and-main-agent-coordination-a-complete-guide-to-ai-agent-delegation-patterns-a4f88ae8f46c
 
 ## Overview
 
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-03 -- Rust C Compiler: 16-Agent Team Benchmark Published
+- **What**: Anthropic tasked 16 agents working as a team with writing a Rust-based C compiler from scratch, capable of compiling the Linux kernel. Over ~2,000 Claude Code sessions and $20,000 in API costs, the agent team produced a 100,000-line compiler that can build Linux 6.9 on x86, ARM, and RISC-V architectures.
+- **Significance**: Most ambitious public multi-agent benchmark from Anthropic. The scale (16 agents, 2,000 sessions, 100K lines) demonstrates agent teams can tackle system-level software engineering. The $20,000 cost figure provides a concrete economic benchmark for multi-agent ROI.
+- **Source**: https://www.anthropic.com/engineering/building-c-compiler
+
+### 2026-04-03 -- 2026 Agentic Coding Report: Multi-Agent Teams as Core Trend
+- **What**: Anthropic's 2026 Agentic Coding Trends Report identifies "multi-agent coordination" as one of eight key trends. States: "Software development is shifting from an activity centered on writing code to an activity grounded in orchestrating agents that write code." Fountain case study: 50% faster screening, 40% quicker onboarding, 2x candidate conversions using hierarchical multi-agent orchestration. Claude Code demonstrated implementing complex methods in a 12.5M-line codebase in 7 hours with 99.9% accuracy.
+- **Significance**: Positions multi-agent orchestration as Anthropic's strategic direction. The shift from "writing code" to "orchestrating agents" signals the future developer role as a conductor of agent teams.
+- **Source**: https://news.bitcoin.com/anthropics-2026-agentic-coding-report-maps-the-rise-of-multi-agent-dev-teams/
+
+### 2026-04-02 -- Deep Dive: Anthropic Multi-Agent Research System Architecture
+- **What**: Anthropic engineering published detailed architecture of their internal multi-agent research system. Key pattern: orchestrator-worker with a LeadResearcher that spawns 3-5 parallel subagents. The lead analyzes queries, develops research strategies, decomposes into subtasks, and coordinates. Subagents execute independent web searches using parallel tool calls (3+ simultaneous), apply interleaved thinking to evaluate results, and return filtered findings. A dedicated CitationAgent handles source attribution. State is persisted via external memory when context approaches 200K tokens, with resumable checkpoints for error recovery and rainbow deployments to avoid disrupting active agents.
+- **Significance**: First detailed public disclosure of Anthropic's own production multi-agent system internals. Reveals concrete performance data: multi-agent uses ~15x more tokens than single-turn chat; individual agents use ~4x. Token usage explains 80% of performance variance. Parallel tool execution reduces research time by up to 90% versus sequential.
+- **Source**: https://www.anthropic.com/engineering/multi-agent-research-system
+
+### 2026-04-02 -- Claude Code Agent Teams: Full Documentation and Architecture Reference
+- **What**: Comprehensive official documentation for Agent Teams published at code.claude.com. Key details not previously captured: (1) Agent Teams require v2.1.32+, enabled via `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` env var. (2) Two display modes: in-process (all in one terminal, Shift+Down to cycle) and split-pane (tmux/iTerm2). (3) Shared task list uses file locking to prevent race conditions on claim. (4) Three hook events for quality gates: `TeammateIdle` (exit code 2 keeps teammate working), `TaskCreated` (exit code 2 blocks creation), `TaskCompleted` (exit code 2 blocks completion). (5) Subagent definitions can be reused as teammate roles -- define once, use as both subagent and teammate. (6) Team config stored at `~/.claude/teams/{team-name}/config.json`, tasks at `~/.claude/tasks/{team-name}/`. (7) Plan approval mode: teammates can be required to plan in read-only mode before the lead approves implementation. (8) No nested teams allowed -- only the lead can manage the team. (9) Lead is fixed for team lifetime -- no leadership transfer.
+- **Significance**: Reveals production-grade orchestration primitives: file-locking task claims, hook-based quality gates, plan-then-implement approval workflows, and reusable subagent-as-teammate pattern. The hook system (TeammateIdle, TaskCreated, TaskCompleted) enables programmable quality enforcement without human intervention.
+- **Source**: https://code.claude.com/docs/en/agent-teams
+
+### 2026-04-02 -- Subagents vs Agent Teams: Formal Comparison
+- **What**: Official documentation establishes clear taxonomy. Subagents: run within a single session, report results back to the main agent only, no peer communication, lower token cost. Agent Teams: fully independent sessions, direct peer-to-peer messaging via mailbox system, shared task list with self-coordination, higher token cost. Both have own context windows. Decision criterion: use subagents when only the result matters; use agent teams when teammates need to share findings, challenge each other, and coordinate independently.
+- **Significance**: Clears up confusion in the ecosystem about when to use which pattern. The "competing hypotheses" use case (spawn 5 investigators that actively try to disprove each other) is a novel adversarial-debate orchestration pattern not seen in other frameworks.
+- **Source**: https://code.claude.com/docs/en/agent-teams
 
 ### 2026-03-01 -- 2026 Agentic Coding Trends Report
 - **What**: Anthropic published a comprehensive report on agentic coding trends. Key finding: developers use AI in ~60% of work but can fully delegate only 0-20% of tasks. Multi-agent systems amplify the cost of ambiguity -- they multiply the need for clarity rather than reduce it.
@@ -36,7 +64,15 @@ Anthropic has developed multi-agent orchestration patterns both in Claude Code (
 
 ## Technical Details
 
-### Claude Code Agent Teams Architecture
+### Claude Code Agent Teams Architecture (Updated 2026-04-02)
+
+**Components**:
+| Component | Role |
+|-----------|------|
+| Team lead | Main Claude Code session; creates team, spawns teammates, coordinates work |
+| Teammates | Separate Claude Code instances; each works on assigned tasks |
+| Task list | Shared list of work items; teammates claim and complete; file-locking prevents races |
+| Mailbox | Messaging system for direct inter-agent communication |
 
 **Lead Agent (Orchestrator)**:
 - Does not write code directly
@@ -44,15 +80,64 @@ Anthropic has developed multi-agent orchestration patterns both in Claude Code (
 - Enters "delegation mode" when plan approved
 - Creates specialist agents for specific roles
 - Synthesizes results from all agents
+- Can require plan approval before teammates implement
 
-**Specialist Agents**:
+**Specialist Agents (Teammates)**:
 - Each gets a fresh, focused context window
 - Works in independent Git worktree (no edit collisions)
 - Shares task board with dependency tracking
-- Communicates via inter-agent @mentions
+- Communicates via direct messaging (not just @mentions -- full mailbox system)
+- Can self-claim unassigned, unblocked tasks
 - Worktrees with no changes automatically cleaned up
+- Load same project context (CLAUDE.md, MCP servers, skills) but NOT the lead's conversation history
 
-**Key Demo**: 16 agents collaborated to build a 100,000-line C compiler across 2,000 sessions.
+**Display Modes**:
+- `in-process`: all teammates in main terminal; Shift+Down to cycle; works anywhere
+- `split-panes`: each teammate gets own pane; requires tmux or iTerm2
+- `auto` (default): uses split panes if already in tmux, in-process otherwise
+
+**Quality Gate Hooks**:
+- `TeammateIdle`: runs when teammate about to idle; exit code 2 = send feedback, keep working
+- `TaskCreated`: runs on task creation; exit code 2 = block creation with feedback
+- `TaskCompleted`: runs on task completion; exit code 2 = block completion with feedback
+
+**Permissions**: Teammates inherit lead's permission settings at spawn. Can be changed individually after.
+
+**Limitations (current)**:
+- No session resumption for in-process teammates
+- Task status can lag (manual nudge sometimes needed)
+- One team per session; no nested teams
+- Lead is fixed for lifetime; no leadership transfer
+- Split panes not supported in VS Code terminal, Windows Terminal, or Ghostty
+
+**Storage Paths**:
+- Team config: `~/.claude/teams/{team-name}/config.json`
+- Task list: `~/.claude/tasks/{team-name}/`
+
+### Anthropic Internal Multi-Agent Research System (2026-04-02)
+
+**Architecture**: Orchestrator-worker pattern (hierarchical)
+- LeadResearcher: analyzes queries, develops strategies, spawns 3-5 parallel subagents
+- Subagents: execute independent web searches (3+ simultaneous parallel tool calls)
+- CitationAgent: dedicated agent for source attribution
+- Interleaved thinking: agents evaluate tool results inline before returning
+
+**State Management**:
+- External memory persistence when context approaches 200K tokens
+- Resumable checkpoints for error recovery
+- Rainbow deployments: prevent disruption to active agents during system updates
+- Graceful tool failure handling (no restart-from-beginning)
+
+**Performance Metrics**:
+- Multi-agent: ~15x tokens vs single-turn chat
+- Individual agent: ~4x tokens vs single-turn chat
+- Token usage explains 80% of benchmark performance variance
+- Parallel tool execution: up to 90% time reduction vs sequential
+
+**Delegation Best Practices (from Anthropic)**:
+- Detailed task specs required: clear objectives, output formats, tool guidance, explicit boundaries
+- Without detailed descriptions: agents duplicate work, leave gaps, or fail to find information
+- Effective delegation = the primary determinant of multi-agent system quality
 
 ### Agent SDK Subagent Pattern
 
@@ -82,6 +167,7 @@ Properties:
 - **Task granularity**: 5-6 tasks per teammate
 - **Scope clarity**: Each agent needs clear scope, success criteria, boundaries
 - **Delegation gap**: Full delegation possible for only 0-20% of tasks; clarity is critical
+- **Start simple**: Begin with research/review tasks, not code-writing, when new to agent teams
 
 ### Orchestration Patterns
 
@@ -89,19 +175,28 @@ Properties:
 2. **Pipeline**: Sequential handoff between specialized agents (e.g., write -> review -> test)
 3. **Collaborative**: Agents share a task board and coordinate through messaging
 4. **Hierarchical**: Multi-level delegation (orchestrator -> sub-orchestrator -> workers)
+5. **Adversarial Debate** (new): Spawn multiple investigators with competing hypotheses; each tries to disprove the others; the surviving theory is more likely correct. Counters anchoring bias inherent in sequential investigation.
 
 ### Cost Considerations
 - Multiple agents = multiple model calls = higher API costs
+- Token costs scale linearly with number of active teammates
+- Multi-agent: ~15x tokens of single-turn chat (Anthropic's own measurement)
 - Productivity gains may offset cost increase for complex tasks
 - Simple tasks remain more efficient with single-agent approaches
+- For research/review/new features: extra tokens usually worthwhile
+- For routine tasks: single session more cost-effective
 
 ## Comparison Notes
 
 Anthropic Multi-Agent vs Google ADK Multi-Agent:
-- **Anthropic**: Tight integration with Claude Code (Git worktrees, task boards); SDK offers programmatic subagents
+- **Anthropic**: Tight integration with Claude Code (Git worktrees, task boards, mailbox, hooks); SDK offers programmatic subagents
 - **Google ADK**: Supports multi-agent via agent composition with routing agents, sequential agents, and parallel agents
 - **Both**: Support orchestrator/specialist patterns and parallel execution
-- **Key difference**: Anthropic's agent teams are deeply integrated into the coding workflow (worktrees, file ownership); Google's approach is more general-purpose
+- **Key difference**: Anthropic's agent teams are deeply integrated into the coding workflow (worktrees, file ownership, quality gate hooks); Google's approach is more general-purpose
+
+Anthropic Subagents vs Agent Teams:
+- **Subagents**: Within single session, report to parent only, no peer communication, lower token cost, best for focused tasks
+- **Agent Teams**: Fully independent sessions, direct peer messaging, shared task list with self-coordination, higher token cost, best for collaborative/adversarial work
 
 Anthropic vs A2A Protocol:
 - Anthropic's multi-agent patterns are intra-ecosystem (Claude agents talking to Claude agents)
