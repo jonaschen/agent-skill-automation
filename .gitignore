@@ -6,3 +6,4 @@ node_modules/
 .docusaurus/
 docs/build/
 docs/.docusaurus/
+logs/
