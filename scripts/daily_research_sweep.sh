@@ -11,11 +11,15 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
+PERF_DIR="$REPO_ROOT/logs/performance"
 DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/sweep-${DATE}.log"
+PERF_FILE="$PERF_DIR/researcher-${DATE}.json"
 CLAUDE="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
 
-mkdir -p "$LOG_DIR"
+mkdir -p "$LOG_DIR" "$PERF_DIR"
+
+START_TIME=$(date +%s)
 
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
@@ -88,11 +92,31 @@ Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and sa
 6. Git add all changed files and commit with message 'research: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'" >> "$LOG_FILE" 2>&1 || true
 
 EXIT_CODE=$?
+
+# Capture post-run state
+END_TIME=$(date +%s)
+DURATION=$((END_TIME - START_TIME))
+KB_FILES=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newer "$LOG_FILE" 2>/dev/null | wc -l || echo "0")
+PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
+
+# Write performance record
+cat > "$PERF_FILE" << EOF
+{
+  "agent": "agentic-ai-researcher",
+  "date": "$DATE",
+  "duration_seconds": $DURATION,
+  "kb_files_updated": $KB_FILES,
+  "exit_code": $EXIT_CODE,
+  "commit": "$PRE_COMMIT"
+}
+EOF
+
 echo "" >> "$LOG_FILE"
 echo "Finished: $(date)" >> "$LOG_FILE"
-echo "Exit code: $EXIT_CODE" >> "$LOG_FILE"
+echo "Duration: ${DURATION}s | KB files updated: $KB_FILES | Exit code: $EXIT_CODE" >> "$LOG_FILE"
 
 # Keep only last 30 days of logs
 find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null || true
+find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null || true
 
 exit $EXIT_CODE

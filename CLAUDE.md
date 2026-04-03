@@ -19,7 +19,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 Seven-phase pipeline for autonomously designing, validating, optimizing, and deploying Claude Code Agent Skills. Phases 1–4 build the core automation loop; Phases 5–7 extend to multi-agent topology, edge AI, and commercial AaaS.
 
-**Current status (2026-03-31):** Phase 3 optimization ongoing. G8 Iter 2: T=0.895 V=0.900. Validation passed 0.85 overfit threshold. Phase 4 (closed loop) starting in parallel.
+**Current status (2026-04-03):** Phase 3 optimization ongoing. G8 Iter 2: T=0.895 V=0.900. Validation passed 0.85 overfit threshold. Phase 4 (closed loop) starting in parallel. Three autonomous steward agents run nightly (see Daily Agent Fleet below).
 
 **Key documents:**
 - `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
@@ -53,6 +53,14 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `agentic-cicd-gate` | Deployment gating, flaky detection, git rollback | Sonnet 4.6 | Review/Validation |
 | `changeling-router` | Dynamic identity switching from role library | Sonnet 4.6 | Orchestration |
 
+### Autonomous Steward Agents (Daily Nightly Runs)
+
+| Agent | Target Project | Role | Model |
+|-------|---------------|------|-------|
+| `agentic-ai-researcher` | This repo (`knowledge_base/`) | Tracks Anthropic + Google agentic AI developments, writes sweep reports, proposes skill/roadmap updates | Opus 4.6 |
+| `android-sw-steward` | `/home/jonas/gemini-home/Android-Software/` | Drives Phase 4 deliverables (dirty page detection, migration impact, L3 framework, skill lint, A15 validation), researches AOSP updates | Opus 4.6 |
+| `arm-mrs-steward` | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | Drives H8 multi-agent orchestration, expands T32/A32 + GIC + CoreSight + PMU data, tracks ARM spec releases | Opus 4.6 |
+
 ### Pipeline Flow
 
 ```
@@ -64,6 +72,45 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
     ├→ posterior_mean ≥ 0.90, ci_lower ≥ 0.80 → agentic-cicd-gate (deploy)
     └→ below threshold → autoresearch-optimizer (auto-repair, ≤ 50 iterations)
 ```
+
+---
+
+## Daily Agent Fleet
+
+Three autonomous agents run nightly via cron, staggered to avoid resource contention. Each writes a performance JSON record to `logs/performance/` for tracking.
+
+### Schedule (Asia/Taipei)
+
+| Time | Agent | Script | What It Does |
+|------|-------|--------|-------------|
+| 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | Anthropic + Google research sweep (L1–L5: collect → analyze → plan → act) |
+| 3:00 AM | `android-sw-steward` | `scripts/daily_android_sw_steward.sh` | Phase 4 work + AOSP research on Android-Software repo |
+| 4:00 AM | `arm-mrs-steward` | `scripts/daily_arm_mrs_steward.sh` | H8 orchestration + data expansion on ARM MRS repo |
+
+### Performance Tracking
+
+- **JSON records**: `logs/performance/{researcher,android-sw,arm-mrs}-YYYY-MM-DD.json`
+- **Metrics tracked**: duration, exit code, commits made, files changed, test counts (agent-specific)
+- **30-day retention**: auto-cleaned by each script
+- **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all three agents' recent performance
+
+### Manual Runs
+
+```bash
+./scripts/daily_research_sweep.sh       # Run researcher now
+./scripts/daily_android_sw_steward.sh   # Run Android-SW steward now
+./scripts/daily_arm_mrs_steward.sh      # Run ARM MRS steward now
+./scripts/agent_review.sh              # Review last 7 days
+./scripts/agent_review.sh 30           # Monthly review
+```
+
+### Logs
+
+| Agent | Log file | Perf file |
+|-------|----------|-----------|
+| Researcher | `logs/sweep-YYYY-MM-DD.log` | `logs/performance/researcher-YYYY-MM-DD.json` |
+| Android-SW | `logs/android-sw-YYYY-MM-DD.log` | `logs/performance/android-sw-YYYY-MM-DD.json` |
+| ARM MRS | `logs/arm-mrs-YYYY-MM-DD.log` | `logs/performance/arm-mrs-YYYY-MM-DD.json` |
 
 ---
 
@@ -114,22 +161,55 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ```
 .claude/
-├── agents/          # Core agent .md files
-├── skills/          # Per-skill subdirectories (SKILL.md + scripts/ + references/)
-└── hooks/           # pre-deploy.sh, post-tool-use.sh, stop.sh
+├── agents/              # Agent definition .md files
+│   ├── meta-agent-factory.md
+│   ├── skill-quality-validator.md
+│   ├── autoresearch-optimizer.md
+│   ├── agentic-cicd-gate.md
+│   ├── changeling-router.md
+│   ├── agentic-ai-researcher.md     # Nightly: Anthropic + Google AI research
+│   ├── android-sw-steward.md        # Nightly: Android-Software project steward
+│   └── arm-mrs-steward.md           # Nightly: ARM MRS project steward
+├── skills/              # Per-skill subdirectories (SKILL.md + scripts/ + references/)
+└── hooks/               # pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
-├── run_eval_async.py   # Primary async eval runner (Python)
-├── run_eval.sh         # Legacy bash runner
-├── bayesian_eval.py    # Bayesian posterior + CI module
-├── prompt_cache.py     # Semantic prompt cache
-├── flaky_detector.py   # Bayesian flaky test classifier
-├── show_experiments.sh # Experiment log table viewer
+├── run_eval_async.py    # Primary async eval runner (Python)
+├── run_eval.sh          # Legacy bash runner
+├── bayesian_eval.py     # Bayesian posterior + CI module
+├── prompt_cache.py      # Semantic prompt cache
+├── flaky_detector.py    # Bayesian flaky test classifier
+├── show_experiments.sh  # Experiment log table viewer
 ├── check-permissions.sh
-├── splits.json         # T/V split definition
-├── experiment_log.json # Optimizer iteration history
-├── prompts/            # test_1.txt … test_44.txt
-└── expected/           # Expected trigger/content per test
-~/.claude/@lib/agents/  # Changeling role library (global, read-only)
+├── splits.json          # T/V split definition
+├── experiment_log.json  # Optimizer iteration history
+├── prompts/             # test_1.txt … test_44.txt
+└── expected/            # Expected trigger/content per test
+scripts/
+├── daily_research_sweep.sh       # Cron: 2am — agentic-ai-researcher
+├── daily_android_sw_steward.sh   # Cron: 3am — android-sw-steward
+├── daily_arm_mrs_steward.sh      # Cron: 4am — arm-mrs-steward
+├── agent_review.sh               # Performance review dashboard
+├── promote_cases.py              # Promote real-world skill usage to eval set
+├── health_dashboard.py           # Pipeline health dashboard
+└── skill_logger_hook.sh          # Skill usage logger hook
+logs/
+├── sweep-YYYY-MM-DD.log          # Researcher daily logs
+├── android-sw-YYYY-MM-DD.log     # Android-SW steward daily logs
+├── arm-mrs-YYYY-MM-DD.log        # ARM MRS steward daily logs
+└── performance/                  # Agent performance JSON records
+    ├── researcher-YYYY-MM-DD.json
+    ├── android-sw-YYYY-MM-DD.json
+    └── arm-mrs-YYYY-MM-DD.json
+knowledge_base/
+└── agentic-ai/                   # Researcher knowledge base
+    ├── INDEX.md
+    ├── anthropic/                # Anthropic track findings
+    ├── google-deepmind/          # Google/DeepMind track findings
+    ├── sweeps/                   # Daily sweep reports
+    ├── analysis/                 # L2-L3 deep analysis
+    ├── proposals/                # L4 strategic proposals
+    └── actions/                  # L5 action logs
+~/.claude/@lib/agents/            # Changeling role library (global, read-only)
 ```
 
 ---

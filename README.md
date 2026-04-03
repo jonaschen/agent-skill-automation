@@ -48,7 +48,7 @@ Automation Foundation (Phases 1–4)
 └── Changeling Router
 ```
 
-## Eleven Core Agents
+## Fourteen Core Agents
 
 **Phases 1–4 (Automation Foundation)**
 
@@ -59,6 +59,14 @@ Automation Foundation (Phases 1–4)
 | `autoresearch-optimizer` | Binary eval loop, parallel branch search, model distillation | Opus 4.6 |
 | `agentic-cicd-gate` | Deployment gating, flaky test detection, autonomous rollback | Sonnet 4.6 |
 | `changeling-router` | Dynamic identity switching for multi-persona workflows | Sonnet 4.6 |
+
+**Autonomous Steward Agents (Nightly Cron)**
+
+| Agent | Target Project | Schedule | Model |
+|-------|---------------|----------|-------|
+| `agentic-ai-researcher` | This repo — knowledge base | 2:00 AM daily | Opus 4.6 |
+| `android-sw-steward` | Android-Software (AOSP skill set) | 3:00 AM daily | Opus 4.6 |
+| `arm-mrs-steward` | ARM MRS (AArch64 agent skills) | 4:00 AM daily | Opus 4.6 |
 
 **Phase 5 (Orchestration Layer)**
 
@@ -80,9 +88,13 @@ Automation Foundation (Phases 1–4)
 
 ```
 .claude/
-├── agents/          # Agent definition files (YAML frontmatter + instructions)
-├── skills/          # Skill definitions (SKILL.md + scripts/ + references/)
-└── hooks/           # Lifecycle hooks: pre-deploy.sh, post-tool-use.sh, stop.sh
+├── agents/              # Agent definition files (YAML frontmatter + instructions)
+│   ├── (5 core pipeline agents)
+│   ├── agentic-ai-researcher.md     # Nightly: AI research sweep
+│   ├── android-sw-steward.md        # Nightly: Android-Software steward
+│   └── arm-mrs-steward.md           # Nightly: ARM MRS steward
+├── skills/              # Skill definitions (SKILL.md + scripts/ + references/)
+└── hooks/               # Lifecycle hooks: pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
 ├── run_eval_async.py    # Primary eval runner (asyncio + semaphore + backoff)
 ├── bayesian_eval.py     # Bayesian posterior + 95% credible intervals
@@ -93,7 +105,18 @@ eval/
 ├── check-permissions.sh # Static validator for mutually exclusive permission rules
 ├── prompts/             # Fixed test prompts (test_1.txt … test_54.txt)
 └── expected/            # Expected outputs for binary pass/fail evaluation
-~/.claude/@lib/agents/   # Changeling role library (global, read-only)
+scripts/
+├── daily_research_sweep.sh       # Cron: 2am — AI research sweep
+├── daily_android_sw_steward.sh   # Cron: 3am — Android-Software steward
+├── daily_arm_mrs_steward.sh      # Cron: 4am — ARM MRS steward
+├── agent_review.sh               # Performance review dashboard (all 3 agents)
+└── (other utility scripts)
+logs/
+├── *.log                         # Daily agent run logs (30-day retention)
+└── performance/                  # JSON performance records per agent per day
+knowledge_base/
+└── agentic-ai/                   # Researcher knowledge base (sweeps, analysis, proposals)
+~/.claude/@lib/agents/            # Changeling role library (global, read-only)
 ```
 
 ## Key Concepts
@@ -117,6 +140,32 @@ eval/
 - Four-tier HITL gate (Tier 0: none → Tier 3: synchronous human approval)
 - Watchdog circuit breaker halts Dev-QA infinite loops before budget exhaustion
 
+## Nightly Agent Fleet
+
+Three autonomous agents run every night via cron, each advancing a different project:
+
+```
+2:00 AM ─── agentic-ai-researcher ─── Scans Anthropic + Google AI developments
+                                       → knowledge_base/agentic-ai/
+3:00 AM ─── android-sw-steward ────── Advances AOSP skill set (Phase 4 work)
+                                       → /home/jonas/gemini-home/Android-Software/
+4:00 AM ─── arm-mrs-steward ───────── Advances AArch64 skill set (H8 orchestration)
+                                       → /home/jonas/arm-mrs-2025-03-aarchmrs/
+```
+
+Each run writes a performance JSON record to `logs/performance/`. Review all agents at once:
+
+```bash
+./scripts/agent_review.sh        # Last 7 days — success rate, duration, commits, test counts
+./scripts/agent_review.sh 30     # Monthly view
+```
+
+**What the steward agents do autonomously:**
+
+- **android-sw-steward**: Reads project docs, works on the next Phase 4 deliverable (`detect_dirty_pages.py`, `migration_impact.py`, `skill_lint.py`, L3 extension framework, A15 validation), researches AOSP updates, creates hindsight notes, expands the 100-case routing test suite
+- **arm-mrs-steward**: Reads project docs, designs H8 multi-agent orchestration (Developer/Critic/Judge/Executor), expands T32/A32 instruction coverage, adds GIC/CoreSight/PMU data, grows the 292-test eval suite, tracks ARM spec releases
+- **agentic-ai-researcher**: Runs L1–L5 pipeline (collect → analyze → plan → act), writes sweep reports, proposes skill/roadmap updates
+
 ## Current Status
 
 **Phase 3 in progress.** Phases 0-2 complete. Measurement infrastructure built and verified (Bayesian eval, async runner, semantic cache, T/V split). First optimizer iteration achieved Training posterior mean **0.921** CI [0.818, 0.983] and Validation **0.800** CI [0.604, 0.940] — exceeds the 0.90 deployment gate on training.
@@ -128,3 +177,12 @@ See [ROADMAP.md](ROADMAP.md) for full task tracking, measurement architecture, a
 - [ROADMAP.md](ROADMAP.md) — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
 - [AGENT_SKILL_AUTOMATION_DEV_PLAN.md](AGENT_SKILL_AUTOMATION_DEV_PLAN.md) — Full architecture blueprint (Phases 1-7)
 - [README_AUTORESEARCH.md](README_AUTORESEARCH.md) — How Karpathy's AutoResearch pattern maps to this system
+
+## Managed Projects
+
+This repo's steward agents autonomously maintain two external projects:
+
+| Project | Repo | Agent | Current Focus |
+|---------|------|-------|--------------|
+| Android-Software | `/home/jonas/gemini-home/Android-Software/` | `android-sw-steward` | Phase 4: dirty page detection, migration impact, A15 validation |
+| ARM MRS | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | `arm-mrs-steward` | H8: multi-agent orchestration, data expansion (T32/A32, GIC, PMU) |
