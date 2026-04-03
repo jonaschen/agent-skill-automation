@@ -115,6 +115,13 @@ print_agent_section() {
                 local EVAL=$(grep -oP '"eval_count_after"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 echo "  Last commits: $COMMITS | Files changed: $FILES | Eval tests: $EVAL"
                 ;;
+            bsp-knowledge)
+                local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local EVALS=$(grep -oP '"eval_count_after"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local NODES=$(grep -oP '"graph_nodes"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                echo "  Last commits: $COMMITS | Files changed: $FILES | Eval cases: $EVALS | Graph nodes: $NODES"
+                ;;
         esac
     fi
 
@@ -133,6 +140,7 @@ print_agent_section() {
 print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2:00 AM"
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
+print_agent_section "bsp-knowledge" "BSP Knowledge Steward" "bsp-knowledge" "bsp-knowledge" "5:00 AM"
 
 # Summary table
 echo -e "${BOLD}--- Weekly Summary ---${RESET}"
@@ -144,20 +152,20 @@ TOTAL_RUNS=$(find "$PERF_DIR" -name "*.json" -newer "$PERF_DIR" -mtime -"$DAYS" 
 TOTAL_RUNS=0
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-    for PREFIX in researcher android-sw arm-mrs; do
+    for PREFIX in researcher android-sw arm-mrs bsp-knowledge; do
         [ -f "$PERF_DIR/${PREFIX}-${CHECK_DATE}.json" ] && TOTAL_RUNS=$((TOTAL_RUNS + 1))
     done
 done
 
-echo "  Total agent runs: $TOTAL_RUNS (across all 3 agents, last $DAYS days)"
-echo "  Expected runs:    $((DAYS * 3))"
+echo "  Total agent runs: $TOTAL_RUNS (across all 4 agents, last $DAYS days)"
+echo "  Expected runs:    $((DAYS * 4))"
 echo ""
 
 # Check git activity in target repos
 echo -e "${BOLD}--- Git Activity ---${RESET}"
 echo ""
 
-for REPO_PATH in "/home/jonas/gemini-home/Android-Software" "/home/jonas/arm-mrs-2025-03-aarchmrs" "/home/jonas/gemini-home/agent-skill-automation"; do
+for REPO_PATH in "/home/jonas/gemini-home/Android-Software" "/home/jonas/arm-mrs-2025-03-aarchmrs" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "/home/jonas/gemini-home/agent-skill-automation"; do
     REPO_NAME=$(basename "$REPO_PATH")
     COMMIT_COUNT=$(cd "$REPO_PATH" && git rev-list --after="$(date -d "-${DAYS} days" +%Y-%m-%d 2>/dev/null || date -v-${DAYS}d +%Y-%m-%d)" HEAD 2>/dev/null | wc -l || echo "?")
     echo "  $REPO_NAME: $COMMIT_COUNT commits in last $DAYS days"

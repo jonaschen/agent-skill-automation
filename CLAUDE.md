@@ -60,6 +60,7 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `agentic-ai-researcher` | This repo (`knowledge_base/`) | Tracks Anthropic + Google agentic AI developments, writes sweep reports, proposes skill/roadmap updates | Opus 4.6 |
 | `android-sw-steward` | `/home/jonas/gemini-home/Android-Software/` | Drives Phase 4 deliverables (dirty page detection, migration impact, L3 framework, skill lint, A15 validation), researches AOSP updates | Opus 4.6 |
 | `arm-mrs-steward` | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | Drives H8 multi-agent orchestration, expands T32/A32 + GIC + CoreSight + PMU data, tracks ARM spec releases | Opus 4.6 |
+| `bsp-knowledge-steward` | `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/` | Completes Phase 3 exit criteria, advances Phase 4 deliverables, expands Kuzu knowledge graph, researches ARM/Linux BSP updates | Opus 4.6 |
 
 ### Pipeline Flow
 
@@ -77,7 +78,7 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ## Daily Agent Fleet
 
-Three autonomous agents run nightly via cron, staggered to avoid resource contention. Each writes a performance JSON record to `logs/performance/` for tracking.
+Four autonomous agents run nightly via cron, staggered to avoid resource contention. Each writes a performance JSON record to `logs/performance/` for tracking.
 
 ### Schedule (Asia/Taipei)
 
@@ -86,10 +87,11 @@ Three autonomous agents run nightly via cron, staggered to avoid resource conten
 | 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | Anthropic + Google research sweep (L1–L5: collect → analyze → plan → act) |
 | 3:00 AM | `android-sw-steward` | `scripts/daily_android_sw_steward.sh` | Phase 4 work + AOSP research on Android-Software repo |
 | 4:00 AM | `arm-mrs-steward` | `scripts/daily_arm_mrs_steward.sh` | H8 orchestration + data expansion on ARM MRS repo |
+| 5:00 AM | `bsp-knowledge-steward` | `scripts/daily_bsp_knowledge_steward.sh` | Phase 3/4 work + knowledge graph expansion on BSP skill sets repo |
 
 ### Performance Tracking
 
-- **JSON records**: `logs/performance/{researcher,android-sw,arm-mrs}-YYYY-MM-DD.json`
+- **JSON records**: `logs/performance/{researcher,android-sw,arm-mrs,bsp-knowledge}-YYYY-MM-DD.json`
 - **Metrics tracked**: duration, exit code, commits made, files changed, test counts (agent-specific)
 - **30-day retention**: auto-cleaned by each script
 - **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all three agents' recent performance
@@ -100,6 +102,7 @@ Three autonomous agents run nightly via cron, staggered to avoid resource conten
 ./scripts/daily_research_sweep.sh       # Run researcher now
 ./scripts/daily_android_sw_steward.sh   # Run Android-SW steward now
 ./scripts/daily_arm_mrs_steward.sh      # Run ARM MRS steward now
+./scripts/daily_bsp_knowledge_steward.sh # Run BSP Knowledge steward now
 ./scripts/agent_review.sh              # Review last 7 days
 ./scripts/agent_review.sh 30           # Monthly review
 ```
@@ -111,6 +114,7 @@ Three autonomous agents run nightly via cron, staggered to avoid resource conten
 | Researcher | `logs/sweep-YYYY-MM-DD.log` | `logs/performance/researcher-YYYY-MM-DD.json` |
 | Android-SW | `logs/android-sw-YYYY-MM-DD.log` | `logs/performance/android-sw-YYYY-MM-DD.json` |
 | ARM MRS | `logs/arm-mrs-YYYY-MM-DD.log` | `logs/performance/arm-mrs-YYYY-MM-DD.json` |
+| BSP Knowledge | `logs/bsp-knowledge-YYYY-MM-DD.log` | `logs/performance/bsp-knowledge-YYYY-MM-DD.json` |
 
 ---
 
@@ -169,7 +173,8 @@ Three autonomous agents run nightly via cron, staggered to avoid resource conten
 │   ├── changeling-router.md
 │   ├── agentic-ai-researcher.md     # Nightly: Anthropic + Google AI research
 │   ├── android-sw-steward.md        # Nightly: Android-Software project steward
-│   └── arm-mrs-steward.md           # Nightly: ARM MRS project steward
+│   ├── arm-mrs-steward.md           # Nightly: ARM MRS project steward
+│   └── bsp-knowledge-steward.md     # Nightly: BSP Knowledge skill sets steward
 ├── skills/              # Per-skill subdirectories (SKILL.md + scripts/ + references/)
 └── hooks/               # pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
@@ -188,6 +193,7 @@ scripts/
 ├── daily_research_sweep.sh       # Cron: 2am — agentic-ai-researcher
 ├── daily_android_sw_steward.sh   # Cron: 3am — android-sw-steward
 ├── daily_arm_mrs_steward.sh      # Cron: 4am — arm-mrs-steward
+├── daily_bsp_knowledge_steward.sh # Cron: 5am — bsp-knowledge-steward
 ├── agent_review.sh               # Performance review dashboard
 ├── promote_cases.py              # Promote real-world skill usage to eval set
 ├── health_dashboard.py           # Pipeline health dashboard
@@ -199,7 +205,8 @@ logs/
 └── performance/                  # Agent performance JSON records
     ├── researcher-YYYY-MM-DD.json
     ├── android-sw-YYYY-MM-DD.json
-    └── arm-mrs-YYYY-MM-DD.json
+    ├── arm-mrs-YYYY-MM-DD.json
+    └── bsp-knowledge-YYYY-MM-DD.json
 knowledge_base/
 └── agentic-ai/                   # Researcher knowledge base
     ├── INDEX.md
