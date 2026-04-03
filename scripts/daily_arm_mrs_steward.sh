@@ -26,34 +26,36 @@ echo "Started: $(date)" >> "$LOG_FILE"
 
 # Capture pre-run state
 PRE_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && python3 tools/eval_skill.py 2>/dev/null | grep -oP '\d+(?= tests)' | tail -1 || echo "292")
+PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null || echo "292")
 
 echo "" >> "$LOG_FILE"
 echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"
-"$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read .claude/agents/arm-mrs-steward.md for your full instructions.
+"$CLAUDE" --dangerously-skip-permissions --cwd "$TARGET_REPO" -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
 
 Execute a stewardship session:
-1. Orient: Read all four mandatory documents from /home/jonas/arm-mrs-2025-03-aarchmrs/
-2. Assess: Check ROADMAP.md for current status, identify next incomplete milestone (likely H8)
+1. Orient: Read all four mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md)
+2. Assess: Check ROADMAP.md for current status, identify next incomplete milestone
 3. Execute: Work on the next milestone — design, implement, or expand
-4. If H8 is complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)
+4. If current milestones are complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)
 5. Validate: Run python3 tools/eval_skill.py to ensure all tests pass
 6. Record: Update ROADMAP.md with any completed tasks
+7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}" >> "$LOG_FILE" 2>&1 || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Data Expansion ---" >> "$LOG_FILE"
-"$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read .claude/agents/arm-mrs-steward.md for your full instructions.
+"$CLAUDE" --dangerously-skip-permissions --cwd "$TARGET_REPO" -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
 
 Run a research session:
-1. Orient: Read ROADMAP.md and CLAUDE.md from /home/jonas/arm-mrs-2025-03-aarchmrs/
+1. Orient: Read ROADMAP.md and CLAUDE.md
 2. Research: WebSearch for latest ARM architecture news — new MRS builds, v9Ap7+, new FEAT_* extensions
 3. Check for new CPU profiles for PMU expansion (Cortex-X5, A730, Neoverse V3, etc.)
 4. If you find relevant data, add it to the appropriate data directories (pmu/, gic/, coresight/, arm-arm/)
 5. Add eval tests for any new data
 6. Rebuild affected caches if data was added
+7. Commit: If you made any changes, stage and commit with message 'research: ARM architecture updates ($DATE)'
 
 Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 
@@ -61,7 +63,7 @@ Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
 POST_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-POST_EVAL_COUNT=$(cd "$TARGET_REPO" && python3 tools/eval_skill.py 2>/dev/null | grep -oP '\d+(?= tests)' | tail -1 || echo "292")
+POST_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null || echo "292")
 FILES_CHANGED=$(cd "$TARGET_REPO" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l || echo "0")
 COMMITS_MADE=$(cd "$TARGET_REPO" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l || echo "0")
 

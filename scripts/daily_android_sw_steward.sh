@@ -30,29 +30,31 @@ PRE_TEST_COUNT=$(cd "$TARGET_REPO" && grep -c "TC-" tests/routing_accuracy/test_
 
 echo "" >> "$LOG_FILE"
 echo "--- Phase 4 Work ---" >> "$LOG_FILE"
-"$CLAUDE" --dangerously-skip-permissions -p "You are the android-sw-steward agent. Read .claude/agents/android-sw-steward.md for your full instructions.
+"$CLAUDE" --dangerously-skip-permissions --cwd "$TARGET_REPO" -p "You are the android-sw-steward agent. Read $REPO_ROOT/.claude/agents/android-sw-steward.md for your full instructions.
 
 Execute a stewardship session:
-1. Orient: Read all four mandatory documents from /home/jonas/gemini-home/Android-Software/
+1. Orient: Read all four mandatory documents (CLAUDE.md, ANDROID_SW_OWNER_DEV_PLAN.md, ROADMAP.md, README.md)
 2. Assess: Check ROADMAP.md for current Phase 4 status, identify next incomplete deliverable
 3. Execute: Work on the next Phase 4 deliverable (4.1-4.5 in order)
 4. If Phase 4 is complete, perform gap analysis and propose Phase 5+ improvements
 5. Validate: Run existing tests to ensure no regressions
 6. Record: Update ROADMAP.md with any completed tasks
+7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}" >> "$LOG_FILE" 2>&1 || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Gap Analysis ---" >> "$LOG_FILE"
-"$CLAUDE" --dangerously-skip-permissions -p "You are the android-sw-steward agent. Read .claude/agents/android-sw-steward.md for your full instructions.
+"$CLAUDE" --dangerously-skip-permissions --cwd "$TARGET_REPO" -p "You are the android-sw-steward agent. Read $REPO_ROOT/.claude/agents/android-sw-steward.md for your full instructions.
 
 Run a research session:
-1. Orient: Read ROADMAP.md and CLAUDE.md from /home/jonas/gemini-home/Android-Software/
+1. Orient: Read ROADMAP.md and CLAUDE.md
 2. Research: WebSearch for latest Android 15/16 AOSP changes relevant to the skill set
 3. Check for new GKI requirements, AIDL updates, pKVM evolution
 4. If you find relevant changes, update affected skills or create hindsight notes
 5. Update dirty_pages.json if any skills need refresh
+6. Commit: If you made any changes, stage and commit with message 'research: AOSP updates ($DATE)'
 
 Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 
