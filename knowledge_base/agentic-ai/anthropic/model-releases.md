@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
@@ -16,6 +16,16 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Model Capabilities Comparison Update (newly documented)
+- **What**: Updated technical comparison from official models overview: (1) Opus 4.6 supports adaptive thinking (dynamic thinking depth), extended thinking, 1M context, 128K max output. Training data cutoff: Aug 2025. (2) Sonnet 4.6 supports adaptive thinking, extended thinking, 1M context, 64K max output. Training data cutoff: Jan 2026 (newer than Opus). (3) Haiku 4.5 supports extended thinking but NOT adaptive thinking, 200K context, 64K max output. Training data cutoff: Jul 2025. (4) Batch API: Opus 4.6 and Sonnet 4.6 support 300K output with `output-300k-2026-03-24` beta header. (5) Models API (`/v1/models`) now returns `capabilities` object for programmatic capability discovery.
+- **Significance**: Notable that Sonnet 4.6 has a newer training data cutoff (Jan 2026) than Opus 4.6 (Aug 2025), meaning Sonnet may have more current knowledge for some topics. The programmable capabilities API enables agents to dynamically select models based on required features.
+- **Source**: https://platform.claude.com/docs/en/about-claude/models/overview
+
+### 2026-04-04 -- Legacy Model Lineup and Pricing Confirmed
+- **What**: Full legacy model pricing confirmed: Sonnet 4.5 ($3/$15), Opus 4.5 ($5/$25), Opus 4.1 ($15/$75), Sonnet 4 ($3/$15), Opus 4 ($15/$75), Haiku 3 ($0.25/$1.25, retiring April 19). All legacy models have 200K context windows. Opus 4.1 and Opus 4 are the most expensive at $15/$75 — 3x the price of current Opus 4.6 ($5/$25) for inferior capabilities.
+- **Significance**: The pricing trajectory shows aggressive cost reduction with each generation: Opus went from $15/$75 (4.0/4.1) to $5/$25 (4.5/4.6) — a 67% reduction. This incentivizes migration away from legacy models.
+- **Source**: https://platform.claude.com/docs/en/about-claude/models/overview
 
 ### 2026-04-03 -- Claude Haiku 3 Retirement April 19, 2026
 - **What**: Claude Haiku 3 (`claude-3-haiku-20240307`) is scheduled for retirement on April 19, 2026. After that date, all API requests to this model will return an error. Anthropic recommends migrating to Claude Haiku 4.5 ($1/$5 per MTok vs Haiku 3's $0.25/$1.25).

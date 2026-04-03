@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -9,12 +9,19 @@
 - https://docs.cloud.google.com/agent-builder/agent-engine/overview
 - https://cloud.google.com/blog/products/ai-machine-learning/vertex-ai-memory-bank-in-public-preview
 - https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
+- https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes
+- https://cloudfresh.com/en/blog/google-agentspace-evolves-into-gemini-enterprise/
 
 ## Overview
 
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Agentspace → Gemini Enterprise Rebrand, HIPAA Support, Multimodal Model Updates
+- **What**: Several platform-level changes affecting the Vertex AI agent ecosystem: (1) **Agentspace → Gemini Enterprise rebrand** — Google Agentspace has been absorbed into Gemini Enterprise, with conversational AI and agent orchestration technology from Agentspace now powering Gemini Enterprise core. New Agentspace subscriptions ceased Dec 31, 2025. Agent Designer is now GA within Gemini Enterprise. Semantic search (meaning-based, not just keyword) enabled. Cross-platform file uploads from Google Drive, OneDrive, and SharePoint. Web grounding enabled by default. (2) **HIPAA workloads**: Vertex AI Agent Engine now supports HIPAA workloads, critical for healthcare agent deployments. (3) **Veo 3.1 Lite** (Apr 2) available on Vertex AI for cost-efficient video generation. (4) **Lyria 3 audio** (Mar 25) in public preview with pro (184s) and clip (30s) variants. (5) **Partner model evaluation** (Mar 12) — Gen AI evaluation service now supports evaluating Anthropic and Llama models, not just Google models. (6) **Legacy endpoint deprecation** (Mar 24) — all `imagegeneration`/`imagen` endpoints redirect to `gemini-2.5-flash-image` by June 30, 2026; video generation migrates to `veo-3.1` variants.
+- **Significance**: The Agentspace → Gemini Enterprise rebrand consolidates Google's enterprise AI agent story under one brand. HIPAA support is a major enterprise unlock — healthcare is one of the largest potential markets for AI agents. Partner model evaluation is strategically important — enterprises can now objectively compare Claude/Llama/Gemini agents within Google's tooling, reducing vendor lock-in perception. The aggressive deprecation timeline (June 30) forces migration to newer models.
+- **Source**: https://cloudfresh.com/en/blog/google-agentspace-evolves-into-gemini-enterprise/, https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes, https://docs.cloud.google.com/agent-builder/release-notes
 
 ### 2026-04-03 -- Code Execution GA, Regional Expansion, Session Rewind, Bidirectional Streaming
 - **What**: Comprehensive release notes update: (1) **Code Execution GA** (Feb 18, 2026) — Agent Engine Code Execution is now Generally Available with sandboxed execution. (2) **Regional expansion** — Agent Engine services now available in 7 additional regions: Zurich, Milan, Hong Kong, Seoul, Jakarta, Toronto, and São Paulo (Dec 2025). (3) **Session rewind** — developers can now rewind to any point in a conversation and invalidate all interactions after that point, removing polluted context without sending a new message. (4) **Bidirectional streaming** — Agent Engine supports bidirectional streaming for real-time agent interactions. (5) **Enterprise security**: Private Service Connect and customer-managed encryption keys (CMEK) now supported. (6) **Agent identity** credentials secured by default through Google-managed Context-Aware Access (CAA) policy. (7) **Cloud API Registry** (Preview, Dec 18 2025) — private registry for admins to curate and govern approved tools for developers across their organization, integrated with MCP servers. (8) **Agent Designer** (Preview, Dec 19 2025) — low-code visual designer for designing and testing agents in the Cloud console.

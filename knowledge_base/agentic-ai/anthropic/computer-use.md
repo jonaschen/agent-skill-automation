@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,21 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Computer Use Expands to Windows (April 3, 2026)
+- **What**: Anthropic expanded Claude's Computer Use to Windows via Claude Cowork and Claude Code, one week after the Mac debut on March 23. The feature is in research preview and requires a Claude Pro or Max subscription. Setup is zero-configuration: "Download the app and it uses what's already on your machine" — no API keys, terminal, or configuration required. The same Dispatch integration from Mac is available, enabling users to send tasks from their phone and retrieve completed work on their PC.
+- **Significance**: Windows expansion significantly broadens Computer Use's addressable market. The zero-configuration approach lowers the barrier vs API-based Computer Use which requires Docker/Xvfb setup. Platform support now covers macOS (consumer + API), Windows (consumer + API), and Linux (API/Docker only).
+- **Source**: https://www.thurrott.com/a-i/anthropic/334498/anthropic-brings-claude-computer-use-to-windows
+
+### 2026-04-04 -- Dispatch Connector Priority Architecture (newly documented)
+- **What**: Detailed architecture of how Claude Computer Use prioritizes task execution confirmed from official blog: (1) Direct integrations first — Claude reaches for connectors to services like Slack, Google Calendar, etc. (2) Browser navigation for web tools without direct integration. (3) Direct screen control (screenshot + mouse/keyboard) as the last resort when no connector or browser path exists. This three-tier hierarchy optimizes for speed and reliability — connectors are fastest/most reliable, screen control is slowest/least reliable. Dispatch enables async task delegation from phone to desktop: user assigns task on mobile, Claude completes it on the desktop app, user reviews finished work later.
+- **Significance**: The priority architecture confirms screen control is a fallback, not the primary mode. This explains Anthropic's investment in connectors/integrations alongside Computer Use. The architecture also explains the performance caveat: "complex tasks sometimes need a second try, and working through your screen is slower than using a direct integration."
+- **Source**: https://claude.com/blog/dispatch-and-computer-use
+
+### 2026-04-04 -- API Technical Details: ZDR Eligibility and Prompt Injection Classifier
+- **What**: Two important technical details confirmed from official docs: (1) Computer Use is Zero Data Retention (ZDR) eligible — Anthropic processes screenshots and action requests in real time but does not retain them after the response is returned. All data storage is client-side. (2) An automatic prompt injection classifier runs on all prompts when computer use tools are active. When the classifier detects potential injections in screenshots, it steers the model to ask for user confirmation before proceeding. Users can opt out by contacting Anthropic support.
+- **Significance**: ZDR eligibility is critical for enterprise adoption in regulated industries. The opt-out mechanism for the prompt injection classifier is important for fully autonomous use cases (e.g., unattended desktop automation) where human-in-the-loop is not available.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 
 ### 2026-04-03 -- No New Announcements; Feature Stable in Research Preview
 - **What**: No new Computer Use features, API changes, or announcements have been published since April 2, 2026. The feature remains in research preview status as launched on March 23, 2026. Latest version is v2.1.90. Most recent changes were bug fixes: multi-monitor `switch_display` fix (v2.1.85, March 26), Dispatch message delivery fix (v2.1.87, March 29).
@@ -129,11 +144,11 @@ Formula: `scale = min(1.0, 1568/max(w,h), sqrt(1150000/(w*h)))`. Apply scale to 
 6. Prompt injection vulnerability in web content
 7. Browser automation benchmark: 56% success rate (vs ChatGPT 87%) on isolated tasks, though SOTA on WebArena end-to-end navigation
 
-### Platform Support (as of 2026-04-02)
+### Platform Support (as of 2026-04-04)
 | Platform | Consumer Desktop | API/Docker | Notes |
 |----------|-----------------|------------|-------|
-| macOS | Supported (March 2026) | Supported | Pro ($20/mo) or Max ($100-200/mo) required |
-| Windows | Not yet | Supported | Cowork added Windows Feb 2026; Computer Use expected soon |
+| macOS | Supported (March 23, 2026) | Supported | Pro ($20/mo) or Max ($100-200/mo) required |
+| Windows | Supported (April 3, 2026) | Supported | Pro or Max required; zero-config setup |
 | Linux | Not available | Supported | Reference implementation via Docker/Xvfb |
 
 ## Comparison Notes

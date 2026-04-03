@@ -1,19 +1,26 @@
 # Project Mariner
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://deepmind.google/models/project-mariner/
+- https://deepmind.google/technologies/project-mariner/
 - https://techcrunch.com/2024/12/11/google-unveils-project-mariner-ai-agents-to-use-the-web-for-you/
 - https://techcrunch.com/2025/05/20/google-rolls-out-project-mariner-its-web-browsing-ai-agent/
 - https://www.allaboutai.com/ai-agents/project-mariner/
 - https://www.reactionarytimes.com/googles-strategic-pivot-deepmind-absorbs-project-mariner-to-win-the-ai-agent-war/
 - https://www.programming-helper.com/tech/google-project-mariner-ai-browser-agent-2026-autonomous-web-navigation
+- https://labs.google.com/mariner/
 
 ## Overview
 
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Mariner API Integration & Labs Portal Confirmed
+- **What**: Confirmed status as of April 2026: (1) **Labs portal live** at `labs.google.com/mariner/` — providing direct access to the research prototype. (2) **Gemini API integration planned**: Google confirmed plans to bring "Project Mariner's computer use capabilities into the Gemini API" and expand to "other Google products soon." (3) **Demonstrated use cases refined**: job listing search on job boards, hiring service providers through task-matching platforms, and recipe ingredient shopping (finding missing ingredients → ordering online). (4) **Still a research prototype** — team actively soliciting user feedback. Available in US to Google AI Ultra subscribers ($249.99/month).
+- **Significance**: The labs.google.com/mariner/ portal indicates Mariner is approaching broader availability beyond the AI Ultra subscription. The API integration timeline remains vague ("soon") but when it lands, it will make browser automation a commodity capability available to any developer via API. No major architectural changes since last update — Mariner appears to be in a stabilization/expansion phase rather than feature development.
+- **Source**: https://deepmind.google/technologies/project-mariner/, https://labs.google.com/mariner/
 
 ### 2026-04-03 -- Cloud Infrastructure & Developer API Status
 - **What**: Further details on Mariner's evolution in 2026: (1) **Cloud-based infrastructure** accelerated in early 2026 — Mariner now runs on virtual machines in the background, enabling sandboxed task execution in secure VMs in Google Cloud to minimize cross-site contamination or code injection risk. (2) **Developer API**: Google is bringing Mariner capabilities to the Gemini API and Vertex AI, allowing developers to build applications powered by the browser agent. Currently in testing with select partners; broad developer access was planned for summer 2025 but timeline may have shifted. Developers must adhere to strict OAuth and token-based authentication protocols. (3) **Human Security monitoring**: Mariner is being tracked by web security companies (e.g., Human Security) as its autonomous browsing generates identifiable traffic patterns on websites.

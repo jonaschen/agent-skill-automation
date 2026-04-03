@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -18,6 +18,21 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- MCP Dev Summit Results: SDK V2 Roadmap, XAA/ID-JAG, OpenAI Resources Alignment
+- **What**: Key outcomes from the MCP Dev Summit North America (April 2-3, NYC), now available on YouTube: (1) **SDK V2 Roadmap** — Anthropic's Max Isbey presented "Path to V2 for MCP SDKs." The Python SDK has been frozen at v1.26.0 since January 24 (63-day freeze) while V2 is developed. V2 may include breaking changes to `mcp.server.auth`. (2) **Cross-App Access (XAA/ID-JAG)** — Anthropic's Paul Carleton presented on "single sign-on for agents" enabling shared identity across multiple AI tools. (3) **OpenAI MCP Resources alignment** — Nick Cooper (OpenAI) presented "MCP x MCP" keynote. OpenAI's agents SDK recently added `list_resources()` and `read_resource()` for MCP Resources, with parallel PRs pending in the Anthropic Python SDK. This signals cross-ecosystem standardization of MCP Resource support. (4) **Aaron Parecki** (OAuth 2.1 spec author) attended, grounding auth work in formal specification. (5) **Ecosystem scale**: MCP now has 10,000+ published servers (up from 5,800+ previously documented), covering everything from developer tools to Fortune 500 deployments. All sessions now available on the MCP Developers Summit YouTube channel.
+- **Significance**: SDK V2 is the most impactful announcement — the 63-day Python freeze signals a major rewrite is underway. XAA/ID-JAG ("single sign-on for agents") could solve the fragmented auth problem across the entire agent ecosystem. OpenAI + Anthropic aligning on MCP Resources means the two largest AI platforms will have interoperable context sharing. The 10K server milestone (up from 5.8K) represents 72% growth in a short period.
+- **Source**: https://dev.to/peytongreen_dev/mcp-dev-summit-2026-what-python-developers-should-actually-pay-attention-to-5ald, https://events.linuxfoundation.org/mcp-dev-summit-north-america/
+
+### 2026-04-04 -- MCP Roadmap 2026: No New Transports, Evolve Existing
+- **What**: Confirmed from the official 2026 MCP roadmap blog: the team explicitly stated "we are not adding more official transports this cycle but evolve the existing transport." Streamable HTTP is the sole remote transport being scaled. Key gaps surfaced in production: stateful sessions conflict with load balancers, horizontal scaling requires workarounds, and there is no standard way for a registry or crawler to discover server capabilities without connecting. Solutions in progress: evolving transport/session model for stateless horizontal scaling, and a standard `.well-known` metadata format for offline server capability discovery. The governance shift to Working Group autonomy allows domain-specific SEPs to be accepted without full Core Maintainer review, removing the bottleneck. Enterprise features (audit trails, SSO, gateway behavior, config portability) will land as extensions, not core protocol changes.
+- **Significance**: The explicit "no new transports" commitment provides stability for implementers. The `.well-known` metadata format is critical for MCP server registries, marketplaces, and automated agent discovery. The enterprise-as-extensions approach keeps the core protocol simple while enabling production deployment at scale.
+- **Source**: https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/
+
+### 2026-04-04 -- Claude Code v2.1.91: MCP Result Size Override (500K chars)
+- **What**: Claude Code v2.1.91 added `_meta["anthropic/maxResultSizeChars"]` annotation for MCP tool results, allowing servers to specify result persistence up to 500K characters. Previously, large MCP results were truncated. This is an MCP server-side annotation, not a protocol change.
+- **Significance**: Removes a significant bottleneck for MCP servers returning large datasets (database queries, log dumps, code analysis reports). Servers can now self-declare their result size needs without client-side configuration.
+- **Source**: https://code.claude.com/docs/en/changelog
 
 ### 2026-04-03 -- x402 Foundation Launched at MCP Dev Summit for Agent Payments
 - **What**: The Linux Foundation announced the x402 Foundation at the MCP Dev Summit North America on April 2, 2026. x402 is a universal payment protocol (contributed by Coinbase, originally developed with Cloudflare and Stripe) that embeds payments directly into HTTP interactions, enabling AI agents to autonomously pay for APIs and MCP servers with stablecoins — no accounts, subscriptions, or manual approvals required. Supporting members include AWS, American Express, Google, Mastercard, Shopify, Solana Foundation, and Visa. The protocol is being positioned as the payment layer for the agentic economy.

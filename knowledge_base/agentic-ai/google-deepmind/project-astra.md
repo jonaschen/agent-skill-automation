@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -8,12 +8,18 @@
 - https://blog.google/technology/google-deepmind/gemini-universal-ai-assistant/
 - https://www.tomsguide.com/ai/what-is-project-astra-what-you-need-to-know-about-google-deepminds-ai-initiative
 - https://eu.36kr.com/en/p/3571198300289921
+- https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-universal-ai-assistant/
 
 ## Overview
 
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Astra Capabilities Integrated into Gemini Live; Status Unchanged
+- **What**: Confirmed status: Astra capabilities (video understanding, screen sharing, memory) have been progressively integrated into **Gemini Live** for broader consumer access. The core Project Astra research prototype remains in limited trusted tester access with a waitlist. No new feature announcements since the smart glasses partnership disclosure. The Live API remains the primary developer-facing surface for Astra-like capabilities. Experts continue to predict "Agentic-First" applications emerging by late 2026, positioning Astra as the foundational multimodal agent for Google's consumer products.
+- **Significance**: Astra appears to be in a "quiet integration" phase — its capabilities are being absorbed into Gemini Live rather than released as standalone features. This suggests Google's strategy is to make Astra capabilities ubiquitous through Gemini rather than maintaining Astra as a separate product. The smart glasses (Samsung + Warby Parker, Foxconn manufacturing, Q4 2026 target) remain the most significant upcoming hardware milestone.
+- **Source**: https://deepmind.google/models/project-astra/, https://deepmind.google/technologies/gemini/project-astra/
 
 ### 2026-04-03 -- Live API Developer Capabilities & Smart Glasses Update
 - **What**: Further details on Project Astra's developer and hardware story: (1) **Live API enhancements**: The developer-facing Live API now supports `stream.video` and `stream.audio` for real-time input, enabling developers to build their own Astra-like agents — visual tutors, AR assistants, real-time translators. Enhanced emotion detection ensures the AI model responds more appropriately to user tone/mood. Now includes thinking capabilities from Gemini's reasoning models for deeper analysis during live interactions. (2) **Smart glasses partnerships**: Google building Astra glasses with Samsung and Warby Parker, but no set launch date yet. An exclusive report (36kr) suggests Foxconn manufacturing with a Q4 2026 target release. The glasses provide an immersive "see the world as you see it" experience with real-time AI overlay. (3) **Cross-device continuity**: Astra conversations persist across phone, desktop, and prototype glasses, maintaining context and memory.

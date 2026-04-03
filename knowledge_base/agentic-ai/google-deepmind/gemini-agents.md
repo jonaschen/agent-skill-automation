@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://developers.googleblog.com/new-gemini-api-updates-for-gemini-3/
 - https://ai.google.dev/gemini-api/docs/function-calling
@@ -11,12 +11,19 @@
 - https://blog.google/innovation-and-ai/technology/developers-tools/agentic-vision-gemini-3-flash/
 - https://beam.ai/agentic-insights/geminis-january-2026-update-just-changed-how-people-buy-online
 - https://ai.google.dev/gemini-api/docs/tools
+- https://geminicli.com/docs/changelogs/preview/
+- https://github.com/google-gemini/gemini-cli
 
 ## Overview
 
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Gemini API April Updates: Inference Tiers, Veo 3.1, Lyria 3, Gemini CLI v0.37
+- **What**: Rapid-fire updates in late March/early April 2026: (1) **Flex and Priority Inference Tiers** (Apr 1) — developers can now choose between cost-optimized (Flex) and latency-optimized (Priority) inference tiers for Gemini API calls, enabling cost/latency tradeoffs per use case. (2) **Gemma 4 models on Gemini API** (Apr 2) — `gemma-4-26b-a4b-it` and `gemma-4-31b-it` now available in AI Studio and via the Gemini API. (3) **Veo 3.1 Lite Preview** (Mar 31) — cost-efficient video generation model for rapid iteration and high-volume applications. (4) **Lyria 3 music generation** (Mar 25) — `lyria-3-clip-preview` (30s clips) and `lyria-3-pro-preview` (full-length songs), accepting text + image inputs for 48kHz stereo audio. (5) **Model deprecation**: `gemini-2.5-flash-lite-preview-09-2025` shut down, users directed to `gemini-3.1-flash-lite-preview`. (6) **Gemini CLI v0.37.0-preview.1** (Apr 2) — open-source terminal agent with subagent architecture (event-driven history, remote subagent support with inline agentCardJson), persistent browser sessions, dynamic tool discovery, MCP integration, GEMINI.md project config, and "Chapters" tool-based topic grouping. Includes security hardening (secret visibility lockdown, Windows Mandatory Integrity Control) and sandbox expansion.
+- **Significance**: The inference tier system is a notable pricing innovation — it lets developers optimize for cost (batch/async workloads) vs latency (real-time user-facing) without changing model code. Veo 3.1 Lite and Lyria 3 signal Google's push into multimodal generation beyond text/image. The Gemini CLI's subagent architecture with A2A-compatible agent cards directly mirrors Claude Code's agent architecture — these two tools are converging on similar patterns (MCP, project config files, subagent delegation). The gemini-2.5 deprecation confirms Google's aggressive model lifecycle management.
+- **Source**: https://ai.google.dev/gemini-api/docs/changelog, https://geminicli.com/docs/changelogs/preview/, https://github.com/google-gemini/gemini-cli
 
 ### 2026-04-03 -- Agentic Vision in Gemini 3 Flash & Universal Commerce Protocol
 - **What**: Two major agentic capabilities announced in early 2026: (1) **Agentic Vision** (Jan 27, 2026) — a new capability in Gemini 3 Flash that converts image understanding from a static act into an agentic process. Uses a **Think-Act-Observe loop**: Think (model analyzes query and image, formulates a multi-step plan), Act (generates and executes Python code to manipulate/analyze images), Observe (transformed image appended to context window for iterative refinement). (2) **Universal Commerce Protocol (UCP)** (Jan 11, 2026) — a new open standard for agentic commerce, pushing Gemini toward being an execution layer for shopping (discovery, buying, post-purchase). Includes a **Business Agent** feature (live Jan 12 with select retailers) letting shoppers chat with brands directly on Search as a virtual sales associate.

@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://deepmind.google/models/gemma/
 - https://deepmind.google/models/gemma/gemma-3/
@@ -13,12 +13,19 @@
 - https://developers.googleblog.com/bring-state-of-the-art-agentic-skills-to-the-edge-with-gemma-4/
 - https://9to5google.com/2026/04/02/google-gemma-4/
 - https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
+- https://deepmind.google/models/gemma/gemma-4/
+- https://developer.nvidia.com/blog/bringing-ai-closer-to-the-edge-and-on-device-with-gemma-4/
 
 ## Overview
 
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- Gemma 4 Architecture Details, Benchmarks, NVIDIA Acceleration
+- **What**: Additional technical details confirmed for Gemma 4 post-launch: (1) **Architecture specifics**: The 26B MoE variant uses 128 experts with 3.8B active parameters per forward pass. E4B is 7.9B total / 4.5B effective. E2B is 5.1B total / 2.3B effective. Both are Dense Transformers with PLE, not MoE (correcting earlier assumptions). (2) **Benchmark numbers** (Gemma 4 31B IT Thinking): Arena AI text: 1452 (#3), MMLU Multilingual: 85.2%, AIME 2026: 89.2%, LiveCodeBench: 80.0%, **τ2-bench (tool use): 86.4%**. (3) **NVIDIA acceleration**: NVFP4 (4-bit precision) quantized checkpoints available for Blackwell GPUs, maintaining near-identical accuracy to 8-bit while increasing performance per watt. Compatible with vLLM, Ollama, llama.cpp, Unsloth. Deployment targets span data center (Blackwell), edge (Jetson Nano through Thor), desktop (RTX/RTX PRO), and dev (DGX Spark 128GB unified memory). (4) **Available on Gemini API** (Apr 2): `gemma-4-26b-a4b-it` and `gemma-4-31b-it` accessible via AI Studio and Gemini API. (5) **Distribution**: Hugging Face, Ollama, Kaggle, LM Studio, Docker. Training/deployment: JAX, Vertex AI, Keras, Google AI Edge, GKE.
+- **Significance**: The τ2-bench score of 86.4% for tool use is the most relevant metric for our pipeline — it confirms Gemma 4 is highly capable at function calling benchmarks, not just reasoning. The NVIDIA NVFP4 quantization path means Gemma 4 can run efficiently on consumer GPUs without significant quality loss. The Jetson Nano → Thor deployment spectrum covers everything from embedded IoT to autonomous vehicle compute. Availability on Gemini API means developers can prototype with Gemma 4 via API before deploying on-device.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/, https://developer.nvidia.com/blog/bringing-ai-closer-to-the-edge-and-on-device-with-gemma-4/, https://ai.google.dev/gemini-api/docs/changelog
 
 ### 2026-04-03 -- Gemma 4 Released: Most Capable Open Models
 - **What**: Google DeepMind released **Gemma 4** on April 2, 2026, the most capable open models to date, purpose-built for advanced reasoning and agentic workflows. Four model sizes: **31B Dense** (#3 on Arena AI text leaderboard), **26B MoE** (#6 on Arena AI), **E4B** (Effective 4B), and **E2B** (Effective 2B, runs in <1.5GB memory). Key capabilities: (1) **Native function calling and structured JSON output** for autonomous agents that interact with third-party tools and execute multi-step plans. (2) **On-device agentic skills**: multi-step planning, autonomous action, offline code generation, audio-visual processing — all without specialized fine-tuning. (3) **Agent Skills** demonstrated in Google AI Edge Gallery support knowledge augmentation, content generation, and multi-step task completion. (4) **LiteRT-LM constrained decoding** ensures structured, predictable outputs for tool-calling scripts. (5) **Performance**: processes 4,000 input tokens across 2 skills in under 3 seconds; Raspberry Pi 5: 133 tok/s prefill, 7.6 tok/s decode. (6) **Context windows**: 128K (edge models), 256K (larger models). (7) **140+ languages**. (8) **Apache 2.0 license**. (9) **Platform support**: Android, iOS, Windows, Linux, macOS, web (WebGPU), Raspberry Pi 5, Qualcomm IQ8 NPU. (10) **NVIDIA acceleration**: RTX AI Garage support announced for local agentic AI.

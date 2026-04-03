@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -19,9 +19,19 @@
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.90 (April 1, 2026), with the v2.1.x series seeing 28+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.91 (April 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- v2.1.91: MCP Result Persistence Override, Skill Shell Execution Control
+- **What**: v2.1.91 released with: (1) MCP tool result persistence override via `_meta["anthropic/maxResultSizeChars"]` annotation — allows MCP servers to specify tool results up to 500K characters (previously hard-capped). (2) `disableSkillShellExecution` managed setting — disables inline shell execution within skills/commands, an enterprise security control. (3) Multi-line prompt support in `claude-cli://open?q=` deep links. (4) Plugin executables now supported under `bin/` directory in plugins. (5) Fixed async transcript chain breaks on `--resume` losing history. (6) Fixed iTerm2 `cmd+delete` not deleting to start of line. (7) Fixed Windows Terminal Preview 1.25 Shift+Enter submitting instead of inserting newline. (8) Edit tool now uses shorter `old_string` anchors to reduce output tokens.
+- **Significance**: The 500K MCP result size override is a major change for MCP servers returning large datasets (e.g., database queries, log analysis). `disableSkillShellExecution` gives enterprises granular control over skill capabilities. The Edit tool anchor optimization reduces token usage across all editing operations.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-04-04 -- Comprehensive Environment Variable Catalog (newly documented)
+- **What**: Full audit of new environment variables introduced in v2.1.69-v2.1.91: `CLAUDE_CODE_NO_FLICKER=1` (alt-screen rendering), `CLAUDE_STREAM_IDLE_TIMEOUT_MS` (streaming watchdog, default 90s), `CLAUDE_CODE_MCP_SERVER_NAME/URL` (MCP helper context), `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` (credential stripping), `ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL_SUPPORTS` (capability override for third-party providers), `ANTHROPIC_CUSTOM_MODEL_OPTION` (custom `/model` picker entry), `ENABLE_TOOL_SEARCH` (activate with custom base URLs), `ENABLE_CLAUDEAI_MCP_SERVERS=false` (opt out of cloud MCP), `CLAUDE_CODE_DISABLE_CRON/1M_CONTEXT/TERMINAL_TITLE/EXPERIMENTAL_BETAS/GIT_INSTRUCTIONS` (feature toggles), `OTEL_LOG_TOOL_DETAILS=1` (OpenTelemetry tool parameter logging), `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` (configurable session-end timeout), `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` (offline resilience), `MCP_CONNECTION_NONBLOCKING=true` (skip MCP wait in headless mode).
+- **Significance**: The volume of new env vars reflects Claude Code's maturation into an enterprise-grade platform with fine-grained operational controls. Key categories: security (`ENV_SCRUB`), observability (`OTEL_LOG_TOOL_DETAILS`, `SESSION_ID` header), performance (`NO_FLICKER`, `STREAM_IDLE_TIMEOUT`), and compatibility (`MODEL_SUPPORTS`, `CUSTOM_MODEL_OPTION`).
+- **Source**: https://code.claude.com/docs/en/changelog
 
 ### 2026-04-03 -- Source Code Leak via npm Source Map (v2.1.88)
 - **What**: A 59.8 MB JavaScript source map file (.map) was inadvertently included in the @anthropic-ai/claude-code npm package (v2.1.88), exposing the full ~512,000-line TypeScript codebase. Discovered by Chaofan Shou (Solayer Labs intern) and mirrored across GitHub within hours. Key revelations: (1) **KAIROS** — a feature flag mentioned 150+ times, representing an autonomous daemon mode where Claude Code operates as an always-on background agent. (2) **Anti-distillation mechanisms** — `anti_distillation: ['fake_tools']` in API requests silently injects decoy tool definitions to prevent model distillation. (3) **Undercover Mode** — enables stealth contributions to public open-source repositories. (4) **Model codenames confirmed**: Capybara = Claude 4.6 variant (new tier above Opus), Fennec = Opus 4.6, Numbat = unreleased model still in testing. Anthropic cited "process errors" and fast release cycle. Concurrent supply-chain attack on axios npm package (v1.14.1/0.30.4 with RAT) occurred hours before, though unrelated.

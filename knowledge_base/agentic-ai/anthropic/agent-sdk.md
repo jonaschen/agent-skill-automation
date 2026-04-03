@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
@@ -17,6 +17,16 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 — SDK Architecture Deep Dive: Feedback Loop Design Pattern
+- **What**: Anthropic's engineering blog details the core Agent SDK architecture as a feedback loop: (1) Gather context (fetch/update info via agentic search — bash grep/tail on file systems preferred over semantic search), (2) Take action (execute via tools, bash, code generation, or MCP), (3) Verify work (rules-based validation, visual feedback via screenshots, or LLM-as-judge). Tools represent frequent primary actions; bash/scripts handle general-purpose computer access; code generation handles complex reusable operations (Excel/PowerPoint creation). Compaction auto-summarizes when approaching context limits.
+- **Significance**: Establishes official best practices: start with agentic search before semantic alternatives; design tools for context efficiency; test against representative datasets; analyze failure cases to identify missing tools/context.
+- **Source**: https://claude.com/blog/building-agents-with-the-claude-agent-sdk
+
+### 2026-04-04 — SDK Branding Guidelines Published
+- **What**: Anthropic published official branding rules for Agent SDK integrations. Allowed: "Claude Agent" (preferred for dropdowns), "Claude" (within agent-labeled menus), "{YourAgentName} Powered by Claude". Not permitted: "Claude Code", "Claude Code Agent", Claude Code-branded ASCII art. Products must maintain their own branding. License governed by Anthropic's Commercial Terms of Service.
+- **Significance**: Clear boundary between Claude Code (Anthropic's product) and third-party agents built on the SDK. Partners cannot present their agents as Claude Code.
+- **Source**: https://platform.claude.com/docs/en/agent-sdk/overview
 
 ### 2026-04-03 — TypeScript SDK: Progress Summaries and Runtime Settings
 - **What**: TypeScript SDK v0.2.90 added two notable features: (1) `agentProgressSummaries` option enables periodic AI-generated progress summaries for running subagents — useful for long-running tasks where the parent agent or user needs status updates without interrupting the subagent. (2) `getSettings()` method returns runtime-resolved model and effort values, enabling agents to introspect their own configuration.

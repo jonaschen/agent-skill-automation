@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-03
+**Last updated**: 2026-04-04
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -10,13 +10,20 @@
 - https://adk.dev/ (formerly google.github.io/adk-docs, redirected)
 - https://developers.googleblog.com/building-agents-with-the-adk-and-the-new-interactions-api/
 - https://developers.googleblog.com/announcing-adk-for-java-100-building-the-future-of-ai-agents-in-java/
-- https://google.github.io/adk-docs/release-notes/
+- https://adk.dev/release-notes/
+- https://github.com/google/adk-python/releases
+- https://developers.googleblog.com/developers-guide-to-ai-agent-protocols/
 
 ## Overview
 
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-04 -- ADK Python v2.0.0 Alpha & v1.28.1 Stable; Gemini CLI Emerges as Complementary Agent Tool
+- **What**: Several significant ADK developments: (1) **ADK Python v2.0.0a2** (Mar 27, 2026) — first alpha of the next major version. Security-focused release with agent name validation to prevent arbitrary module imports, enforcement of allowed file extensions for GET requests in builder API, builder endpoints gated behind web flag, GKE deployment defaults to ClusterIP (no longer publicly exposed), and exclusion of compromised LiteLLM versions (pinned to 1.82.6). (2) **ADK Python v1.28.1** (Apr 2, 2026) — stable release adding support for `gemini-3.1-flash-live-preview` model in Live API, plus bug fixes for tool call buffering (now emitted together on turn completion). (3) **Gemini CLI** (github.com/google-gemini/gemini-cli) — Google's open-source terminal AI agent now at v0.37.0-preview.1 with subagent architecture (event-driven history, isolation, remote subagent support), persistent browser sessions, dynamic tool discovery, MCP server integration, GEMINI.md project config (analogous to CLAUDE.md), and a "Chapters" system for tool-based topic grouping. Free access to Gemini 2.5 Pro with 1M token context. (4) **Developer's Guide to Building ADK Agents with Skills** published April 1, 2026, and **Developer's Guide to AI Agent Protocols** published March 18, positioning A2A + MCP as the two foundational agent protocols.
+- **Significance**: The v2.0.0 alpha signals ADK is preparing for a major version bump — the security hardening (preventing arbitrary module imports, compromised dependency exclusion) indicates lessons learned from production deployments. The LiteLLM compromise is noteworthy — a supply chain security incident affecting a key ADK dependency. Gemini CLI's emergence as a direct Claude Code competitor with similar architecture (MCP, project config files, subagents) validates the agentic CLI paradigm. The Live API support for gemini-3.1-flash-live-preview enables real-time voice/video agent development in ADK.
+- **Source**: https://github.com/google/adk-python/releases/tag/v1.28.1, https://github.com/google/adk-python/releases/tag/v2.0.0a2, https://github.com/google-gemini/gemini-cli, https://geminicli.com/docs/changelogs/preview/
 
 ### 2026-04-03 -- ADK Java 1.0.0 Detailed Features & Plugin Architecture
 - **What**: ADK Java 1.0.0 (released March 30, 2026) by Guillaume Laforge includes substantial new capabilities: (1) **New tools**: `GoogleMapsTool` (location-based grounding), `UrlContextTool` (web content fetch/summarize), `ContainerCodeExecutor` (Docker-based code execution), `VertexAiCodeExecutor` (cloud sandbox), `ComputerUseTool` (abstract browser/desktop automation interface). (2) **Plugin architecture**: New `App` class as top-level container with built-in plugins — `LoggingPlugin` (structured logging), `ContextFilterPlugin` (context window management), `GlobalInstructionPlugin` (app-wide instructions), extensible via custom `BasePlugin`. (3) **Context engineering**: Event compaction manages token efficiency with configurable intervals, overlap sizes, token thresholds (e.g., 4000 tokens), `LlmEventSummarizer`, and customizable retention strategies. (4) **Human-in-the-Loop (HITL)**: `ToolConfirmation`-based workflow for pausing tool execution for user approval with automatic context cleanup and resumption. (5) **Session/Memory services**: `InMemorySessionService`, `VertexAiSessionService`, `FirestoreSessionService` (community), plus `InMemoryMemoryService`, `FirestoreMemoryService`, and `GcsArtifactService`. (6) **Native A2A**: `RemoteA2AAgent` for consuming remote agents, `AgentExecutor` for exposing agents via JSON-RPC REST, seamless event streaming.
