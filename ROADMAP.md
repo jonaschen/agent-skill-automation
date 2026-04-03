@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-03-31: Phase 3 optimization ongoing. G8 Iter 2 — description refined with ROUTING RULE + EXCLUSION RULE + domain disambiguation. Training: 0.895 CI [0.781, 0.970], Validation: 0.900 CI [0.740, 0.987]. Phase 4 starting.**
+**Status as of 2026-04-04: Phase 4 in progress. Security hardening (task 4.4) started — command-chain length monitor implemented. MCP V2 compatibility risk tracked. Phase 6 updated for Gemma 4 E2B. G8 Iter 2 metrics: T=0.895, V=0.900.**
 
 ---
 
@@ -193,6 +193,11 @@ SKILL.md files from natural language requirements.
 - [x] Set up anomaly alerting (`scripts/anomaly_alerter.py`) — regression, stall, cost detection ✅
 - [x] Implement hooks: `post-tool-use.sh` (lifecycle logging + permission check), `stop.sh` (graceful shutdown) ✅
 
+#### 4.4 Security hardening for autonomous execution
+- [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
+- [ ] Integrate monitor into `.claude/hooks/post-tool-use.sh` (manual step — see `scripts/HOOK_INTEGRATION.md`)
+- [ ] Add MCP config validation step to CI/CD gate (check `.mcp.json` against installed SDK version)
+
 ### Acceptance Criteria
 | Metric | Target |
 |--------|--------|
@@ -260,7 +265,7 @@ SKILL.md files from natural language requirements.
 ### Tasks
 
 #### 6.1 Edge Readiness Assessment gate
-- [ ] Implement `eval/edge_readiness.py` — five-criterion pass/fail gate (model size, tool dependencies, latency, data classification, state management)
+- [ ] Implement `eval/edge_readiness.py` — five-criterion pass/fail gate (model size ≤ ~1.5GB for Gemma 4 E2B, tool dependencies, latency, data classification, state management)
 - [ ] Apply assessment to all existing Phase 1–4 Skills; document which are edge-eligible
 
 #### 6.2 `edge-talker-agent`
@@ -274,9 +279,10 @@ SKILL.md files from natural language requirements.
 - [ ] Integrate with Track B topology for edge-escalated tasks
 - [ ] Implement model weight push: Cloud Reasoner pushes updated Haiku weights to Edge Talker on OTA schedule
 
-#### 6.4 Model packaging pipeline
-- [ ] Implement `eval/edge_package.sh` — exports distilled SKILL.md + weights to `.edge-skill` bundle
-- [ ] Support ONNX export for CPU/NPU and GGUF for ARM/Apple Silicon
+#### 6.4 Model packaging pipeline (target: Gemma 4 E2B/E4B)
+- [ ] Implement `eval/edge_package.sh` — exports SKILL.md + model weights to `.edge-skill` bundle
+- [ ] Support ONNX export for CPU/NPU and GGUF for ARM/Apple Silicon (Gemma 4 supported by llama.cpp, Ollama, vLLM)
+- [ ] Evaluate Gemma 4 E2B zero-shot function calling (86.4% tool use) — may eliminate fine-tuning step
 - [ ] Implement secure OTA: SHA-256 verification + code signing + atomic apply + rollback on failed post-update eval
 
 #### 6.5 Cloud-edge state synchronization
@@ -431,6 +437,8 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Edge device OOM on complex Skill | 6 | Edge Readiness Assessment gate; dynamic downgrade to Cloud Reasoner | Pending |
 | Cross-regional data residency violation | 7 | Tenant data never leaves regional cluster; quarterly egress audit | Pending |
 | Outcome-based billing dispute | 7 | Immutable OpenTelemetry spans; customer-visible reconciliation dashboard | Pending |
+| MCP SDK V2 breaking changes (auth semantics) | 4 | Pin MCP SDK version; add config validation to CI/CD gate; monitor V2 alpha releases | New — active threat |
+| Claude Code deny-rule bypass (50+ subcommands) | 4 | Command-chain length monitor in post-tool-use hook; avoid auto-accept on untrusted projects | Mitigated — monitor implemented |
 
 ---
 
@@ -443,6 +451,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L3 | Never trust self-reported eval results without guardian review | G7 reported as passing but 0 positives triggered. Quota-skipped tests inflated the score. |
 | L4 | Bayesian CI is the only reliable decision criterion | Raw pass rate difference can be noise. Commit only when `new_ci_lower > old_ci_upper`. |
 | L5 | The bootstrap problem is real | Optimizer and eval runner compete for the same quota. S2+S3 mitigate but don't eliminate. |
+| L6 | Edge model assumptions become stale — re-evaluate when new open models ship | Phase 6 was designed around FunctionGemma; Gemma 4 E2B obsoleted it with better accuracy (86.4% tool use zero-shot) and no fine-tuning |
 
 ---
 
