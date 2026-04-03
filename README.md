@@ -48,7 +48,7 @@ Automation Foundation (Phases 1–4)
 └── Changeling Router
 ```
 
-## Fifteen Core Agents
+## Sixteen Core Agents
 
 **Phases 1–4 (Automation Foundation)**
 
@@ -68,6 +68,7 @@ Automation Foundation (Phases 1–4)
 | `android-sw-steward` | Android-Software (AOSP skill set) | 3:00 AM daily | Opus 4.6 |
 | `arm-mrs-steward` | ARM MRS (AArch64 agent skills) | 4:00 AM daily | Opus 4.6 |
 | `bsp-knowledge-steward` | BSP Knowledge Skill Sets | 5:00 AM daily | Opus 4.6 |
+| `factory-steward` | This repo (pipeline self-improvement) | 9:00 PM daily | Opus 4.6 |
 
 **Phase 5 (Orchestration Layer)**
 
@@ -94,7 +95,8 @@ Automation Foundation (Phases 1–4)
 │   ├── agentic-ai-researcher.md     # Nightly: AI research sweep
 │   ├── android-sw-steward.md        # Nightly: Android-Software steward
 │   ├── arm-mrs-steward.md           # Nightly: ARM MRS steward
-│   └── bsp-knowledge-steward.md     # Nightly: BSP Knowledge steward
+│   ├── bsp-knowledge-steward.md     # Nightly: BSP Knowledge steward
+│   └── factory-steward.md           # Nightly: Factory self-improvement
 ├── skills/              # Skill definitions (SKILL.md + scripts/ + references/)
 └── hooks/               # Lifecycle hooks: pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
@@ -112,6 +114,7 @@ scripts/
 ├── daily_android_sw_steward.sh   # Cron: 3am — Android-Software steward
 ├── daily_arm_mrs_steward.sh      # Cron: 4am — ARM MRS steward
 ├── daily_bsp_knowledge_steward.sh # Cron: 5am — BSP Knowledge steward
+├── daily_factory_steward.sh       # Cron: 9pm — Factory self-improvement
 ├── agent_review.sh               # Performance review dashboard (all 3 agents)
 └── (other utility scripts)
 logs/
@@ -145,17 +148,19 @@ knowledge_base/
 
 ## Nightly Agent Fleet
 
-Four autonomous agents run every night via cron, each advancing a different project:
+Five autonomous agents run every night via cron, each advancing a different project:
 
 ```
-2:00 AM ─── agentic-ai-researcher ──── Scans Anthropic + Google AI developments
-                                        → knowledge_base/agentic-ai/
-3:00 AM ─── android-sw-steward ─────── Advances AOSP skill set (Phase 4 work)
-                                        → /home/jonas/gemini-home/Android-Software/
-4:00 AM ─── arm-mrs-steward ────────── Advances AArch64 skill set (H8 orchestration)
-                                        → /home/jonas/arm-mrs-2025-03-aarchmrs/
-5:00 AM ─── bsp-knowledge-steward ──── Advances BSP mentor skill sets (Phase 3/4)
-                                        → /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/
+ 9:00 PM ─── factory-steward ────────── Improves THIS repo: implements ADOPT items, tunes agents
+                                         → /home/jonas/gemini-home/agent-skill-automation/
+ 2:00 AM ─── agentic-ai-researcher ──── Scans Anthropic + Google AI developments
+                                         → knowledge_base/agentic-ai/
+ 3:00 AM ─── android-sw-steward ─────── Advances AOSP skill set (Phase 4 work)
+                                         → /home/jonas/gemini-home/Android-Software/
+ 4:00 AM ─── arm-mrs-steward ────────── Advances AArch64 skill set (H8 orchestration)
+                                         → /home/jonas/arm-mrs-2025-03-aarchmrs/
+ 5:00 AM ─── bsp-knowledge-steward ──── Advances BSP mentor skill sets (Phase 3/4)
+                                         → /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/
 ```
 
 Each run writes a performance JSON record to `logs/performance/`. Review all agents at once:
@@ -170,7 +175,8 @@ Each run writes a performance JSON record to `logs/performance/`. Review all age
 - **android-sw-steward**: Reads project docs, works on the next Phase 4 deliverable (`detect_dirty_pages.py`, `migration_impact.py`, `skill_lint.py`, L3 extension framework, A15 validation), researches AOSP updates, creates hindsight notes, expands the 100-case routing test suite
 - **arm-mrs-steward**: Reads project docs, designs H8 multi-agent orchestration (Developer/Critic/Judge/Executor), expands T32/A32 instruction coverage, adds GIC/CoreSight/PMU data, grows the 292-test eval suite, tracks ARM spec releases
 - **bsp-knowledge-steward**: Reads project docs, completes Phase 3 exit criteria (Blackboard eval, Socratic templates, learner-level detection), starts Phase 4 deliverables (knowledge sedimentation, CI/CD, base graph maintenance), expands the 501-node Kuzu knowledge graph with new ARM/Linux BSP specs
-- **agentic-ai-researcher**: Runs L1–L5 pipeline (collect → analyze → plan → act), writes sweep reports, proposes skill/roadmap updates
+- **factory-steward**: Owns this repo. Implements ADOPT items from the researcher's Innovator-vs-Engineer discussions, tunes underperforming agents based on `agent_review.sh` data, improves eval infrastructure, advances the ROADMAP
+- **agentic-ai-researcher**: Runs L1–L5 pipeline (collect → analyze → discuss → plan → act), writes sweep reports, proposes skill/roadmap updates
 
 ## Current Status
 

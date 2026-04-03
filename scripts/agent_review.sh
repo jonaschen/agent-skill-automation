@@ -99,6 +99,12 @@ print_agent_section() {
     local LATEST_PERF="$PERF_DIR/${PERF_PREFIX}-${LATEST_DATE}.json"
     if [ -f "$LATEST_PERF" ]; then
         case "$AGENT_NAME" in
+            factory)
+                local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local ADOPT=$(grep -oP '"adopt_items_available"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                echo "  Last commits: $COMMITS | Files changed: $FILES | ADOPT items: $ADOPT"
+                ;;
             researcher)
                 local KB_FILES=$(grep -oP '"kb_files_updated"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 echo "  Last KB updates: $KB_FILES files"
@@ -137,6 +143,7 @@ print_agent_section() {
 }
 
 # Print each agent section
+print_agent_section "factory" "Factory Steward" "factory" "factory" "9:00 PM"
 print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2:00 AM"
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
@@ -152,13 +159,13 @@ TOTAL_RUNS=$(find "$PERF_DIR" -name "*.json" -newer "$PERF_DIR" -mtime -"$DAYS" 
 TOTAL_RUNS=0
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-    for PREFIX in researcher android-sw arm-mrs bsp-knowledge; do
+    for PREFIX in factory researcher android-sw arm-mrs bsp-knowledge; do
         [ -f "$PERF_DIR/${PREFIX}-${CHECK_DATE}.json" ] && TOTAL_RUNS=$((TOTAL_RUNS + 1))
     done
 done
 
-echo "  Total agent runs: $TOTAL_RUNS (across all 4 agents, last $DAYS days)"
-echo "  Expected runs:    $((DAYS * 4))"
+echo "  Total agent runs: $TOTAL_RUNS (across all 5 agents, last $DAYS days)"
+echo "  Expected runs:    $((DAYS * 5))"
 echo ""
 
 # Check git activity in target repos
