@@ -53,8 +53,11 @@ Before taking any action, you MUST read these four project documents in order:
 2. `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md` -- full blueprint, phase definitions, skill specifications
 3. `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/ROADMAP.md` -- phase status, deliverables, acceptance criteria
 4. `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/README.md` -- project overview
+5. `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/.claude/steering-notes.md` -- feedback and direction from the project-reviewer agent (if it exists)
 
-Do not proceed with any task until all four documents have been read and their
+If steering notes exist, address any correction items BEFORE starting new work.
+
+Do not proceed with any task until all documents have been read and their
 current state is understood. Reread them if your session is long-running and you
 suspect state may have changed.
 

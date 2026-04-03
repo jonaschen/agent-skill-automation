@@ -128,6 +128,12 @@ print_agent_section() {
                 local NODES=$(grep -oP '"graph_nodes"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 echo "  Last commits: $COMMITS | Files changed: $FILES | Eval cases: $EVALS | Graph nodes: $NODES"
                 ;;
+            reviewer)
+                local ON_TRACK=$(grep -oP '"stewards_on_track"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local CORRECTIONS=$(grep -oP '"stewards_needs_correction"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local ESCALATIONS=$(grep -oP '"escalations"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                echo "  On-track: $ON_TRACK | Needs correction: $CORRECTIONS | Escalations: $ESCALATIONS"
+                ;;
         esac
     fi
 
@@ -148,6 +154,7 @@ print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
 print_agent_section "bsp-knowledge" "BSP Knowledge Steward" "bsp-knowledge" "bsp-knowledge" "5:00 AM"
+print_agent_section "reviewer" "Project Reviewer" "reviewer" "reviewer" "6:00 AM"
 
 # Summary table
 echo -e "${BOLD}--- Weekly Summary ---${RESET}"
@@ -159,13 +166,13 @@ TOTAL_RUNS=$(find "$PERF_DIR" -name "*.json" -newer "$PERF_DIR" -mtime -"$DAYS" 
 TOTAL_RUNS=0
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-    for PREFIX in factory researcher android-sw arm-mrs bsp-knowledge; do
+    for PREFIX in factory researcher android-sw arm-mrs bsp-knowledge reviewer; do
         [ -f "$PERF_DIR/${PREFIX}-${CHECK_DATE}.json" ] && TOTAL_RUNS=$((TOTAL_RUNS + 1))
     done
 done
 
-echo "  Total agent runs: $TOTAL_RUNS (across all 5 agents, last $DAYS days)"
-echo "  Expected runs:    $((DAYS * 5))"
+echo "  Total agent runs: $TOTAL_RUNS (across all 6 agents, last $DAYS days)"
+echo "  Expected runs:    $((DAYS * 6))"
 echo ""
 
 # Check git activity in target repos

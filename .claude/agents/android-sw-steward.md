@@ -46,7 +46,11 @@ Before taking any action, you MUST read these four project documents in order:
 3. `/home/jonas/gemini-home/Android-Software/ROADMAP.md` -- phase status, deliverables, acceptance criteria
 4. `/home/jonas/gemini-home/Android-Software/README.md` -- project overview
 
-Do not proceed with any task until all four documents have been read and their
+5. `/home/jonas/gemini-home/Android-Software/.claude/steering-notes.md` -- feedback and direction from the project-reviewer agent (if it exists)
+
+If steering notes exist, address any correction items BEFORE starting new work.
+
+Do not proceed with any task until all documents have been read and their
 current state is understood. Reread them if your session is long-running and you
 suspect state may have changed.
 
