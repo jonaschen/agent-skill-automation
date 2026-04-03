@@ -55,7 +55,7 @@ Automation Foundation (Phases 1–4)
 | Agent | Role | Model |
 |-------|------|-------|
 | `meta-agent-factory` | Generates new Skill/Sub-agent definitions from natural language | Opus 4.6 |
-| `skill-quality-validator` | Static analysis + trigger rate measurement | Sonnet 4.6 |
+| `skill-quality-validator` | Static analysis + trigger rate measurement; invoked by `project-reviewer` when stewards modify skills | Sonnet 4.6 |
 | `autoresearch-optimizer` | Binary eval loop, parallel branch search, model distillation | Opus 4.6 |
 | `agentic-cicd-gate` | Deployment gating, flaky test detection, autonomous rollback | Sonnet 4.6 |
 | `changeling-router` | Dynamic identity switching for multi-persona workflows | Sonnet 4.6 |
@@ -124,7 +124,8 @@ logs/
 ├── *.log                         # Daily agent run logs (30-day retention)
 └── performance/                  # JSON performance records per agent per day
 knowledge_base/
-└── agentic-ai/                   # Researcher knowledge base (sweeps, analysis, proposals)
+├── agentic-ai/                   # Researcher knowledge base (sweeps, analysis, proposals)
+└── steward-reviews/              # Daily project-reviewer assessments of steward work
 ~/.claude/@lib/agents/            # Changeling role library (global, read-only)
 ```
 
@@ -148,6 +149,11 @@ knowledge_base/
 - Mandatory pre-execution reflection for all destructive tool calls
 - Four-tier HITL gate (Tier 0: none → Tier 3: synchronous human approval)
 - Watchdog circuit breaker halts Dev-QA infinite loops before budget exhaustion
+
+**Closed-loop quality control** — the nightly fleet forms a self-correcting cycle:
+- Stewards build and commit → project-reviewer assesses quality and validates modified skills via `skill-quality-validator` → steering notes guide next session
+- Factory-steward implements pipeline improvements from the researcher's Innovator-vs-Engineer discussions
+- Skills that fail validation (posterior_mean < 0.90 or ci_lower < 0.80) are flagged as P0 correction items
 
 ## Nightly Agent Fleet
 
@@ -181,7 +187,7 @@ Each run writes a performance JSON record to `logs/performance/`. Review all age
 - **arm-mrs-steward**: Reads project docs, designs H8 multi-agent orchestration (Developer/Critic/Judge/Executor), expands T32/A32 instruction coverage, adds GIC/CoreSight/PMU data, grows the 292-test eval suite, tracks ARM spec releases
 - **bsp-knowledge-steward**: Reads project docs, completes Phase 3 exit criteria (Blackboard eval, Socratic templates, learner-level detection), starts Phase 4 deliverables (knowledge sedimentation, CI/CD, base graph maintenance), expands the 501-node Kuzu knowledge graph with new ARM/Linux BSP specs
 - **factory-steward**: Owns this repo. Implements ADOPT items from the researcher's Innovator-vs-Engineer discussions, tunes underperforming agents based on `agent_review.sh` data, improves eval infrastructure, advances the ROADMAP
-- **project-reviewer**: Tech lead for all three stewards. Reviews their git commits against each project's ROADMAP, writes steering notes to `.claude/steering-notes.md` in each repo, escalates stalled or regressing agents
+- **project-reviewer**: Tech lead for all three stewards. Reviews their git commits against each project's ROADMAP, validates modified skill files via `skill-quality-validator`, writes steering notes to `.claude/steering-notes.md` in each repo, escalates stalled or regressing agents
 - **agentic-ai-researcher**: Runs L1–L5 pipeline (collect → analyze → discuss → plan → act), writes sweep reports, proposes skill/roadmap updates
 
 ## Current Status

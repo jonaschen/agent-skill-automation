@@ -43,9 +43,10 @@ For each of the three stewards (android-sw, arm-mrs, bsp-knowledge):
 
 Then:
 6. Write a structured review to knowledge_base/steward-reviews/${DATE}.md with per-steward verdicts (on-track / needs-correction / blocked), findings, and advice
-7. For any steward that needs correction, append a dated steering note to the target repo's .claude/steering-notes.md
-8. Look for cross-project insights (findings in one repo relevant to another)
-9. If any steward is stalled, regressing, or off-track, flag it clearly with [ESCALATE] in the review
+7. Check if any steward modified skill files (skill.md/SKILL.md) — if so, invoke the skill-quality-validator via Task tool and include the quality verdict in your review
+8. For any steward that needs correction (including failed skill validation), append a dated steering note to the target repo's .claude/steering-notes.md
+9. Look for cross-project insights (findings in one repo relevant to another)
+10. If any steward is stalled, regressing, or off-track, flag it clearly with [ESCALATE] in the review
 
 If a steward didn't run today (no log file), note it as 'no run' and skip.
 

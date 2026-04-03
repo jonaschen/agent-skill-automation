@@ -135,6 +135,36 @@ For each steward, evaluate on five dimensions:
 - Zero server dependencies -- must not introduce server requirements
 - Three-layer architecture (graph + MCP + skills) must be preserved
 
+### Step 2.5: Validate Modified Skills
+
+After assessing each steward, check whether any commits modified skill files:
+
+```bash
+# In each target repo, find skill files changed in the last 24 hours
+cd <target-repo>
+git diff --name-only HEAD~<N>..HEAD | grep -iE '(skill\.md|SKILL\.md)$'
+```
+
+If skill files were modified:
+
+1. **Invoke the `skill-quality-validator`** via the Task tool — delegate a sub-task:
+   - For each changed skill file, ask the skill-quality-validator to run its
+     5-step validation pipeline (format compliance, trigger analysis, permission
+     check, adversarial probe, threshold verdict)
+   - Collect the JSON report: `{trigger_rate, ci_lower, ci_upper, verdict}`
+
+2. **Include results in the review report** under a "Skill Quality" subsection:
+   - Which skill files were modified
+   - Validation verdict (pass/fail) and trigger rate with CI
+   - If any skill fails validation (posterior_mean < 0.90 or ci_lower < 0.80),
+     add it to the steering notes as a P0 correction item
+
+3. **Flag in steering notes** if a steward created a new skill that doesn't meet
+   the deployment gate (posterior_mean >= 0.90, ci_lower >= 0.80)
+
+If no skill files were modified, skip this step and note "No skill changes" in
+the review.
+
 ### Step 3: Write Review Report
 
 Write the daily review to:
@@ -173,6 +203,11 @@ Create the `knowledge_base/steward-reviews/` directory if it does not exist.
 
 ### Progress Assessment
 - <is real progress being made? quantify if possible>
+
+### Skill Quality (if skill files were modified)
+- <which skill files changed>
+- <validation verdict, trigger rate, CI>
+- <or "No skill changes this session">
 
 ### Risks Identified
 - <regressions, principle violations, missed items>
