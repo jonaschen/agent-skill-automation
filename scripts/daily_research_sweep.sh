@@ -68,16 +68,46 @@ Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 6. Write analysis to knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md" >> "$LOG_FILE" 2>&1 || true
 
 echo "" >> "$LOG_FILE"
+echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
+"$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
+
+First, read these files to understand the context:
+1. knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md (today's research analysis)
+2. ROADMAP.md (current pipeline state)
+3. CLAUDE.md (architecture and design principles)
+
+Then conduct a multi-round discussion between two perspectives:
+
+## INNOVATOR (goes first each round)
+Proposes concrete improvements to this repo's pipeline, agents, eval system, or architecture based on today's findings. Should be specific: name the file to change, the pattern to adopt, the tool to integrate. Think boldly — what could we build next?
+
+## ENGINEER (responds each round)
+Challenges each proposal on: implementation cost, blast radius, whether it conflicts with existing design principles, whether simpler alternatives exist. Not a blocker — but demands the proposal earn its complexity.
+
+Run 3 rounds of back-and-forth. Each round: Innovator proposes 2-3 ideas → Engineer responds to each → they converge on a verdict (adopt / defer / reject with reason).
+
+After all rounds, write a structured summary:
+- ADOPT: ideas both perspectives agree should be implemented (with priority P0-P3)
+- DEFER: good ideas that need more research or depend on future phases
+- REJECT: ideas that don't justify their cost
+
+Write the full discussion transcript and summary to knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md
+
+Format the file with clear round headers, speaker labels, and the final ADOPT/DEFER/REJECT table." >> "$LOG_FILE" 2>&1 || true
+
+echo "" >> "$LOG_FILE"
 echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
 "$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
 Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
 
 1. Read today's analysis from knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md
-2. Read ROADMAP.md for current pipeline state
-3. For each identified gap or opportunity, write a skill proposal to knowledge_base/agentic-ai/proposals/ following the proposal format in the agent definition
-4. Write ROADMAP update recommendations to knowledge_base/agentic-ai/proposals/roadmap-updates-$(date +%Y-%m-%d).md
-5. Write any needed skill update suggestions to knowledge_base/agentic-ai/proposals/skill-updates-$(date +%Y-%m-%d).md
-6. Focus on actionable, specific proposals with clear priority (P0-P3)" >> "$LOG_FILE" 2>&1 || true
+2. Read today's improvement discussion from knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md — prioritize items marked ADOPT
+3. Read ROADMAP.md for current pipeline state
+4. For each identified gap or opportunity, write a skill proposal to knowledge_base/agentic-ai/proposals/ following the proposal format in the agent definition
+5. Incorporate ADOPT items from the discussion as P0/P1 proposals; DEFER items as P2/P3
+6. Write ROADMAP update recommendations to knowledge_base/agentic-ai/proposals/roadmap-updates-$(date +%Y-%m-%d).md
+7. Write any needed skill update suggestions to knowledge_base/agentic-ai/proposals/skill-updates-$(date +%Y-%m-%d).md
+8. Focus on actionable, specific proposals with clear priority (P0-P3)" >> "$LOG_FILE" 2>&1 || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Action (L5) ---" >> "$LOG_FILE"
