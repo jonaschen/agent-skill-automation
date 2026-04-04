@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
@@ -17,6 +17,21 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 — Python SDK v0.1.55–v0.1.56: MCP Large Result Fix, Context Usage, Progress Summaries
+
+#### v0.1.55 (April 3)
+- **What**: Fixed silent truncation of large MCP tool results (>50K chars). The fix forwards `maxResultSizeChars` from `ToolAnnotations` via `_meta` to bypass Zod annotation stripping in the CLI. This pairs with Claude Code v2.1.91's `_meta["anthropic/maxResultSizeChars"]` override (up to 500K chars). Bundled CLI updated to v2.1.91.
+- **Significance**: Large MCP tool results (database schemas, log dumps, code analysis reports) were being silently truncated, causing data loss in agent workflows. This fix is critical for MCP-heavy agents that depend on complete tool outputs.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases
+
+#### v0.1.56 (April 4)
+Previously documented below as combined entry — now split for clarity.
+
+### 2026-04-05 — Python SDK v0.1.56, TypeScript SDK Updates: Context Usage, Progress Summaries, Custom Sessions
+- **What**: Python SDK updated to v0.1.56 (April 4) with: (1) `get_context_usage()` method on `ClaudeSDKClient` — allows querying context window usage by category (system prompt, tools, conversation, etc.), enabling agents to make informed decisions about context management. (2) Support for `typing.Annotated` for per-parameter descriptions in JSON Schema — improves tool input documentation without custom schema overrides. (3) Exposed `tool_use_id` and `agent_id` in `ToolPermissionContext` — allows distinguishing between parallel permission requests from different subagents. (4) `session_id` option added to `ClaudeAgentOptions` for specifying custom session IDs. (5) Fixed `connect(prompt="...")` silently dropping string prompts. (6) Fixed type:'sdk' MCP servers passed via `--mcp-config` being dropped during startup. TypeScript SDK added: (1) `agentProgressSummaries` option to enable periodic AI-generated progress summaries for running subagents, emitted via `task_progress` events with a new `summary` field. (2) `getSettings()` applied section with runtime-resolved model and effort values.
+- **Significance**: `get_context_usage()` is critical for long-running agents that need to proactively manage context before hitting limits — enables graceful compaction triggers. `agentProgressSummaries` in TypeScript enables orchestrators to surface real-time status without polling subagent internals. The `tool_use_id`/`agent_id` exposure in permission context enables fine-grained permission policies in multi-agent setups.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://releasebot.io/updates/anthropic
 
 ### 2026-04-04 — SDK Architecture Deep Dive: Feedback Loop Design Pattern
 - **What**: Anthropic's engineering blog details the core Agent SDK architecture as a feedback loop: (1) Gather context (fetch/update info via agentic search — bash grep/tail on file systems preferred over semantic search), (2) Take action (execute via tools, bash, code generation, or MCP), (3) Verify work (rules-based validation, visual feedback via screenshots, or LLM-as-judge). Tools represent frequent primary actions; bash/scripts handle general-purpose computer access; code generation handles complex reusable operations (Excel/PowerPoint creation). Compaction auto-summarizes when approaching context limits.

@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://deepmind.google/models/gemma/
 - https://deepmind.google/models/gemma/gemma-3/
@@ -15,12 +15,19 @@
 - https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
 - https://deepmind.google/models/gemma/gemma-4/
 - https://developer.nvidia.com/blog/bringing-ai-closer-to-the-edge-and-on-device-with-gemma-4/
+- https://www.interconnects.ai/p/gemma-4-and-what-makes-an-open-model
+- https://android-developers.googleblog.com/2026/04/AI-Core-Developer-Preview.html
 
 ## Overview
 
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- Gemma 4 AICore Developer Preview, Competitive Analysis, Apache 2.0 Impact
+- **What**: Multiple post-launch developments: (1) **AICore Developer Preview** (Apr 2) — Google released a Developer Preview of Gemma 4 on Android via **AICore**, the on-device AI infrastructure. Models execute on specialized AI accelerators from **Google, MediaTek, and Qualcomm** with CPU fallback. Two variants: **E4B** (higher reasoning) and **E2B** (3x faster, lower latency). Uses ML Kit's Prompt API — developers write code targeting Gemma 4 that automatically works on Gemini Nano 4 devices shipping later in 2026. Capabilities: multimodal (text, images, audio), 140+ languages, enhanced chain-of-thought reasoning, improved OCR and visual data extraction, temporal reasoning for calendar/reminder apps. (2) **Independent analysis** (Interconnects.ai by Nathan Lambert): Gemma 4 31B "rivals the recent Qwen 3.5 27B" in the ~30B class. Competitive field includes Qwen 3.5, Kimi K2.5, GLM 5, MiniMax M2.5, GPT-OSS, Arcee Large, Nemotron 3, Olmo 3. Five adoption criteria identified beyond benchmarks: model performance, country of origin (US-built faces fewer barriers), model license, tooling stability at release, and fine-tunability. (3) **Apache 2.0 licensing praised** as "massively boosting adoption" — a significant shift from Google's earlier restrictive Gemma licenses. (4) **Cautionary note**: Previous Gemma models suffered from "tooling issues and poorer performance when being finetuned" — Gemma 4's success depends on "ease of use, to a point where a 5-10% swing on benchmarks wouldn't matter." (5) **Rumored 100B+ MoE variant** unreleased.
+- **Significance**: The AICore Developer Preview is the most important development for our Phase 6 — it provides a production-ready API path for on-device Gemma 4 agents on Android with hardware acceleration from all major mobile SoC vendors (Google Tensor, MediaTek, Qualcomm). The forward compatibility with Gemini Nano 4 means code written today will run on mass-market devices. The independent critical analysis raises valid concerns about fine-tunability — we should evaluate Gemma 4 fine-tuning quality before committing to it for Phase 6. The Apache 2.0 license eliminates the legal uncertainty that limited Gemma 3's enterprise adoption.
+- **Source**: https://android-developers.googleblog.com/2026/04/AI-Core-Developer-Preview.html, https://www.interconnects.ai/p/gemma-4-and-what-makes-an-open-model
 
 ### 2026-04-04 -- Gemma 4 Architecture Details, Benchmarks, NVIDIA Acceleration
 - **What**: Additional technical details confirmed for Gemma 4 post-launch: (1) **Architecture specifics**: The 26B MoE variant uses 128 experts with 3.8B active parameters per forward pass. E4B is 7.9B total / 4.5B effective. E2B is 5.1B total / 2.3B effective. Both are Dense Transformers with PLE, not MoE (correcting earlier assumptions). (2) **Benchmark numbers** (Gemma 4 31B IT Thinking): Arena AI text: 1452 (#3), MMLU Multilingual: 85.2%, AIME 2026: 89.2%, LiveCodeBench: 80.0%, **τ2-bench (tool use): 86.4%**. (3) **NVIDIA acceleration**: NVFP4 (4-bit precision) quantized checkpoints available for Blackwell GPUs, maintaining near-identical accuracy to 8-bit while increasing performance per watt. Compatible with vLLM, Ollama, llama.cpp, Unsloth. Deployment targets span data center (Blackwell), edge (Jetson Nano through Thor), desktop (RTX/RTX PRO), and dev (DGX Spark 128GB unified memory). (4) **Available on Gemini API** (Apr 2): `gemma-4-26b-a4b-it` and `gemma-4-31b-it` accessible via AI Studio and Gemini API. (5) **Distribution**: Hugging Face, Ollama, Kaggle, LM Studio, Docker. Training/deployment: JAX, Vertex AI, Keras, Google AI Edge, GKE.

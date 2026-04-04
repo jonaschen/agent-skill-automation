@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -16,12 +16,25 @@
 - https://venturebeat.com/technology/claude-codes-source-code-appears-to-have-leaked-heres-what-we-know
 - https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/
 - https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
+- https://releasebot.io/updates/anthropic/claude-code (v2.1.92)
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.91 (April 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.92 (April 4, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- v2.1.92: Bedrock Setup Wizard, Per-Model Cost Breakdown, Write Tool 60% Faster
+- **What**: v2.1.92 released (April 4) with significant features and performance improvements: (1) `forceRemoteSettingsRefresh` policy setting — blocks CLI startup until remote managed settings are freshly fetched; exits on failure. Enterprise security control for ensuring agents always run with latest policies. (2) Interactive Bedrock setup wizard from the login screen's "3rd-party platform" selection — guided AWS authentication and credential verification. (3) Per-model and cache-hit cost breakdown in `/cost` command for subscription users. (4) `/release-notes` converted to interactive version picker. (5) Remote Control sessions now default to hostname-based naming (e.g., `myhost-graceful-unicorn`), customizable via `--remote-control-session-name-prefix`. (6) Pro users receive footer hint displaying uncached token count when returning to sessions after prompt cache expiration. (7) Write tool diff computation accelerated **60%** for large files containing tabs/`&`/`$` characters. (8) Linux sandbox now includes `apply-seccomp` helper in npm and native builds for unix-socket blocking.
+- **Fixes**: Subagent spawning no longer fails with "Could not determine pane count" after tmux window changes. API 400 errors eliminated when extended thinking produces whitespace-only text blocks. Tool input validation failures resolved when streaming emits array/object fields as JSON strings. Plugin MCP servers no longer stuck "connecting" when duplicating unauthenticated claude.ai connectors. Message duplication fixed when scrolling up in fullscreen mode (iTerm2, Ghostty, DEC 2026 support). Accidental feedback survey submissions from autopilot keypresses prevented.
+- **Removed**: `/tag` command removed. `/vim` command removed (toggle via `/config` Editor mode).
+- **Significance**: The 60% Write tool speedup is material for large-file editing workloads. `forceRemoteSettingsRefresh` gives enterprises a hard guarantee that agents run with current policies — critical for compliance. Bedrock wizard lowers the barrier for AWS-native Claude Code deployments. The subagent tmux fix resolves a pain point for multi-agent workflows in terminal multiplexers.
+- **Source**: https://releasebot.io/updates/anthropic/claude-code
+
+### 2026-04-05 -- OpenClaw/Third-Party Agent Subscription Cutoff
+- **What**: Effective April 5, 2026 at 12pm PT, Anthropic cut off the ability for Claude Pro/Max subscribers to use their subscriptions through third-party agentic tools like OpenClaw. Boris Cherny (Head of Claude Code) stated: "We've been working hard to meet the increase in demand for Claude, and our subscriptions weren't built for the usage patterns of these third-party tools." Third-party harnesses were placing "outsized strain" on compute infrastructure. Users can still access Claude through external tools via pay-as-you-go "extra usage" billing or direct API keys. Subscribers received a one-time credit equal to monthly plan cost (redeemable until April 17) and pre-purchased extra usage bundles with up to 30% discount. OpenClaw creator Peter Steinberger negotiated a one-week delay but could not prevent the change.
+- **Significance**: Major policy shift — Anthropic is drawing a clear line between subscription (for Anthropic's own products: Claude.ai, Claude Code, Cowork) and API (for third-party integrations). This forces the ecosystem of third-party Claude tools onto API pricing, significantly increasing costs for heavy agentic usage. Signals that flat-rate subscriptions cannot sustain continuous agent-driven usage patterns. May accelerate development of Anthropic's own agent products (Conway, Dispatch) as the preferred consumer endpoints.
+- **Source**: https://the-decoder.com/anthropic-cuts-off-third-party-tools-like-openclaw-for-claude-subscribers-citing-unsustainable-demand/, https://venturebeat.com/technology/anthropic-cuts-off-the-ability-to-use-claude-subscriptions-with-openclaw-and
 
 ### 2026-04-04 -- v2.1.91: MCP Result Persistence Override, Skill Shell Execution Control
 - **What**: v2.1.91 released with: (1) MCP tool result persistence override via `_meta["anthropic/maxResultSizeChars"]` annotation — allows MCP servers to specify tool results up to 500K characters (previously hard-capped). (2) `disableSkillShellExecution` managed setting — disables inline shell execution within skills/commands, an enterprise security control. (3) Multi-line prompt support in `claude-cli://open?q=` deep links. (4) Plugin executables now supported under `bin/` directory in plugins. (5) Fixed async transcript chain breaks on `--resume` losing history. (6) Fixed iTerm2 `cmd+delete` not deleting to start of line. (7) Fixed Windows Terminal Preview 1.25 Shift+Enter submitting instead of inserting newline. (8) Edit tool now uses shorter `old_string` anchors to reduce output tokens.

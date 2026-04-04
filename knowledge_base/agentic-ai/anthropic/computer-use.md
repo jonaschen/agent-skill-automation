@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- File-Stealing Prompt Injection Attack Demonstrated Against Cowork
+- **What**: Security researchers demonstrated a prompt injection attack against Claude Cowork's Computer Use feature that could steal files from the user's desktop. The attack exploits the screenshot-action loop: a malicious webpage or document displayed on screen can contain instructions that Claude interprets as legitimate user requests, causing it to navigate to sensitive files and exfiltrate their contents. Anthropic acknowledged the vulnerability and confirmed it "cannot remotely disable the technology mid-operation" — once a Computer Use session is running, it must complete or be manually interrupted by the user. The existing prompt injection classifier (documented in April 4 entry) is designed to catch such attacks but is not foolproof.
+- **Significance**: Demonstrates that the Computer Use prompt injection classifier has gaps — particularly for sophisticated multi-step attacks embedded in rendered content. The inability to remotely kill sessions is a design constraint that prioritizes user autonomy but creates a security window. Reinforces that Computer Use should be treated as a supervised feature for now, not fully autonomous — aligning with Anthropic's own Dispatch priority architecture (connectors > browser > screen control).
+- **Source**: https://www.spokesman.com/stories/2026/apr/01/anthropic-accidentally-exposes-system-behind-claud/, https://winbuzzer.com/2026/04/04/anthropic-claude-desktop-control-windows-cowork-dispatch-xcxwbn/
 
 ### 2026-04-04 -- Computer Use Expands to Windows (April 3, 2026)
 - **What**: Anthropic expanded Claude's Computer Use to Windows via Claude Cowork and Claude Code, one week after the Mac debut on March 23. The feature is in research preview and requires a Claude Pro or Max subscription. Setup is zero-configuration: "Download the app and it uses what's already on your machine" — no API keys, terminal, or configuration required. The same Dispatch integration from Mac is available, enabling users to send tasks from their phone and retrieve completed work on their PC.

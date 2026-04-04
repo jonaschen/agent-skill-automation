@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -16,6 +16,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- Conway: Anthropic's Always-On Persistent Agent Platform (Leaked)
+- **What**: Multiple outlets (TestingCatalog, Dataconomy, aibase.com) reported on "Conway," an internal Anthropic platform for persistent, always-on Claude agents. Key details: (1) Conway operates as a dedicated web page ("Conway instance") rather than a standard chat view, with three core areas: Search, Chat, and System. (2) Can execute Claude Code, support external webhooks (public URLs that wake the instance), interact with Chrome, and send notifications. (3) Features an Extensions area for installing custom tools, UI tabs, and context handlers via `.cnw.zip` files — described as an "app store" for agent capabilities. (4) Webhook-driven wake means Conway instances can be triggered by external services (CI/CD, monitoring, Slack, etc.) without keeping a session open. (5) Codename "Lobster" also referenced in some reports.
+- **Significance**: Conway represents Anthropic's vision for persistent agents — moving beyond session-based interactions to always-on autonomous environments. The `.cnw.zip` extension format signals a new ecosystem play. Webhook wake enables event-driven agent activation — a pattern our pipeline could adopt. If Conway ships, it could be the natural runtime for deployed Skills, replacing the current cron-based scheduling. The extension system could inform our Phase 5 multi-agent topology design.
+- **Source**: https://dataconomy.com/2026/04/03/anthropic-tests-conway-platform-for-continuous-claude/, https://www.testingcatalog.com/exclusive-anthropic-tests-its-own-always-on-conway-agent/, https://news.aibase.com/news/26796
 
 ### 2026-04-04 -- Gartner Prediction: 40% Enterprise Apps Include Task-Specific Agents by End of 2026
 - **What**: Gartner predicts that by end of 2026, 40% of enterprise applications will include task-specific AI agents, with multi-agent coordination being the key enabler. The 2026 Agentic Coding Trends Report confirms: "2026 is the year single-agent workflows give way to coordinated multi-agent systems, where one orchestrator decomposes a problem, specialized agents handle the parts, and results get synthesized."

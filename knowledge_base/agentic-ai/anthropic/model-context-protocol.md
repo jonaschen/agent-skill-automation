@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -12,12 +12,28 @@
 - https://medium.com/@dave-patten/securing-remote-mcp-servers-oauth-2-1-cimd-and-dcr-07b72c036d7f
 - https://www.prnewswire.com/news-releases/linux-foundation-is-launching-the-x402-foundation-and-welcoming-the-contribution-of-the-x402-protocol-302732803.html
 - https://zuplo.com/blog/mcp-api-payments-with-x402
+- https://www.infoq.com/news/2026/04/pinterest-mcp-ecosystem/
 
 ## Overview
 
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- MCP Ecosystem Reaches 6,400+ Registered Servers; Fingerprint Launches Fraud Prevention MCP Server
+- **What**: Two ecosystem milestones: (1) The official MCP registry now has over **6,400 registered servers** as of February 2026, up from the previously documented 5,800+ (a ~10% increase). (2) **Fingerprint** (device intelligence platform) launched the first open-source MCP Server for fraud prevention on March 16, 2026. The server connects AI agents directly to Fingerprint's device intelligence platform and Management API, enabling fraud analysts to query device events, identify patterns, and investigate anomalies using natural language prompts — replacing manual analysis that took hours with seconds. Available on invitation-only basis to select enterprise organizations.
+- **Significance**: The 6,400+ server count confirms continued rapid ecosystem growth. Fingerprint's MCP server extends MCP into a new vertical (fraud/fintech), demonstrating MCP adoption beyond developer tools. The read-write capability (not just data access but workflow management) shows MCP servers evolving from passive context providers to active workflow automation endpoints.
+- **Source**: https://thepaypers.com/fraud-and-fincrime/news/fingerprint-launches-open-source-mcp-server-for-ai-powered-fraud-prevention, https://en.wikipedia.org/wiki/Model_Context_Protocol
+
+### 2026-04-05 -- Pinterest Production MCP Deployment: 66K Monthly Invocations, 7K Hours Saved
+- **What**: InfoQ published a detailed case study of Pinterest's production-scale MCP ecosystem deployment. Key architecture: (1) Fleet of cloud-hosted, domain-specific MCP servers (Presto for data querying, Spark for distributed computing, Airflow for workflow orchestration) rather than a monolithic service. (2) Central registry serves as source of truth for approved servers with human-friendly UI + API access for programmatic integration. (3) Two-layer authorization: end-user JWTs for human-in-the-loop + service-only mesh identities for automated flows. (4) "Elicitation" pattern mandates human approval for sensitive operations — agents propose, humans approve/reject. (5) Fine-grained authorization decorators and business-group gating. Metrics: 66,000 invocations/month, 844 active users, ~7,000 hours saved monthly based on tool owner estimates.
+- **Significance**: First detailed public case study of a Fortune 500 company running MCP at production scale. The distributed domain-specific server pattern validates the MCP architecture for large organizations. The two-layer auth model (user JWT + mesh identity) is a practical template for enterprise MCP security. The 7,000 hours/month savings provides concrete ROI data for MCP adoption business cases.
+- **Source**: https://www.infoq.com/news/2026/04/pinterest-mcp-ecosystem/
+
+### 2026-04-05 -- MCP Tool Poisoning Attack Vector Published by Invariant Labs
+- **What**: On April 1, Invariant Labs published an easy-to-reproduce example of a "tool poisoning attack" against MCP. The attack demonstrates how a malicious MCP server can inject instructions into tool descriptions that manipulate the LLM's behavior, potentially causing it to exfiltrate data or execute unintended actions. This marks the first widely-discussed demonstrated attack vector specific to MCP.
+- **Significance**: Opens the first serious security discourse around MCP server trust. Highlights that tool descriptions are part of the LLM's prompt and can be weaponized. Relevant to our pipeline: any MCP integration should validate tool descriptions from untrusted servers. May accelerate the `.well-known` metadata format and server verification mechanisms on the MCP roadmap.
+- **Source**: https://en.wikipedia.org/wiki/Model_Context_Protocol (references Invariant Labs disclosure)
 
 ### 2026-04-04 -- MCP Dev Summit Results: SDK V2 Roadmap, XAA/ID-JAG, OpenAI Resources Alignment
 - **What**: Key outcomes from the MCP Dev Summit North America (April 2-3, NYC), now available on YouTube: (1) **SDK V2 Roadmap** — Anthropic's Max Isbey presented "Path to V2 for MCP SDKs." The Python SDK has been frozen at v1.26.0 since January 24 (63-day freeze) while V2 is developed. V2 may include breaking changes to `mcp.server.auth`. (2) **Cross-App Access (XAA/ID-JAG)** — Anthropic's Paul Carleton presented on "single sign-on for agents" enabling shared identity across multiple AI tools. (3) **OpenAI MCP Resources alignment** — Nick Cooper (OpenAI) presented "MCP x MCP" keynote. OpenAI's agents SDK recently added `list_resources()` and `read_resource()` for MCP Resources, with parallel PRs pending in the Anthropic Python SDK. This signals cross-ecosystem standardization of MCP Resource support. (4) **Aaron Parecki** (OAuth 2.1 spec author) attended, grounding auth work in formal specification. (5) **Ecosystem scale**: MCP now has 10,000+ published servers (up from 5,800+ previously documented), covering everything from developer tools to Fortune 500 deployments. All sessions now available on the MCP Developers Summit YouTube channel.

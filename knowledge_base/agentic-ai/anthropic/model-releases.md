@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
@@ -16,6 +16,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- Leaked Model Codenames: Fenick (Opus), Capra/Capabra (Sonnet), Tangu (Haiku)
+- **What**: Following the March 31 Claude Code source leak (59.8MB source map published to npm), additional internal details emerged about Anthropic's model naming conventions: (1) "Fenick" is the internal codename for the Opus model series. (2) "Capra" or "Capabra" is the internal codename for Sonnet. (3) "Tangu" is the internal codename for Haiku. (4) References to "Opus 4.7" and "Sonnet 4.8" found in internal testing configurations, suggesting the next generation is already in development. (5) "Capybara" tier confirmed as the tier name that sits above Opus/Sonnet/Haiku — Mythos is the first model in this tier. (6) 44 hidden feature flags discovered including voice mode, multi-agent coordination enhancements, background sessions, and a `/buddy` feature. Note: Some of this information originated from April 1 posts and should be treated with appropriate skepticism — codenames are confirmed but version numbers and feature flags may be speculative or satirical.
+- **Significance**: The codename system (Fenick/Capra/Tangu) provides a way to track unreleased models in future leaks or documentation. The Opus 4.7/Sonnet 4.8 references suggest Anthropic maintains a rapid release cadence even for flagship models. The Capybara tier above Opus confirms Anthropic's intent to create a premium model category — pricing likely above current Opus 4.6 ($5/$25). Background sessions feature flag aligns with the Conway persistent agent platform.
+- **Source**: https://medium.com/@mfierce0/the-claude-code-leak-opus-4-7-sonnet-4-8-and-mythos-a-rare-unfiltered-look-inside-anthropic-70c6f735810a, https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
 
 ### 2026-04-04 -- Model Capabilities Comparison Update (newly documented)
 - **What**: Updated technical comparison from official models overview: (1) Opus 4.6 supports adaptive thinking (dynamic thinking depth), extended thinking, 1M context, 128K max output. Training data cutoff: Aug 2025. (2) Sonnet 4.6 supports adaptive thinking, extended thinking, 1M context, 64K max output. Training data cutoff: Jan 2026 (newer than Opus). (3) Haiku 4.5 supports extended thinking but NOT adaptive thinking, 200K context, 64K max output. Training data cutoff: Jul 2025. (4) Batch API: Opus 4.6 and Sonnet 4.6 support 300K output with `output-300k-2026-03-24` beta header. (5) Models API (`/v1/models`) now returns `capabilities` object for programmatic capability discovery.

@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -11,12 +11,19 @@
 - https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
 - https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes
 - https://cloudfresh.com/en/blog/google-agentspace-evolves-into-gemini-enterprise/
+- https://docs.cloud.google.com/gemini/enterprise/docs/release-notes
+- https://docs.cloud.google.com/gemini/enterprise/docs/agent-designer
 
 ## Overview
 
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- Vertex AI RAG Engine Serverless, Gemini Enterprise Rapid Connector Expansion, Agent Designer GA
+- **What**: Multiple updates across the Vertex AI and Gemini Enterprise ecosystem: (1) **Vertex AI RAG Engine Serverless Mode** (Apr 3) — public preview of a fully managed database for storing RAG resources with seamless switching between serverless and Spanner modes. (2) **Gemini Enterprise connector explosion** (Mar–Apr): Jira Cloud + Confluence Cloud federated connectors (GA, Apr 3), Salesforce data federation (Preview, Mar 31), Docusign connector (Preview, Mar 23), GitHub connector (Preview, Mar 4), Google Chat connector (Preview, Mar 11), Notion connector (Preview, Feb 9), Linear connector (Preview, Feb 6). New actions for Gmail, Google Drive, GitHub, HubSpot, Monday, Confluence Data Center, Shopify, Zendesk (Preview, Mar 31). (3) **Agent Designer sharing GA** (Feb 23) — direct sharing of agents with configurable admin review. (4) **Cross-domain documents for Google Drive** (Preview, Mar 30) — search and index documents outside your organization. (5) **Data Insights agent for BigQuery** (GA with allowlist, Mar 24). (6) **NotebookLM Enterprise autocomplete** (GA, Apr 2). (7) **Gemini Enterprise mobile app** (GA with allowlist, Feb 12). (8) **Chat retention configuration** (GA, Mar 11). (9) **Image and video search in assistant** (GA, Mar 13). (10) **Observability settings** — Metrics Explorer and Trace Explorer (Preview, Mar 12). (11) **Veo 3.1 Lite** on Vertex AI (Preview, Apr 2). (12) **Gemini 2.5 model retirement extended** to October 16, 2026.
+- **Significance**: The RAG Engine serverless mode is a significant infrastructure addition — it removes the need for teams to manage their own vector databases when building RAG-powered agents. The connector expansion pace (8+ new connectors in 2 months) shows Google aggressively expanding Gemini Enterprise's data source coverage to compete with enterprise SaaS aggregators. Agent Designer reaching GA with sharing confirms Google's bet on low-code agent building. The Gemini Enterprise mobile app means enterprise AI agents are now mobile-first. The Gemini 2.5 retirement extension (to Oct 2026) gives enterprises more migration runway.
+- **Source**: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes, https://docs.cloud.google.com/gemini/enterprise/docs/release-notes
 
 ### 2026-04-04 -- Agentspace → Gemini Enterprise Rebrand, HIPAA Support, Multimodal Model Updates
 - **What**: Several platform-level changes affecting the Vertex AI agent ecosystem: (1) **Agentspace → Gemini Enterprise rebrand** — Google Agentspace has been absorbed into Gemini Enterprise, with conversational AI and agent orchestration technology from Agentspace now powering Gemini Enterprise core. New Agentspace subscriptions ceased Dec 31, 2025. Agent Designer is now GA within Gemini Enterprise. Semantic search (meaning-based, not just keyword) enabled. Cross-platform file uploads from Google Drive, OneDrive, and SharePoint. Web grounding enabled by default. (2) **HIPAA workloads**: Vertex AI Agent Engine now supports HIPAA workloads, critical for healthcare agent deployments. (3) **Veo 3.1 Lite** (Apr 2) available on Vertex AI for cost-efficient video generation. (4) **Lyria 3 audio** (Mar 25) in public preview with pro (184s) and clip (30s) variants. (5) **Partner model evaluation** (Mar 12) — Gen AI evaluation service now supports evaluating Anthropic and Llama models, not just Google models. (6) **Legacy endpoint deprecation** (Mar 24) — all `imagegeneration`/`imagen` endpoints redirect to `gemini-2.5-flash-image` by June 30, 2026; video generation migrates to `veo-3.1` variants.

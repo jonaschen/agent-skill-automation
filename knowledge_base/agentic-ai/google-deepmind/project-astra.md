@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-04
+**Last updated**: 2026-04-05
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -9,12 +9,20 @@
 - https://www.tomsguide.com/ai/what-is-project-astra-what-you-need-to-know-about-google-deepminds-ai-initiative
 - https://eu.36kr.com/en/p/3571198300289921
 - https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-universal-ai-assistant/
+- https://blog.google/products/android/android-show-xr-edition-updates/
+- https://www.analyticsinsight.net/news/googles-android-xr-smart-glasses-with-gemini-ai-to-launch-in-2026
+- https://www.webpronews.com/google-advances-xr-with-android-updates-ai-avatars-and-project-aura-glasses/
 
 ## Overview
 
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-05 -- Android XR Smart Glasses Three-Tier Strategy Crystallizes; Astra Hardware Timeline Solidifies
+- **What**: The Android XR smart glasses strategy has crystallized into a clear three-tier roadmap: (1) **Tier 1 — Screen-free AI glasses** (2026): Audio-only with built-in speakers, microphones, and cameras for natural Gemini conversations, photo capture, and AI assistance. Partners: Samsung, XREAL, Warby Parker. **First devices to be unveiled no later than May 2026**, possibly earlier. (2) **Tier 2 — Monocular display glasses** (2026–2027): Add a single in-lens display for turn-by-turn navigation, translation captions, and notification overlays. (3) **Tier 3 — Binocular smart glasses** (2027+): Full AR experience with dual displays. (4) **"Project Aura"** — Google's reference design for Android XR glasses. Google demonstrated **on-device AI photo editing** ("Nano Banana" feature — take photo, AI-reimagine it in different context) and **real-time Gemini voice interaction** on prototype glasses. (5) Astra capabilities continue to be absorbed into Gemini Live for consumer access — video understanding, screen sharing, memory all integrated. Core Astra research prototype remains in limited trusted tester access.
+- **Significance**: The May 2026 unveiling deadline means Astra-powered hardware is now imminent — likely to be announced at Google I/O 2026. The three-tier strategy is a methodical approach to hardware risk: start simple (audio), add display incrementally. The "Nano Banana" on-device AI editing demo shows Astra's multimodal capabilities being pushed to edge devices, not just cloud. Google's approach (open Android XR platform + multiple hardware partners) contrasts with Apple's closed Vision Pro ecosystem. If Samsung/Warby Parker glasses ship in 2026, Astra becomes the first major multimodal AI assistant deployed on consumer smart glasses at scale.
+- **Source**: https://www.tomsguide.com/computing/smart-glasses/googles-new-android-xr-smart-glasses-use-gemini-to-ai-edit-your-world-while-youre-still-taking-the-photo, https://blog.google/products/android/android-show-xr-edition-updates/, https://www.analyticsinsight.net/news/googles-android-xr-smart-glasses-with-gemini-ai-to-launch-in-2026
 
 ### 2026-04-04 -- Astra Capabilities Integrated into Gemini Live; Status Unchanged
 - **What**: Confirmed status: Astra capabilities (video understanding, screen sharing, memory) have been progressively integrated into **Gemini Live** for broader consumer access. The core Project Astra research prototype remains in limited trusted tester access with a waitlist. No new feature announcements since the smart glasses partnership disclosure. The Live API remains the primary developer-facing surface for Astra-like capabilities. Experts continue to predict "Agentic-First" applications emerging by late 2026, positioning Astra as the foundational multimodal agent for Google's consumer products.
