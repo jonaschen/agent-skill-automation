@@ -64,6 +64,20 @@
       "change_description": "G8 Iter 2: Added ROUTING RULE (create/build intent always routes here even when domain agents exist), EXCLUSION RULE (existing Skill modification routes elsewhere), explicit Changeling/AOSP domain disambiguation. V pushed from 0.800 to 0.900.",
       "git_commit": "8dae856",
       "outcome": "commit"
+    },
+    {
+      "iteration": 7,
+      "timestamp": "2026-04-04T10:00:00Z",
+      "branch": "G8-iter3-baseline",
+      "pass_rate": 0.658,
+      "posterior_mean": 0.658,
+      "ci_lower": 0.502,
+      "ci_upper": 0.798,
+      "train_posterior": 0.658,
+      "val_posterior": 0.600,
+      "change_description": "G8 Iter 3 baseline: No description change. Regression from 0.895→0.658 caused by adding 6 new agents (stewards, factory, reviewer) since G8 Iter 2. Positive tests (CREATE prompts) now route to competing agents. All negatives still pass. Structural routing competition issue, not description quality.",
+      "git_commit": "baseline-measurement",
+      "outcome": "regression-detected"
     }
   ]
 }

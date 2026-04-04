@@ -437,6 +437,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Edge device OOM on complex Skill | 6 | Edge Readiness Assessment gate; dynamic downgrade to Cloud Reasoner | Pending |
 | Cross-regional data residency violation | 7 | Tenant data never leaves regional cluster; quarterly egress audit | Pending |
 | Outcome-based billing dispute | 7 | Immutable OpenTelemetry spans; customer-visible reconciliation dashboard | Pending |
+| Agent fleet expansion causes routing regression | 3-4 | Adding steward/reviewer agents dropped meta-agent-factory from T=0.895 to T=0.658. Positive CREATE prompts now route to competing agents. | **Active — needs fix** |
 | MCP SDK V2 breaking changes (auth semantics) | 4 | Pin MCP SDK version; add config validation to CI/CD gate; monitor V2 alpha releases | New — active threat |
 | Claude Code deny-rule bypass (50+ subcommands) | 4 | Command-chain length monitor in post-tool-use hook; avoid auto-accept on untrusted projects | Mitigated — monitor implemented |
 
@@ -452,6 +453,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L4 | Bayesian CI is the only reliable decision criterion | Raw pass rate difference can be noise. Commit only when `new_ci_lower > old_ci_upper`. |
 | L5 | The bootstrap problem is real | Optimizer and eval runner compete for the same quota. S2+S3 mitigate but don't eliminate. |
 | L6 | Edge model assumptions become stale — re-evaluate when new open models ship | Phase 6 was designed around FunctionGemma; Gemma 4 E2B obsoleted it with better accuracy (86.4% tool use zero-shot) and no fine-tuning |
+| L7 | Adding agents causes routing regression — trigger rates must be re-evaluated after fleet expansion | G8 Iter 2 achieved T=0.895 with 5 agents. Adding 6 more agents (stewards, factory, reviewer) dropped meta-agent-factory to T=0.658. All negatives still pass — the issue is routing competition, not description quality. Eval must be re-run after any agent addition. |
 
 ---
 
@@ -460,7 +462,8 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 1. ~~G7b~~ ✅ Baseline confirmed: T=0.895, V=0.600
 2. ~~G8 Iter 1~~ ✅ Description optimized: T=0.921, V=0.800. Exceeds deployment gate (T ≥ 0.90).
 3. ~~G8 Iter 2~~ ✅ V pushed to 0.900 (above 0.85 overfit threshold). T=0.895.
-4. **Next**: G8 Iter 3 — push T back above 0.90 (persistent failures: Test 11 Changeling conflict, Test 41 false positive)
+4. **CRITICAL**: G8 Iter 3 — routing regression detected (T=0.895→0.658 after adding 6 agents). All positive tests fail with "not-triggered" due to routing competition. Description-only fixes insufficient — need structural solution (description strengthening + potentially reducing agent description overlap)
 5. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
-6. **Phase 4 prep**: Expand role library from 8 to ≥ 20 definitions
-7. **Phase 5 prep**: Build 50-task TCI benchmark dataset
+6. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
+7. **Phase 4**: Changeling latency validation (≤ 2s role switching)
+8. **Phase 5 prep**: Build 50-task TCI benchmark dataset
