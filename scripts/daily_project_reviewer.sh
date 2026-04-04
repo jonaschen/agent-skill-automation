@@ -22,6 +22,22 @@ CLAUDE="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
 
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$REPO_ROOT/knowledge_base/steward-reviews"
 
+# Post-session commit recovery: if Claude wrote files but failed to commit, catch them
+recover_uncommitted() {
+  local repo_dir="$1"
+  local session_name="$2"
+  local log_file="$3"
+  cd "$repo_dir" || return 0
+  local dirty
+  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1)
+  if [ -n "$dirty" ]; then
+    echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
+    git status --short >> "$log_file" 2>&1
+    git add -A >> "$log_file" 2>&1
+    git commit -m "reviewer(auto): $session_name uncommitted work ($DATE)" >> "$log_file" 2>&1 || true
+  fi
+}
+
 START_TIME=$(date +%s)
 echo "=== Project Reviewer Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
@@ -30,7 +46,7 @@ PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown"
 
 echo "" >> "$LOG_FILE"
 echo "--- Review All Three Stewards ---" >> "$LOG_FILE"
-"$CLAUDE" --dangerously-skip-permissions --cwd "$REPO_ROOT" -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
+cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
 
 Execute a review session for today's steward runs ($DATE):
 
@@ -51,6 +67,8 @@ Then:
 If a steward didn't run today (no log file), note it as 'no run' and skip.
 
 Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review: steward work assessment ${DATE}'" >> "$LOG_FILE" 2>&1 || true
+
+recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE"
 
 # Capture post-run state
 END_TIME=$(date +%s)
