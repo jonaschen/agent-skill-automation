@@ -157,10 +157,12 @@ knowledge_base/
 
 ## Nightly Agent Fleet
 
-Six autonomous agents run every night via cron, each with a specific role:
+Seven agent runs execute daily via cron, each with a specific role:
 
 ```
- 9:00 PM ─── factory-steward ────────── Improves THIS repo: implements ADOPT items, tunes agents
+12:00 PM ─── factory-steward ────────── Daytime: advances ROADMAP, fixes regressions
+                                         → /home/jonas/gemini-home/agent-skill-automation/
+ 9:00 PM ─── factory-steward ────────── Evening: implements ADOPT items, tunes agents
                                          → /home/jonas/gemini-home/agent-skill-automation/
  2:00 AM ─── agentic-ai-researcher ──── Scans Anthropic + Google AI developments
                                          → knowledge_base/agentic-ai/
@@ -170,7 +172,7 @@ Six autonomous agents run every night via cron, each with a specific role:
                                          → /home/jonas/arm-mrs-2025-03-aarchmrs/
  5:00 AM ─── bsp-knowledge-steward ──── Advances BSP mentor skill sets (Phase 3/4)
                                          → /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/
- 6:00 AM ─── project-reviewer ────────── Reviews steward work, writes steering notes
+ 7:00 AM ─── project-reviewer ────────── Reviews steward work, validates skills
                                          → reads all 3 project repos, writes feedback
 ```
 

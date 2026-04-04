@@ -80,25 +80,26 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ## Daily Agent Fleet
 
-Six autonomous agents run nightly via cron, staggered to avoid resource contention. Each writes a performance JSON record to `logs/performance/` for tracking.
+Seven agent runs are scheduled daily via cron, staggered to avoid resource contention and quota limits. Each writes a performance JSON record to `logs/performance/` for tracking.
 
 ### Schedule (Asia/Taipei)
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 9:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items from yesterday's research, tunes agents, improves eval/pipeline |
+| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Daytime session: advances ROADMAP, fixes routing regression, improves eval |
+| 9:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Evening session: implements ADOPT items from last night's research, tunes agents |
 | 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | Anthropic + Google research sweep (L1–L5: collect → analyze → discuss → plan → act) |
 | 3:00 AM | `android-sw-steward` | `scripts/daily_android_sw_steward.sh` | Phase 4 work + AOSP research on Android-Software repo |
-| 4:00 AM | `arm-mrs-steward` | `scripts/daily_arm_mrs_steward.sh` | H8 orchestration + data expansion on ARM MRS repo |
+| 4:00 AM | `arm-mrs-steward` | `scripts/daily_arm_mrs_steward.sh` | Data expansion + architecture tracking on ARM MRS repo |
 | 5:00 AM | `bsp-knowledge-steward` | `scripts/daily_bsp_knowledge_steward.sh` | Phase 3/4 work + knowledge graph expansion on BSP skill sets repo |
-| 6:00 AM | `project-reviewer` | `scripts/daily_project_reviewer.sh` | Reviews steward work, writes feedback, steering notes, escalates issues |
+| 7:00 AM | `project-reviewer` | `scripts/daily_project_reviewer.sh` | Reviews steward work, validates skills, writes steering notes, escalates issues |
 
 ### Performance Tracking
 
 - **JSON records**: `logs/performance/{factory,researcher,android-sw,arm-mrs,bsp-knowledge,reviewer}-YYYY-MM-DD.json`
 - **Metrics tracked**: duration, exit code, commits made, files changed, test counts (agent-specific)
 - **30-day retention**: auto-cleaned by each script
-- **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all three agents' recent performance
+- **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all agents' recent performance
 
 ### Manual Runs
 
