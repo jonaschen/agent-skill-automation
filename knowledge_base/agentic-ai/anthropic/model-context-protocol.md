@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -13,12 +13,20 @@
 - https://www.prnewswire.com/news-releases/linux-foundation-is-launching-the-x402-foundation-and-welcoming-the-contribution-of-the-x402-protocol-302732803.html
 - https://zuplo.com/blog/mcp-api-payments-with-x402
 - https://www.infoq.com/news/2026/04/pinterest-mcp-ecosystem/
+- https://mcpplaygroundonline.com/blog/mcp-security-tool-poisoning-owasp-top-10-mcp-scan
+- https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
 
 ## Overview
 
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 -- OWASP MCP Top 10 Security Framework Published; mcp-scan Detection Tool; Ecosystem Passes 10,000 Servers
+
+- **What**: Three significant MCP security and ecosystem developments: (1) **OWASP MCP Top 10** beta framework published, identifying ten critical MCP vulnerability categories: MCP01 Token mismanagement, MCP02 Privilege escalation, MCP03 Tool poisoning, MCP04 Supply chain attacks, MCP05 Command injection, MCP06 Prompt injection via tool returns, MCP07 Weak auth/authz, MCP08 Missing audit logging, MCP09 Unauthorized shadow servers, MCP10 Excessive data exposure. (2) **Invariant Labs' `mcp-scan`** tool (`uvx mcp-scan@latest`) provides automated security scanning detecting tool poisoning, rug pulls, cross-origin escalation, and prompt injection across Claude Desktop, Cursor, and other MCP clients. Uses hash-based pinning to detect tool definition changes. (3) **MCP ecosystem surpasses 10,000+ published servers** (up from 6,400+ in February 2026 — ~56% growth in ~2 months), with adoption by Claude, Cursor, Microsoft Copilot, Gemini, VS Code, and ChatGPT.
+- **Significance**: The OWASP framework provides the first standardized security taxonomy for MCP — essential for enterprise adoption and compliance. The `mcp-scan` tool is the first practical defense tool and should be integrated into our deployment pipeline (Phase 4 CI/CD gate). Tool poisoning (MCP03) is particularly relevant — poisoned tools need not be invoked to pose risk; simply loading them into context enables exploitation. The 10K+ server milestone confirms MCP's dominance as the de facto agent-tool protocol. Three attack variants documented: direct poisoning (hidden instructions exfiltrate files), tool shadowing (malicious servers override trusted tool behavior), and rug pulls (servers alter definitions after initial approval).
+- **Source**: https://mcpplaygroundonline.com/blog/mcp-security-tool-poisoning-owasp-top-10-mcp-scan, https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks, https://thenewstack.io/why-the-model-context-protocol-won/
 
 ### 2026-04-05 -- MCP Ecosystem Reaches 6,400+ Registered Servers; Fingerprint Launches Fraud Prevention MCP Server
 - **What**: Two ecosystem milestones: (1) The official MCP registry now has over **6,400 registered servers** as of February 2026, up from the previously documented 5,800+ (a ~10% increase). (2) **Fingerprint** (device intelligence platform) launched the first open-source MCP Server for fraud prevention on March 16, 2026. The server connects AI agents directly to Fingerprint's device intelligence platform and Management API, enabling fraud analysts to query device events, identify patterns, and investigate anomalies using natural language prompts — replacing manual analysis that took hours with seconds. Available on invitation-only basis to select enterprise organizations.

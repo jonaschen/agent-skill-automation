@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -23,6 +23,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.92 (April 4, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 -- No New Release; v2.1.92 Remains Current
+- **What**: No new Claude Code release since v2.1.92 (April 4). The `/powerup` interactive tutorial system (v2.1.90, April 1) continues to receive community coverage — 18 built-in lessons covering beginner to advanced features with animated terminal demos. `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` env var confirmed for offline environments (keeps marketplace cache when git pull fails). Cowork Dispatch message delivery fix confirmed in latest builds.
+- **Significance**: The v2.1.x release cadence (~30 releases in March-April) suggests a new version is imminent. No breaking changes to track.
+- **Source**: https://releasebot.io/updates/anthropic/claude-code, https://help.apiyi.com/en/claude-code-v2-1-92-mcp-persistence-powerup-tutorial-en.html
 
 ### 2026-04-05 -- v2.1.92: Bedrock Setup Wizard, Per-Model Cost Breakdown, Write Tool 60% Faster
 - **What**: v2.1.92 released (April 4) with significant features and performance improvements: (1) `forceRemoteSettingsRefresh` policy setting — blocks CLI startup until remote managed settings are freshly fetched; exits on failure. Enterprise security control for ensuring agents always run with latest policies. (2) Interactive Bedrock setup wizard from the login screen's "3rd-party platform" selection — guided AWS authentication and credential verification. (3) Per-model and cache-hit cost breakdown in `/cost` command for subscription users. (4) `/release-notes` converted to interactive version picker. (5) Remote Control sessions now default to hostname-based naming (e.g., `myhost-graceful-unicorn`), customizable via `--remote-control-session-name-prefix`. (6) Pro users receive footer hint displaying uncached token count when returning to sessions after prompt cache expiration. (7) Write tool diff computation accelerated **60%** for large files containing tabs/`&`/`$` characters. (8) Linux sandbox now includes `apply-seccomp` helper in npm and native builds for unix-socket blocking.

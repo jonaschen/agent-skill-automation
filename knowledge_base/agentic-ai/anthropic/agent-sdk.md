@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
@@ -11,12 +11,19 @@
 - https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk
 - https://www.contextstudios.ai/glossary/anthropic-agent-sdk
 - https://releasebot.io/updates/anthropic
+- https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md (TS v0.2.89-v0.2.92)
 
 ## Overview
 
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 — TypeScript SDK v0.2.91–v0.2.92: Terminal Reason, Strict Sandbox Default, CLI Parity
+
+- **What**: Two significant TypeScript SDK releases: (1) **v0.2.91** added optional `terminal_reason` field to result messages exposing why the query loop terminated (`completed`, `aborted_tools`, `max_turns`, `blocking_limit`, etc.). Added `'auto'` to public `PermissionMode` type. **Breaking behavior change**: `sandbox` option now defaults `failIfUnavailable: true` when `enabled: true` — `query()` will emit error and exit if sandbox dependencies are missing instead of silently degrading. Set `failIfUnavailable: false` for graceful degradation. Updated to CLI v2.1.91 parity. (2) **v0.2.92** updated to CLI v2.1.92 parity.
+- **Significance**: The `terminal_reason` field is valuable for agent orchestrators that need to understand WHY an agent stopped — essential for our pipeline's closed-loop retry logic (Phase 4). The strict sandbox default is a security hardening that aligns with production deployment best practices but may break agents that assumed silent degradation. Our `agentic-cicd-gate` should test for this.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md
 
 ### 2026-04-05 — Python SDK v0.1.55–v0.1.56: MCP Large Result Fix, Context Usage, Progress Summaries
 

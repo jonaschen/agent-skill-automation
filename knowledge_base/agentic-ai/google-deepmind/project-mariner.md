@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,11 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 -- Computer Use Model Powers Three Google Products; Mariner in Stabilization Phase
+- **What**: Confirmed that the Gemini 2.5 Computer Use model (Mariner's API surface) now actively powers **three distinct Google products**: (1) **Project Mariner** consumer product (browser automation via AI Ultra subscription), (2) **Firebase Testing Agent** (automated mobile/web app testing), and (3) **AI Mode in Search** (agentic search capabilities). The `computer_use` tool in the Gemini API is designed to operate within a loop pattern. The model outperforms leading alternatives on multiple web and mobile control benchmarks with lower latency. No new Mariner feature announcements in April 4-6 — the product remains in stabilization/expansion phase. Google I/O 2026 (May 19-20) is the next expected venue for Mariner updates.
+- **Significance**: The confirmation that Computer Use powers Firebase Testing Agent is new intelligence — it reveals Google is using Mariner's core technology internally for developer tooling, not just consumer browsing automation. This is a "dog-fooding" signal that validates the technology for production use. The three-product deployment (consumer, developer tool, search) demonstrates the versatility of the Computer Use model. For our pipeline, this confirms browser automation is becoming a commodity capability embedded across multiple surfaces, not a standalone product.
+- **Source**: https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-computer-use-model/, https://deepmind.google/models/project-mariner/
 
 ### 2026-04-05 -- Gemini 2.5 Computer Use Model: Mariner's API Surface Crystallizes
 - **What**: The **Gemini 2.5 Computer Use model** (originally released Oct 7, 2025, updated Jan 7, 2026) represents the API-accessible version of Mariner's core capabilities. Key details: (1) Built on Gemini 2.5 Pro's visual understanding and reasoning, specialized for UI interaction. (2) **Outperforms leading alternatives on multiple web and mobile control benchmarks** with lower latency. (3) Available via the **Gemini API in AI Studio and Vertex AI**. (4) Supports both browser and mobile app automation. (5) Mariner consumer product continues on the AI Ultra subscription ($249.99/month) with labs.google.com/mariner/ portal. (6) No new architectural changes or feature announcements in the past week — Mariner remains in stabilization/expansion phase. The Gemini CLI's experimental `browser_agent` subagent (requires Chrome 144+) represents a separate but related developer surface for browser automation using the Computer Use model.

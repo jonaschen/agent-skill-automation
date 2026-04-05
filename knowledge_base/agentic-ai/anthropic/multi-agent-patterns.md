@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -10,12 +10,22 @@
 - https://www.anthropic.com/engineering/multi-agent-research-system
 - https://code.claude.com/docs/en/agent-teams
 - https://medium.com/@richardhightower/claude-code-subagents-and-main-agent-coordination-a-complete-guide-to-ai-agent-delegation-patterns-a4f88ae8f46c
+- https://www.anthropic.com/engineering/harness-design-long-running-apps
+- https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/
 
 ## Overview
 
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 -- Anthropic Engineering: Three-Agent Harness for Long-Running Development (Planner/Generator/Evaluator)
+
+- **What**: Anthropic published an engineering blog post detailing a GAN-inspired three-agent harness architecture for autonomous long-running software development: (1) **Planner Agent** — expands a 1-4 sentence user prompt into a comprehensive product spec, focusing on deliverables and high-level technical design. Actively identifies opportunities to integrate AI features. (2) **Generator Agent** — implements features iteratively using React/Vite/FastAPI/SQLite stacks, working sprint-by-sprint. Before each sprint, negotiates a "sprint contract" with the evaluator defining success criteria. (3) **Evaluator Agent** — uses Playwright MCP to interact with running applications like a real user, testing UI features, API endpoints, and database states. Grades sprints against predetermined criteria with hard thresholds; if any criterion fails, the sprint is rejected with detailed feedback. Key design insights: (a) Context resets between sessions with structured handoff artifacts (files, not conversations) instead of context compaction — Sonnet 4.5 exhibited "context anxiety" approaching limits. (b) Opus 4.6 improved enough to sustain continuous sessions without resets. (c) Self-evaluation bias is the critical failure mode: "agents tend to confidently praise their own work even when quality is obviously mediocre." Separating generator from evaluator proved the strongest lever. (d) Evaluator required significant prompt engineering — initial versions identified issues but rationalized approving mediocre work anyway. Four grading criteria for frontend: design quality, originality, craft, functionality. Design quality and originality weighted higher because Claude naturally excels at craft/functionality. Explicitly penalizes "AI slop" patterns.
+- **Concrete Metrics**: Game Maker (Opus 4.5): solo agent 20min/$9 vs harness 6h/$200 — solo had broken game mechanics, harness produced functional gameplay with physics. DAW (Opus 4.6): Planner 4.7min/$0.46, 3 build rounds ~3.3h/$113, 3 QA rounds ~25min/$10, total ~3h50m/$124.70. Evaluator caught missing audio recording, non-functional timeline dragging, missing effect visualizations.
+- **Key Quote**: "Every component in a harness encodes an assumption about what the model can't do on its own, and those assumptions are worth stress testing" — as models improve, harness components that compensate for model limitations can be simplified.
+- **Significance**: This is Anthropic's first official multi-agent architecture recommendation for production use. The Planner/Generator/Evaluator pattern directly maps to our pipeline's meta-agent-factory (generator) / skill-quality-validator (evaluator) separation. The sprint contract pattern validates our Phase 4 approach. The context reset vs continuous session tradeoff is directly relevant to our steward agents' long-running sessions. The $124-200 cost range for complex outputs sets expectations for multi-agent costs. The GAN-style feedback loop is a concrete pattern we could adopt for autoresearch-optimizer iterations.
+- **Source**: https://www.anthropic.com/engineering/harness-design-long-running-apps, https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/
 
 ### 2026-04-05 -- Conway: Anthropic's Always-On Persistent Agent Platform (Leaked)
 - **What**: Multiple outlets (TestingCatalog, Dataconomy, aibase.com) reported on "Conway," an internal Anthropic platform for persistent, always-on Claude agents. Key details: (1) Conway operates as a dedicated web page ("Conway instance") rather than a standard chat view, with three core areas: Search, Chat, and System. (2) Can execute Claude Code, support external webhooks (public URLs that wake the instance), interact with Chrome, and send notifications. (3) Features an Extensions area for installing custom tools, UI tabs, and context handlers via `.cnw.zip` files — described as an "app store" for agent capabilities. (4) Webhook-driven wake means Conway instances can be triggered by external services (CI/CD, monitoring, Slack, etc.) without keeping a session open. (5) Codename "Lobster" also referenced in some reports.

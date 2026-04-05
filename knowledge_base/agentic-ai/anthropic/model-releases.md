@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
@@ -10,12 +10,20 @@
 - https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/
 - https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
 - https://capybara.com/
+- https://wavespeed.ai/blog/posts/claude-mythos-opus-5-leak-what-we-know/
+- https://www.rsa.com/resources/blog/zero-trust/claude-mythos-and-capybara-best-practices-for-the-next-evolution-in-ai-powered-cybersecurity-risks/
 
 ## Overview
 
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-06 -- Mythos/Capybara: Cybersecurity-First Rollout Strategy, RSA Best Practices, Early Access Status Confirmed
+
+- **What**: Additional details on Claude Mythos/Capybara rollout strategy confirmed from multiple sources: (1) **Cybersecurity-first deployment**: Anthropic is deliberately limiting early access to cybersecurity defense organizations, giving defenders a head start to identify and patch vulnerabilities before broader availability. Internal documents describe Mythos as "currently far ahead of any other AI model in cyber capabilities" for discovering and exploiting vulnerabilities. (2) **RSA published best practices** for organizations preparing for Mythos-class models, framing it as "the next evolution in AI-powered cybersecurity risks." (3) **Early access status confirmed**: as of April 2026, Mythos/Capybara is available only to a select group of vetted early access customers — no public API, no announced pricing, no confirmed release date. Training is complete; staged expansion planned. (4) **Leak origin clarified**: a misconfigured CMS data store exposed ~3,000 unpublished assets; fixed within hours of responsible disclosure. (5) **No specific benchmarks published** — claims of "dramatically higher scores" on coding, reasoning, and cybersecurity remain unverified by third parties. (6) **Polymarket prediction market** tracking release timing, indicating significant public interest/speculation.
+- **Significance**: The cybersecurity-first rollout is unprecedented — no major AI lab has previously gated model access by defender-first security considerations. This suggests Mythos's capabilities are genuinely concerning even to Anthropic. The RSA publication signals enterprise security teams are already preparing defensive strategies. For our pipeline: (a) Mythos would likely replace Opus 4.6 as the flagship model for complex agent tasks when available. (b) The Capybara tier pricing will likely be significantly above Opus 4.6's $5/$25 — cost modeling for Phase 7 (AaaS) should account for this. (c) No timeline means our pipeline should not block on Mythos availability.
+- **Source**: https://wavespeed.ai/blog/posts/claude-mythos-opus-5-leak-what-we-know/, https://www.rsa.com/resources/blog/zero-trust/claude-mythos-and-capybara-best-practices-for-the-next-evolution-in-ai-powered-cybersecurity-risks/, https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/
 
 ### 2026-04-05 -- Leaked Model Codenames: Fenick (Opus), Capra/Capabra (Sonnet), Tangu (Haiku)
 - **What**: Following the March 31 Claude Code source leak (59.8MB source map published to npm), additional internal details emerged about Anthropic's model naming conventions: (1) "Fenick" is the internal codename for the Opus model series. (2) "Capra" or "Capabra" is the internal codename for Sonnet. (3) "Tangu" is the internal codename for Haiku. (4) References to "Opus 4.7" and "Sonnet 4.8" found in internal testing configurations, suggesting the next generation is already in development. (5) "Capybara" tier confirmed as the tier name that sits above Opus/Sonnet/Haiku — Mythos is the first model in this tier. (6) 44 hidden feature flags discovered including voice mode, multi-agent coordination enhancements, background sessions, and a `/buddy` feature. Note: Some of this information originated from April 1 posts and should be treated with appropriate skepticism — codenames are confirmed but version numbers and feature flags may be speculative or satirical.

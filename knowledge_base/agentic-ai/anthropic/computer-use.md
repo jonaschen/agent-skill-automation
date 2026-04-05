@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-05
+**Last updated**: 2026-04-06
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
