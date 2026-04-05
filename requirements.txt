@@ -1,0 +1,9 @@
+# Python dependencies for agent-skill-automation eval pipeline
+# Generated: 2026-04-05
+# Update: run `pip freeze > requirements.txt` after adding new dependencies
+#
+# Currently all eval tools use only Python standard library modules.
+# This file exists to pin any future additions and enable `pip install --require-hashes`.
+#
+# If third-party packages are added, pin exact versions:
+#   package==1.2.3

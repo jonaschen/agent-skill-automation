@@ -1,0 +1,59 @@
+{
+  "_comment": "Known-good MCP servers that bypass content scanning in mcp_config_validator.sh",
+  "_updated": "2026-04-05",
+  "allowlist": [
+    {
+      "name": "filesystem",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-filesystem",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "github",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-github",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "postgres",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-postgres",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "sqlite",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-sqlite",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "memory",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-memory",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "fetch",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-fetch",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "brave-search",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-brave-search",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "puppeteer",
+      "command": "npx",
+      "pattern": "@modelcontextprotocol/server-puppeteer",
+      "reason": "Official MCP reference server"
+    },
+    {
+      "name": "vercel",
+      "url_pattern": "vercel.com",
+      "reason": "Vercel official MCP server"
+    }
+  ]
+}

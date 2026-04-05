@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-04: Phase 4 in progress. Security hardening (task 4.4) — MCP config validator implemented, cmd-chain monitor integrated. Gemma 4 E2B evaluation confirmed (86.4% zero-shot tool use). G8 Iter 2 metrics: T=0.895, V=0.900.**
+**Status as of 2026-04-05: Phase 4 in progress. Security hardening expanded — MCP content validation (P0), dependency pinning (P1), model migration runbook (P1) implemented. Closed-loop state machine refactor (P2) planned. G8 Iter 2 metrics: T=0.895, V=0.900. Routing regression (T=0.658) remains active.**
 
 ---
 
@@ -197,6 +197,11 @@ SKILL.md files from natural language requirements.
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
 - [ ] Integrate monitor into `.claude/hooks/post-tool-use.sh` (manual step — see `scripts/HOOK_INTEGRATION.md`)
 - [x] Add MCP config validation step to CI/CD gate (`eval/mcp_config_validator.sh` — validates JSON, required fields, deprecated auth patterns, placeholder env vars) ✅ 2026-04-04
+- [x] Extend `eval/mcp_config_validator.sh` with static content scanning: injection phrase detection, length limits, credential keyword rejection, allowlist bypass (`eval/mcp_server_allowlist.json`) — P0 ✅ 2026-04-05
+- [x] Lock Python deps (`requirements.txt`) + `npm audit --audit-level=high` (warning) in pre-deploy.sh — P1 ✅ 2026-04-05
+- [x] Create `eval/model_migration_runbook.md` — re-baseline steps for new model releases (separate positive/negative analysis, CI comparison, optimizer trigger criteria, routing regression check) — P1 ✅ 2026-04-05
+- [ ] Add MCP server allowlist instruction to meta-agent-factory.md — P1 (blocked: needs .claude/agents/ write permission)
+- [ ] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), parallel SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2
 
 ### Acceptance Criteria
 | Metric | Target |
@@ -225,6 +230,9 @@ SKILL.md files from natural language requirements.
 - [x] **C17**: Write `.claude/agents/topology-aware-router.md` — TCI computation, dual-track routing, Track B escalation, routing decision log ✅
 - [ ] Implement routing decision log (stores TCI score, selected track, and task outcome for feedback loop)
 - [ ] Test Track B conservative default for medium-coupling band (0.35–0.65)
+
+#### 5.3.0 A2A protocol evaluation (pre-implementation gate)
+- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards) vs. custom 6-message-type bus for scrum-team-orchestrator. Decision required before Phase 5 implementation begins. — P2
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
@@ -342,6 +350,10 @@ SKILL.md files from natural language requirements.
 - [ ] Extend `topology-aware-router` with locale context dimension
 - [ ] Test: locale-aware Skill extension loads in ≤ 500ms P99; fallback to base Skill on load failure
 
+#### 7.7 Agent payment protocol evaluation
+- [ ] Survey agent payment protocols (AP2, Visa TAP, x402, PayPal Agent Ready) and design billing adapter layer supporting multiple settlement rails
+- [ ] Document three billing patterns: subscription (Stripe), micropayment (x402), commerce mandate (AP2)
+
 ### Acceptance Criteria
 | Metric | Target |
 |--------|--------|
@@ -440,6 +452,10 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Agent fleet expansion causes routing regression | 3-4 | Adding steward/reviewer agents dropped meta-agent-factory from T=0.895 to T=0.658. Positive CREATE prompts now route to competing agents. | **Active — needs fix** |
 | MCP SDK V2 breaking changes (auth semantics) | 4 | Pin MCP SDK version; add config validation to CI/CD gate; monitor V2 alpha releases | New — active threat |
 | Claude Code deny-rule bypass (50+ subcommands) | 4 | Command-chain length monitor in post-tool-use hook; avoid auto-accept on untrusted projects | Mitigated — monitor implemented |
+| MCP tool poisoning via malicious descriptions | 2-4 | Static content scanning in mcp_config_validator.sh; allowlist bypass; dynamic fetching deferred to Phase 5 | New — P0 mitigation implemented 2026-04-05 |
+| Supply chain compromise of Python/npm dependencies used by eval tools or Claude Code | 4 | pip freeze + require-hashes (blocking); npm audit (warning); cmd_chain_monitor for runtime | New — mitigation implemented 2026-04-05 |
+| Capybara/Mythos model release invalidates eval baselines and routing behavior | 3-4 | Model migration runbook (eval/model_migration_runbook.md); nightly researcher monitors for release | UPGRADED P2->P1 — runbook created 2026-04-05 |
+| Phase 7 billing assumes Stripe-only; 4 competing agent payment protocols may require multi-rail support | 7 | Task 7.7 evaluation; defer implementation until protocol war settles | New — monitoring |
 
 ---
 
@@ -454,6 +470,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L5 | The bootstrap problem is real | Optimizer and eval runner compete for the same quota. S2+S3 mitigate but don't eliminate. |
 | L6 | Edge model assumptions become stale — re-evaluate when new open models ship | Phase 6 was designed around FunctionGemma; Gemma 4 E2B obsoleted it with better accuracy (86.4% tool use zero-shot) and no fine-tuning |
 | L7 | Adding agents causes routing regression — trigger rates must be re-evaluated after fleet expansion | G8 Iter 2 achieved T=0.895 with 5 agents. Adding 6 more agents (stewards, factory, reviewer) dropped meta-agent-factory to T=0.658. All negatives still pass — the issue is routing competition, not description quality. Eval must be re-run after any agent addition. |
+| L8 | MCP config validation must cover content, not just structure | mcp_config_validator.sh (2026-04-04) validated JSON structure and auth patterns but missed tool description injection — the actual attack vector demonstrated by Invariant Labs |
 
 ---
 
