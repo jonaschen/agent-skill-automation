@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-06: Phase 4 in progress. CRITICAL finding: T=0.658 "routing regression" was actually a MEASUREMENT regression (L10) — eval trigger detection patterns didn't match evolved factory output format. Patterns updated to handle markdown bold in `Tools granted**:` and factory creation phrases like `write to .claude/agents/`. MCP hash-based tool pinning added for rug pull detection (P1). Assumption registry created for model migration stress testing (P2). Vocabulary deconfliction + GENERATE routing anchor applied earlier. Eval re-run in progress to confirm T recovery.**
+**Status as of 2026-04-06: Phase 4 in progress. CRITICAL: T=0.658 "routing regression" was actually THREE eval infrastructure bugs (L10): subprocess PATH missing claude binary, 150s timeout too short for factory tool-use, trigger patterns didn't handle markdown bold. All three fixed. Smoke test confirms Test 2 PASS. Full eval (36 tests) running. MCP hash-pinning (P1) and assumption registry (P2) also shipped.**
 
 ---
 
@@ -475,7 +475,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L7 | Adding agents causes routing regression — trigger rates must be re-evaluated after fleet expansion | G8 Iter 2 achieved T=0.895 with 5 agents. Adding 6 more agents (stewards, factory, reviewer) dropped meta-agent-factory to T=0.658. All negatives still pass — the issue is routing competition, not description quality. Eval must be re-run after any agent addition. |
 | L8 | MCP config validation must cover content, not just structure | mcp_config_validator.sh (2026-04-04) validated JSON structure and auth patterns but missed tool description injection — the actual attack vector demonstrated by Invariant Labs |
 | L9 | Every pipeline component encodes a model limitation assumption — stress-test and simplify as models improve | Anthropic harness engineering blog (2026-04-06). Validator assumes factory can't self-evaluate; optimizer assumes descriptions need iteration; router assumes models can't auto-identify roles. Track assumptions in eval/assumption_registry.md. |
-| L10 | Eval trigger detection patterns must track factory output format evolution | The T=0.658 "routing regression" was actually a measurement regression: meta-agent-factory WAS triggered correctly but produced output (e.g. "Permission class:", "will be created at .claude/skills/") that didn't match the eval's rigid detection patterns. Always verify a routing regression with a manual test before assuming the description is at fault. |
+| L10 | Eval infrastructure has THREE failure modes that masquerade as routing regressions | The T=0.658 "regression" had three independent root causes: (1) subprocess couldn't find `claude` binary (not in PATH for subprocesses — `~/.local/bin` not inherited); (2) TIMEOUT=150s too short for factory tool-use calls (factory takes 2-3 min); (3) trigger detection patterns didn't handle markdown bold (`**Tools granted**:`) in output. All three caused FAIL:not-triggered on positives while negatives correctly passed. Always run a manual `claude -p` test to verify a routing regression before touching descriptions. |
 
 ---
 
