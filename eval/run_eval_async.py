@@ -11,7 +11,7 @@ from bayesian_eval import get_stats
 
 CONCURRENCY_LIMIT = 1  # Sequential: avoids burst rate-limiting on free-tier quota
 MAX_RETRIES = 5
-TIMEOUT = 150 # seconds per test
+TIMEOUT = 300 # seconds per test (factory calls may use tools, taking 2-3 min)
 
 class AsyncEvalRunner:
     def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0):
@@ -52,13 +52,30 @@ class AsyncEvalRunner:
             with open(splits_path) as f: return json.load(f)
         return {"train": [], "validation": []}
 
+    @staticmethod
+    def _find_claude_binary():
+        """Resolve the claude CLI binary path. Checks PATH first, then common locations."""
+        import shutil
+        found = shutil.which("claude")
+        if found:
+            return found
+        # Common install locations
+        for candidate in [
+            os.path.expanduser("~/.local/bin/claude"),
+            "/usr/local/bin/claude",
+        ]:
+            if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+                return candidate
+        return "claude"  # fallback — will fail with clear error
+
     async def _call_engine(self, prompt, engine="claude"):
         """
         Executes the prompt against the specified AI engine.
         Currently supports: claude (CLI)
         """
         if engine == "claude":
-            cmd = ["claude", "--dangerously-skip-permissions", "-p", prompt]
+            claude_bin = self._find_claude_binary()
+            cmd = [claude_bin, "--dangerously-skip-permissions", "-p", prompt]
         else:
             return f"ERROR: Unsupported engine: {engine}"
 
