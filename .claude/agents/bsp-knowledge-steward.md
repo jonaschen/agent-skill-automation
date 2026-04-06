@@ -12,13 +12,14 @@ description: >
   improvement across all 7 skills (6 domain experts + 1 mentor).
   Activate when: completing Phase 3/4 tasks for the BSP Knowledge project,
   expanding the Kuzu knowledge graph with ARM/Linux open-source specs, adding
-  eval cases or MCP integration tests, improving skill.md files or Socratic
-  templates, running blackboard or safety gate tests, researching ARM TRM
-  releases or Linux kernel power/thermal/interrupt changes, proposing Phase 5+
-  ideas, or performing any autonomous maintenance of the BSP skill set.
+  eval cases or MCP integration tests, refining existing skill.md content or
+  Socratic templates, running blackboard or safety gate tests, researching ARM
+  TRM releases or Linux kernel power/thermal/interrupt changes, proposing Phase
+  5+ ideas, or performing any autonomous maintenance of the BSP skill set.
   Does NOT handle agent-skill-automation pipeline work (use meta-agent-factory
-  or autoresearch-optimizer instead). Does NOT commit proprietary SoC data to
-  knowledge-graph/custom/.
+  or autoresearch-optimizer instead). Does NOT design or generate new agent,
+  Skill, or role definitions (use meta-agent-factory instead). Does NOT commit
+  proprietary SoC data to knowledge-graph/custom/.
 tools:
   - Read
   - Write

@@ -78,13 +78,13 @@ Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 
-# Capture post-run state
+# Capture post-run state (wrapped to ensure perf JSON is always written)
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
-POST_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-POST_TEST_COUNT=$(cd "$TARGET_REPO" && grep -c "TC-" tests/routing_accuracy/test_router.py 2>/dev/null || echo "0")
-FILES_CHANGED=$(cd "$TARGET_REPO" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l || echo "0")
-COMMITS_MADE=$(cd "$TARGET_REPO" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l || echo "0")
+POST_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null) || POST_COMMIT="unknown"
+POST_TEST_COUNT=$(cd "$TARGET_REPO" && grep -c "TC-" tests/routing_accuracy/test_router.py 2>/dev/null) || POST_TEST_COUNT="0"
+FILES_CHANGED=$(cd "$TARGET_REPO" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l) || FILES_CHANGED="0"
+COMMITS_MADE=$(cd "$TARGET_REPO" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l) || COMMITS_MADE="0"
 
 # Write performance record
 cat > "$PERF_FILE" << EOF

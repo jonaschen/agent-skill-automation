@@ -76,11 +76,11 @@ DURATION=$((END_TIME - START_TIME))
 POST_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 COMMITS_MADE=$(cd "$REPO_ROOT" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l || echo "0")
 
-# Count verdicts from review file
+# Count verdicts from review file (fallbacks ensure perf JSON is always written)
 REVIEW_FILE="$REPO_ROOT/knowledge_base/steward-reviews/${DATE}.md"
-ON_TRACK=$(grep -ci "on-track" "$REVIEW_FILE" 2>/dev/null || echo "0")
-NEEDS_CORRECTION=$(grep -ci "needs-correction" "$REVIEW_FILE" 2>/dev/null || echo "0")
-ESCALATIONS=$(grep -c "ESCALATE" "$REVIEW_FILE" 2>/dev/null || echo "0")
+ON_TRACK=$(grep -ci "on-track" "$REVIEW_FILE" 2>/dev/null) || ON_TRACK="0"
+NEEDS_CORRECTION=$(grep -ci "needs-correction" "$REVIEW_FILE" 2>/dev/null) || NEEDS_CORRECTION="0"
+ESCALATIONS=$(grep -c "ESCALATE" "$REVIEW_FILE" 2>/dev/null) || ESCALATIONS="0"
 
 # Write performance record
 cat > "$PERF_FILE" << EOF

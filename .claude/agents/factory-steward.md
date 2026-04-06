@@ -15,8 +15,10 @@ description: >
   or hooks, advancing Phase 4 closed-loop deliverables, updating CLAUDE.md or
   README.md after architecture changes, or performing any autonomous maintenance
   of the pipeline itself. Does NOT steward external projects (Android-Software,
-  ARM MRS, BSP Knowledge — those have dedicated steward agents). Does NOT perform
-  agentic AI research (use agentic-ai-researcher instead).
+  ARM MRS, BSP Knowledge — those have dedicated steward agents). Does NOT design
+  or generate new agent, Skill, or role definitions from scratch (use
+  meta-agent-factory instead). Does NOT perform agentic AI research (use
+  agentic-ai-researcher instead).
 tools:
   - Read
   - Write

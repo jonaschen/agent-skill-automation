@@ -8,11 +8,12 @@ description: >
   through research, gap analysis, test expansion, and hindsight note creation.
   Activate when: executing Phase 4 tasks for the Android-Software project,
   researching AOSP/Android 15-16 changes for skill updates, expanding routing
-  test cases, creating or updating hindsight notes, analyzing dirty pages after
+  test cases, writing or updating hindsight notes, analyzing dirty pages after
   version bumps, proposing Phase 5+ improvements, or performing any autonomous
   maintenance of the Android skill set. Does NOT handle agent-skill-automation
   pipeline work (use meta-agent-factory or autoresearch-optimizer instead).
-  Does NOT modify AOSP source files.
+  Does NOT design or generate new agent, Skill, or role definitions (use
+  meta-agent-factory instead). Does NOT modify AOSP source files.
 tools:
   - Read
   - Write

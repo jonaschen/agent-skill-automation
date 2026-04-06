@@ -51,6 +51,8 @@ echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
 cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
+IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
+
 Execute a factory improvement session:
 1. Orient: Read CLAUDE.md, ROADMAP.md to understand current pipeline state
 2. Read yesterday's discussion transcript: knowledge_base/agentic-ai/discussions/${YESTERDAY}.md — focus on ADOPT items
@@ -68,6 +70,8 @@ echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
 cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
+IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
+
 Run a performance review and tuning session:
 1. Run: bash scripts/agent_review.sh 7
 2. Read the latest performance JSON files in logs/performance/ for all agents
@@ -81,13 +85,13 @@ Be conservative — only change agent scripts/definitions when there's clear evi
 
 (recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE") || true
 
-# Capture post-run state
+# Capture post-run state (fallbacks ensure perf JSON is always written)
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
-POST_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-FILES_CHANGED=$(cd "$REPO_ROOT" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l || echo "0")
-COMMITS_MADE=$(cd "$REPO_ROOT" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l || echo "0")
-ADOPT_COUNT=$(grep -c "ADOPT" "$REPO_ROOT/knowledge_base/agentic-ai/discussions/${YESTERDAY}.md" 2>/dev/null || echo "0")
+POST_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || POST_COMMIT="unknown"
+FILES_CHANGED=$(cd "$REPO_ROOT" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l) || FILES_CHANGED="0"
+COMMITS_MADE=$(cd "$REPO_ROOT" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l) || COMMITS_MADE="0"
+ADOPT_COUNT=$(grep -c "ADOPT" "$REPO_ROOT/knowledge_base/agentic-ai/discussions/${YESTERDAY}.md" 2>/dev/null) || ADOPT_COUNT="0"
 
 # Write performance record
 cat > "$PERF_FILE" << EOF

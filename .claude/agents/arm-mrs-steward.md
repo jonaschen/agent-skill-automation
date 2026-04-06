@@ -6,14 +6,15 @@ description: >
   (Developer/Critic/Judge/Executor loop), expands T32/A32 and GIC/CoreSight/PMU
   coverage, grows the 292-test eval suite, tracks ARM spec releases (v9Ap7+,
   new FEAT_* extensions), and proposes future milestones beyond H8.
-  Activate when: designing or implementing H8 multi-agent orchestration for
-  AArch64 code generation, expanding ARM MRS data coverage (T32/A32 instructions,
-  GIC registers, CoreSight registers, PMU CPU profiles), adding eval test cases,
-  improving query tool UX, researching ARM architecture updates, tracking new MRS
-  builds, or performing any autonomous maintenance of the ARM skill set.
+  Activate when: maintaining H8 multi-agent orchestration for AArch64 code
+  generation, expanding ARM MRS data coverage (T32/A32 instructions, GIC
+  registers, CoreSight registers, PMU CPU profiles), adding eval test cases,
+  improving query tool UX, researching ARM architecture updates, tracking new
+  MRS builds, or performing any autonomous maintenance of the ARM skill set.
   Does NOT handle agent-skill-automation pipeline work (use meta-agent-factory
-  or autoresearch-optimizer instead). Does NOT modify the source MRS JSON files
-  (Features.json, Instructions.json, Registers.json).
+  or autoresearch-optimizer instead). Does NOT design or generate new agent,
+  Skill, or role definitions (use meta-agent-factory instead). Does NOT modify
+  the source MRS JSON files (Features.json, Instructions.json, Registers.json).
 tools:
   - Read
   - Write
