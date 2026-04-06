@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
@@ -18,6 +18,18 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- US Government Blacklists Anthropic; UK Courts Expansion; Geopolitical Context for Model Access
+
+- **What**: Major geopolitical developments affecting Anthropic's model availability and business: (1) **US blacklisting** (April 5): The US government designated Anthropic a national-security supply-chain risk after the company declined to allow military use of Claude for surveillance or autonomous weapons. (2) **Federal court ruling**: A First Amendment ruling blocked the Pentagon's blacklisting. The DOJ immediately appealed to the Ninth Circuit. (3) **GSA restoration** (April 3): The General Services Administration restored Anthropic to federal procurement schedules. (4) **UK courting** (April 5): Britain is attempting to attract Anthropic expansion, with proposals ranging from London office expansion to a dual stock listing. PM Keir Starmer's office supports the effort; CEO Dario Amodei expected to visit in late May 2026. (5) **Market status**: Anthropic described as "the hardest stock to source in our marketplace" with "just no sellers" — demand for shares is near-insatiable. (6) **Vertex AI webinar** (April 7): Anthropic hosted "Ship Code Faster with Claude Code on Vertex AI," reinforcing multi-cloud positioning.
+- **Significance**: The blacklisting/restoration cycle creates regulatory uncertainty for US government customers using Claude models. If the Ninth Circuit appeal succeeds, it could restrict federal agencies from using Anthropic's models, pushing them to competitor offerings (OpenAI, Google). UK expansion could create a secondary operational hub outside US jurisdiction. For our pipeline: no immediate impact on model access for non-government users, but worth monitoring for API access policy changes. The dual-listing possibility could affect Anthropic's governance and model access policies long-term.
+- **Source**: https://letsdatascience.com/news/us-blacklists-anthropic-as-security-risk-5e0f08ff, https://www.usnews.com/news/top-news/articles/2026-04-05/britain-woos-expansion-effort-by-anthropic-after-us-defence-clash-ft-says, https://techcrunch.com/2026/04/03/anthropic-is-having-a-moment-in-the-private-markets-spacex-could-spoil-the-party/
+
+### 2026-04-07 -- Platform Release Notes Audit: Compaction API, Data Residency, Fast Mode, Automatic Caching
+
+- **What**: Comprehensive audit of Claude Platform release notes confirms several significant features from February 2026 not previously documented in this KB: (1) **Compaction API** (Feb 5, beta) — server-side context summarization for effectively infinite conversations, available on Opus 4.6. Enables long-running agents to maintain coherent conversations without client-side context management. (2) **Data residency controls** (Feb 5) — `inference_geo` parameter allows specifying where model inference runs. US-only inference available at 1.1x pricing for post-Feb-2026 models. (3) **Fast mode** (Feb 7, research preview) — up to 2.5x faster output token generation via `speed` parameter for Opus 4.6. Premium pricing. Waitlist-gated. (4) **Automatic caching** (Feb 19) — single `cache_control` field on request body auto-caches the last cacheable block, moving the cache point forward as conversations grow. Eliminates manual breakpoint management. Available on Claude API and Azure AI Foundry. (5) **Adaptive thinking** (Feb 5) — Opus 4.6 recommends `thinking: {type: "adaptive"}` over manual `budget_tokens`. Effort parameter GA, replaces `budget_tokens` for controlling thinking depth. (6) **Media limit raised** (March 13) — 600 images or PDF pages per request (up from 100) when using 1M context. (7) **Thinking display control** (March 16) — `thinking.display: "omitted"` omits thinking content from responses for faster streaming while preserving signature for multi-turn continuity.
+- **Significance**: The Compaction API is critical for our steward agents which run long sessions — it enables server-side context management that could replace manual compaction strategies. Data residency controls matter for compliance-sensitive deployments. Fast mode's 2.5x speedup could significantly reduce our eval iteration time if we can access it. Automatic caching simplifies our API integration — no need to manually manage cache breakpoints. The 600 media limit enables PDF-heavy workflows (legal, research).
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-06 -- Mythos/Capybara: Cybersecurity-First Rollout Strategy, RSA Best Practices, Early Access Status Confirmed
 

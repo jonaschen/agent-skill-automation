@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- Computer Use Stabilized: Mac + Windows Live, No New API Changes
+- **What**: No new Computer Use announcements since the Windows expansion (April 3). The feature remains in research preview across both macOS and Windows for Pro/Max subscribers via Cowork/Claude Code. API-level Computer Use (via `computer_20250124` tool) remains stable at the February 2025 version with hold_key, scroll, triple_click, and wait commands. The Dispatch phone-to-desktop delegation feature is live on both platforms. Key operational constraints confirmed: (1) Anthropic cannot remotely disable Computer Use mid-operation — sessions must complete or be manually interrupted. (2) Prompt injection classifier runs automatically but has documented gaps for sophisticated multi-step attacks. (3) ZDR (Zero Data Retention) eligible — screenshots processed in real-time only. (4) Priority architecture unchanged: connectors → browser → screen control. The browser automation benchmark gap persists: ChatGPT agent mode at 87% vs Claude at 56% on isolated browser tasks, though Claude leads on WebArena (full autonomous web navigation).
+- **Significance**: Stabilization indicates Anthropic is gathering usage data from the research preview before adding new capabilities. The dual-platform coverage (Mac + Windows) and zero-config consumer setup positions Computer Use as a mainstream feature rather than a developer-only API. The browser automation benchmark gap remains a competitive concern. No indication of when Computer Use will exit research preview to GA.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool, https://winbuzzer.com/2026/04/04/anthropic-claude-desktop-control-windows-cowork-dispatch-xcxwbn/
 
 ### 2026-04-05 -- File-Stealing Prompt Injection Attack Demonstrated Against Cowork
 - **What**: Security researchers demonstrated a prompt injection attack against Claude Cowork's Computer Use feature that could steal files from the user's desktop. The attack exploits the screenshot-action loop: a malicious webpage or document displayed on screen can contain instructions that Claude interprets as legitimate user requests, causing it to navigate to sensitive files and exfiltrate their contents. Anthropic acknowledged the vulnerability and confirmed it "cannot remotely disable the technology mid-operation" — once a Computer Use session is running, it must complete or be manually interrupted by the user. The existing prompt injection classifier (documented in April 4 entry) is designed to catch such attacks but is not foolproof.

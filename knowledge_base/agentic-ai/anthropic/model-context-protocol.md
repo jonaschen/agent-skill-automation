@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -21,6 +21,12 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- MCP Blog: Tool Annotations Enhancement Proposals and Extensions Architecture
+
+- **What**: Two significant MCP blog posts from March 2026 now fully documented: (1) **Tool Annotations as Risk Vocabulary** (March 16) — the community has submitted five enhancement proposals building on tool annotations that describe server behavior. Current annotations support `readOnlyHint`, `destructiveHint`, and `idempotentHint` booleans. The proposals aim to extend this vocabulary to cover more nuanced risk descriptions, enabling clients to make better-informed tool execution decisions (e.g., auto-approving read-only tools, requiring confirmation for destructive ones). Key insight: annotations are *hints*, not guarantees — they cannot enforce security but enable better UX. (2) **Understanding MCP Extensions** (March 11) — Extensions are the official mechanism for adding custom UI elements, authentication flows, and domain-specific capabilities without modifying the core protocol. Extension authors can define custom methods and notifications using namespaced identifiers. Extensions must be independently versioned and discovered through capability negotiation. This is the mechanism by which enterprise features (audit trails, SSO, gateway behavior) will be delivered per the 2026 roadmap. (3) **Ecosystem growth**: Multiple sources now confirm 10,000+ published MCP servers (up from 6,400+ in February), with the MCP roadmap blog noting "2,300+" in official registries — the discrepancy reflects unregistered community servers vs official registry entries.
+- **Significance**: Tool annotations are the bridge between MCP's tool poisoning vulnerability (OWASP MCP03) and practical mitigation — if clients enforce annotation-based policies (e.g., always confirm `destructiveHint: true` tools), the attack surface shrinks significantly. The extensions architecture is directly relevant to our pipeline: custom enterprise features we need (audit logging, permission gating) should be built as MCP extensions, not core protocol forks. The 10K vs 2.3K discrepancy matters for security — the majority of MCP servers are unregistered and therefore unvetted.
+- **Source**: https://blog.modelcontextprotocol.io/ (Tool Annotations blog March 16, Extensions blog March 11), https://modelcontextprotocol.io/development/roadmap
 
 ### 2026-04-06 -- OWASP MCP Top 10 Security Framework Published; mcp-scan Detection Tool; Ecosystem Passes 10,000 Servers
 

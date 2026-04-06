@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -23,6 +23,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.92 (April 4, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- Stabilization Continues; Vertex AI Integration Webinar; v2.1.92 Still Current
+- **What**: No new Claude Code release since v2.1.92 (April 4). Day 3 of stabilization period. Anthropic hosted a "Ship Code Faster with Claude Code on Vertex AI" webinar on April 7, signaling deepening GCP integration alongside existing AWS Bedrock support (interactive setup wizard added in v2.1.92). Interactive startup improved ~30ms by parallelizing setup() with slash command and agent loading. REPL now renders immediately with MCP servers instead of blocking until all connect. The 30+ releases in the v2.1.x series (March-April) suggest the next version is being prepared.
+- **Significance**: The Vertex AI webinar indicates Claude Code is being positioned as a multi-cloud enterprise tool, not just Anthropic-native. Combined with the Bedrock wizard, Claude Code now has guided setup for both major cloud AI platforms. The startup performance improvements reduce friction for MCP-heavy configurations.
+- **Source**: https://www.anthropic.com/events, https://code.claude.com/docs/en/changelog
 
 ### 2026-04-06 -- No New Release; v2.1.92 Remains Current
 - **What**: No new Claude Code release since v2.1.92 (April 4). The `/powerup` interactive tutorial system (v2.1.90, April 1) continues to receive community coverage — 18 built-in lessons covering beginner to advanced features with animated terminal demos. `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE` env var confirmed for offline environments (keeps marketplace cache when git pull fails). Cowork Dispatch message delivery fix confirmed in latest builds.

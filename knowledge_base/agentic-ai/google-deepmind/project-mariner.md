@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,11 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- Mariner 2026 Roadmap Crystallized: Mariner Studio Q2, Enterprise API, Marketplace Q4
+- **What**: Project Mariner's 2026 roadmap has been confirmed across multiple sources with four major milestones: (1) **Enterprise API** (Q1 2026, may already be in limited rollout) — authenticated task execution with RBAC (Role-Based Access Control) and SOC 2 compliance posture updates. Enables programmatic Mariner access for enterprise automation workflows. (2) **Mariner Studio** (Q2 2026, expected around Google I/O) — a **visual builder for assembling task flows without direct prompting**. Users create automated workflows through a graphical interface, making browser automation accessible to non-technical users. This is a significant product evolution from prompt-driven to visual-builder-driven automation. (3) **Cross-device sync** (Q3 2026) — allows task progress and continuation across desktop and Android, enabling workflows started on one device to be completed on another. (4) **Agent Marketplace** (Q4 2026) — a curated marketplace where Google will vet and list third-party autonomous workflows, creating a commerce layer around Mariner. (5) No new feature announcements since the Computer Use model three-product deployment (Mariner, Firebase Testing Agent, AI Mode in Search). Product remains in stabilization phase at labs.google.com/mariner/ for AI Ultra subscribers ($249.99/month).
+- **Significance**: The four-phase roadmap reveals Google's plan to evolve Mariner from a consumer toy ($250/mo Chrome extension) to a full enterprise automation platform (Enterprise API → Visual Builder → Cross-device → Marketplace). Mariner Studio's visual builder in Q2 is the most impactful milestone — it mirrors the low-code/no-code trend and could significantly expand the Mariner user base beyond technical users. The Q4 Agent Marketplace is strategically important — it creates a commercial ecosystem around browser automation tasks. For our pipeline, the Enterprise API (if accessible) could be a deployment target for browser-based agent skills, and the Marketplace could be a distribution channel.
+- **Source**: https://aiagentsdirectory.com/agent/project-mariner, https://www.programming-helper.com/tech/google-project-mariner-ai-browser-agent-2026-autonomous-web-navigation, https://deepmind.google/models/project-mariner/
 
 ### 2026-04-06 -- Computer Use Model Powers Three Google Products; Mariner in Stabilization Phase
 - **What**: Confirmed that the Gemini 2.5 Computer Use model (Mariner's API surface) now actively powers **three distinct Google products**: (1) **Project Mariner** consumer product (browser automation via AI Ultra subscription), (2) **Firebase Testing Agent** (automated mobile/web app testing), and (3) **AI Mode in Search** (agentic search capabilities). The `computer_use` tool in the Gemini API is designed to operate within a loop pattern. The model outperforms leading alternatives on multiple web and mobile control benchmarks with lower latency. No new Mariner feature announcements in April 4-6 — the product remains in stabilization/expansion phase. Google I/O 2026 (May 19-20) is the next expected venue for Mariner updates.

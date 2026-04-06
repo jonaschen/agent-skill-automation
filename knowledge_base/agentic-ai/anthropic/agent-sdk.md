@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
@@ -18,6 +18,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 — Stabilization: Python v0.1.56, TypeScript v0.2.92 Remain Current
+- **What**: No new Agent SDK releases since Python v0.1.56 (April 4) and TypeScript v0.2.92 (April 4). Both SDKs are aligned with Claude Code v2.1.92. Key capabilities confirmed stable: (1) `get_context_usage()` for proactive context management, (2) `terminal_reason` for closed-loop retry logic, (3) `agentProgressSummaries` for orchestrator visibility, (4) MCP large result fix (500K chars), (5) `supportedAgents()` query method in TypeScript. Custom tools as in-process MCP servers (Python SDK) continues to be the recommended pattern for tool integration — eliminates need for separate server processes. The `pathToClaudeCodeExecutable` fix (bare command name support) in TypeScript SDK resolves a common deployment issue where the CLI is on PATH but not at an absolute path.
+- **Significance**: Stabilization period following rapid feature additions (v0.1.54→v0.1.56 in 3 days, v0.2.89→v0.2.92 in ~1 week). The in-process MCP server pattern for custom tools is a significant architectural choice — it means Agent SDK agents don't need external MCP server infrastructure for custom tools, reducing deployment complexity.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md
 
 ### 2026-04-06 — TypeScript SDK v0.2.91–v0.2.92: Terminal Reason, Strict Sandbox Default, CLI Parity
 

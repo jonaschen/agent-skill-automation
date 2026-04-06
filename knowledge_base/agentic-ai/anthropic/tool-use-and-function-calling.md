@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,11 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- All Advanced Tool Use Features Now GA; Complete Feature Catalog Confirmed
+- **What**: Comprehensive audit confirms all three advanced tool use features have graduated from beta to GA as of February 17, 2026 (Sonnet 4.6 launch): (1) **Tool Search Tool** — dynamic discovery, `defer_loading: true`, regex/BM25 search. 85% token reduction, Opus accuracy 49%→74%. No beta header required. (2) **Programmatic Tool Calling** — Claude orchestrates tools via Python code in sandboxed execution. `allowed_callers` on tools, `caller` field in requests. 37% token reduction. No beta header required. (3) **Tool Use Examples** — `input_examples` field in tool definitions. Accuracy 72%→90%. No beta header required. Additionally confirmed GA: web search tool, web fetch tool, memory tool, code execution tool (all Feb 17). Fine-grained tool streaming also GA (Feb 5). Context editing remains beta. Code execution is now **free when used with web search or web fetch**. Dynamic filtering (code execution pre-filters web results) shipped alongside. The API code execution sandbox is now v2 — Bash command execution and multi-language support, replacing Python-only v1.
+- **Significance**: The full tool use stack is now production-ready without beta headers. The free code execution when paired with web tools creates a powerful zero-cost enhancement for research agents. The combination of tool search (context efficiency), programmatic calling (execution efficiency), and examples (accuracy) addresses the three fundamental bottlenecks of tool-using agents. No new tool use developments since February — Anthropic appears to be consolidating rather than adding new features.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview, https://www.anthropic.com/engineering/advanced-tool-use
 
 ### 2026-04-05 -- Web Search/Fetch Dynamic Filtering GA, Tool Input Streaming Fix
 - **What**: Two tool-use related updates confirmed: (1) Web search and web fetch tools now support dynamic filtering — uses code execution to filter results before they reach the context window, reducing token costs and improving relevance. This graduated from beta to GA alongside tool streaming. (2) Claude Code v2.1.92 fixed tool input validation failures that occurred when streaming emitted array/object fields as JSON strings — a bug that could cause tool calls to fail silently during streamed responses with complex parameter types.

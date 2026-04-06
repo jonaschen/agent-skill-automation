@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -18,6 +18,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- claude-sneakpeek: Community Workaround for Early Swarm Access; "Harness Engineering" Named as Discipline
+- **What**: Two multi-agent ecosystem developments: (1) **claude-sneakpeek** project provides community-built early access to Claude Code's TeammateTool/swarm mode before official GA. Uses isolated configuration at `~/.claude-sneakpeek/claudesp/` to avoid affecting primary Claude Code installations. Offers native swarm mode and task delegation by bypassing the `I9()`/`qFB()` feature gates that keep TeammateTool disabled in public releases. (2) **"Harness engineering"** is being recognized as a distinct discipline within AI development. The Swarms framework (github.com/kyegomez/swarms) has adopted Anthropic's three-agent harness pattern, and InfoQ's coverage explicitly named it as a new practice area. Key principle from Anthropic: "Every component in a harness encodes an assumption about what the model can't do on its own, and those assumptions are worth stress testing" — as models improve, harness complexity should decrease, not increase. The simplification principle: start with the simplest viable harness, add components only when the model demonstrably cannot handle a task alone.
+- **Significance**: The claude-sneakpeek project demonstrates strong community demand for multi-agent capabilities and validates our Phase 5 multi-agent topology investment. The 13 TeammateTool operations (spawn, write, broadcast, approve/reject plan, graceful shutdown) are fully implemented but feature-gated — suggesting official launch is imminent. "Harness engineering" as a named discipline validates our pipeline's multi-agent architecture approach. The simplification principle is directly applicable: we should regularly stress-test whether our validator/optimizer separation is still needed as models improve.
+- **Source**: https://paddo.dev/blog/claude-code-hidden-swarm/, https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/, https://github.com/kyegomez/swarms
 
 ### 2026-04-06 -- Anthropic Engineering: Three-Agent Harness for Long-Running Development (Planner/Generator/Evaluator)
 

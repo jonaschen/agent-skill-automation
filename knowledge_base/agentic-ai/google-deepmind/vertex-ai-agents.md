@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-06
+**Last updated**: 2026-04-07
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-07 -- Vertex AI Continues Stabilization; No New Releases; Google I/O Focus
+- **What**: Vertex AI Agent Builder and Agent Engine remain in stabilization with no new releases since April 3 (RAG Engine Serverless Preview). Key confirmed state: (1) **Agent Builder release notes** show no entries after February 18, 2026 (Code Execution GA) — the April 3 RAG Engine Serverless entry appears only in the Vertex AI GenAI release notes, not the Agent Builder-specific notes. (2) **Vertex AI SDK Python** remains at v1.112.0 with the refactored agent_engines client-based design. (3) **Gemini Enterprise** (formerly Agentspace) continuing rapid connector expansion — Jira, Confluence, Salesforce, Docusign, GitHub, Google Chat, Notion, Linear connectors all added in Feb–Apr timeframe. (4) **Agent Designer sharing** is GA (Feb 23) with admin review support. (5) The team appears focused on **Google I/O 2026 (May 19-20)** preparations — expect major Agent Builder announcements there. (6) No pricing changes or new feature announcements detected.
+- **Significance**: The extended quiet period (no Agent Builder releases since Feb 18, despite active Vertex AI GenAI releases) suggests the Agent Builder team is working on a significant update expected at Google I/O. The connector expansion in Gemini Enterprise shows Google prioritizing enterprise data integration breadth over platform features. For our pipeline, Vertex AI Agent Engine remains the production deployment target for any Google-ecosystem agents we build.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes
 
 ### 2026-04-06 -- Vertex AI Stabilization Phase; RAG Engine Serverless and Veo 3.1 Lite Confirmed as Latest
 - **What**: Sweep of Vertex AI release notes confirms no new Agent Builder or Agent Engine releases since April 3: (1) **RAG Engine Serverless Mode** (Apr 3, Preview) — fully managed database for RAG resources with seamless switching between serverless and Spanner modes — remains the most recent Agent Builder-adjacent feature. (2) **Veo 3.1 Lite** (Apr 2, Preview) — cost-efficient video generation on Vertex AI. (3) **Gemini 2.5 model retirement extended** to October 16, 2026. (4) **Gemma 4 Vertex AI deployment** confirmed — three paths: Vertex AI Model Garden (managed with autoscaling, SLA guarantees), Cloud Run (serverless containers), GKE with vLLM (high-throughput). Gemma 4 26B MoE to be available as fully managed and serverless on Model Garden. Fine-tuning via Vertex AI Training Clusters (VTC) with NVIDIA NeMo Megatron optimized SFT recipes. (5) **Vertex AI SDK Python v1.112.0** — agent_engines module refactored to client-based design with migration guide available. (6) **Private VPC deployment** now supported for Agent Engine — Private Service Connect interface for data privacy and compliance.
