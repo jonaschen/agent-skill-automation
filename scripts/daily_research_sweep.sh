@@ -21,6 +21,38 @@ mkdir -p "$LOG_DIR" "$PERF_DIR"
 
 START_TIME=$(date +%s)
 
+# Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
+finalize() {
+  local exit_code=$?
+  set +euo pipefail  # ensure cleanup completes even on errors
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - ${START_TIME:-$end_time}))
+  local kb_files
+  kb_files=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newer "$LOG_FILE" 2>/dev/null | wc -l) || kb_files="0"
+  local commit
+  commit=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || commit="unknown"
+
+  cat > "$PERF_FILE" << PERF_EOF
+{
+  "agent": "agentic-ai-researcher",
+  "date": "$DATE",
+  "duration_seconds": $duration,
+  "kb_files_updated": $kb_files,
+  "exit_code": $exit_code,
+  "commit": "$commit"
+}
+PERF_EOF
+
+  echo "" >> "$LOG_FILE" 2>/dev/null
+  echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
+  echo "Duration: ${duration}s | KB files updated: $kb_files | Exit code: $exit_code" >> "$LOG_FILE" 2>/dev/null
+
+  find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null
+  find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null
+}
+trap finalize EXIT
+
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 
@@ -121,32 +153,5 @@ Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and sa
 5. Log all actions taken to knowledge_base/agentic-ai/actions/$(date +%Y-%m-%d).md
 6. Git add all changed files and commit with message 'research: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'" >> "$LOG_FILE" 2>&1 || true
 
-EXIT_CODE=$?
-
-# Capture post-run state
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
-KB_FILES=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newer "$LOG_FILE" 2>/dev/null | wc -l || echo "0")
-PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-
-# Write performance record
-cat > "$PERF_FILE" << EOF
-{
-  "agent": "agentic-ai-researcher",
-  "date": "$DATE",
-  "duration_seconds": $DURATION,
-  "kb_files_updated": $KB_FILES,
-  "exit_code": $EXIT_CODE,
-  "commit": "$PRE_COMMIT"
-}
-EOF
-
-echo "" >> "$LOG_FILE"
-echo "Finished: $(date)" >> "$LOG_FILE"
-echo "Duration: ${DURATION}s | KB files updated: $KB_FILES | Exit code: $EXIT_CODE" >> "$LOG_FILE"
-
-# Keep only last 30 days of logs
-find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null || true
-find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null || true
-
-exit $EXIT_CODE
+# Performance JSON, log footer, and cleanup handled by finalize() trap
+exit 0

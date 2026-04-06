@@ -41,11 +41,51 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+
+# Capture pre-run state (before trap setup so they're available in finalize)
+PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
+
+# Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
+finalize() {
+  local exit_code=$?
+  set +euo pipefail  # ensure cleanup completes even on errors
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - ${START_TIME:-$end_time}))
+  local post_commit
+  post_commit=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || post_commit="unknown"
+  local files_changed
+  files_changed=$(cd "$REPO_ROOT" && git diff --name-only "${PRE_COMMIT:-unknown}" HEAD 2>/dev/null | wc -l) || files_changed="0"
+  local commits_made
+  commits_made=$(cd "$REPO_ROOT" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
+  local adopt_count
+  adopt_count=$(grep -c "ADOPT" "$REPO_ROOT/knowledge_base/agentic-ai/discussions/${YESTERDAY:-1970-01-01}.md" 2>/dev/null) || adopt_count="0"
+
+  cat > "$PERF_FILE" << PERF_EOF
+{
+  "agent": "factory-steward",
+  "date": "$DATE",
+  "duration_seconds": $duration,
+  "pre_commit": "${PRE_COMMIT:-unknown}",
+  "post_commit": "$post_commit",
+  "commits_made": $commits_made,
+  "files_changed": $files_changed,
+  "adopt_items_available": $adopt_count,
+  "exit_code": $exit_code
+}
+PERF_EOF
+
+  echo "" >> "$LOG_FILE" 2>/dev/null
+  echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
+  echo "Duration: ${duration}s | Commits: $commits_made | Files changed: $files_changed | ADOPT items: $adopt_count" >> "$LOG_FILE" 2>/dev/null
+
+  find "$LOG_DIR" -name "factory-*.log" -mtime +30 -delete 2>/dev/null
+  find "$PERF_DIR" -name "factory-*.json" -mtime +30 -delete 2>/dev/null
+}
+trap finalize EXIT
+
 echo "=== Factory Steward Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
-
-# Capture pre-run state
-PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
@@ -85,35 +125,5 @@ Be conservative — only change agent scripts/definitions when there's clear evi
 
 (recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE") || true
 
-# Capture post-run state (fallbacks ensure perf JSON is always written)
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
-POST_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || POST_COMMIT="unknown"
-FILES_CHANGED=$(cd "$REPO_ROOT" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l) || FILES_CHANGED="0"
-COMMITS_MADE=$(cd "$REPO_ROOT" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l) || COMMITS_MADE="0"
-ADOPT_COUNT=$(grep -c "ADOPT" "$REPO_ROOT/knowledge_base/agentic-ai/discussions/${YESTERDAY}.md" 2>/dev/null) || ADOPT_COUNT="0"
-
-# Write performance record
-cat > "$PERF_FILE" << EOF
-{
-  "agent": "factory-steward",
-  "date": "$DATE",
-  "duration_seconds": $DURATION,
-  "pre_commit": "$PRE_COMMIT",
-  "post_commit": "$POST_COMMIT",
-  "commits_made": $COMMITS_MADE,
-  "files_changed": $FILES_CHANGED,
-  "adopt_items_available": $ADOPT_COUNT,
-  "exit_code": 0
-}
-EOF
-
-echo "" >> "$LOG_FILE"
-echo "Finished: $(date)" >> "$LOG_FILE"
-echo "Duration: ${DURATION}s | Commits: $COMMITS_MADE | Files changed: $FILES_CHANGED | ADOPT items: $ADOPT_COUNT" >> "$LOG_FILE"
-
-# Keep only last 30 days of logs
-find "$LOG_DIR" -name "factory-*.log" -mtime +30 -delete 2>/dev/null || true
-find "$PERF_DIR" -name "factory-*.json" -mtime +30 -delete 2>/dev/null || true
-
+# Performance JSON, log footer, and cleanup handled by finalize() trap
 exit 0

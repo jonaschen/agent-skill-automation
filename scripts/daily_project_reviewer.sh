@@ -39,10 +39,54 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+
+# Capture pre-run state (before trap setup so they're available in finalize)
+PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
+
+# Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
+finalize() {
+  local exit_code=$?
+  set +euo pipefail  # ensure cleanup completes even on errors
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - ${START_TIME:-$end_time}))
+  local post_commit
+  post_commit=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || post_commit="unknown"
+  local commits_made
+  commits_made=$(cd "$REPO_ROOT" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
+
+  local review_file="$REPO_ROOT/knowledge_base/steward-reviews/${DATE}.md"
+  local on_track
+  on_track=$(grep -ci "on-track" "$review_file" 2>/dev/null) || on_track="0"
+  local needs_correction
+  needs_correction=$(grep -ci "needs-correction" "$review_file" 2>/dev/null) || needs_correction="0"
+  local escalations
+  escalations=$(grep -c "ESCALATE" "$review_file" 2>/dev/null) || escalations="0"
+
+  cat > "$PERF_FILE" << PERF_EOF
+{
+  "agent": "project-reviewer",
+  "date": "$DATE",
+  "duration_seconds": $duration,
+  "commits_made": $commits_made,
+  "stewards_on_track": $on_track,
+  "stewards_needs_correction": $needs_correction,
+  "escalations": $escalations,
+  "exit_code": $exit_code
+}
+PERF_EOF
+
+  echo "" >> "$LOG_FILE" 2>/dev/null
+  echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
+  echo "Duration: ${duration}s | On-track: $on_track | Needs correction: $needs_correction | Escalations: $escalations" >> "$LOG_FILE" 2>/dev/null
+
+  find "$LOG_DIR" -name "reviewer-*.log" -mtime +30 -delete 2>/dev/null
+  find "$PERF_DIR" -name "reviewer-*.json" -mtime +30 -delete 2>/dev/null
+}
+trap finalize EXIT
+
 echo "=== Project Reviewer Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
-
-PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 echo "" >> "$LOG_FILE"
 echo "--- Review All Three Stewards ---" >> "$LOG_FILE"
@@ -70,38 +114,5 @@ Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git
 
 (recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE") || true
 
-# Capture post-run state
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
-POST_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-COMMITS_MADE=$(cd "$REPO_ROOT" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l || echo "0")
-
-# Count verdicts from review file (fallbacks ensure perf JSON is always written)
-REVIEW_FILE="$REPO_ROOT/knowledge_base/steward-reviews/${DATE}.md"
-ON_TRACK=$(grep -ci "on-track" "$REVIEW_FILE" 2>/dev/null) || ON_TRACK="0"
-NEEDS_CORRECTION=$(grep -ci "needs-correction" "$REVIEW_FILE" 2>/dev/null) || NEEDS_CORRECTION="0"
-ESCALATIONS=$(grep -c "ESCALATE" "$REVIEW_FILE" 2>/dev/null) || ESCALATIONS="0"
-
-# Write performance record
-cat > "$PERF_FILE" << EOF
-{
-  "agent": "project-reviewer",
-  "date": "$DATE",
-  "duration_seconds": $DURATION,
-  "commits_made": $COMMITS_MADE,
-  "stewards_on_track": $ON_TRACK,
-  "stewards_needs_correction": $NEEDS_CORRECTION,
-  "escalations": $ESCALATIONS,
-  "exit_code": 0
-}
-EOF
-
-echo "" >> "$LOG_FILE"
-echo "Finished: $(date)" >> "$LOG_FILE"
-echo "Duration: ${DURATION}s | On-track: $ON_TRACK | Needs correction: $NEEDS_CORRECTION | Escalations: $ESCALATIONS" >> "$LOG_FILE"
-
-# Keep only last 30 days
-find "$LOG_DIR" -name "reviewer-*.log" -mtime +30 -delete 2>/dev/null || true
-find "$PERF_DIR" -name "reviewer-*.json" -mtime +30 -delete 2>/dev/null || true
-
+# Performance JSON, log footer, and cleanup handled by finalize() trap
 exit 0

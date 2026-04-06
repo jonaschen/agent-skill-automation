@@ -37,12 +37,53 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
-echo "=== ARM MRS Steward Session — $DATE ===" >> "$LOG_FILE"
-echo "Started: $(date)" >> "$LOG_FILE"
 
-# Capture pre-run state
+# Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null || echo "292")
+
+# Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
+finalize() {
+  local exit_code=$?
+  set +euo pipefail  # ensure cleanup completes even on errors
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - ${START_TIME:-$end_time}))
+  local post_commit
+  post_commit=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null) || post_commit="unknown"
+  local post_eval_count
+  post_eval_count=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null) || post_eval_count="292"
+  local files_changed
+  files_changed=$(cd "$TARGET_REPO" && git diff --name-only "${PRE_COMMIT:-unknown}" HEAD 2>/dev/null | wc -l) || files_changed="0"
+  local commits_made
+  commits_made=$(cd "$TARGET_REPO" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
+
+  cat > "$PERF_FILE" << PERF_EOF
+{
+  "agent": "arm-mrs-steward",
+  "date": "$DATE",
+  "duration_seconds": $duration,
+  "pre_commit": "${PRE_COMMIT:-unknown}",
+  "post_commit": "$post_commit",
+  "commits_made": $commits_made,
+  "files_changed": $files_changed,
+  "eval_count_before": ${PRE_EVAL_COUNT:-292},
+  "eval_count_after": $post_eval_count,
+  "exit_code": $exit_code
+}
+PERF_EOF
+
+  echo "" >> "$LOG_FILE" 2>/dev/null
+  echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
+  echo "Duration: ${duration}s | Commits: $commits_made | Files changed: $files_changed | Eval: $post_eval_count tests" >> "$LOG_FILE" 2>/dev/null
+
+  find "$LOG_DIR" -name "arm-mrs-*.log" -mtime +30 -delete 2>/dev/null
+  find "$PERF_DIR" -name "arm-mrs-*.json" -mtime +30 -delete 2>/dev/null
+}
+trap finalize EXIT
+
+echo "=== ARM MRS Steward Session — $DATE ===" >> "$LOG_FILE"
+echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"
@@ -79,36 +120,5 @@ Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 
-# Capture post-run state (fallbacks ensure perf JSON is always written)
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
-POST_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null) || POST_COMMIT="unknown"
-POST_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null) || POST_EVAL_COUNT="292"
-FILES_CHANGED=$(cd "$TARGET_REPO" && git diff --name-only "$PRE_COMMIT" HEAD 2>/dev/null | wc -l) || FILES_CHANGED="0"
-COMMITS_MADE=$(cd "$TARGET_REPO" && git rev-list "$PRE_COMMIT"..HEAD 2>/dev/null | wc -l) || COMMITS_MADE="0"
-
-# Write performance record
-cat > "$PERF_FILE" << EOF
-{
-  "agent": "arm-mrs-steward",
-  "date": "$DATE",
-  "duration_seconds": $DURATION,
-  "pre_commit": "$PRE_COMMIT",
-  "post_commit": "$POST_COMMIT",
-  "commits_made": $COMMITS_MADE,
-  "files_changed": $FILES_CHANGED,
-  "eval_count_before": $PRE_EVAL_COUNT,
-  "eval_count_after": $POST_EVAL_COUNT,
-  "exit_code": 0
-}
-EOF
-
-echo "" >> "$LOG_FILE"
-echo "Finished: $(date)" >> "$LOG_FILE"
-echo "Duration: ${DURATION}s | Commits: $COMMITS_MADE | Files changed: $FILES_CHANGED | Eval: $POST_EVAL_COUNT tests" >> "$LOG_FILE"
-
-# Keep only last 30 days of logs
-find "$LOG_DIR" -name "arm-mrs-*.log" -mtime +30 -delete 2>/dev/null || true
-find "$PERF_DIR" -name "arm-mrs-*.json" -mtime +30 -delete 2>/dev/null || true
-
+# Performance JSON, log footer, and cleanup handled by finalize() trap
 exit 0
