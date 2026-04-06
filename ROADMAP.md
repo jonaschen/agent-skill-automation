@@ -136,6 +136,7 @@ SKILL.md files from natural language requirements.
 - [x] **G8 Iter 1**: Description refined — added "I need a Skill for X", "workflow automation", "create an X expert" triggers; strengthened exclusions for fix/debug/analyze existing. Training: **0.921** CI [0.818, 0.983], 34/36. Validation: **0.800** CI [0.604, 0.940], 15/18. ✅
 - [x] **G8 Iter 2**: Added ROUTING RULE (create/build intent always routes to meta-agent-factory even when domain agents exist), EXCLUSION RULE (existing agent/Skill modification routes elsewhere), explicit domain disambiguation (AOSP, Changeling examples). Training: **0.895** CI [0.781, 0.970], 33/36. Validation: **0.900** CI [0.740, 0.987], 17/18. Remaining failures: Test 11 (Changeling routing conflict), Test 41 (false positive on existing Skill improvement), stochastic noise on 1–2 positives. ✅
 - [ ] Validate parallel branch search actually runs all 4 branches per iteration *(after G8)*
+- [x] Implement optimizer state persistence: `best_so_far` + `current_description` fields in `eval/experiment_log.json` schema; resume-from-log logic in optimizer agent definition — P2 ✅ 2026-04-06
 
 #### 3.3 Experiment tracking
 - [x] `eval/experiment_log.json` schema defined
@@ -204,7 +205,7 @@ SKILL.md files from natural language requirements.
 - [x] Add MCP hash-based tool definition pinning to `mcp_config_validator.sh` for rug pull detection (OWASP MCP03 variant 3) — P1 ✅ 2026-04-06
 - [x] Create `eval/assumption_registry.md` — centralized model-assumption mapping for stress testing during model migration; cross-referenced from migration runbook Step 6 — P2 ✅ 2026-04-06
 - [x] Fix eval trigger detection patterns — factory output format evolved (markdown bold `**Tools granted**:`, creation phrases `write to .claude/agents/`) but detection didn't track (L10) — CRITICAL ✅ 2026-04-06
-- [ ] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), parallel SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2
+- [x] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2 ✅ 2026-04-06
 
 ### Acceptance Criteria
 | Metric | Target |

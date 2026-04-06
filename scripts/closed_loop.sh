@@ -1,10 +1,22 @@
 #!/bin/bash
-# scripts/closed_loop.sh — Closed-loop pipeline orchestrator
+# scripts/closed_loop.sh — Closed-loop pipeline orchestrator (state machine)
 #
-# Runs the full factory→validate→optimize→deploy pipeline for each requirement.
-# Input: A requirements file (one natural-language requirement per line)
+# State machine: START -> GENERATE -> VALIDATE -> {SECURITY_SCAN, OPTIMIZE, DEPLOY, SKIP_OPTIMIZE, REPORT_FAILURE}
 #
-# Usage: ./scripts/closed_loop.sh <requirements-file> [--max-optimize-iters N]
+# State transitions:
+#   START       -> GENERATE
+#   GENERATE    -> VALIDATE       (success) | REPORT_FAILURE (no skill extracted)
+#   VALIDATE    -> SKIP_OPTIMIZE  (score >= 0.95 — deploy directly)
+#                | DEPLOY         (score >= 0.90 — deploy after security scan)
+#                | OPTIMIZE       (score >= 0.75 — optimize then re-validate)
+#                | REPORT_FAILURE (score < 0.75 — unrecoverable)
+#   OPTIMIZE    -> VALIDATE       (retry, max 3 attempts)
+#                | REPORT_FAILURE (exhausted retries)
+#   SKIP_OPTIMIZE -> SECURITY_SCAN
+#   DEPLOY      -> SECURITY_SCAN
+#   SECURITY_SCAN -> DEPLOYED     (pass) | REPORT_FAILURE (fail)
+#
+# Usage: ./scripts/closed_loop.sh <requirements-file> [--max-optimize-retries N] [--inter-test-delay N]
 # Example: ./scripts/closed_loop.sh eval/stress_test_requirements.txt
 
 set -euo pipefail
@@ -13,23 +25,30 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 DEPLOY_SCRIPT="$SCRIPT_DIR/deploy.sh"
 LIFECYCLE_TRACKER="$REPO_ROOT/eval/lifecycle_tracker.py"
+MCP_VALIDATOR="$REPO_ROOT/eval/mcp_config_validator.sh"
+PERMISSIONS_CHECK="$REPO_ROOT/eval/check-permissions.sh"
 STRESS_LOG="$REPO_ROOT/eval/stress_test_log.json"
-MAX_OPTIMIZE_ITERS=10
+
+# Defaults
+MAX_OPTIMIZE_RETRIES=3
 INTER_TEST_DELAY=30
+SCORE_SKIP_OPTIMIZE=0.95
+SCORE_DEPLOY=0.90
+SCORE_OPTIMIZE=0.75
 
 # Parse args
 REQUIREMENTS_FILE="${1:-}"
 shift || true
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --max-optimize-iters) MAX_OPTIMIZE_ITERS="$2"; shift 2 ;;
+    --max-optimize-retries) MAX_OPTIMIZE_RETRIES="$2"; shift 2 ;;
     --inter-test-delay) INTER_TEST_DELAY="$2"; shift 2 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done
 
 if [ -z "$REQUIREMENTS_FILE" ] || [ ! -f "$REQUIREMENTS_FILE" ]; then
-  echo "Usage: $0 <requirements-file> [--max-optimize-iters N]" >&2
+  echo "Usage: $0 <requirements-file> [--max-optimize-retries N] [--inter-test-delay N]" >&2
   exit 1
 fi
 
@@ -38,21 +57,100 @@ if [ ! -f "$STRESS_LOG" ]; then
   echo "[]" > "$STRESS_LOG"
 fi
 
-total=$(wc -l < "$REQUIREMENTS_FILE")
+# --- Helper functions ---
+
+log_lifecycle() {
+  local skill="$1" stage="$2" note="${3:-}"
+  if [ -f "$LIFECYCLE_TRACKER" ]; then
+    if [ -n "$note" ]; then
+      python3 "$LIFECYCLE_TRACKER" --skill "$skill" --stage "$stage" --note "$note" 2>/dev/null || true
+    else
+      python3 "$LIFECYCLE_TRACKER" --skill "$skill" --stage "$stage" 2>/dev/null || true
+    fi
+  fi
+}
+
+get_trigger_score() {
+  local eval_target="$1"
+  # Run eval and extract posterior mean
+  local eval_output
+  eval_output=$(python3 "$REPO_ROOT/eval/run_eval_async.py" "$eval_target" --no-cache 2>&1) || true
+  local score
+  score=$(echo "$eval_output" | grep -oP 'posterior_mean["\s:]+\K[0-9.]+' | head -1 || true)
+  if [ -z "$score" ]; then
+    score=$(echo "$eval_output" | grep -oP 'pass_rate["\s:]+\K[0-9.]+' | head -1 || true)
+  fi
+  echo "${score:-0.0}"
+}
+
+run_security_scan() {
+  local skill_name="$1" eval_target="$2"
+  local scan_passed=true
+
+  # Permission check
+  if [ -f "$PERMISSIONS_CHECK" ]; then
+    echo "  [SECURITY] Running permission check..."
+    if ! bash "$PERMISSIONS_CHECK" "$eval_target" 2>/dev/null; then
+      echo "  [SECURITY] FAILED — permission violation"
+      scan_passed=false
+    fi
+  fi
+
+  # MCP config validation (if applicable)
+  local mcp_config="$REPO_ROOT/.claude/skills/$skill_name/.mcp.json"
+  if [ -f "$mcp_config" ] && [ -f "$MCP_VALIDATOR" ]; then
+    echo "  [SECURITY] Running MCP config validation..."
+    if ! bash "$MCP_VALIDATOR" "$mcp_config" 2>/dev/null; then
+      echo "  [SECURITY] FAILED — MCP config violation"
+      scan_passed=false
+    fi
+  fi
+
+  $scan_passed
+}
+
+log_result() {
+  local line_num="$1" requirement="$2" skill_name="$3" status="$4" optimize_retries="$5" duration="$6" score="$7"
+  python3 -c "
+import json, sys
+log_path = sys.argv[1]
+with open(log_path) as f:
+    log = json.load(f)
+log.append({
+    'line': int(sys.argv[2]),
+    'requirement': sys.argv[3],
+    'skill_name': sys.argv[4],
+    'status': sys.argv[5],
+    'optimize_retries': int(sys.argv[6]),
+    'duration_seconds': int(sys.argv[7]),
+    'trigger_score': float(sys.argv[8])
+})
+with open(log_path, 'w') as f:
+    json.dump(log, f, indent=2)
+" "$STRESS_LOG" "$line_num" "$requirement" "$skill_name" "$status" "$optimize_retries" "$duration" "$score" 2>/dev/null || true
+}
+
+# --- Main loop ---
+
+total=$(grep -cve '^\s*$' "$REQUIREMENTS_FILE" | head -1 || echo 0)
 passed=0
 failed=0
 skipped=0
 
 echo "=========================================="
-echo "Closed-Loop Pipeline: $total requirements"
-echo "Max optimize iterations: $MAX_OPTIMIZE_ITERS"
+echo "Closed-Loop Pipeline (State Machine)"
+echo "Requirements:           $total"
+echo "Max optimize retries:   $MAX_OPTIMIZE_RETRIES"
+echo "Skip optimize threshold: >= $SCORE_SKIP_OPTIMIZE"
+echo "Deploy threshold:       >= $SCORE_DEPLOY"
+echo "Optimize threshold:     >= $SCORE_OPTIMIZE"
 echo "=========================================="
 
 line_num=0
 while IFS= read -r requirement || [ -n "$requirement" ]; do
   line_num=$((line_num + 1))
   [ -z "$requirement" ] && continue
-  [[ "$requirement" == \#* ]] && continue  # skip comments
+  [[ "$requirement" == \#* ]] && continue
 
   echo ""
   echo "------------------------------------------"
@@ -60,144 +158,155 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
   echo "------------------------------------------"
 
   start_time=$(date +%s)
+  state="GENERATE"
   status="UNKNOWN"
   skill_name=""
-  optimize_iters=0
+  optimize_retries=0
+  score="0.0"
 
-  # Stage 1: Generate with meta-agent-factory
-  echo "[GENERATE] Invoking meta-agent-factory..."
-  factory_output=$(claude --dangerously-skip-permissions -p "$requirement" 2>&1) || true
+  # --- State machine ---
+  while true; do
+    case "$state" in
 
-  # Extract skill name from generated output
-  skill_name=$(echo "$factory_output" | grep -oP '(?<=skills/)[a-z0-9-]+(?=/)' | head -1 || true)
-  if [ -z "$skill_name" ]; then
-    skill_name=$(echo "$factory_output" | grep -oP '(?<=agents/)[a-z0-9-]+(?=\.md)' | head -1 || true)
-  fi
+      GENERATE)
+        echo "[GENERATE] Invoking meta-agent-factory..."
+        factory_output=$(claude --dangerously-skip-permissions -p "$requirement" 2>&1) || true
 
-  if [ -z "$skill_name" ]; then
-    echo "[GENERATE] FAILED — could not extract skill name from output"
-    status="FAILED_GENERATION"
-  else
-    echo "[GENERATE] Created: $skill_name"
-
-    # Log lifecycle event
-    if [ -f "$LIFECYCLE_TRACKER" ]; then
-      python3 "$LIFECYCLE_TRACKER" --skill "$skill_name" --stage created --source meta-agent-factory 2>/dev/null || true
-    fi
-
-    # Stage 2: Validate
-    echo "[VALIDATE] Running quality check..."
-    skill_path="$REPO_ROOT/.claude/skills/$skill_name/SKILL.md"
-    agent_path="$REPO_ROOT/.claude/agents/$skill_name.md"
-
-    eval_target=""
-    if [ -f "$skill_path" ]; then
-      eval_target="$skill_path"
-    elif [ -f "$agent_path" ]; then
-      eval_target="$agent_path"
-    fi
-
-    if [ -z "$eval_target" ]; then
-      echo "[VALIDATE] SKIP — no SKILL.md or agent .md found for $skill_name"
-      status="FAILED_VALIDATION"
-    else
-      # Permission check
-      if [ -f "$REPO_ROOT/eval/check-permissions.sh" ]; then
-        if ! bash "$REPO_ROOT/eval/check-permissions.sh" "$eval_target" 2>/dev/null; then
-          echo "[VALIDATE] FAILED — permission check"
-          status="FAILED_PERMISSIONS"
-        fi
-      fi
-
-      if [ "$status" = "UNKNOWN" ]; then
-        # Log validation event
-        if [ -f "$LIFECYCLE_TRACKER" ]; then
-          python3 "$LIFECYCLE_TRACKER" --skill "$skill_name" --stage validated 2>/dev/null || true
+        # Extract skill name
+        skill_name=$(echo "$factory_output" | grep -oP '(?<=skills/)[a-z0-9-]+(?=/)' | head -1 || true)
+        if [ -z "$skill_name" ]; then
+          skill_name=$(echo "$factory_output" | grep -oP '(?<=agents/)[a-z0-9-]+(?=\.md)' | head -1 || true)
         fi
 
-        # Stage 3: Deploy (runs pre-deploy gate internally)
-        echo "[DEPLOY] Attempting deployment..."
+        if [ -z "$skill_name" ]; then
+          echo "[GENERATE] FAILED — could not extract skill name"
+          state="REPORT_FAILURE"
+          status="FAILED_GENERATION"
+        else
+          echo "[GENERATE] Created: $skill_name"
+          log_lifecycle "$skill_name" "created" "meta-agent-factory"
+          state="VALIDATE"
+        fi
+        ;;
+
+      VALIDATE)
+        echo "[VALIDATE] Evaluating $skill_name..."
+        local_skill_path="$REPO_ROOT/.claude/skills/$skill_name/SKILL.md"
+        local_agent_path="$REPO_ROOT/.claude/agents/$skill_name.md"
+
+        eval_target=""
+        if [ -f "$local_skill_path" ]; then
+          eval_target="$local_skill_path"
+        elif [ -f "$local_agent_path" ]; then
+          eval_target="$local_agent_path"
+        fi
+
+        if [ -z "$eval_target" ]; then
+          echo "[VALIDATE] No SKILL.md or agent .md found"
+          state="REPORT_FAILURE"
+          status="FAILED_VALIDATION"
+          continue
+        fi
+
+        score=$(get_trigger_score "$eval_target")
+        echo "[VALIDATE] Score: $score"
+        log_lifecycle "$skill_name" "validated" "score=$score"
+
+        # Score-based routing
+        if python3 -c "exit(0 if float('$score') >= $SCORE_SKIP_OPTIMIZE else 1)" 2>/dev/null; then
+          echo "[VALIDATE] Score >= $SCORE_SKIP_OPTIMIZE — skipping optimization"
+          state="SECURITY_SCAN"
+        elif python3 -c "exit(0 if float('$score') >= $SCORE_DEPLOY else 1)" 2>/dev/null; then
+          echo "[VALIDATE] Score >= $SCORE_DEPLOY — proceeding to security scan"
+          state="SECURITY_SCAN"
+        elif python3 -c "exit(0 if float('$score') >= $SCORE_OPTIMIZE else 1)" 2>/dev/null; then
+          if [ "$optimize_retries" -ge "$MAX_OPTIMIZE_RETRIES" ]; then
+            echo "[VALIDATE] Score >= $SCORE_OPTIMIZE but exhausted $MAX_OPTIMIZE_RETRIES optimize retries"
+            state="REPORT_FAILURE"
+            status="FAILED_OPTIMIZATION_EXHAUSTED"
+          else
+            echo "[VALIDATE] Score >= $SCORE_OPTIMIZE — routing to optimization"
+            state="OPTIMIZE"
+          fi
+        else
+          echo "[VALIDATE] Score < $SCORE_OPTIMIZE — unrecoverable"
+          state="REPORT_FAILURE"
+          status="FAILED_LOW_SCORE"
+        fi
+        ;;
+
+      OPTIMIZE)
+        optimize_retries=$((optimize_retries + 1))
+        echo "[OPTIMIZE] Retry $optimize_retries/$MAX_OPTIMIZE_RETRIES for $skill_name..."
+        log_lifecycle "$skill_name" "optimizing" "retry=$optimize_retries"
+
+        claude --dangerously-skip-permissions -p \
+          "Use the autoresearch-optimizer to improve the trigger rate of $eval_target. Run one iteration only." \
+          2>/dev/null || true
+
+        sleep "$INTER_TEST_DELAY"
+        state="VALIDATE"
+        ;;
+
+      SECURITY_SCAN)
+        echo "[SECURITY_SCAN] Running security checks on $skill_name..."
+        if run_security_scan "$skill_name" "$eval_target"; then
+          echo "[SECURITY_SCAN] PASSED"
+          state="DEPLOY"
+        else
+          echo "[SECURITY_SCAN] FAILED"
+          state="REPORT_FAILURE"
+          status="FAILED_SECURITY_SCAN"
+        fi
+        ;;
+
+      DEPLOY)
+        echo "[DEPLOY] Deploying $skill_name..."
         if bash "$DEPLOY_SCRIPT" "$skill_name" 2>/dev/null; then
           echo "[DEPLOY] SUCCESS"
           status="DEPLOYED"
-          if [ -f "$LIFECYCLE_TRACKER" ]; then
-            python3 "$LIFECYCLE_TRACKER" --skill "$skill_name" --stage deployed 2>/dev/null || true
-          fi
+          log_lifecycle "$skill_name" "deployed" "score=$score retries=$optimize_retries"
         else
-          # Stage 4: Optimize if deploy gate fails
-          echo "[OPTIMIZE] Deploy gate failed, starting optimization (max $MAX_OPTIMIZE_ITERS iters)..."
-          if [ -f "$LIFECYCLE_TRACKER" ]; then
-            python3 "$LIFECYCLE_TRACKER" --skill "$skill_name" --stage optimizing 2>/dev/null || true
-          fi
-
-          optimize_iters=0
-          optimized=false
-          while [ "$optimize_iters" -lt "$MAX_OPTIMIZE_ITERS" ]; do
-            optimize_iters=$((optimize_iters + 1))
-            echo "  [OPTIMIZE] Iteration $optimize_iters/$MAX_OPTIMIZE_ITERS"
-
-            # Run optimizer via claude
-            claude --dangerously-skip-permissions -p \
-              "Use the autoresearch-optimizer to improve the trigger rate of $eval_target. Run one iteration only." \
-              2>/dev/null || true
-
-            # Re-attempt deploy
-            if bash "$DEPLOY_SCRIPT" "$skill_name" 2>/dev/null; then
-              echo "[OPTIMIZE] SUCCESS after $optimize_iters iterations"
-              status="DEPLOYED_AFTER_OPTIMIZATION"
-              optimized=true
-              if [ -f "$LIFECYCLE_TRACKER" ]; then
-                python3 "$LIFECYCLE_TRACKER" --skill "$skill_name" --stage deployed --note "optimized in $optimize_iters iters" 2>/dev/null || true
-              fi
-              break
-            fi
-
-            sleep "$INTER_TEST_DELAY"
-          done
-
-          if [ "$optimized" = false ]; then
-            echo "[OPTIMIZE] FAILED after $optimize_iters iterations"
-            status="FAILED_OPTIMIZATION"
-          fi
+          echo "[DEPLOY] FAILED — deploy script returned error"
+          status="FAILED_DEPLOY"
         fi
-      fi
-    fi
-  fi
+        break
+        ;;
+
+      REPORT_FAILURE)
+        echo "[REPORT_FAILURE] $skill_name failed: $status"
+        if [ -n "$skill_name" ]; then
+          log_lifecycle "$skill_name" "failed" "$status"
+        fi
+        break
+        ;;
+
+      *)
+        echo "[ERROR] Unknown state: $state"
+        status="INTERNAL_ERROR"
+        break
+        ;;
+    esac
+  done
 
   end_time=$(date +%s)
   duration=$((end_time - start_time))
 
-  # Log to stress test log
-  python3 -c "
-import json
-log_path = '$STRESS_LOG'
-with open(log_path) as f:
-    log = json.load(f)
-log.append({
-    'line': $line_num,
-    'requirement': '''$requirement''',
-    'skill_name': '$skill_name',
-    'status': '$status',
-    'optimize_iterations': $optimize_iters,
-    'duration_seconds': $duration
-})
-with open(log_path, 'w') as f:
-    json.dump(log, f, indent=2)
-" 2>/dev/null || true
+  log_result "$line_num" "$requirement" "$skill_name" "$status" "$optimize_retries" "$duration" "$score"
 
   case "$status" in
-    DEPLOYED|DEPLOYED_AFTER_OPTIMIZATION) passed=$((passed + 1)) ;;
-    FAILED_*) failed=$((failed + 1)) ;;
+    DEPLOYED) passed=$((passed + 1)) ;;
+    FAILED_*|INTERNAL_ERROR) failed=$((failed + 1)) ;;
     *) skipped=$((skipped + 1)) ;;
   esac
 
-  echo "  Status: $status | Duration: ${duration}s"
+  echo "  State: $status | Score: $score | Retries: $optimize_retries | Duration: ${duration}s"
 
 done < "$REQUIREMENTS_FILE"
 
 echo ""
 echo "=========================================="
-echo "CLOSED-LOOP SUMMARY"
+echo "CLOSED-LOOP SUMMARY (State Machine)"
 echo "=========================================="
 echo "Total:    $total"
 echo "Passed:   $passed"
