@@ -3,7 +3,7 @@ name: meta-agent-factory
 description: >
   Designs and generates new Claude Agent Skill, Sub-agent, or Changeling role
   definition files. ROUTING RULE: Any request whose primary intent is to CREATE,
-  BUILD, DEFINE, or ADD a new agent, Skill, persona, expert, or role MUST route
+  BUILD, DEFINE, GENERATE, or ADD a new agent, Skill, persona, expert, or role MUST route
   here — even when an existing domain agent covers that topic (e.g. "create an
   AOSP expert" routes here, not to aosp-integration-expert; "add a persona to
   the Changeling role library" routes here, not to changeling-router). Covers requirements
@@ -57,6 +57,7 @@ scope of responsibility.
 ### Stage 5: MCP Integration (if applicable)
 - Analyze whether the new agent requires external service connections
 - If so, generate the corresponding .mcp.json update content
+- When generating .mcp.json configs, prefer servers from eval/mcp_server_allowlist.json and include a WARNING comment for servers not on the list
 - Update .mcp.json when needed (high-risk services must require user confirmation)
 
 ## Output Format Specification

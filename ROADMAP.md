@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-05: Phase 4 in progress. Security hardening expanded — MCP content validation (P0), dependency pinning (P1), model migration runbook (P1) implemented. Closed-loop state machine refactor (P2) planned. G8 Iter 2 metrics: T=0.895, V=0.900. Routing regression (T=0.658) remains active.**
+**Status as of 2026-04-06: Phase 4 in progress. CRITICAL routing regression fix applied — vocabulary deconfliction across 5 agent descriptions + meta-agent-factory routing anchor strengthened (GENERATE added). MCP allowlist instruction added to factory. terminal_reason retry spec added to migration runbook. Awaiting eval re-run to confirm T recovery from 0.658.**
 
 ---
 
@@ -200,7 +200,7 @@ SKILL.md files from natural language requirements.
 - [x] Extend `eval/mcp_config_validator.sh` with static content scanning: injection phrase detection, length limits, credential keyword rejection, allowlist bypass (`eval/mcp_server_allowlist.json`) — P0 ✅ 2026-04-05
 - [x] Lock Python deps (`requirements.txt`) + `npm audit --audit-level=high` (warning) in pre-deploy.sh — P1 ✅ 2026-04-05
 - [x] Create `eval/model_migration_runbook.md` — re-baseline steps for new model releases (separate positive/negative analysis, CI comparison, optimizer trigger criteria, routing regression check) — P1 ✅ 2026-04-05
-- [ ] Add MCP server allowlist instruction to meta-agent-factory.md — P1 (blocked: needs .claude/agents/ write permission)
+- [x] Add MCP server allowlist instruction to meta-agent-factory.md — P1 ✅ 2026-04-06
 - [ ] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), parallel SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2
 
 ### Acceptance Criteria
@@ -471,6 +471,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L6 | Edge model assumptions become stale — re-evaluate when new open models ship | Phase 6 was designed around FunctionGemma; Gemma 4 E2B obsoleted it with better accuracy (86.4% tool use zero-shot) and no fine-tuning |
 | L7 | Adding agents causes routing regression — trigger rates must be re-evaluated after fleet expansion | G8 Iter 2 achieved T=0.895 with 5 agents. Adding 6 more agents (stewards, factory, reviewer) dropped meta-agent-factory to T=0.658. All negatives still pass — the issue is routing competition, not description quality. Eval must be re-run after any agent addition. |
 | L8 | MCP config validation must cover content, not just structure | mcp_config_validator.sh (2026-04-04) validated JSON structure and auth patterns but missed tool description injection — the actual attack vector demonstrated by Invariant Labs |
+| L9 | Every pipeline component encodes a model limitation assumption — stress-test and simplify as models improve | Anthropic harness engineering blog (2026-04-06). Validator assumes factory can't self-evaluate; optimizer assumes descriptions need iteration; router assumes models can't auto-identify roles. Track assumptions in eval/assumption_registry.md. |
 
 ---
 
@@ -479,7 +480,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 1. ~~G7b~~ ✅ Baseline confirmed: T=0.895, V=0.600
 2. ~~G8 Iter 1~~ ✅ Description optimized: T=0.921, V=0.800. Exceeds deployment gate (T ≥ 0.90).
 3. ~~G8 Iter 2~~ ✅ V pushed to 0.900 (above 0.85 overfit threshold). T=0.895.
-4. **CRITICAL**: G8 Iter 3 — routing regression detected (T=0.895→0.658 after adding 6 agents). All positive tests fail with "not-triggered" due to routing competition. Description-only fixes insufficient — need structural solution (description strengthening + potentially reducing agent description overlap)
+4. **CRITICAL**: Routing regression fix applied (2026-04-06) — vocabulary deconfliction across 5 agent descriptions (factory-steward, researcher, android-sw, bsp-knowledge, meta-agent-factory). Competing verbs replaced: implements→acts on, improves→refines/enhances, generates→proposes. GENERATE added to meta-agent-factory routing anchor. **Awaiting eval re-run to confirm T recovery from 0.658.**
 5. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
 6. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
 7. **Phase 4**: Changeling latency validation (≤ 2s role switching)

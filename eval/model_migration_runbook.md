@@ -86,3 +86,32 @@ The new model may route differently, affecting the T=0.658 routing regression (L
   ```bash
   rm -f eval/.prompt_cache.json
   ```
+
+---
+
+## Appendix A: SDK Migration Checklist (Agent SDK v0.2.91+)
+
+When migrating to or integrating with the Agent SDK (v0.2.91+), incorporate these items:
+
+### terminal_reason Differentiated Retry Logic
+
+Agent SDK v0.2.91 exposes a `terminal_reason` field. Design closed-loop retry logic based on reason:
+
+| `terminal_reason` | Action |
+|---|---|
+| `completed` | Proceed to next state |
+| `max_turns` | Retry with `--max-turns` doubled, up to 3 retries |
+| `aborted_tools` | Log tool failure, skip to REPORT_FAILURE (do not retry blindly) |
+| `blocking_limit` | Exponential backoff (30s, 60s, 120s), then REPORT_FAILURE |
+
+**Routing diagnosis**: `max_turns` termination on positive prompts may indicate reasoning budget exhaustion rather than genuine misrouting. Cross-reference with positive/negative pass rates.
+
+### Strict Sandbox Default
+
+SDK v0.2.91 sets `failIfUnavailable: true` for sandboxing by default. For non-production environments (eval runs, optimizer iterations), explicitly set:
+
+```json
+{ "sandbox": { "failIfUnavailable": false } }
+```
+
+This prevents eval failures on machines without sandbox infrastructure.

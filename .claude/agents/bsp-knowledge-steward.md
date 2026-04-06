@@ -9,7 +9,7 @@ description: >
   learner-level detection), Phase 4 deliverables (sedimentation CLI, business
   impact reports, CI/CD integration, base graph maintenance), knowledge graph
   expansion toward 800-1000 nodes, eval coverage growth, and skill quality
-  improvement across all 7 skills (6 domain experts + 1 mentor).
+  refinement across all 7 skills (6 domain experts + 1 mentor).
   Activate when: completing Phase 3/4 tasks for the BSP Knowledge project,
   expanding the Kuzu knowledge graph with ARM/Linux open-source specs, adding
   eval cases or MCP integration tests, refining existing skill.md content or

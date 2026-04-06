@@ -61,7 +61,7 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `android-sw-steward` | `/home/jonas/gemini-home/Android-Software/` | Drives Phase 4 deliverables (dirty page detection, migration impact, L3 framework, skill lint, A15 validation), researches AOSP updates | Opus 4.6 |
 | `arm-mrs-steward` | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | Drives H8 multi-agent orchestration, expands T32/A32 + GIC + CoreSight + PMU data, tracks ARM spec releases | Opus 4.6 |
 | `bsp-knowledge-steward` | `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/` | Completes Phase 3 exit criteria, advances Phase 4 deliverables, expands Kuzu knowledge graph, researches ARM/Linux BSP updates | Opus 4.6 |
-| `factory-steward` | This repo | Implements ADOPT items from research discussions, tunes underperforming agents, improves eval/pipeline, advances ROADMAP | Opus 4.6 |
+| `factory-steward` | This repo | Acts on ADOPT items from research discussions, tunes underperforming agents, refines eval/pipeline, advances ROADMAP | Opus 4.6 |
 | `project-reviewer` | All three project repos (read) | Reviews steward commits for correctness and alignment, writes steering notes, escalates stalled/regressing agents | Opus 4.6 |
 
 ### Pipeline Flow

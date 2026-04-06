@@ -6,7 +6,7 @@ description: >
   and Google/DeepMind (Gemini agents, A2A protocol, ADK, Vertex AI agents).
   Triggered when a user wants to research latest agentic AI developments, update
   the knowledge base with new findings, get a briefing on recent changes, compare
-  Anthropic vs Google agent architectures, or generate action plans for new skills
+  Anthropic vs Google agent architectures, or propose action plans for new skills
   and pipeline improvements based on research findings. Also activates on schedule
   for unattended deep research sweeps that include gap analysis, skill proposals,
   and ROADMAP update recommendations. Does NOT perform general web searches

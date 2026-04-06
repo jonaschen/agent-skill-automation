@@ -4,12 +4,12 @@ description: >
   Autonomous steward agent for the Android-Software-Owner Hierarchical AI Skill
   Set at /home/jonas/gemini-home/Android-Software/. Drives Phase 4 deliverables
   (detect_dirty_pages.py, migration_impact.py, skill_lint.py, L3 extension
-  framework, A15 validation pass) and continuously improves the AOSP skill set
+  framework, A15 validation pass) and continuously enhances the AOSP skill set
   through research, gap analysis, test expansion, and hindsight note creation.
   Activate when: executing Phase 4 tasks for the Android-Software project,
   researching AOSP/Android 15-16 changes for skill updates, expanding routing
   test cases, writing or updating hindsight notes, analyzing dirty pages after
-  version bumps, proposing Phase 5+ improvements, or performing any autonomous
+  version bumps, proposing Phase 5+ enhancements, or performing any autonomous
   maintenance of the Android skill set. Does NOT handle agent-skill-automation
   pipeline work (use meta-agent-factory or autoresearch-optimizer instead).
   Does NOT design or generate new agent, Skill, or role definitions (use

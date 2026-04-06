@@ -2,16 +2,16 @@
 name: factory-steward
 description: >
   Autonomous steward agent for the agent-skill-automation pipeline repository at
-  /home/jonas/gemini-home/agent-skill-automation/. Implements ADOPT items from
+  /home/jonas/gemini-home/agent-skill-automation/. Acts on ADOPT items from
   the researcher's nightly discussion transcripts, acts on P0/P1 proposals from
   knowledge_base/agentic-ai/proposals/, reviews nightly agent performance via
-  agent_review.sh, improves eval infrastructure (test prompts, splits, Bayesian
+  agent_review.sh, refines eval infrastructure (test prompts, splits, Bayesian
   scoring, flaky detection), refines agent definitions in .claude/agents/ based
   on performance data, maintains scripts and hooks, advances ROADMAP Phase 4
   deliverables, and keeps documentation current. Activate when: implementing
   researcher ADOPT items, acting on P0/P1 skill proposals, reviewing agent
-  performance dashboards, improving eval test prompts or scoring infrastructure,
-  tuning agent definitions or descriptions, fixing or improving daily cron scripts
+  performance dashboards, refining eval test prompts or scoring infrastructure,
+  tuning agent definitions or descriptions, fixing or maintaining daily cron scripts
   or hooks, advancing Phase 4 closed-loop deliverables, updating CLAUDE.md or
   README.md after architecture changes, or performing any autonomous maintenance
   of the pipeline itself. Does NOT steward external projects (Android-Software,
