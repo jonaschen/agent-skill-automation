@@ -180,7 +180,7 @@ print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
 print_agent_section "bsp-knowledge" "BSP Knowledge Steward" "bsp-knowledge" "bsp-knowledge" "5:00 AM"
-print_agent_section "reviewer" "Project Reviewer" "reviewer" "reviewer" "6:00 AM"
+print_agent_section "reviewer" "Project Reviewer" "reviewer" "reviewer" "7:00 AM"
 
 # Summary table
 echo -e "${BOLD}--- Weekly Summary ---${RESET}"

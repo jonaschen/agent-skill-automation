@@ -58,8 +58,9 @@ finalize() {
   local commits_made
   commits_made=$(cd "$TARGET_REPO" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
   local graph_nodes
-  graph_nodes=$(cd "$TARGET_REPO" && python3 -c "
+  graph_nodes=$(timeout 10 python3 -c "
 import kuzu, os
+os.chdir('$TARGET_REPO')
 db = kuzu.Database(os.path.join('knowledge-graph', 'kuzu_db'))
 conn = kuzu.Connection(db)
 r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
@@ -89,7 +90,7 @@ PERF_EOF
   find "$LOG_DIR" -name "bsp-knowledge-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "bsp-knowledge-*.json" -mtime +30 -delete 2>/dev/null
 }
-trap finalize EXIT
+trap finalize EXIT INT TERM HUP
 
 echo "=== BSP Knowledge Steward Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"

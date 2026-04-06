@@ -83,7 +83,7 @@ PERF_EOF
   find "$LOG_DIR" -name "reviewer-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "reviewer-*.json" -mtime +30 -delete 2>/dev/null
 }
-trap finalize EXIT
+trap finalize EXIT INT TERM HUP
 
 echo "=== Project Reviewer Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
