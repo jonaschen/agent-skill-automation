@@ -157,10 +157,12 @@ knowledge_base/
 
 ## Nightly Agent Fleet
 
-Seven agent runs execute daily via cron, each with a specific role:
+Eight agent runs execute daily via cron (6 agents, factory-steward runs 3x):
 
 ```
 12:00 PM ─── factory-steward ────────── Daytime: advances ROADMAP, fixes regressions
+                                         → /home/jonas/gemini-home/agent-skill-automation/
+ 5:00 PM ─── factory-steward ────────── Afternoon: continues ROADMAP, acts on proposals
                                          → /home/jonas/gemini-home/agent-skill-automation/
  9:00 PM ─── factory-steward ────────── Evening: implements ADOPT items, tunes agents
                                          → /home/jonas/gemini-home/agent-skill-automation/

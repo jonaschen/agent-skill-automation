@@ -80,13 +80,14 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ## Daily Agent Fleet
 
-Seven agent runs are scheduled daily via cron, staggered to avoid resource contention and quota limits. Each writes a performance JSON record to `logs/performance/` for tracking.
+Eight agent runs are scheduled daily via cron, staggered to avoid resource contention and quota limits. Each writes a performance JSON record to `logs/performance/` for tracking.
 
 ### Schedule (Asia/Taipei)
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Daytime session: advances ROADMAP, fixes routing regression, improves eval |
+| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Daytime session: advances ROADMAP, fixes regressions, improves eval |
+| 5:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Afternoon session: continues ROADMAP work, acts on proposals |
 | 9:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Evening session: implements ADOPT items from last night's research, tunes agents |
 | 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | Anthropic + Google research sweep (L1–L5: collect → analyze → discuss → plan → act) |
 | 3:00 AM | `android-sw-steward` | `scripts/daily_android_sw_steward.sh` | Phase 4 work + AOSP research on Android-Software repo |
