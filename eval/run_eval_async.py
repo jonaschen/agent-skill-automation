@@ -111,18 +111,32 @@ class AsyncEvalRunner:
 
     def _evaluate(self, output, expect_trigger):
         import re
-        # More robust trigger detection logic
-        # 1. Look for the explicit next step recommendation
-        # 2. Look for the completion header (case-insensitive, optional emoji)
-        # 3. Look for the tool summary lines (common in both final and intermediate output)
+        # Trigger detection: identify if meta-agent-factory was activated.
+        # The factory may produce varied output formats depending on whether
+        # it completes generation, is blocked on permissions, or describes
+        # what it will create. Patterns cover all known output variants.
+        #
+        # IMPORTANT: Patterns must NOT false-positive on general help output.
+        # Tests 41-44 discuss existing agents/skills — Claude may reference
+        # file paths in those responses. Patterns here target factory-specific
+        # CREATE/GENERATE language, not general file path mentions.
         trigger_patterns = [
+            # Original patterns (factory completes generation)
             r"skill-quality-validator",
             r"Agent generation complete",
-            r"Tools granted[:\s]",
-            r"Tools denied[:\s]",
-            r"write permission" # Often appears when blocked
+            r"Tools granted\**[:\s]",
+            r"Tools denied\**[:\s]",
+            r"write permission",
+            # Factory creation output — describing what it WILL create
+            r"(?:created?|generat|writ(?:e|ing|ten)|built)\s+(?:at|to|in)\s+[`'\"]?\.claude/skills/",
+            r"(?:created?|generat|writ(?:e|ing|ten)|built)\s+(?:at|to|in)\s+[`'\"]?\.claude/agents/",
+            # Factory architectural analysis (unique to factory output)
+            r"Permission class\**[:\s]",
+            r"permission matrix",
+            # Factory pipeline stage headers
+            r"Stage [1-5]:\s*\w",
         ]
-        
+
         triggered = False
         for p in trigger_patterns:
             if re.search(p, output, re.IGNORECASE):

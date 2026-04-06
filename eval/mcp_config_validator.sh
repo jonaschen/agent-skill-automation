@@ -13,6 +13,11 @@
 #      - Credential keyword rejection (password, token, secret, API_KEY)
 #      - File path reference detection
 #      - Allowlist bypass for known-good servers (eval/mcp_server_allowlist.json)
+#   7. Hash-based tool definition pinning (P1 — rug pull detection):
+#      - SHA-256 hashes of server definitions stored in eval/mcp_tool_hashes/
+#      - On first run: creates initial pin file
+#      - On subsequent runs: detects definition changes (rug pull attempt)
+#      - Re-pin with: REPIN=1 bash eval/mcp_config_validator.sh
 #
 # Usage:
 #   bash eval/mcp_config_validator.sh [path-to-mcp.json]
@@ -270,6 +275,80 @@ C_WARNINGS=$(echo "$CONTENT_RESULT_LINE" | cut -d: -f3)
 
 ERRORS=$((ERRORS + C_ERRORS))
 WARNINGS=$((WARNINGS + C_WARNINGS))
+
+# 5. Hash-based tool definition pinning (P1 — rug pull detection)
+# Computes SHA-256 hashes of tool definitions and detects when they change.
+# On first run: stores hashes in eval/mcp_tool_hashes/<config-hash>.json
+# On subsequent runs: compares current hashes against stored baseline.
+HASH_DIR="$SCRIPT_DIR/mcp_tool_hashes"
+mkdir -p "$HASH_DIR"
+
+# Derive a stable key from the config file path (basename without extension)
+HASH_KEY=$(basename "$MCP_CONFIG" .json | tr '.' '_')
+
+HASH_OUTPUT=$(python3 -c "
+import json, hashlib, sys, os
+
+mcp_config = '$MCP_CONFIG'
+hash_dir = '$HASH_DIR'
+hash_key = '$HASH_KEY'
+hash_file = os.path.join(hash_dir, hash_key + '.pin.json')
+
+cfg = json.load(open(mcp_config))
+servers = cfg.get('mcpServers', {})
+errors = 0
+warnings = 0
+
+# Compute current hashes: hash each server's full definition (deterministic JSON)
+current_hashes = {}
+for name, server in sorted(servers.items()):
+    # Hash the entire server config (command, args, env, tools, etc.)
+    canonical = json.dumps(server, sort_keys=True, separators=(',', ':'))
+    current_hashes[name] = hashlib.sha256(canonical.encode()).hexdigest()
+
+if os.path.exists(hash_file):
+    # Compare against pinned baseline
+    pinned = json.load(open(hash_file))
+    pinned_hashes = pinned.get('hashes', {})
+
+    for name, current_hash in current_hashes.items():
+        if name in pinned_hashes:
+            if current_hash != pinned_hashes[name]:
+                print(f'  ERROR: Server \"{name}\" definition changed since pinning (possible rug pull)')
+                print(f'         Pinned:  {pinned_hashes[name][:16]}...')
+                print(f'         Current: {current_hash[:16]}...')
+                print(f'         Re-pin with: REPIN=1 bash eval/mcp_config_validator.sh')
+                errors += 1
+        else:
+            print(f'  WARNING: Server \"{name}\" is new (not in pinned baseline) — review and re-pin')
+            warnings += 1
+
+    for name in pinned_hashes:
+        if name not in current_hashes:
+            print(f'  INFO: Previously pinned server \"{name}\" was removed')
+
+    # Update pin file if REPIN is set
+    if os.environ.get('REPIN') == '1':
+        pin_data = {'hashes': current_hashes, 'pinned_at': '$(date -Iseconds)'}
+        json.dump(pin_data, open(hash_file, 'w'), indent=2)
+        print(f'  INFO: Re-pinned {len(current_hashes)} server hash(es)')
+else:
+    # First run — create initial pin
+    pin_data = {'hashes': current_hashes, 'pinned_at': '$(date -Iseconds)'}
+    json.dump(pin_data, open(hash_file, 'w'), indent=2)
+    print(f'  INFO: Initial pin created for {len(current_hashes)} server(s) at {hash_file}')
+
+print(f'HASH_RESULT:{errors}:{warnings}')
+" 2>/dev/null)
+
+echo "$HASH_OUTPUT" | grep -v "^HASH_RESULT:" || true
+
+HASH_RESULT_LINE=$(echo "$HASH_OUTPUT" | grep "^HASH_RESULT:" || echo "HASH_RESULT:0:0")
+H_ERRORS=$(echo "$HASH_RESULT_LINE" | cut -d: -f2)
+H_WARNINGS=$(echo "$HASH_RESULT_LINE" | cut -d: -f3)
+
+ERRORS=$((ERRORS + H_ERRORS))
+WARNINGS=$((WARNINGS + H_WARNINGS))
 
 # Summary
 echo "---"

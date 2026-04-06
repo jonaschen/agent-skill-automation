@@ -78,6 +78,20 @@ The new model may route differently, affecting the T=0.658 routing regression (L
 2. If positive tests now route correctly (to meta-agent-factory), the regression may be resolved
 3. If routing is worse, the new model may need stronger disambiguation in agent descriptions
 
+## Step 6: Stress-Test Harness Assumptions
+
+Each pipeline agent encodes an assumption about what the model can't do. A new model may invalidate these assumptions, enabling pipeline simplification.
+
+1. Open `eval/assumption_registry.md`
+2. For each agent row, run the stress test described in column 3
+3. Record results with new model name and date
+4. If an assumption no longer holds, open a ROADMAP task for the simplification path
+5. Update the "Last Tested" and "Result" columns
+
+**Design principle**: The pipeline should simplify as models improve. If a new model makes an agent's assumption obsolete, that agent should be merged or removed — not kept for backwards compatibility.
+
+---
+
 ## Notes
 
 - Never optimize against the validation set during migration
