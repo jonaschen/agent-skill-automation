@@ -29,7 +29,7 @@ recover_uncommitted() {
   local log_file="$3"
   cd "$repo_dir" || return 0
   local dirty
-  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1)
+  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1 || true)
   if [ -n "$dirty" ]; then
     echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
     git status --short >> "$log_file" 2>&1
@@ -68,7 +68,7 @@ If a steward didn't run today (no log file), note it as 'no run' and skip.
 
 Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review: steward work assessment ${DATE}'" >> "$LOG_FILE" 2>&1 || true
 
-recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE"
+(recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE") || true
 
 # Capture post-run state
 END_TIME=$(date +%s)

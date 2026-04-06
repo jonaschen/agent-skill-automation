@@ -27,7 +27,7 @@ recover_uncommitted() {
   local log_file="$3"
   cd "$repo_dir" || return 0
   local dirty
-  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1)
+  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1 || true)
   if [ -n "$dirty" ]; then
     echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
     git status --short >> "$log_file" 2>&1
@@ -60,7 +60,7 @@ Execute a stewardship session:
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}" >> "$LOG_FILE" 2>&1 || true
 
-recover_uncommitted "$TARGET_REPO" "milestone-work" "$LOG_FILE"
+(recover_uncommitted "$TARGET_REPO" "milestone-work" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Data Expansion ---" >> "$LOG_FILE"
@@ -77,7 +77,7 @@ Run a research session:
 
 Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
 
-recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE"
+(recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 
 # Capture post-run state
 END_TIME=$(date +%s)

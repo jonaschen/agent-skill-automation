@@ -31,7 +31,7 @@ recover_uncommitted() {
   local log_file="$3"
   cd "$repo_dir" || return 0
   local dirty
-  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1)
+  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1 || true)
   if [ -n "$dirty" ]; then
     echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
     git status --short >> "$log_file" 2>&1
@@ -62,7 +62,7 @@ Execute a factory improvement session:
 
 Focus on 1-2 high-impact improvements. Quality over quantity." >> "$LOG_FILE" 2>&1 || true
 
-recover_uncommitted "$REPO_ROOT" "adopt-items" "$LOG_FILE"
+(recover_uncommitted "$REPO_ROOT" "adopt-items" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
@@ -79,7 +79,7 @@ Run a performance review and tuning session:
 
 Be conservative — only change agent scripts/definitions when there's clear evidence of a problem." >> "$LOG_FILE" 2>&1 || true
 
-recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE"
+(recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE") || true
 
 # Capture post-run state
 END_TIME=$(date +%s)
