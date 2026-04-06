@@ -97,7 +97,8 @@ echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- Phase 3/4 Work ---" >> "$LOG_FILE"
-cd "$TARGET_REPO" && "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
+# Run Claude in a subshell to isolate process-group signals from the parent script
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
 
 Execute a stewardship session:
 1. Orient: Read all four mandatory documents (CLAUDE.md, BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md, ROADMAP.md, README.md)
@@ -108,13 +109,14 @@ Execute a stewardship session:
 6. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
-At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}" >> "$LOG_FILE" 2>&1 || true
+At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Phase work session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$TARGET_REPO" "phase-work" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Knowledge Graph Expansion ---" >> "$LOG_FILE"
-cd "$TARGET_REPO" && "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
 
 Run a research session:
 1. Orient: Read ROADMAP.md and CLAUDE.md
@@ -125,7 +127,8 @@ Run a research session:
 6. Rebuild the base graph if seed scripts were modified: python scripts/build_base_graph.py
 7. Commit: If you made any changes, stage and commit with message 'research: BSP knowledge updates ($DATE)'
 
-Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
+Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Research session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 

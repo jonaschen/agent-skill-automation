@@ -90,7 +90,8 @@ echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- Review All Three Stewards ---" >> "$LOG_FILE"
-cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
+# Run Claude in a subshell to isolate process-group signals from the parent script
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
 
 Execute a review session for today's steward runs ($DATE):
 
@@ -110,7 +111,8 @@ Then:
 
 If a steward didn't run today (no log file), note it as 'no run' and skip.
 
-Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review: steward work assessment ${DATE}'" >> "$LOG_FILE" 2>&1 || true
+Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review: steward work assessment ${DATE}'") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Review session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE") || true
 

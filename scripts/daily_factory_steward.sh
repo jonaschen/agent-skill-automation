@@ -89,7 +89,8 @@ echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
-cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
+# Run Claude in a subshell to isolate process-group signals from the parent script
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -102,13 +103,14 @@ Execute a factory improvement session:
 6. Update ROADMAP.md with completed work
 7. Commit: Stage all changed files and commit with message 'factory: implement ADOPT items from ${YESTERDAY} discussion'
 
-Focus on 1-2 high-impact improvements. Quality over quantity." >> "$LOG_FILE" 2>&1 || true
+Focus on 1-2 high-impact improvements. Quality over quantity.") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] ADOPT session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$REPO_ROOT" "adopt-items" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
-cd "$REPO_ROOT" && "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -121,7 +123,8 @@ Run a performance review and tuning session:
 6. If eval infrastructure needs improvement (flaky tests, coverage gaps), make targeted fixes
 7. Commit: If you made any changes, stage and commit with message 'factory: tune agents based on performance review ($DATE)'
 
-Be conservative — only change agent scripts/definitions when there's clear evidence of a problem." >> "$LOG_FILE" 2>&1 || true
+Be conservative — only change agent scripts/definitions when there's clear evidence of a problem.") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Performance review session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE") || true
 

@@ -87,7 +87,8 @@ echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"
-cd "$TARGET_REPO" && "$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
+# Run Claude in a subshell to isolate process-group signals from the parent script
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
 
 Execute a stewardship session:
 1. Orient: Read all four mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md)
@@ -99,13 +100,14 @@ Execute a stewardship session:
 7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
-At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}" >> "$LOG_FILE" 2>&1 || true
+At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Milestone session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$TARGET_REPO" "milestone-work" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Data Expansion ---" >> "$LOG_FILE"
-cd "$TARGET_REPO" && "$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
 
 Run a research session:
 1. Orient: Read ROADMAP.md and CLAUDE.md
@@ -116,7 +118,8 @@ Run a research session:
 6. Rebuild affected caches if data was added
 7. Commit: If you made any changes, stage and commit with message 'research: ARM architecture updates ($DATE)'
 
-Output a brief summary of findings." >> "$LOG_FILE" 2>&1 || true
+Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
+echo "[$(date)] Research session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 
