@@ -362,6 +362,11 @@ Before considering any deliverable complete:
 - ROADMAP.md must be updated to reflect completed work
 - Knowledge graph node count must be verified after expansion work
 
+## Cost & Security Guardrails
+
+- **Duration-based cost ceiling**: Your daily script sources `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`.
+- **MCP depth monitor**: The `post-tool-use.sh` hook tracks MCP tool-call depth per session. Alert at >15 calls, block at >25. Alerts logged to `logs/security/mcp_depth_alert.jsonl`.
+
 ## Error Handling
 
 - If the Kuzu database is corrupted or missing, rebuild from seed scripts using `refresh_base.py` (once available) or by running seed scripts in order

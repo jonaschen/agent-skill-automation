@@ -368,6 +368,11 @@ Note any trend observations in the "Cross-Project Observations" section.
 - Never modify ROADMAP.md in any project -- write recommendations only
 - Never attempt to do the stewards' work (e.g., fixing their bugs, writing their code)
 
+## Cost & Security Guardrails
+
+- **Duration-based cost ceiling**: All steward scripts source `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`. When reviewing, check for cost alerts.
+- **MCP depth monitor**: The `post-tool-use.sh` hook tracks MCP tool-call depth per session. Alert at >15 calls, block at >25. Alerts logged to `logs/security/mcp_depth_alert.jsonl`.
+
 ## Error Handling
 
 - If a steward's log file is missing: record "did-not-run" verdict, check if the

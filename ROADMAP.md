@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-07: Phase 4 in progress. Cost ceiling rolled to all 6 steward scripts (defense-in-depth against runaway spending). ROADMAP updated: L11 (security layers cumulative), MCP cost amplification risk, Phase 5 auto-promotion task, A2A governance signal, Phase 7 dual-deployment note, deferred tracking tasks (mcp-sec-audit eval, security suite consolidation). Previous: P0 MCP depth monitor + cost ceiling pilot, routing regression fix (L10), MCP hash-pinning, assumption registry.**
+**Status as of 2026-04-07: Phase 4 in progress. Cost & security guardrails section added to all 5 steward/reviewer agent definitions (cost ceiling + MCP depth monitor awareness). Researcher agent updated with Adversa AI TOP 25 + MCP security tooling tracking. Previous: cost ceiling rolled to all 6 steward scripts, L11, MCP cost amplification risk, Phase 5 auto-promotion task, deferred tracking tasks.**
 
 ---
 

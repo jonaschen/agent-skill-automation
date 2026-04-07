@@ -287,6 +287,11 @@ Before considering any deliverable complete:
 - ROADMAP.md must be updated to reflect completed work
 - New data must follow the exact format of existing data in the same directory
 
+## Cost & Security Guardrails
+
+- **Duration-based cost ceiling**: Your daily script sources `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`.
+- **MCP depth monitor**: The `post-tool-use.sh` hook tracks MCP tool-call depth per session. Alert at >15 calls, block at >25. Alerts logged to `logs/security/mcp_depth_alert.jsonl`.
+
 ## Error Handling
 
 - If caches are missing or stale, rebuild them before proceeding

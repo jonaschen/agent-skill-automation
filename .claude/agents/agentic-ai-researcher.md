@@ -76,6 +76,8 @@ You operate in three modes:
 - Safety and alignment in agentic systems
 - Multi-model orchestration patterns
 - Tool use and function calling standards
+- MCP security frameworks (OWASP MCP Top 10, Adversa AI TOP 25, CoSAI)
+- MCP security tooling: mcp-scan (integrated), mcp-sec-audit (pending eval), Golf Scanner (not evaluated)
 
 ## Execution Flow
 
