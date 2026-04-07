@@ -1,10 +1,13 @@
 #!/bin/bash
-# agent_review.sh — Review dashboard for all three daily agents
+# agent_review.sh — Review dashboard for all daily agents
 #
 # Summarizes recent performance of:
-#   1. agentic-ai-researcher (2am daily)
-#   2. android-sw-steward (3am daily)
-#   3. arm-mrs-steward (4am daily)
+#   1. factory-steward (12pm/5pm/9pm daily)
+#   2. agentic-ai-researcher (2am daily)
+#   3. android-sw-steward (3am daily)
+#   4. arm-mrs-steward (4am daily)
+#   5. bsp-knowledge-steward (5am daily)
+#   6. project-reviewer (7am daily)
 #
 # Usage:
 #   ./scripts/agent_review.sh              # Last 7 days (default)
