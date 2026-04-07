@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-06: Phase 4 in progress. CRITICAL: T=0.658 "routing regression" was actually THREE eval infrastructure bugs (L10): subprocess PATH missing claude binary, 150s timeout too short for factory tool-use, trigger patterns didn't handle markdown bold. All three fixed. Smoke test confirms Test 2 PASS. Full eval (36 tests) running. MCP hash-pinning (P1) and assumption registry (P2) also shipped.**
+**Status as of 2026-04-07: Phase 4 in progress. Two P0 security hardening items shipped: MCP tool-call depth monitor in post-tool-use.sh (defends against 658x cost amplification attacks, alert@15/block@25 per session) and duration-based cost ceiling library (scripts/lib/cost_ceiling.sh, 5x rolling avg, integrated into factory steward as pilot). Previous: routing regression fix (L10), MCP hash-pinning, assumption registry all complete.**
 
 ---
 
@@ -206,6 +206,8 @@ SKILL.md files from natural language requirements.
 - [x] Create `eval/assumption_registry.md` — centralized model-assumption mapping for stress testing during model migration; cross-referenced from migration runbook Step 6 — P2 ✅ 2026-04-06
 - [x] Fix eval trigger detection patterns — factory output format evolved (markdown bold `**Tools granted**:`, creation phrases `write to .claude/agents/`) but detection didn't track (L10) — CRITICAL ✅ 2026-04-06
 - [x] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2 ✅ 2026-04-06
+- [x] Add MCP tool-call depth monitor to `post-tool-use.sh` — pattern-matches `mcp__*` tool names, per-session counter, alert at 15 calls, block at 25 calls, structured JSON alerts to `logs/security/mcp_depth_alert.jsonl`. Defends against 658x MCP cost amplification attacks (Adversa AI finding) — P0 ✅ 2026-04-07
+- [x] Implement duration-based cost ceiling (`scripts/lib/cost_ceiling.sh`) — 30-day rolling average × 5x multiplier, fallback 3600s for first run. Integrated into `daily_factory_steward.sh` as pilot; advisory post-run check with structured alerts to `logs/security/cost_alert.jsonl` — P0 ✅ 2026-04-07
 
 ### Acceptance Criteria
 | Metric | Target |
