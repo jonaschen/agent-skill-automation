@@ -44,7 +44,21 @@ START_TIME=$(date +%s)
 
 # Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null) || PRE_EVAL_COUNT="292"
+# Count tests by summing all *_TESTS list lengths (tests are list items, not def test_ functions)
+PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && python3 -c "
+import ast, sys
+with open('tools/eval_skill.py') as f:
+    tree = ast.parse(f.read())
+total = 0
+for node in ast.walk(tree):
+    if isinstance(node, ast.Assign):
+        for t in node.targets:
+            if isinstance(t, ast.Name) and t.id.endswith('_TESTS') and isinstance(node.value, ast.List):
+                total += len(node.value.elts)
+print(total)
+" 2>/dev/null) || PRE_EVAL_COUNT="0"
+PRE_EVAL_COUNT=$(echo "$PRE_EVAL_COUNT" | tr -d '[:space:]')
+PRE_EVAL_COUNT="${PRE_EVAL_COUNT:-0}"
 
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
 finalize() {
@@ -56,7 +70,20 @@ finalize() {
   local post_commit
   post_commit=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null) || post_commit="unknown"
   local post_eval_count
-  post_eval_count=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null) || post_eval_count="292"
+  post_eval_count=$(cd "$TARGET_REPO" && python3 -c "
+import ast, sys
+with open('tools/eval_skill.py') as f:
+    tree = ast.parse(f.read())
+total = 0
+for node in ast.walk(tree):
+    if isinstance(node, ast.Assign):
+        for t in node.targets:
+            if isinstance(t, ast.Name) and t.id.endswith('_TESTS') and isinstance(node.value, ast.List):
+                total += len(node.value.elts)
+print(total)
+" 2>/dev/null) || post_eval_count="0"
+  post_eval_count=$(echo "$post_eval_count" | tr -d '[:space:]')
+  post_eval_count="${post_eval_count:-0}"
   local files_changed
   files_changed=$(cd "$TARGET_REPO" && git diff --name-only "${PRE_COMMIT:-unknown}" HEAD 2>/dev/null | wc -l) || files_changed="0"
   local commits_made

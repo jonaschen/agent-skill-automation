@@ -66,7 +66,7 @@ finalize() {
   graph_nodes=$(timeout 15 python3 -c "
 import kuzu, os, sys
 db_path = os.path.join('$TARGET_REPO', 'knowledge-graph', 'kuzu_db')
-if not os.path.isdir(db_path):
+if not os.path.exists(db_path):
     sys.exit(1)
 db = kuzu.Database(db_path)
 conn = kuzu.Connection(db)

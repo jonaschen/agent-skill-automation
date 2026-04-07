@@ -24,6 +24,7 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 
 START_TIME=$(date +%s)
+PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
 finalize() {
@@ -36,15 +37,22 @@ finalize() {
   kb_files=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newermt "@${START_TIME}" 2>/dev/null | wc -l) || kb_files="0"
   local commit
   commit=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || commit="unknown"
+  local commits_made
+  commits_made=$(cd "$REPO_ROOT" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
+  local files_changed
+  files_changed=$(cd "$REPO_ROOT" && git diff --name-only "${PRE_COMMIT:-unknown}" HEAD 2>/dev/null | wc -l) || files_changed="0"
 
   cat > "$PERF_FILE" << PERF_EOF
 {
   "agent": "agentic-ai-researcher",
   "date": "$DATE",
   "duration_seconds": $duration,
+  "pre_commit": "${PRE_COMMIT:-unknown}",
+  "commit": "$commit",
+  "commits_made": $commits_made,
+  "files_changed": $files_changed,
   "kb_files_updated": $kb_files,
-  "exit_code": $exit_code,
-  "commit": "$commit"
+  "exit_code": $exit_code
 }
 PERF_EOF
 
@@ -53,7 +61,7 @@ PERF_EOF
 
   echo "" >> "$LOG_FILE" 2>/dev/null
   echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
-  echo "Duration: ${duration}s | KB files updated: $kb_files | Exit code: $exit_code" >> "$LOG_FILE" 2>/dev/null
+  echo "Duration: ${duration}s | KB files updated: $kb_files | Commits: $commits_made | Files changed: $files_changed | Exit code: $exit_code" >> "$LOG_FILE" 2>/dev/null
 
   find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null

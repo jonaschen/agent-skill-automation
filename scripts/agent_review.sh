@@ -136,7 +136,9 @@ print_agent_section() {
                 ;;
             researcher)
                 local KB_FILES=$(grep -oP '"kb_files_updated"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
-                echo "  Last KB updates: $KB_FILES files"
+                local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                echo "  Last KB updates: $KB_FILES files | Commits: $COMMITS | Files changed: $FILES"
                 ;;
             android-sw)
                 local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
