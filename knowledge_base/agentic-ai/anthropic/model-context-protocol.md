@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -21,6 +21,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- AWS IAM Context Keys for Managed MCP Servers: Agent vs Human Action Differentiation
+- **What**: AWS introduced two standardized IAM context keys for managed MCP servers: (1) `aws:ViaAWSMCPService` and (2) `aws:CalledViaAWSMCP`. These keys work consistently across all AWS-managed remote MCP servers, enabling defense-in-depth security by differentiating between AI agent-initiated calls and human-initiated actions. Practical applications: (a) Write IAM policies that explicitly deny dangerous operations (e.g., `ec2:TerminateInstances`) when the call comes through MCP, while allowing them for direct human access. (b) Detailed audit trails via CloudTrail distinguish agent actions from human actions. (c) Compliance requirements can be enforced differently for AI-initiated operations. The AWS MCP Server (Preview) provides access to 15,000+ AWS APIs, handling authentication through standard IAM controls. This is the first major cloud provider to ship production-grade agent/human action differentiation at the IAM policy level.
+- **Significance**: This is a foundational pattern for enterprise MCP deployment — the ability to write IAM policies that restrict AI agent actions differently from human actions addresses a core enterprise concern. It directly validates MCP's enterprise readiness trajectory from the 2026 roadmap. For our pipeline: if we deploy MCP servers on AWS, these context keys provide a built-in safety layer. The pattern could also inform our own permission model — distinguishing between automated agent actions and human-triggered actions.
+- **Source**: https://aws.amazon.com/blogs/security/understanding-iam-for-managed-aws-mcp-servers/, https://dev.to/aws-builders/how-to-secure-mcp-tools-on-aws-for-ai-agents-with-authentication-authorization-and-least-privilege-50ea
 
 ### 2026-04-07 -- MCP Blog: Tool Annotations Enhancement Proposals and Extensions Architecture
 

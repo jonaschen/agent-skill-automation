@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -23,6 +23,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.92 (April 4, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- CVE-2026-35020 Affects Claude Code CLI; v2.1.92 Still Current; No New Release
+- **What**: (1) **CVE-2026-35020** (published April 6, modified April 7): High-severity OS command injection vulnerability (CVSS 8.4/8.6) affects Claude Code CLI via the `TERMINAL` environment variable. Local attackers can execute arbitrary commands through shell metacharacter injection when `TERMINAL` is parsed with `shell=true`. Triggered during normal CLI execution and deep-link handler paths. Remediation: update to latest Claude Code version and sanitize `TERMINAL` env var. See agent-sdk.md for full details. (2) No new Claude Code release since v2.1.92 (April 4). Day 4 of stabilization. (3) The `/powerup` interactive lessons (v2.1.90) now cover 18 topics from beginner to advanced, making Claude Code more accessible to new users. (4) `Ctrl+B` (v2.1.92) enables pushing tasks to background with unique IDs — supports parallel task execution within a single session.
+- **Significance**: The CVE is the primary action item — update Claude Code CLI in all environments. The stabilization period (4 days without release after 30+ releases in March-April) suggests either a larger release is being prepared or the team is focused on Mythos/Glasswing launch support.
+- **Source**: https://cvefeed.io/vuln/detail/CVE-2026-35020, https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
 
 ### 2026-04-07 -- Stabilization Continues; Vertex AI Integration Webinar; v2.1.92 Still Current
 - **What**: No new Claude Code release since v2.1.92 (April 4). Day 3 of stabilization period. Anthropic hosted a "Ship Code Faster with Claude Code on Vertex AI" webinar on April 7, signaling deepening GCP integration alongside existing AWS Bedrock support (interactive setup wizard added in v2.1.92). Interactive startup improved ~30ms by parallelizing setup() with slash command and agent loading. REPL now renders immediately with MCP servers instead of blocking until all connect. The 30+ releases in the v2.1.x series (March-April) suggest the next version is being prepared.

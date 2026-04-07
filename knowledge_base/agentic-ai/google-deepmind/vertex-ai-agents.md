@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- Vertex AI Stabilization Holds; No New Releases Since Apr 3; Partner Model Eval Expanding
+- **What**: Vertex AI Agent Builder and Agent Engine remain in extended stabilization with no new releases since April 3 (RAG Engine Serverless Preview). Key observations: (1) **Vertex AI GenAI release notes** show no entries after April 3, 2026. The April entries were: RAG Engine Serverless (Apr 3), Veo 3.1 Lite (Apr 2), Gemini 2.5 retirement extension to Oct 16 (Apr 2). (2) **Agent Builder release notes** still show no entries after February 18 (Code Execution GA). (3) **Gemini Enterprise** (formerly Agentspace) continues connector expansion — Jira, Confluence, Salesforce, Docusign, GitHub, Google Chat, Notion, Linear all available. (4) **Partner model evaluation** is now GA — enterprises can evaluate Anthropic and Llama models within Google's evaluation service, reducing vendor lock-in perception. (5) **Gemini 3.1 Flash-Lite** confirmed in public preview as "most cost-efficient Gemini model" for high-volume traffic. (6) **Gemini 3.1 Flash Image** (`gemini-3.1-flash-image`) available in public preview on Vertex AI. (7) **Claude 3 Haiku deprecated** on Vertex AI as of Feb 23, shutdown Aug 23. (8) Team appears focused on Google I/O 2026 (May 19-20) preparations.
+- **Significance**: The 5-day release silence (Apr 3-8) across Vertex AI confirms the pre-I/O preparation pattern. The partner model evaluation GA is strategically important — it positions Vertex AI as a neutral evaluation platform, not just a Google-model platform. Gemini 3.1 Flash Image on Vertex AI expands multimodal generation capabilities for enterprise agents. The Claude 3 Haiku deprecation on Vertex signals Google pushing customers toward newer Anthropic models or Gemini alternatives. For our pipeline, Vertex AI Agent Engine remains the production deployment target for Google-ecosystem agents, with no blocking changes.
+- **Source**: https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes, https://docs.cloud.google.com/agent-builder/release-notes
 
 ### 2026-04-07 -- Vertex AI Continues Stabilization; No New Releases; Google I/O Focus
 - **What**: Vertex AI Agent Builder and Agent Engine remain in stabilization with no new releases since April 3 (RAG Engine Serverless Preview). Key confirmed state: (1) **Agent Builder release notes** show no entries after February 18, 2026 (Code Execution GA) — the April 3 RAG Engine Serverless entry appears only in the Vertex AI GenAI release notes, not the Agent Builder-specific notes. (2) **Vertex AI SDK Python** remains at v1.112.0 with the refactored agent_engines client-based design. (3) **Gemini Enterprise** (formerly Agentspace) continuing rapid connector expansion — Jira, Confluence, Salesforce, Docusign, GitHub, Google Chat, Notion, Linear connectors all added in Feb–Apr timeframe. (4) **Agent Designer sharing** is GA (Feb 23) with admin review support. (5) The team appears focused on **Google I/O 2026 (May 19-20)** preparations — expect major Agent Builder announcements there. (6) No pricing changes or new feature announcements detected.

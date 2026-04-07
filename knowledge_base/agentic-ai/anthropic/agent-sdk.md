@@ -1,8 +1,9 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
+- https://cvefeed.io/vuln/detail/CVE-2026-35020
 - https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
 - https://claude.com/blog/building-agents-with-the-claude-agent-sdk
 - https://github.com/anthropics/claude-agent-sdk-python
@@ -18,6 +19,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 — CVE-2026-35020: OS Command Injection via TERMINAL Environment Variable (CVSS 8.4 HIGH)
+- **What**: A high-severity OS command injection vulnerability (CVE-2026-35020) was published April 6, 2026 (last modified April 7) affecting both Claude Code CLI and Claude Agent SDK. The vulnerability allows local attackers to execute arbitrary commands by manipulating the `TERMINAL` environment variable, which is improperly parsed during command construction with `shell=true`. Attack vector: local. CWE-78 (Improper Neutralization of Special Elements used in an OS Command). The vulnerability can be triggered both during normal CLI execution and via deep-link handler paths, resulting in command execution with user-level privileges. Affected versions: not specifically documented in the advisory — both Claude Code CLI and Agent SDK should be updated to latest versions. Remediation: (1) Update Claude Code CLI, (2) Update Agent SDK, (3) Sanitize `TERMINAL` variable, (4) Avoid `shell=true` in command construction.
+- **Significance**: CVSS 8.4/8.6 is HIGH severity. While the attack vector is local (requires access to set environment variables), this is a serious concern for CI/CD environments, shared servers, and container deployments where environment variables may be influenced by upstream systems. For our pipeline: our daily agent scripts run in controlled environments, but we should verify that our cron scripts don't pass unsanitized TERMINAL values. Any production deployments using Agent SDK should be updated immediately.
+- **Source**: https://cvefeed.io/vuln/detail/CVE-2026-35020
 
 ### 2026-04-07 — Stabilization: Python v0.1.56, TypeScript v0.2.92 Remain Current
 - **What**: No new Agent SDK releases since Python v0.1.56 (April 4) and TypeScript v0.2.92 (April 4). Both SDKs are aligned with Claude Code v2.1.92. Key capabilities confirmed stable: (1) `get_context_usage()` for proactive context management, (2) `terminal_reason` for closed-loop retry logic, (3) `agentProgressSummaries` for orchestrator visibility, (4) MCP large result fix (500K chars), (5) `supportedAgents()` query method in TypeScript. Custom tools as in-process MCP servers (Python SDK) continues to be the recommended pattern for tool integration — eliminates need for separate server processes. The `pathToClaudeCodeExecutable` fix (bare command name support) in TypeScript SDK resolves a common deployment issue where the CLI is on PATH but not at an absolute path.

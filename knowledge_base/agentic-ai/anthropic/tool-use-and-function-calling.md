@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,11 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- No New Tool Use Developments; Stabilization Continues
+- **What**: No new tool use features or API changes since the February 17 GA graduation. Day 4 of broader platform stabilization. The complete tool use stack remains: Tool Search (dynamic discovery), Programmatic Tool Calling (code-orchestrated), Tool Use Examples (input_examples), web search/fetch (with dynamic filtering), code execution v2 (free with web tools), memory tool, fine-grained tool streaming — all GA, no beta headers required. Context editing remains the only beta feature in the tool use surface area.
+- **Significance**: Tool use is fully stabilized. No action items.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-07 -- All Advanced Tool Use Features Now GA; Complete Feature Catalog Confirmed
 - **What**: Comprehensive audit confirms all three advanced tool use features have graduated from beta to GA as of February 17, 2026 (Sonnet 4.6 launch): (1) **Tool Search Tool** — dynamic discovery, `defer_loading: true`, regex/BM25 search. 85% token reduction, Opus accuracy 49%→74%. No beta header required. (2) **Programmatic Tool Calling** — Claude orchestrates tools via Python code in sandboxed execution. `allowed_callers` on tools, `caller` field in requests. 37% token reduction. No beta header required. (3) **Tool Use Examples** — `input_examples` field in tool definitions. Accuracy 72%→90%. No beta header required. Additionally confirmed GA: web search tool, web fetch tool, memory tool, code execution tool (all Feb 17). Fine-grained tool streaming also GA (Feb 5). Context editing remains beta. Code execution is now **free when used with web search or web fetch**. Dynamic filtering (code execution pre-filters web results) shipped alongside. The API code execution sandbox is now v2 — Bash command execution and multi-language support, replacing Python-only v1.

@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- Computer Use: Microsoft 365 Integration Now Free-Tier; No New API Changes
+- **What**: Microsoft 365 integration has been opened to all Claude users, including free tier, allowing connection to Outlook, OneDrive, and SharePoint directly within Claude. This extends Computer Use's practical utility beyond screen control to structured data access. A fix was shipped for `switch_display` in the computer-use tool returning "not available in this session" on multi-monitor setups. No new Computer Use API changes otherwise. The research preview continues on Mac + Windows.
+- **Significance**: The M365 free-tier expansion is a distribution play — getting users comfortable with Claude interacting with their work files before Computer Use exits preview. The multi-monitor fix removes a practical blocker for power users with complex desktop setups.
+- **Source**: https://releasebot.io/updates/anthropic
 
 ### 2026-04-07 -- Computer Use Stabilized: Mac + Windows Live, No New API Changes
 - **What**: No new Computer Use announcements since the Windows expansion (April 3). The feature remains in research preview across both macOS and Windows for Pro/Max subscribers via Cowork/Claude Code. API-level Computer Use (via `computer_20250124` tool) remains stable at the February 2025 version with hold_key, scroll, triple_click, and wait commands. The Dispatch phone-to-desktop delegation feature is live on both platforms. Key operational constraints confirmed: (1) Anthropic cannot remotely disable Computer Use mid-operation — sessions must complete or be manually interrupted. (2) Prompt injection classifier runs automatically but has documented gaps for sophisticated multi-step attacks. (3) ZDR (Zero Data Retention) eligible — screenshots processed in real-time only. (4) Priority architecture unchanged: connectors → browser → screen control. The browser automation benchmark gap persists: ChatGPT agent mode at 87% vs Claude at 56% on isolated browser tasks, though Claude leads on WebArena (full autonomous web navigation).

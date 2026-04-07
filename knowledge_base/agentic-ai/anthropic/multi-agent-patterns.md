@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -18,6 +18,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- No New Multi-Agent Developments; Three-Agent Harness Adoption Spreading
+- **What**: No new Anthropic multi-agent announcements since the three-agent harness engineering blog (April 6). The Swarms framework (github.com/kyegomez/swarms) continues to adopt the pattern. The 2026 Agentic Coding Trends Report continues to generate industry coverage, with key reports from InfoQ, Bitcoin News, and Pathmode analyzing the orchestrator-worker shift. The report's eight trends include: (1) shifting engineering roles, (2) multi-agent coordination, (3) human-AI collaboration patterns, (4) scaling agentic coding beyond engineering teams, plus case studies from Rakuten, CRED, TELUS, and Zapier. The harness design pattern (planner/generator/evaluator with context resets and sprint contracts) is becoming a recognized industry standard. Anthropic's internal data shows typical harness workflows span 5-15 iterations per run, occasionally extending to four hours.
+- **Significance**: The three-agent harness is solidifying as the reference architecture for long-running autonomous development. No new patterns or features to track. Our pipeline's multi-agent topology (Phase 5) aligns well with this direction.
+- **Source**: https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/, https://resources.anthropic.com/2026-agentic-coding-trends-report
 
 ### 2026-04-07 -- claude-sneakpeek: Community Workaround for Early Swarm Access; "Harness Engineering" Named as Discipline
 - **What**: Two multi-agent ecosystem developments: (1) **claude-sneakpeek** project provides community-built early access to Claude Code's TeammateTool/swarm mode before official GA. Uses isolated configuration at `~/.claude-sneakpeek/claudesp/` to avoid affecting primary Claude Code installations. Offers native swarm mode and task delegation by bypassing the `I9()`/`qFB()` feature gates that keep TeammateTool disabled in public releases. (2) **"Harness engineering"** is being recognized as a distinct discipline within AI development. The Swarms framework (github.com/kyegomez/swarms) has adopted Anthropic's three-agent harness pattern, and InfoQ's coverage explicitly named it as a new practice area. Key principle from Anthropic: "Every component in a harness encodes an assumption about what the model can't do on its own, and those assumptions are worth stress testing" — as models improve, harness complexity should decrease, not increase. The simplification principle: start with the simplest viable harness, add components only when the model demonstrably cannot handle a task alone.

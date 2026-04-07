@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- Astra Quiet Integration Phase Day 3; No New Developments; I/O Countdown Begins
+- **What**: Project Astra remains in its quiet integration phase with no new announcements or capability reveals: (1) **No new Astra-specific features** — Astra capabilities (video understanding, screen sharing, memory) continue being absorbed into **Gemini Live**, globally deployed in 200+ countries. (2) **Core research prototype** remains in limited trusted tester access with a waitlist. No expansion announced. (3) **Android XR hardware timeline unchanged** — Samsung screen-free AI glasses expected to be unveiled at Google I/O 2026 (May 19-20). XREAL "Project Aura" and Warby Parker partnerships intact. Qualcomm silicon confirmed. (4) **Visual Interpreter** for blind/low-vision community (Aira partnership) remains in Trusted Tester program. (5) **Live API** continues as primary developer surface — `stream.video` and `stream.audio` for real-time input. No API changes. (6) **Industry context**: The broader industry focus on LAMs (Large Action Models) and CLI-native agents (OpenClaw, Claude Code) has shifted attention away from multimodal assistants temporarily, but Astra's hardware integration (glasses) remains a unique differentiator that CLI agents cannot replicate.
+- **Significance**: Three consecutive days of no Astra news strongly reinforces the pre-I/O preparation pattern. Google I/O (May 19-20) is now 41 days away — the window for pre-I/O leaks/announcements typically opens 2-3 weeks prior (late April/early May). The Mariner team reorganization (see project-mariner.md) and industry LAM shift suggest Astra's value proposition may be reframed at I/O — less as a standalone assistant and more as the multimodal perception layer for hardware (glasses, phones) that complements LAM-style execution agents.
+- **Source**: https://deepmind.google/models/project-astra/, https://deepmind.google/technologies/gemini/project-astra/
 
 ### 2026-04-07 -- Astra Quiet Integration Phase Continues; No New Announcements; I/O Focus
 - **What**: Project Astra remains in its "quiet integration" phase with no new feature announcements or capability reveals since the April 5-6 sweep: (1) **Astra capabilities** (video understanding, screen sharing, memory) continue being absorbed into **Gemini Live**, which is now globally deployed in 200+ countries via Google Search as "Gemini 3.1 Flash Live" — the fastest audio AI for real-time conversations. (2) **Core Astra research prototype** remains in limited trusted tester access with a waitlist; no expansion announced. (3) **Android XR hardware timeline unchanged** — Samsung screen-free AI glasses expected to be unveiled at Google I/O 2026 (May 19-20), with XREAL "Project Aura" and Warby Parker partnerships intact. Qualcomm silicon confirmed as processor. (4) **Visual Interpreter** for blind/low-vision community (Aira partnership) remains in Trusted Tester program. (5) **Live API** continues as the primary developer-facing surface for building Astra-like capabilities — supports `stream.video` and `stream.audio` for real-time input. No API changes detected.

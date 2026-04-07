@@ -1,8 +1,12 @@
 # Model Releases
 
-**Last updated**: 2026-04-07
+**Last updated**: 2026-04-08
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
+- https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
+- https://wavespeed.ai/blog/posts/claude-mythos-api-pricing/
+- https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/
+- https://edition.cnn.com/2026/04/03/tech/anthropic-mythos-ai-cybersecurity
 - https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-6
 - https://en.wikipedia.org/wiki/Claude_(language_model)
 - https://www.anthropic.com/news/claude-opus-4-5
@@ -18,6 +22,16 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- Claude Mythos Preview Announced as "Project Glasswing" (Gated Defensive Cybersecurity Preview)
+- **What**: On April 7, 2026, Anthropic's platform release notes announced that **Claude Mythos Preview** is available as a gated research preview for defensive cybersecurity work under the name **"Project Glasswing"** (https://anthropic.com/glasswing). Access is invitation-only. This is the first official acknowledgment of Mythos since the March 26 CMS data leak that exposed ~3,000 internal documents including a draft blog post describing Mythos as a "step change" in AI capabilities. Key details: (1) **Capabilities**: Mythos reportedly achieves dramatically higher scores than Opus 4.6 on software coding, academic reasoning, and cybersecurity benchmarks. Anthropic describes it as "the most capable model we've ever developed" with "meaningful advances in reasoning, coding, and cybersecurity." (2) **Pricing tier**: The model sits in the "Capybara" tier, positioned above Opus — Anthropic states it is "very expensive to serve" with no public pricing announced. (3) **Rollout strategy**: Initial access limited to "a small group of early access customers selected by Anthropic" with focus on enterprise security teams. No public waitlist. Broader rollout expected later in 2026, contingent on safety evaluations. (4) **Cybersecurity dual-use**: Anthropic is privately warning top government officials that Mythos "makes large-scale cyberattacks much more likely in 2026" due to agents that can "work on their own with wild sophistication and precision to penetrate corporate, government and municipal systems." The defensive framing of Project Glasswing (seeding security teams first) is Anthropic's response to this dual-use risk. (5) **No confirmed model ID, context window, or API endpoint** as of this date.
+- **Significance**: This is Anthropic's most significant model announcement since Opus 4.6 (February 5). The "Capybara" pricing tier above Opus signals a new premium segment. The defensive-cybersecurity-first rollout strategy is unprecedented — no major AI lab has gated a model's general release behind security team evaluation before. For our pipeline: Mythos' cybersecurity capabilities could eventually power a security-focused agent skill. The gated access means no immediate action needed, but we should monitor for API availability. The Capybara tier may also indicate Anthropic's pricing strategy for future frontier models.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview (April 7 entry), https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/, https://edition.cnn.com/2026/04/03/tech/anthropic-mythos-ai-cybersecurity, https://wavespeed.ai/blog/posts/claude-mythos-api-pricing/
+
+### 2026-04-08 -- Haiku 3 Retirement Imminent (April 19); 1M Context Retiring for Sonnet 4.5/4 (April 30)
+- **What**: Two upcoming deprecation deadlines confirmed: (1) **Claude Haiku 3** (`claude-3-haiku-20240307`) retires April 19, 2026 — all requests will return errors after that date. Migration target: Claude Haiku 4.5. (2) **1M context window beta** for Claude Sonnet 4.5 and Claude Sonnet 4 ends April 30, 2026 — the `context-1m-2025-08-07` beta header will have no effect after that date. Requests exceeding 200k tokens will return errors. Migration target: Claude Sonnet 4.6 or Opus 4.6, which support 1M context at standard pricing with no beta header. These were previously announced but are now within their execution window.
+- **Significance**: Imminent action deadlines. Any systems still using Haiku 3 have 11 days to migrate. Any systems using 1M context on Sonnet 4.5/4 have 22 days to migrate to Sonnet 4.6+. For our pipeline: verify none of our agent configurations reference Haiku 3 or depend on 1M context with older Sonnet models.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-07 -- US Government Blacklists Anthropic; UK Courts Expansion; Geopolitical Context for Model Access
 

@@ -1,7 +1,7 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-07
-**Sources**:
+**Last updated**: 2026-04-08
+**Sources (latest first)**:
 - https://developers.googleblog.com/new-gemini-api-updates-for-gemini-3/
 - https://ai.google.dev/gemini-api/docs/function-calling
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -17,12 +17,20 @@
 - https://geminicli.com/docs/cli/skills/
 - https://geminicli.com/docs/core/subagents/
 - https://findskill.ai/blog/gemini-api-pricing-guide/
+- https://searchengineland.com/google-agent-user-agent-472674
+- https://www.searchenginejournal.com/why-new-google-agent-may-be-a-pivot-related-to-openclaw-trend/570764/
+- https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Overview
 
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-08 -- Google-Agent Crawler Live; CodeMender Security Agent; Gemini Agent Product Crystallizes; Qwen 3.6 Plus as Competitive Threat
+- **What**: Five developments across the Gemini agent ecosystem: (1) **Google-Agent user-agent registered** (Mar 20, now rolling out) — Google added a new user-triggered fetcher called `Google-Agent` to its crawler documentation. The agent identifies HTTP requests made by AI agents hosted on Google infrastructure performing user-initiated tasks (browsing pages, evaluating content, submitting forms). User-agent string: `Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Google-Agent; ...)`. Distinguished from search crawlers by being user-initiated, not autonomous. Currently used by Project Mariner and expected to expand to other Google agent products. (2) **CodeMender AI security agent** (announced Oct 2025, now with 72 fixes) — Google DeepMind's autonomous code security agent uses **Gemini Deep Think models** to find and fix vulnerabilities. Combines reactive patching with proactive code rewriting. Uses debuggers, static/dynamic analysis, differential testing, fuzzing, and SMT solvers. Multi-agent system with special-purpose sub-agents. 72 security fixes submitted to open source projects (some with 4.5M+ lines), including `-fbounds-safety` annotations for libwebp that would have prevented CVE-2023-4863. All patches human-reviewed before submission. (3) **Gemini Agent product emerges** — Google confirmed Project Mariner's computer use capabilities are being "incorporated into the company's agent strategy moving forward," with a new product called **Gemini Agent** leveraging Gemini 3's advanced reasoning. Google spokesperson confirmed the pivot. (4) **Qwen 3.6 Plus** (released ~Mar 30) emerges as a competitive threat — Alibaba's agentic coding model features 1M token context, matches Claude Opus 4.5 on SWE-bench and Terminal-Bench 2.0, 3x faster than Claude Opus 4.6 in some tests, with visual coding from screenshots/wireframes. Free preview on OpenRouter. (5) **Gemini CLI** stable remains v0.36.0 (Apr 1); preview remains v0.37.0-preview.1 (Apr 2). No new Gemini API changelog entries. Continuing pre-Google I/O stabilization.
+- **Significance**: The Google-Agent crawler registration is architecturally significant — it formalizes the concept of "AI agent traffic" as distinct from search crawlers, creating a new web standard for agent identification. Website owners now need to decide how to handle agent-initiated requests (forms, actions). CodeMender validates the "agent for security" use case at production scale — 72 upstream fixes demonstrates real-world impact. The Gemini Agent product consolidation (absorbing Mariner capabilities) signals Google's strategy shift from standalone browser agents to integrated agent capabilities across products. Qwen 3.6 Plus is the most serious competitive threat to Gemini's agentic coding position — matching Claude Opus on SWE-bench with free access is disruptive.
+- **Source**: https://searchengineland.com/google-agent-user-agent-472674, https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/, https://www.searchenginejournal.com/why-new-google-agent-may-be-a-pivot-related-to-openclaw-trend/570764/, https://paddo.dev/blog/ai-roundup-april-2026/
 
 ### 2026-04-07 -- Gemini CLI Nightly Adds Background Memory Service; Gemini 3.1 Flash Live Confirmed Global in 200+ Countries; DeepMind–Agile Robots Partnership
 - **What**: Three developments confirmed: (1) **Gemini CLI nightly build v0.36.0-nightly.20260406** (Apr 6) introduces three significant features: **background memory service for skill extraction** (agents can now passively learn and extract skills from usage patterns), **auto-configure memory** (automatic memory configuration without manual setup), and **Terminal Serializer Optimization** (improved performance for terminal output processing). This is a development build, not a stable release. (2) **Gemini 3.1 Flash Live confirmed globally deployed** in 200+ countries via Google Search — positioned as the "fastest audio AI yet" for real-time conversations and hands-free troubleshooting. Google Maps "Ask Maps" feature integrated with natural language queries. (3) **Google DeepMind + Agile Robots partnership** announced April 6 — research collaboration leveraging **Gemini Robotics foundation models** combined with Agile Robots' industrial platform to enable adaptable, reasoning robots for manufacturing. Involves joint training, deployment, and testing using operational data from real-world robotic systems. (4) **Gemini API changelog** still shows no new entries after April 2. ADK Python still at v1.28.1 (Apr 2). Gemini CLI stable remains v0.36.0 (Apr 1). Continuing stabilization phase.
