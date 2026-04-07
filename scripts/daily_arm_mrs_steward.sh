@@ -40,7 +40,7 @@ START_TIME=$(date +%s)
 
 # Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
-PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null || echo "292")
+PRE_EVAL_COUNT=$(cd "$TARGET_REPO" && grep -c "def test_" tools/eval_skill.py 2>/dev/null) || PRE_EVAL_COUNT="292"
 
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
 finalize() {

@@ -29,7 +29,7 @@ finalize() {
   local end_time=$(date +%s)
   local duration=$((end_time - ${START_TIME:-$end_time}))
   local kb_files
-  kb_files=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newer "$LOG_FILE" 2>/dev/null | wc -l) || kb_files="0"
+  kb_files=$(find "$REPO_ROOT/knowledge_base" -name "*.md" -newermt "@${START_TIME}" 2>/dev/null | wc -l) || kb_files="0"
   local commit
   commit=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null) || commit="unknown"
 

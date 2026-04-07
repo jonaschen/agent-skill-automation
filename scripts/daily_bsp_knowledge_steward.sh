@@ -58,14 +58,23 @@ finalize() {
   local commits_made
   commits_made=$(cd "$TARGET_REPO" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
   local graph_nodes
-  graph_nodes=$(timeout 10 python3 -c "
-import kuzu, os
-os.chdir('$TARGET_REPO')
-db = kuzu.Database(os.path.join('knowledge-graph', 'kuzu_db'))
+  # Try kuzu query first; fall back to counting seed script declarations
+  graph_nodes=$(timeout 15 python3 -c "
+import kuzu, os, sys
+db_path = os.path.join('$TARGET_REPO', 'knowledge-graph', 'kuzu_db')
+if not os.path.isdir(db_path):
+    sys.exit(1)
+db = kuzu.Database(db_path)
 conn = kuzu.Connection(db)
 r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
-while r.has_next(): print(r.get_next()[0])
+if r.has_next():
+    print(r.get_next()[0])
+else:
+    sys.exit(1)
 " 2>/dev/null) || graph_nodes="0"
+  # Sanitize: ensure it's a plain integer (no trailing whitespace/newlines)
+  graph_nodes=$(echo "$graph_nodes" | tr -d '[:space:]')
+  graph_nodes="${graph_nodes:-0}"
 
   cat > "$PERF_FILE" << PERF_EOF
 {
