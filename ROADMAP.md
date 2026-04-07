@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-07: Phase 4 in progress. Two P0 security hardening items shipped: MCP tool-call depth monitor in post-tool-use.sh (defends against 658x cost amplification attacks, alert@15/block@25 per session) and duration-based cost ceiling library (scripts/lib/cost_ceiling.sh, 5x rolling avg, integrated into factory steward as pilot). Previous: routing regression fix (L10), MCP hash-pinning, assumption registry all complete.**
+**Status as of 2026-04-07: Phase 4 in progress. Cost ceiling rolled to all 6 steward scripts (defense-in-depth against runaway spending). ROADMAP updated: L11 (security layers cumulative), MCP cost amplification risk, Phase 5 auto-promotion task, A2A governance signal, Phase 7 dual-deployment note, deferred tracking tasks (mcp-sec-audit eval, security suite consolidation). Previous: P0 MCP depth monitor + cost ceiling pilot, routing regression fix (L10), MCP hash-pinning, assumption registry.**
 
 ---
 
@@ -208,6 +208,9 @@ SKILL.md files from natural language requirements.
 - [x] Refactor `scripts/closed_loop.sh` into state machine: conditional skip (>=0.95), SECURITY_SCAN node, OPTIMIZE->VALIDATE retry counter (max 3), explicit REPORT_FAILURE state — P2 ✅ 2026-04-06
 - [x] Add MCP tool-call depth monitor to `post-tool-use.sh` — pattern-matches `mcp__*` tool names, per-session counter, alert at 15 calls, block at 25 calls, structured JSON alerts to `logs/security/mcp_depth_alert.jsonl`. Defends against 658x MCP cost amplification attacks (Adversa AI finding) — P0 ✅ 2026-04-07
 - [x] Implement duration-based cost ceiling (`scripts/lib/cost_ceiling.sh`) — 30-day rolling average × 5x multiplier, fallback 3600s for first run. Integrated into `daily_factory_steward.sh` as pilot; advisory post-run check with structured alerts to `logs/security/cost_alert.jsonl` — P0 ✅ 2026-04-07
+- [x] Roll cost ceiling to remaining 5 steward scripts (`daily_research_sweep.sh`, `daily_android_sw_steward.sh`, `daily_arm_mrs_steward.sh`, `daily_bsp_knowledge_steward.sh`, `daily_project_reviewer.sh`) — P1 ✅ 2026-04-07
+- [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
+- [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
 ### Acceptance Criteria
 | Metric | Target |
@@ -238,13 +241,16 @@ SKILL.md files from natural language requirements.
 - [ ] Test Track B conservative default for medium-coupling band (0.35–0.65)
 
 #### 5.3.0 A2A protocol evaluation (pre-implementation gate)
-- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards) vs. custom 6-message-type bus for scrum-team-orchestrator. Decision required before Phase 5 implementation begins. — P2
+- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**) vs. custom 6-message-type bus for scrum-team-orchestrator. **Critical test: can A2A message format express all 6 message types natively?** Decision required before Phase 5 implementation begins. Time-boxed 2-4 hour research task. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
 - [ ] Implement A2A message bus with six valid message types only (TASK_ASSIGNMENT, PARTIAL_OUTPUT, REVIEW_REQUEST, REVIEW_RESULT, ESCALATION, WATCHDOG_HALT)
 - [ ] Enforce message schema validation — untyped agent-to-agent chat is prohibited
 - [ ] Test Track A: parallel frontend/backend Skill generation, confirm zero message loss
+
+#### 5.3.1 Skill lifecycle automation (planning)
+- [ ] **Auto-promotion design**: Extend `promote_cases.py` with `--auto-detect` mode — count skill-name + trigger-verb pairs, surface promotion candidates when threshold exceeded (>5 same-verb triggers). Requires >100 logged invocations. Minimal viable version of Gemini CLI's passive skill extraction — P2 (2026-04-07 analysis)
 
 #### 5.4 `watchdog-circuit-breaker` agent
 - [ ] Write `.claude/agents/watchdog-circuit-breaker.md` (Haiku model — no reasoning, monitoring only)
@@ -320,6 +326,8 @@ SKILL.md files from natural language requirements.
 **Goal:** Turn the agent platform into a commercial Agent-as-a-Service product: Outcome-Based Pricing, multi-tenancy, cross-regional HA, and regulatory compliance.
 
 **Prerequisite:** Phases 1–6 complete; production traffic available for billing instrumentation.
+
+**Design consideration (2026-04-07)**: Two deployment models are emerging — CLI-native (SKILL.md files for Claude Code/Gemini CLI) and cloud-native (persistent services via Conway/A2A/Gemini Enterprise). Phase 7 AaaS should support both: local SKILL.md for developer consumption + distributable packages for cloud platforms. Conway's `.cnw.zip` and A2A agent registration are candidate bridge mechanisms.
 
 ### Tasks
 
@@ -462,6 +470,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Supply chain compromise of Python/npm dependencies used by eval tools or Claude Code | 4 | pip freeze + require-hashes (blocking); npm audit (warning); cmd_chain_monitor for runtime | New — mitigation implemented 2026-04-05 |
 | Capybara/Mythos model release invalidates eval baselines and routing behavior | 3-4 | Model migration runbook (eval/model_migration_runbook.md); nightly researcher monitors for release | UPGRADED P2->P1 — runbook created 2026-04-05 |
 | Phase 7 billing assumes Stripe-only; 4 competing agent payment protocols may require multi-rail support | 7 | Task 7.7 evaluation; defer implementation until protocol war settles | New — monitoring |
+| MCP cost amplification via prolonged tool-calling chains (658x demonstrated) | 4 | MCP tool-call depth monitor in post-tool-use.sh (alert >15, block >25); per-run duration ceiling (5x 30-day avg); future: CI/CD gate MCP pattern rejection | New — P0, mitigated 2026-04-07 |
 
 ---
 
@@ -479,6 +488,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | L8 | MCP config validation must cover content, not just structure | mcp_config_validator.sh (2026-04-04) validated JSON structure and auth patterns but missed tool description injection — the actual attack vector demonstrated by Invariant Labs |
 | L9 | Every pipeline component encodes a model limitation assumption — stress-test and simplify as models improve | Anthropic harness engineering blog (2026-04-06). Validator assumes factory can't self-evaluate; optimizer assumes descriptions need iteration; router assumes models can't auto-identify roles. Track assumptions in eval/assumption_registry.md. |
 | L10 | Eval infrastructure has THREE failure modes that masquerade as routing regressions | The T=0.658 "regression" had three independent root causes: (1) subprocess couldn't find `claude` binary (not in PATH for subprocesses — `~/.local/bin` not inherited); (2) TIMEOUT=150s too short for factory tool-use calls (factory takes 2-3 min); (3) trigger detection patterns didn't handle markdown bold (`**Tools granted**:`) in output. All three caused FAIL:not-triggered on positives while negatives correctly passed. Always run a manual `claude -p` test to verify a routing regression before touching descriptions. |
+| L11 | Security layers respond to attacker capabilities, not model capabilities — they are cumulative, not simplifiable | L9 states "stress-test and simplify as models improve." But security components encode attacker assumptions, not model assumptions. Attackers don't get weaker when models improve. Consolidate security layers for maintainability, but don't remove them. (2026-04-07 analysis §2.3) |
 
 ---
 
@@ -492,5 +502,6 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 6. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
 7. **Phase 4**: Changeling latency validation (≤ 2s role switching)
 8. **Phase 5 prep**: Build 50-task TCI benchmark dataset
-9. **P2**: Implement optimizer state persistence — extend `experiment_log.json` with `best_so_far` + resume logic
+9. ~~P2: Implement optimizer state persistence~~ ✅ Completed 2026-04-06
 10. **P2**: Implement sprint contract manifest — factory outputs `manifest.json` for validator
+11. **P1**: Roll cost ceiling to remaining 5 steward scripts

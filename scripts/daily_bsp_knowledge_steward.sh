@@ -18,7 +18,11 @@ PERF_FILE="$PERF_DIR/bsp-knowledge-${DATE}.json"
 CLAUDE="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
 TARGET_REPO="/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets"
 
-mkdir -p "$LOG_DIR" "$PERF_DIR"
+SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
+mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
+
+# Source shared cost ceiling library
+source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 
 # Post-session commit recovery: if Claude wrote files but failed to commit, catch them
 recover_uncommitted() {
@@ -91,6 +95,9 @@ else:
   "exit_code": $exit_code
 }
 PERF_EOF
+
+  # Check duration against cost ceiling (advisory — logs warning if exceeded)
+  check_cost_ceiling "bsp-knowledge" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
   echo "" >> "$LOG_FILE" 2>/dev/null
   echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
