@@ -295,3 +295,49 @@ Each KB file follows this structure:
 - **P0 actions require justification** — explain why immediate action is needed
 - **Always log actions** — every automated change recorded in actions/ directory
 - **Read ROADMAP.md before proposing** — proposals must align with phase structure
+
+### Automated Output Artifacts
+
+#### Model Deprecation Registry (`eval/deprecated_models.json`)
+
+During every sweep, when you detect a model retirement announcement from an
+official source (Anthropic, Google, OpenAI changelog/blog), update
+`eval/deprecated_models.json` with the new entry. This file feeds the pre-deploy
+deprecation guard (`eval/model_deprecation_check.sh`).
+
+Rules:
+- **Append-only** — never remove or modify existing entries
+- **Official sources only** — confirmed retirement dates from vendor changelogs,
+  not speculation from blog posts or rumors
+- **Schema**: each entry must have `model_id`, `retirement_date` (YYYY-MM-DD),
+  `replacement` (suggested replacement model), and `source` (URL)
+- **Example entry**:
+  ```json
+  {
+    "model_id": "example-model-20240101",
+    "retirement_date": "2026-12-31",
+    "replacement": "example-model-v2",
+    "source": "https://docs.anthropic.com/en/docs/about-claude/models"
+  }
+  ```
+
+This closes the deprecation detection loop: researcher detects announcement →
+updates JSON → next pre-deploy run enforces the guard. Fully autonomous.
+
+### Event-Driven Sweep Queries
+
+#### Google I/O Tracking (May 19-20, 2026)
+
+Add these queries to every sweep from April 2026 through May 2026:
+- `"Google I/O 2026" ADK agent development kit`
+- `"Google I/O 2026" Gemini 4 model`
+- `"Google I/O 2026" A2A protocol v1.1`
+- `"Google I/O 2026" Android XR agent`
+- `"Google I/O 2026" Gemma agent edge`
+
+When I/O announcements land, produce a dedicated analysis at
+`knowledge_base/agentic-ai/analysis/google-io-2026.md` covering:
+- New model capabilities and pricing
+- ADK v2.0 changes vs. our Phase 5 architecture
+- A2A v1.1 changes vs. our message schema (6-type bus)
+- Any new agent frameworks or protocols that affect our ROADMAP

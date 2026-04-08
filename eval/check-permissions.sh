@@ -89,8 +89,14 @@ LOWER_NAME=$(echo "$NAME" | tr '[:upper:]' '[:lower:]')
 LOWER_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]')
 
 # Check if review/validation agent (read-only assessment role)
+# Agents with Task tool are orchestration-class, not pure reviewers — they delegate
+# and produce outputs (e.g., project-reviewer writes steering notes via Task delegation).
 if echo "$LOWER_NAME" | grep -qE '(validat|review|audit|quality|check|inspect|analyz)'; then
-  IS_REVIEW_AGENT=1
+  if echo "$TOOLS" | grep -qiE '^Task$'; then
+    IS_REVIEW_AGENT=0  # Has Task → orchestration agent, not read-only reviewer
+  else
+    IS_REVIEW_AGENT=1
+  fi
 fi
 
 # Check if execution agent (directly modifies code/files/state, NOT orchestration)

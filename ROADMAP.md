@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-08: Phase 4 in progress. CVE-2026-35020 mitigated (P0): `unset TERMINAL` in all 6 daily scripts. Initiator-type policy enforcement: `CLAUDE_INITIATOR_TYPE=cron-automated` in all daily scripts + destructive git op blocking in `post-tool-use.sh`. Model deprecation guard: `eval/model_deprecation_check.sh` + `eval/deprecated_models.json` (append-only, researcher-maintained). Phase 4 hard deadline: May 9, 2026 (before Google I/O). Previous: cost & security guardrails added to all steward agent definitions.**
+**Status as of 2026-04-08: Phase 4 in progress. Security suite aggregator: `eval/security_suite.sh` (v1.0) runs all security checks with unified JSON report, wired into `pre-deploy.sh` + `closed_loop.sh`. Researcher agent extended with automated `deprecated_models.json` maintenance + Google I/O tracking queries. Fixed `check-permissions.sh` false positive on orchestration agents (project-reviewer). Previous: CVE-2026-35020 mitigated, initiator-type enforcement, model deprecation guard. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
 
 ---
 
@@ -214,7 +214,8 @@ SKILL.md files from natural language requirements.
 - [x] **CVE-2026-35020 mitigation**: `unset TERMINAL` preamble in all 6 daily scripts — defense-in-depth against CVSS 8.4 OS command injection via TERMINAL env var — P0 ✅ 2026-04-08
 - [x] **Initiator-type env var + enforcement**: Export `CLAUDE_INITIATOR_TYPE=cron-automated` in all daily scripts; `post-tool-use.sh` blocks destructive git ops (`push --force`, `reset --hard`, `branch -D`, `checkout -- .`, `clean -f`) in cron context. Structured alerts to `logs/security/initiator_policy.jsonl`. AWS IAM context key pattern — P1 ✅ 2026-04-08
 - [x] **Model deprecation guard**: `eval/model_deprecation_check.sh` + `eval/deprecated_models.json` (append-only, researcher-maintained). Greps agent configs for deprecated model IDs; fails pre-deploy gate when referenced model retires within 30 days — P1 ✅ 2026-04-08
-- [ ] **Security suite aggregator**: Implement `eval/security_suite.sh` — runs all security checks in sequence, outputs versioned JSON report. Wire into `pre-deploy.sh` as single entry point — P1 (2026-04-08 discussion)
+- [x] **Security suite aggregator**: `eval/security_suite.sh` — runs permissions, MCP config, model deprecation, and dependency audit in sequence; versioned JSON report (v1.0). Wired into `pre-deploy.sh` and `closed_loop.sh` SECURITY_SCAN node. Also fixed `check-permissions.sh` false positive on orchestration agents with Task tool (project-reviewer) — P1 ✅ 2026-04-08
+- [x] **Researcher agent: automated deprecation + I/O tracking**: Extended `agentic-ai-researcher.md` with (1) automated `eval/deprecated_models.json` maintenance (append-only, official sources only, feeds pre-deploy guard), (2) Google I/O-specific sweep queries (ADK v2.0, Gemini 4, A2A v1.1 tracking through May 2026) — P2 ✅ 2026-04-08
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 

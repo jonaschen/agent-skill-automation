@@ -85,9 +85,25 @@ get_trigger_score() {
 
 run_security_scan() {
   local skill_name="$1" eval_target="$2"
+  local security_suite="$REPO_ROOT/eval/security_suite.sh"
+
+  # Use unified security suite if available; fall back to individual checks
+  if [ -f "$security_suite" ]; then
+    echo "  [SECURITY] Running unified security suite..."
+    local mcp_config="$REPO_ROOT/.claude/skills/$skill_name/.mcp.json"
+    local mcp_arg=""
+    [ -f "$mcp_config" ] && mcp_arg="$mcp_config"
+    if bash "$security_suite" "$eval_target" "$mcp_arg" >/dev/null; then
+      return 0
+    else
+      echo "  [SECURITY] FAILED — security suite reported errors"
+      return 1
+    fi
+  fi
+
+  # Fallback: individual checks (pre-suite compatibility)
   local scan_passed=true
 
-  # Permission check
   if [ -f "$PERMISSIONS_CHECK" ]; then
     echo "  [SECURITY] Running permission check..."
     if ! bash "$PERMISSIONS_CHECK" "$eval_target" 2>/dev/null; then
@@ -96,7 +112,6 @@ run_security_scan() {
     fi
   fi
 
-  # MCP config validation (if applicable)
   local mcp_config="$REPO_ROOT/.claude/skills/$skill_name/.mcp.json"
   if [ -f "$mcp_config" ] && [ -f "$MCP_VALIDATOR" ]; then
     echo "  [SECURITY] Running MCP config validation..."

@@ -1,7 +1,7 @@
 #!/bin/bash
 # .claude/hooks/pre-deploy.sh
 #
-# Enforce Bayesian quality thresholds before allowing a Skill deployment.
+# Enforce security checks and Bayesian quality thresholds before allowing a Skill deployment.
 # Triggered by agentic-cicd-gate or manual deployment flow.
 
 set -euo pipefail
@@ -18,8 +18,37 @@ fi
 
 echo "🚀 Pre-deploy check: $SKILL_PATH"
 
+# --- Security Suite ---
+# Run all security checks via the unified aggregator.
+SECURITY_SUITE="$REPO_ROOT/eval/security_suite.sh"
+if [ -f "$SECURITY_SUITE" ]; then
+  echo "Running security suite..."
+  set +e
+  bash "$SECURITY_SUITE" "$SKILL_PATH" >/dev/null
+  SECURITY_EXIT=$?
+  set -e
+
+  if [ "$SECURITY_EXIT" -ne 0 ]; then
+    echo "❌ Security suite FAILED. Fix security issues before deployment."
+    exit 1
+  fi
+  echo "✅ Security suite passed."
+fi
+
+# --- Model Deprecation Guard ---
+DEPRECATION_CHECK="$REPO_ROOT/eval/model_deprecation_check.sh"
+if [ -f "$DEPRECATION_CHECK" ]; then
+  set +e
+  bash "$DEPRECATION_CHECK"
+  DEP_EXIT=$?
+  set -e
+  if [ "$DEP_EXIT" -ne 0 ]; then
+    echo "❌ Deprecated model references detected. Update before deployment."
+    exit 1
+  fi
+fi
+
 # Call the Bayesian async runner.
-# We skip permissions for the eval run as it's an automated check.
 set +e
 EVAL_OUTPUT=$($EVAL_RUNNER "$SKILL_PATH")
 EXIT_CODE=$?
@@ -47,7 +76,6 @@ echo "  Lower 95% CI:   $CI_LOWER (Target: ≥ 0.80)"
 echo "----------------------------------------------------"
 
 # Gate condition: posterior_mean >= 0.90 AND ci_lower >= 0.80
-# Use bc for float comparison
 PASSED_GATE=$(echo "$MEAN >= 0.90 && $CI_LOWER >= 0.80" | bc)
 
 if [ "$PASSED_GATE" -eq 1 ]; then
