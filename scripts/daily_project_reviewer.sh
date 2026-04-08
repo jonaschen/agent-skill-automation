@@ -67,11 +67,12 @@ finalize() {
 
   local review_file="$REPO_ROOT/knowledge_base/steward-reviews/${DATE}.md"
   local on_track
-  on_track=$(grep -ci "on-track" "$review_file" 2>/dev/null) || on_track="0"
+  # Count unique steward verdicts (in summary table or ### Verdict lines), not all string occurrences
+  on_track=$(grep -E "^\| .* \| \*\*on-track\*\*|^### Verdict: on-track" "$review_file" 2>/dev/null | wc -l) || on_track="0"
   local needs_correction
-  needs_correction=$(grep -ci "needs-correction" "$review_file" 2>/dev/null) || needs_correction="0"
+  needs_correction=$(grep -E "^\| .* \| \*\*needs-correction\*\*|^### Verdict: needs-correction" "$review_file" 2>/dev/null | wc -l) || needs_correction="0"
   local escalations
-  escalations=$(grep -c "ESCALATE" "$review_file" 2>/dev/null) || escalations="0"
+  escalations=$(grep -c "\[ESCALATE\]" "$review_file" 2>/dev/null) || escalations="0"
 
   cat > "$PERF_FILE" << PERF_EOF
 {
@@ -128,6 +129,75 @@ Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git
 echo "[$(date)] Review session complete" >> "$LOG_FILE"
 
 (recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE") || true
+
+# Post-review: propagate steering notes from review file to target repos
+# The reviewer can't write to external repos from Claude sandbox, so we do it via bash
+REVIEW_FILE="$REPO_ROOT/knowledge_base/steward-reviews/${DATE}.md"
+if [ -f "$REVIEW_FILE" ]; then
+  propagate_steering() {
+    local steward_name="$1"
+    local target_repo="$2"
+    local review_file="$3"
+    local log_file="$4"
+
+    # Only propagate if steward needs correction
+    if ! grep -q "needs-correction" "$review_file" 2>/dev/null; then
+      return 0
+    fi
+
+    # Extract the steward's section with Required Actions
+    local section
+    section=$(awk "/^## ${steward_name}/,/^## [^${steward_name:0:1}]|^---/" "$review_file" 2>/dev/null) || return 0
+
+    # Check if this section has Required Actions or steering content
+    if ! echo "$section" | grep -qi "required actions\|steering note\|needs-correction" 2>/dev/null; then
+      return 0
+    fi
+
+    local steering_file="${target_repo}/.claude/steering-notes.md"
+    mkdir -p "$(dirname "$steering_file")"
+
+    # Create header if file doesn't exist
+    if [ ! -f "$steering_file" ]; then
+      cat > "$steering_file" << 'HEADER_EOF'
+# Steering Notes
+
+This file contains dated feedback from the project-reviewer agent.
+Steward agents should read this file at the start of each session and
+address any outstanding items.
+
+HEADER_EOF
+    fi
+
+    # Skip if today's note already appended
+    if grep -q "^## $DATE" "$steering_file" 2>/dev/null; then
+      return 0
+    fi
+
+    # Extract Required Actions block
+    local actions
+    actions=$(echo "$section" | awk '/\*\*Required Actions/,/^$|^\*\*Context/' | head -20) || actions=""
+    local verdict
+    verdict=$(echo "$section" | grep -o 'needs-correction\|on-track\|blocked' | head -1) || verdict="unknown"
+
+    if [ -n "$actions" ]; then
+      cat >> "$steering_file" << NOTES_EOF
+
+## $DATE — Project Reviewer Feedback
+
+**Verdict**: $verdict
+
+$actions
+
+NOTES_EOF
+      echo "[STEERING] Propagated steering notes to $steering_file" >> "$log_file"
+    fi
+  }
+
+  propagate_steering "ARM MRS" "/home/jonas/arm-mrs-2025-03-aarchmrs" "$REVIEW_FILE" "$LOG_FILE" || true
+  propagate_steering "BSP Knowledge" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "$REVIEW_FILE" "$LOG_FILE" || true
+  propagate_steering "Android-SW" "/home/jonas/gemini-home/Android-Software" "$REVIEW_FILE" "$LOG_FILE" || true
+fi
 
 # Performance JSON, log footer, and cleanup handled by finalize() trap
 exit 0

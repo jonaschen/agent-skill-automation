@@ -68,23 +68,30 @@ finalize() {
   local commits_made
   commits_made=$(cd "$TARGET_REPO" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
   local graph_nodes
-  # Try kuzu query on bsp_base.db (the actual graph); fall back to 0
+  # Try kuzu query on bsp_base.db (the actual graph); fall back to kuzu_db dir, then 0
   graph_nodes=$(timeout 15 python3 -c "
 import kuzu, os, sys
-# Seed scripts write to knowledge-graph/base/bsp_base.db, not kuzu_db
-db_path = os.path.join('$TARGET_REPO', 'knowledge-graph', 'base', 'bsp_base.db')
-if not os.path.exists(db_path):
-    sys.exit(1)
-db = kuzu.Database(db_path)
-conn = kuzu.Connection(db)
-r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
-if r.has_next():
-    print(r.get_next()[0])
-else:
-    sys.exit(1)
-" 2>/dev/null) || graph_nodes="0"
+base = '$TARGET_REPO'
+candidates = [
+    os.path.join(base, 'knowledge-graph', 'base', 'bsp_base.db'),
+    os.path.join(base, 'knowledge-graph', 'kuzu_db'),
+]
+for db_path in candidates:
+    if os.path.exists(db_path):
+        try:
+            db = kuzu.Database(db_path)
+            conn = kuzu.Connection(db)
+            r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
+            if r.has_next():
+                print(r.get_next()[0])
+                sys.exit(0)
+        except Exception as e:
+            print(f'kuzu error on {db_path}: {e}', file=sys.stderr)
+            continue
+print('0')
+" 2>>"$LOG_FILE") || graph_nodes="0"
   # Sanitize: ensure it's a plain integer (no trailing whitespace/newlines)
-  graph_nodes=$(echo "$graph_nodes" | tr -d '[:space:]')
+  graph_nodes=$(echo "$graph_nodes" | tail -1 | tr -dc '0-9')
   graph_nodes="${graph_nodes:-0}"
 
   cat > "$PERF_FILE" << PERF_EOF

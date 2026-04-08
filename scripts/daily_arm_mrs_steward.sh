@@ -62,8 +62,8 @@ for node in ast.walk(tree):
             if isinstance(t, ast.Name) and t.id.endswith('_TESTS') and isinstance(node.value, ast.List):
                 total += len(node.value.elts)
 print(total)
-" 2>/dev/null) || PRE_EVAL_COUNT="0"
-PRE_EVAL_COUNT=$(echo "$PRE_EVAL_COUNT" | tr -d '[:space:]')
+" 2>/dev/null | tail -1) || PRE_EVAL_COUNT="0"
+PRE_EVAL_COUNT=$(echo "$PRE_EVAL_COUNT" | tr -dc '0-9')
 PRE_EVAL_COUNT="${PRE_EVAL_COUNT:-0}"
 
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
@@ -87,8 +87,8 @@ for node in ast.walk(tree):
             if isinstance(t, ast.Name) and t.id.endswith('_TESTS') and isinstance(node.value, ast.List):
                 total += len(node.value.elts)
 print(total)
-" 2>/dev/null) || post_eval_count="0"
-  post_eval_count=$(echo "$post_eval_count" | tr -d '[:space:]')
+" 2>/dev/null | tail -1) || post_eval_count="0"
+  post_eval_count=$(echo "$post_eval_count" | tr -dc '0-9')
   post_eval_count="${post_eval_count:-0}"
   local files_changed
   files_changed=$(cd "$TARGET_REPO" && git diff --name-only "${PRE_COMMIT:-unknown}" HEAD 2>/dev/null | wc -l) || files_changed="0"
