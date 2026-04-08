@@ -91,9 +91,28 @@ for db_path in candidates:
 print('0')
 " 2>>"$LOG_FILE")
   local kuzu_exit=$?
-  if [ $kuzu_exit -ne 0 ]; then
-    echo "[WARN] graph_nodes query failed (exit $kuzu_exit) — defaulting to 0" >> "$LOG_FILE" 2>/dev/null
-    graph_nodes="0"
+  if [ $kuzu_exit -ne 0 ] || [ -z "$graph_nodes" ] || [ "$graph_nodes" = "0" ]; then
+    echo "[WARN] graph_nodes query returned '$graph_nodes' (exit $kuzu_exit) — investigating" >> "$LOG_FILE" 2>/dev/null
+    # Retry once with explicit path and verbose error
+    graph_nodes=$(timeout 15 python3 -c "
+import kuzu, os, sys
+db_path = '$TARGET_REPO/knowledge-graph/base/bsp_base.db'
+if not os.path.exists(db_path):
+    print(f'DB not found: {db_path}', file=sys.stderr)
+    print('0'); sys.exit(0)
+print(f'DB size: {os.path.getsize(db_path)} bytes', file=sys.stderr)
+try:
+    db = kuzu.Database(db_path, read_only=True)
+    conn = kuzu.Connection(db)
+    r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
+    if r.has_next():
+        print(r.get_next()[0])
+    else:
+        print('0')
+except Exception as e:
+    print(f'Retry error: {e}', file=sys.stderr)
+    print('0')
+" 2>>"$LOG_FILE") || graph_nodes="0"
   fi
   # Sanitize: ensure it's a plain integer (no trailing whitespace/newlines)
   graph_nodes=$(echo "$graph_nodes" | tail -1 | tr -dc '0-9')
@@ -137,7 +156,7 @@ echo "--- Phase 3/4 Work ---" >> "$LOG_FILE"
 
 Execute a stewardship session:
 1. Orient: Read all four mandatory documents (CLAUDE.md, BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md, ROADMAP.md, README.md)
-2. **Check reviewer feedback**: Read $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file. If there are P0 or P1 items for bsp-knowledge-steward, address them FIRST before any new work. Graph quality issues (orphan nodes, disconnected FailureModes) take priority over adding new seed scripts.
+2. **BLOCKING — Read steering notes**: Read $TARGET_REPO/.claude/steering-notes.md (if it exists). Address ALL P0 items BEFORE any other work. Also check $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file. Graph quality issues (orphan nodes, disconnected FailureModes) take priority over adding new seed scripts.
 3. Assess: Check ROADMAP.md for current status — identify incomplete Phase 3 exit criteria or next Phase 4 deliverable
 4. Execute: Close Phase 3 gaps first (blackboard eval, Socratic templates, term dictionary, learner-level tests), then start Phase 4 work
 5. Validate: Run pytest tests/test_safety_gate.py and pytest evals/run_evals.py to ensure no regressions

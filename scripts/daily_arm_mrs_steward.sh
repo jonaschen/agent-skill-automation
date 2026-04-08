@@ -131,8 +131,8 @@ echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the arm-mrs-steward agent. Read $REPO_ROOT/.claude/agents/arm-mrs-steward.md for your full instructions.
 
 Execute a stewardship session:
-1. Orient: Read all four mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md)
-2. **Check reviewer feedback**: Read $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file. If there are P0 or P1 items for arm-mrs-steward, address them FIRST before any new work. Skill file updates (.claude/skills/*.md) are high priority — these are user-facing.
+1. Orient: Read all five mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md, .claude/steering-notes.md)
+2. **BLOCKING — Read steering notes**: Read $TARGET_REPO/.claude/steering-notes.md (if it exists). Address ALL P0 items BEFORE any other work. P0 items have been unresolved for multiple days — they are your top priority. Also check $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file.
 3. Assess: Check ROADMAP.md for current status, identify next incomplete milestone
 4. Execute: Work on the next milestone — design, implement, or expand
 5. If current milestones are complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)

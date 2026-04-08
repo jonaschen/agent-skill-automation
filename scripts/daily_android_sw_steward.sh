@@ -104,13 +104,14 @@ echo "--- Phase 4 Work ---" >> "$LOG_FILE"
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the android-sw-steward agent. Read $REPO_ROOT/.claude/agents/android-sw-steward.md for your full instructions.
 
 Execute a stewardship session:
-1. Orient: Read all four mandatory documents (CLAUDE.md, ANDROID_SW_OWNER_DEV_PLAN.md, ROADMAP.md, README.md)
-2. Assess: Check ROADMAP.md for current Phase 4 status, identify next incomplete deliverable
-3. Execute: Work on the next Phase 4 deliverable (4.1-4.5 in order)
-4. If Phase 4 is complete, perform gap analysis and propose Phase 5+ improvements
-5. Validate: Run existing tests to ensure no regressions
-6. Record: Update ROADMAP.md with any completed tasks
-7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
+1. Orient: Read all mandatory documents (CLAUDE.md, ANDROID_SW_OWNER_DEV_PLAN.md, ROADMAP.md, README.md, .claude/steering-notes.md if it exists)
+2. **BLOCKING — Read steering notes**: Read $TARGET_REPO/.claude/steering-notes.md (if it exists). Address ALL P0 items BEFORE any other work. Also check $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file.
+3. Assess: Check ROADMAP.md for current Phase 4 status, identify next incomplete deliverable
+4. Execute: Work on the next Phase 4 deliverable (4.1-4.5 in order)
+5. If Phase 4 is complete, perform gap analysis and propose Phase 5+ improvements
+6. Validate: Run existing tests to ensure no regressions
+7. Record: Update ROADMAP.md with any completed tasks
+8. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true
