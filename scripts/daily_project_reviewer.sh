@@ -26,6 +26,12 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR" "$REPO_ROOT/knowledge_base/s
 # Source shared cost ceiling library
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 
+# CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
+unset TERMINAL
+
+# Initiator-type context for post-tool-use.sh policy enforcement
+export CLAUDE_INITIATOR_TYPE=cron-automated
+
 # Post-session commit recovery: if Claude wrote files but failed to commit, catch them
 recover_uncommitted() {
   local repo_dir="$1"

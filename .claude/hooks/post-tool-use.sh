@@ -2,8 +2,9 @@
 # post-tool-use.sh — Post-tool-use lifecycle hook
 #
 # Runs after a tool execution (PostToolUse event).
-# 1. MCP tool-call depth monitoring (cost amplification defense)
-# 2. Detects writes to .claude/skills/ or ~/.claude/@lib/agents/ and:
+# 1. Initiator-type policy enforcement (blocks destructive git ops in cron context)
+# 2. MCP tool-call depth monitoring (cost amplification defense)
+# 3. Detects writes to .claude/skills/ or ~/.claude/@lib/agents/ and:
 #    a. Logs the lifecycle event via lifecycle_tracker.py
 #    b. Runs permission check on modified SKILL.md files
 #
@@ -20,6 +21,24 @@ PERM_CHECK="$REPO_ROOT/eval/check-permissions.sh"
 # The hook receives tool name and file path as environment variables
 TOOL_NAME="${CLAUDE_TOOL_NAME:-}"
 FILE_PATH="${CLAUDE_FILE_PATH:-}"
+TOOL_INPUT="${CLAUDE_TOOL_INPUT:-}"
+
+# --- Initiator-Type Policy Enforcement ---
+# Differentiates cron-automated from human-interactive sessions (AWS IAM pattern).
+# Blocks destructive git operations in automated contexts.
+INITIATOR_TYPE="${CLAUDE_INITIATOR_TYPE:-human-interactive}"
+
+if [ "$INITIATOR_TYPE" = "cron-automated" ] && [ "$TOOL_NAME" = "Bash" ]; then
+  case "$TOOL_INPUT" in
+    *"push --force"*|*"push -f "*|*"reset --hard"*|*"branch -D "*|*"checkout -- ."*|*"clean -fd"*|*"clean -f"*)
+      SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
+      mkdir -p "$SECURITY_LOG_DIR"
+      echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"level\":\"BLOCK\",\"agent\":\"${CLAUDE_AGENT_NAME:-unknown}\",\"initiator\":\"$INITIATOR_TYPE\",\"tool\":\"Bash\",\"blocked_command\":\"$(echo "$TOOL_INPUT" | head -c 200)\"}" >> "$SECURITY_LOG_DIR/initiator_policy.jsonl"
+      echo "SECURITY BLOCK: destructive git operation blocked in cron-automated context: $(echo "$TOOL_INPUT" | head -c 100)" >&2
+      exit 1
+      ;;
+  esac
+fi
 
 # --- MCP Tool-Call Depth Monitor ---
 # Defends against MCP cost amplification attacks (658x inflation, <3% detection).

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "description": "Append-only registry of deprecated model IDs. Updated by agentic-ai-researcher when official retirement announcements are confirmed. Never modify or remove existing entries.",
+  "models": [
+    {"model_id": "claude-3-haiku-20240307", "retirement_date": "2026-04-19", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
+    {"model_id": "claude-3.5-sonnet-20241022", "retirement_date": "2026-05-11", "replacement": "claude-sonnet-4-6", "source": "analysis-2026-04-08"},
+    {"model_id": "claude-3-5-sonnet-20241022", "retirement_date": "2026-05-11", "replacement": "claude-sonnet-4-6", "source": "analysis-2026-04-08"},
+    {"model_id": "claude-3.5-haiku-20241022", "retirement_date": "2026-07-05", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
+    {"model_id": "claude-3-5-haiku-20241022", "retirement_date": "2026-07-05", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
+    {"model_id": "gpt-4o", "retirement_date": "2026-06-30", "replacement": "gpt-5.4", "source": "analysis-2026-04-08"}
+  ]
+}

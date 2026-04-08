@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-07: Phase 4 in progress. Cost & security guardrails section added to all 5 steward/reviewer agent definitions (cost ceiling + MCP depth monitor awareness). Researcher agent updated with Adversa AI TOP 25 + MCP security tooling tracking. Previous: cost ceiling rolled to all 6 steward scripts, L11, MCP cost amplification risk, Phase 5 auto-promotion task, deferred tracking tasks.**
+**Status as of 2026-04-08: Phase 4 in progress. CVE-2026-35020 mitigated (P0): `unset TERMINAL` in all 6 daily scripts. Initiator-type policy enforcement: `CLAUDE_INITIATOR_TYPE=cron-automated` in all daily scripts + destructive git op blocking in `post-tool-use.sh`. Model deprecation guard: `eval/model_deprecation_check.sh` + `eval/deprecated_models.json` (append-only, researcher-maintained). Phase 4 hard deadline: May 9, 2026 (before Google I/O). Previous: cost & security guardrails added to all steward agent definitions.**
 
 ---
 
@@ -171,6 +171,8 @@ SKILL.md files from natural language requirements.
 
 **Goal:** Fully unattended pipeline from natural language requirement to deployed Skill. Human role = experimental designer, not experimenter.
 
+**Deadline (2026-04-08)**: All Phase 4 tasks must be complete or explicitly deferred by **May 9, 2026** (Friday before Google I/O week May 19-20). I/O will trigger a cascade of required updates — Phase 4 should be stress-tested before then.
+
 ### Tasks
 
 #### 4.1 `changeling-router` agent
@@ -209,6 +211,10 @@ SKILL.md files from natural language requirements.
 - [x] Add MCP tool-call depth monitor to `post-tool-use.sh` — pattern-matches `mcp__*` tool names, per-session counter, alert at 15 calls, block at 25 calls, structured JSON alerts to `logs/security/mcp_depth_alert.jsonl`. Defends against 658x MCP cost amplification attacks (Adversa AI finding) — P0 ✅ 2026-04-07
 - [x] Implement duration-based cost ceiling (`scripts/lib/cost_ceiling.sh`) — 30-day rolling average × 5x multiplier, fallback 3600s for first run. Integrated into `daily_factory_steward.sh` as pilot; advisory post-run check with structured alerts to `logs/security/cost_alert.jsonl` — P0 ✅ 2026-04-07
 - [x] Roll cost ceiling to remaining 5 steward scripts (`daily_research_sweep.sh`, `daily_android_sw_steward.sh`, `daily_arm_mrs_steward.sh`, `daily_bsp_knowledge_steward.sh`, `daily_project_reviewer.sh`) — P1 ✅ 2026-04-07
+- [x] **CVE-2026-35020 mitigation**: `unset TERMINAL` preamble in all 6 daily scripts — defense-in-depth against CVSS 8.4 OS command injection via TERMINAL env var — P0 ✅ 2026-04-08
+- [x] **Initiator-type env var + enforcement**: Export `CLAUDE_INITIATOR_TYPE=cron-automated` in all daily scripts; `post-tool-use.sh` blocks destructive git ops (`push --force`, `reset --hard`, `branch -D`, `checkout -- .`, `clean -f`) in cron context. Structured alerts to `logs/security/initiator_policy.jsonl`. AWS IAM context key pattern — P1 ✅ 2026-04-08
+- [x] **Model deprecation guard**: `eval/model_deprecation_check.sh` + `eval/deprecated_models.json` (append-only, researcher-maintained). Greps agent configs for deprecated model IDs; fails pre-deploy gate when referenced model retires within 30 days — P1 ✅ 2026-04-08
+- [ ] **Security suite aggregator**: Implement `eval/security_suite.sh` — runs all security checks in sequence, outputs versioned JSON report. Wire into `pre-deploy.sh` as single entry point — P1 (2026-04-08 discussion)
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
