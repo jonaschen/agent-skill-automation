@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -13,12 +13,18 @@
 - https://www.contextstudios.ai/glossary/anthropic-agent-sdk
 - https://releasebot.io/updates/anthropic
 - https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md (TS v0.2.89-v0.2.92)
+- https://platform.claude.com/docs/en/managed-agents/overview
 
 ## Overview
 
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 — Claude Managed Agents Launched (Public Beta); `ant` CLI Released
+- **What**: Two major Anthropic platform launches on April 8, 2026: (1) **Claude Managed Agents** — a fully managed agent harness for running Claude as an autonomous agent with secure sandboxing, built-in tools, and SSE streaming. Core concepts: **Agent** (model + system prompt + tools + MCP servers + skills), **Environment** (configured container template with packages and network access), **Session** (running agent instance), **Events** (SSE messages between app and agent). Built-in tools: Bash, file operations (read/write/edit/glob/grep), web search/fetch, MCP servers. Key capabilities: long-running tasks (minutes to hours), cloud containers with pre-installed packages (Python/Node.js/Go), stateful sessions with persistent file systems, mid-execution steering/interruption. Rate limits: 60 creates/min, 600 reads/min per org. Beta header: `managed-agents-2026-04-01` (set automatically by SDK). Enabled by default for all API accounts. Research preview features (requiring separate access): outcomes, multiagent, memory. Branding: partners may use "Claude Agent" but NOT "Claude Code" or "Claude Cowork" branding. (2) **`ant` CLI** — a command-line client for the Claude API with native Claude Code integration and YAML versioning of API resources. (3) **Messages API on Amazon Bedrock** (April 7) — research preview at `/anthropic/v1/messages` endpoint, same request shape as first-party API, zero operator access, us-east-1 only, invitation required.
+- **Significance**: Claude Managed Agents is Anthropic's answer to hosted agent runtimes — it competes directly with Google's Vertex AI Agent Builder and Microsoft's Azure AI Agent Service. This is a major shift: instead of developers building their own agent loops with the Agent SDK, Anthropic now offers a fully managed alternative. The distinction is clear: Agent SDK = custom control, Managed Agents = managed infrastructure. For our pipeline: Managed Agents could eventually host our steward agents without needing local cron jobs, but the 60 creates/min rate limit and container startup time need evaluation. The multiagent research preview is particularly relevant to our Phase 5 topology work. The Bedrock Messages API unification eliminates the Bedrock-specific API translation layer that has been a source of friction.
+- **Source**: https://platform.claude.com/docs/en/managed-agents/overview, https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-08 — CVE-2026-35020: OS Command Injection via TERMINAL Environment Variable (CVSS 8.4 HIGH)
 - **What**: A high-severity OS command injection vulnerability (CVE-2026-35020) was published April 6, 2026 (last modified April 7) affecting both Claude Code CLI and Claude Agent SDK. The vulnerability allows local attackers to execute arbitrary commands by manipulating the `TERMINAL` environment variable, which is improperly parsed during command construction with `shell=true`. Attack vector: local. CWE-78 (Improper Neutralization of Special Elements used in an OS Command). The vulnerability can be triggered both during normal CLI execution and via deep-link handler paths, resulting in command execution with user-level privileges. Affected versions: not specifically documented in the advisory — both Claude Code CLI and Agent SDK should be updated to latest versions. Remediation: (1) Update Claude Code CLI, (2) Update Agent SDK, (3) Sanitize `TERMINAL` variable, (4) Avoid `shell=true` in command construction.

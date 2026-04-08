@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -17,12 +17,19 @@
 - https://fortune.com/2026/03/31/anthropic-source-code-claude-code-data-leak-second-security-lapse-days-after-accidentally-revealing-mythos/
 - https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/
 - https://releasebot.io/updates/anthropic/claude-code (v2.1.92)
+- https://releasebot.io/updates/anthropic/claude-code (v2.1.94, v2.1.96)
+- https://code.claude.com/docs/en/changelog (April 1-8 entries)
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.92 (April 4, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.96 (April 8, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 -- Claude Code v2.1.94 + v2.1.96: Bedrock Mantle Integration, Effort Level Default Raised to High
+- **What**: Two new Claude Code releases after the 4-day stabilization period: (1) **v2.1.94** (April 7): Major additions include Amazon Bedrock integration powered by Mantle (`CLAUDE_CODE_USE_MANTLE=1`), default effort level increased from medium to high for API-key/Bedrock/Vertex/Foundry/Team/Enterprise users, Slack MCP send-message tool now displays "Slacked #channel" with clickable links, plugin skills use frontmatter `name` field for stable invocation names, and `hookSpecificOutput.sessionTitle` for UserPromptSubmit hooks. Notable fixes: rate-limit dialog no longer gets stuck after 429 with long Retry-After, scrollback duplication in long sessions, CJK/multibyte text corruption (U+FFFD) in stream-json when chunk boundaries split UTF-8, Shift+Space literal text bug, hyperlink double-opening in tmux. (2) **v2.1.96** (April 8): Hotfix for a v2.1.94 regression — Bedrock requests failing with `403 "Authorization header is missing"` when using `AWS_BEARER_TOKEN_BEDROCK` or `CLAUDE_CODE_SKIP_BEDROCK_AUTH`. (3) The **`ant` CLI** was also launched April 8 — a new command-line client for the Claude API enabling faster API interaction, native Claude Code integration, and YAML versioning of API resources.
+- **Significance**: The effort level default change (medium → high) affects all non-free-tier users — agents and automated workflows that relied on medium effort will now consume more tokens but produce higher quality output. The Bedrock Mantle integration signals deeper AWS partnership. The `ant` CLI is a new tool for API developers to manage resources without writing code. The CJK/UTF-8 fix is critical for international codebases. The stabilization has ended — release cadence has resumed.
+- **Source**: https://releasebot.io/updates/anthropic/claude-code, https://code.claude.com/docs/en/changelog, https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-08 -- CVE-2026-35020 Affects Claude Code CLI; v2.1.92 Still Current; No New Release
 - **What**: (1) **CVE-2026-35020** (published April 6, modified April 7): High-severity OS command injection vulnerability (CVSS 8.4/8.6) affects Claude Code CLI via the `TERMINAL` environment variable. Local attackers can execute arbitrary commands through shell metacharacter injection when `TERMINAL` is parsed with `shell=true`. Triggered during normal CLI execution and deep-link handler paths. Remediation: update to latest Claude Code version and sanitize `TERMINAL` env var. See agent-sdk.md for full details. (2) No new Claude Code release since v2.1.92 (April 4). Day 4 of stabilization. (3) The `/powerup` interactive lessons (v2.1.90) now cover 18 topics from beginner to advanced, making Claude Code more accessible to new users. (4) `Ctrl+B` (v2.1.92) enables pushing tasks to background with unique IDs — supports parallel task execution within a single session.

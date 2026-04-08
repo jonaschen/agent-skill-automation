@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -21,6 +21,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 -- MCP Ecosystem Stabilized; No New Blog Posts or Spec Changes; 10K+ Servers Milestone Confirmed
+- **What**: No new MCP specification changes, blog posts, or major ecosystem developments since the April 8 entry. The MCP Blog has not published since March 16 (Tool Annotations as Risk Vocabulary). The ecosystem continues to grow with 10,000+ public MCP servers confirmed as of April 2026. The 2026 roadmap priorities remain active: (1) evolving transport/session model for horizontal scaling without server-side state, (2) `.well-known` metadata format for offline server discovery, (3) tool annotation expansion (5 SEPs filed for new annotation types beyond read-only/destructive/idempotent). The protocol is governed by the Linux Foundation's Agentic AI Foundation (AAIF). Current spec version: 2025-11-25. Key features in spec: Streamable HTTP transport, MCP Tasks (SEP-1686), Triggers, OAuth 2.1. Claude Managed Agents (launched April 8) supports MCP servers as a built-in tool category — this is the first Anthropic managed service to natively integrate MCP server connections.
+- **Significance**: Quiet period for MCP. The Managed Agents MCP integration is notable — it means MCP servers can now be connected to cloud-hosted agent sessions, not just local CLI agents. No action items.
+- **Source**: https://blog.modelcontextprotocol.io/, https://platform.claude.com/docs/en/managed-agents/overview
 
 ### 2026-04-08 -- AWS IAM Context Keys for Managed MCP Servers: Agent vs Human Action Differentiation
 - **What**: AWS introduced two standardized IAM context keys for managed MCP servers: (1) `aws:ViaAWSMCPService` and (2) `aws:CalledViaAWSMCP`. These keys work consistently across all AWS-managed remote MCP servers, enabling defense-in-depth security by differentiating between AI agent-initiated calls and human-initiated actions. Practical applications: (a) Write IAM policies that explicitly deny dangerous operations (e.g., `ec2:TerminateInstances`) when the call comes through MCP, while allowing them for direct human access. (b) Detailed audit trails via CloudTrail distinguish agent actions from human actions. (c) Compliance requirements can be enforced differently for AI-initiated operations. The AWS MCP Server (Preview) provides access to 15,000+ AWS APIs, handling authentication through standard IAM controls. This is the first major cloud provider to ship production-grade agent/human action differentiation at the IAM policy level.

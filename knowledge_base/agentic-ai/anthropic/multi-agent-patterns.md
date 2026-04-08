@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -18,6 +18,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 -- Claude Managed Agents "Multiagent" Research Preview; TeammateTool Still Feature-Gated
+- **What**: Two multi-agent developments: (1) **Managed Agents multiagent mode** (research preview) — Claude Managed Agents (launched April 8) includes a "multiagent" feature in research preview, requiring separate access request. No public documentation yet on how it works, but it's listed alongside "outcomes" and "memory" as gated Managed Agents capabilities. This is the first indication of Anthropic offering managed multi-agent orchestration as a cloud service. (2) **TeammateTool remains feature-gated** in Claude Code — the 13 operations (spawnTeam, write, broadcast, approvePlan, requestShutdown, etc.) are fully implemented but behind `I9()`/`qFB()` feature gates. No change in gate status with v2.1.94/v2.1.96. Community workaround (claude-sneakpeek) continues to provide early access. The three-agent harness pattern (planner/generator/evaluator) continues spreading — now adopted by Swarms framework. Gartner's 1,445% surge in multi-agent inquiries (Q1 2024→Q2 2025) validates the space.
+- **Significance**: Managed Agents multiagent mode could be Anthropic's server-side answer to the TeammateTool/Swarm pattern. If it enables orchestrated multi-agent sessions in cloud containers, it would directly compete with Google's ADK multi-agent orchestration and our Phase 5 architecture. The fact that it requires separate access suggests it's early-stage. For our pipeline: monitor for documentation release and evaluate whether Managed Agents multiagent could replace our local agent fleet orchestration.
+- **Source**: https://platform.claude.com/docs/en/managed-agents/overview, https://paddo.dev/blog/claude-code-hidden-swarm/
 
 ### 2026-04-08 -- No New Multi-Agent Developments; Three-Agent Harness Adoption Spreading
 - **What**: No new Anthropic multi-agent announcements since the three-agent harness engineering blog (April 6). The Swarms framework (github.com/kyegomez/swarms) continues to adopt the pattern. The 2026 Agentic Coding Trends Report continues to generate industry coverage, with key reports from InfoQ, Bitcoin News, and Pathmode analyzing the orchestrator-worker shift. The report's eight trends include: (1) shifting engineering roles, (2) multi-agent coordination, (3) human-AI collaboration patterns, (4) scaling agentic coding beyond engineering teams, plus case studies from Rakuten, CRED, TELUS, and Zapier. The harness design pattern (planner/generator/evaluator with context resets and sprint contracts) is becoming a recognized industry standard. Anthropic's internal data shows typical harness workflows span 5-15 iterations per run, occasionally extending to four hours.

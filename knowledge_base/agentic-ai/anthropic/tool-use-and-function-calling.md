@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,11 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 -- Managed Agents Introduces Hosted Tool Execution; No New API Tool Use Changes
+- **What**: No new tool use API changes since the February 17 GA graduation. However, Claude Managed Agents (launched April 8) introduces a new execution context for tool use: built-in tools (Bash, file ops, web search/fetch, MCP) run inside managed containers rather than locally. This is the first Anthropic product where tool execution is fully server-side rather than client-orchestrated. The tool result persistence override (`_meta["anthropic/maxResultSizeChars"]` up to 500K, from Claude Code v2.1.91) also applies in Managed Agents sessions. The `strict: true` option on tool definitions (ensuring schema-exact tool calls) remains available. All advanced tool features (Tool Search, Programmatic Calling, Examples, Dynamic Filtering) remain GA with no beta headers required.
+- **Significance**: Managed Agents creates a bifurcation in tool use patterns: client-side (Messages API + Agent SDK) vs server-side (Managed Agents). For developers, the choice is now: custom tool execution with full control (SDK) vs managed tool execution with zero infrastructure (Managed Agents). No changes to the tool use API surface itself.
+- **Source**: https://platform.claude.com/docs/en/managed-agents/tools, https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-08 -- No New Tool Use Developments; Stabilization Continues
 - **What**: No new tool use features or API changes since the February 17 GA graduation. Day 4 of broader platform stabilization. The complete tool use stack remains: Tool Search (dynamic discovery), Programmatic Tool Calling (code-orchestrated), Tool Use Examples (input_examples), web search/fetch (with dynamic filtering), code execution v2 (free with web tools), memory tool, fine-grained tool streaming — all GA, no beta headers required. Context editing remains the only beta feature in the tool use surface area.

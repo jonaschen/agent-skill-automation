@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-08
+**Last updated**: 2026-04-09
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-09 -- Computer Use: No New Developments; Research Preview Continues on Mac + Windows
+- **What**: No new Computer Use announcements. The feature remains in research preview for Pro/Max subscribers on macOS and Windows via Cowork/Claude Code. API-level Computer Use (`computer_20250124` tool) unchanged. Dispatch (phone-to-desktop delegation) remains live on both platforms. The prompt injection classifier gap (documented April 5 file-stealing attack) remains unaddressed publicly. Managed Agents (launched April 8) does NOT include Computer Use as a built-in tool — it's limited to Bash, file ops, web search/fetch, and MCP. This confirms Computer Use remains exclusively a consumer/Pro feature, not an API-accessible capability for developers building agents.
+- **Significance**: Computer Use continues to be a consumer-facing feature separate from the developer API surface. No action items.
+- **Source**: https://platform.claude.com/docs/en/managed-agents/tools, https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-08 -- Computer Use: Microsoft 365 Integration Now Free-Tier; No New API Changes
 - **What**: Microsoft 365 integration has been opened to all Claude users, including free tier, allowing connection to Outlook, OneDrive, and SharePoint directly within Claude. This extends Computer Use's practical utility beyond screen control to structured data access. A fix was shipped for `switch_display` in the computer-use tool returning "not available in this session" on multi-monitor setups. No new Computer Use API changes otherwise. The research preview continues on Mac + Windows.
