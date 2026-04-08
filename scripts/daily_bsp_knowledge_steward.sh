@@ -68,10 +68,11 @@ finalize() {
   local commits_made
   commits_made=$(cd "$TARGET_REPO" && git rev-list "${PRE_COMMIT:-unknown}"..HEAD 2>/dev/null | wc -l) || commits_made="0"
   local graph_nodes
-  # Try kuzu query first; fall back to counting seed script declarations
+  # Try kuzu query on bsp_base.db (the actual graph); fall back to 0
   graph_nodes=$(timeout 15 python3 -c "
 import kuzu, os, sys
-db_path = os.path.join('$TARGET_REPO', 'knowledge-graph', 'kuzu_db')
+# Seed scripts write to knowledge-graph/base/bsp_base.db, not kuzu_db
+db_path = os.path.join('$TARGET_REPO', 'knowledge-graph', 'base', 'bsp_base.db')
 if not os.path.exists(db_path):
     sys.exit(1)
 db = kuzu.Database(db_path)
@@ -124,11 +125,12 @@ echo "--- Phase 3/4 Work ---" >> "$LOG_FILE"
 
 Execute a stewardship session:
 1. Orient: Read all four mandatory documents (CLAUDE.md, BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md, ROADMAP.md, README.md)
-2. Assess: Check ROADMAP.md for current status — identify incomplete Phase 3 exit criteria or next Phase 4 deliverable
-3. Execute: Close Phase 3 gaps first (blackboard eval, Socratic templates, term dictionary, learner-level tests), then start Phase 4 work
-4. Validate: Run pytest tests/test_safety_gate.py and pytest evals/run_evals.py to ensure no regressions
-5. Record: Update ROADMAP.md with any completed tasks
-6. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
+2. **Check reviewer feedback**: Read $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file. If there are P0 or P1 items for bsp-knowledge-steward, address them FIRST before any new work. Graph quality issues (orphan nodes, disconnected FailureModes) take priority over adding new seed scripts.
+3. Assess: Check ROADMAP.md for current status — identify incomplete Phase 3 exit criteria or next Phase 4 deliverable
+4. Execute: Close Phase 3 gaps first (blackboard eval, Socratic templates, term dictionary, learner-level tests), then start Phase 4 work
+5. Validate: Run pytest tests/test_safety_gate.py and pytest evals/run_evals.py to ensure no regressions
+6. Record: Update ROADMAP.md with any completed tasks
+7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true

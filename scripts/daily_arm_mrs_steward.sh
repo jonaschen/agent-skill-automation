@@ -132,12 +132,13 @@ echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"
 
 Execute a stewardship session:
 1. Orient: Read all four mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md)
-2. Assess: Check ROADMAP.md for current status, identify next incomplete milestone
-3. Execute: Work on the next milestone — design, implement, or expand
-4. If current milestones are complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)
-5. Validate: Run python3 tools/eval_skill.py to ensure all tests pass
-6. Record: Update ROADMAP.md with any completed tasks
-7. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
+2. **Check reviewer feedback**: Read $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file. If there are P0 or P1 items for arm-mrs-steward, address them FIRST before any new work. Skill file updates (.claude/skills/*.md) are high priority — these are user-facing.
+3. Assess: Check ROADMAP.md for current status, identify next incomplete milestone
+4. Execute: Work on the next milestone — design, implement, or expand
+5. If current milestones are complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)
+6. Validate: Run python3 tools/eval_skill.py to ensure all tests pass
+7. Record: Update ROADMAP.md with any completed tasks
+8. Commit: Stage all changed files and commit with message 'steward: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}") >> "$LOG_FILE" 2>&1 || true
