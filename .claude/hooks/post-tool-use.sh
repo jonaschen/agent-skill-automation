@@ -40,6 +40,15 @@ if [ "$INITIATOR_TYPE" = "cron-automated" ] && [ "$TOOL_NAME" = "Bash" ]; then
   esac
 fi
 
+# --- Command-Chain Length Monitor ---
+# Defends against deny-rule bypass via 50+ subcommand chains (Adversa disclosure).
+# Only applies to Bash tool calls.
+CMD_CHAIN_MONITOR="$REPO_ROOT/scripts/cmd_chain_monitor.sh"
+
+if [ "$TOOL_NAME" = "Bash" ] && [ -f "$CMD_CHAIN_MONITOR" ]; then
+  CMD_INPUT="$TOOL_INPUT" bash "$CMD_CHAIN_MONITOR" || exit 1
+fi
+
 # --- MCP Tool-Call Depth Monitor ---
 # Defends against MCP cost amplification attacks (658x inflation, <3% detection).
 # Pattern-matches mcp__* tool names, tracks per-session counter.

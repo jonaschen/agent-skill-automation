@@ -79,7 +79,7 @@ candidates = [
 for db_path in candidates:
     if os.path.exists(db_path):
         try:
-            db = kuzu.Database(db_path)
+            db = kuzu.Database(db_path, read_only=True)
             conn = kuzu.Connection(db)
             r = conn.execute('MATCH (n) RETURN count(n) AS cnt')
             if r.has_next():
@@ -89,7 +89,12 @@ for db_path in candidates:
             print(f'kuzu error on {db_path}: {e}', file=sys.stderr)
             continue
 print('0')
-" 2>>"$LOG_FILE") || graph_nodes="0"
+" 2>>"$LOG_FILE")
+  local kuzu_exit=$?
+  if [ $kuzu_exit -ne 0 ]; then
+    echo "[WARN] graph_nodes query failed (exit $kuzu_exit) — defaulting to 0" >> "$LOG_FILE" 2>/dev/null
+    graph_nodes="0"
+  fi
   # Sanitize: ensure it's a plain integer (no trailing whitespace/newlines)
   graph_nodes=$(echo "$graph_nodes" | tail -1 | tr -dc '0-9')
   graph_nodes="${graph_nodes:-0}"

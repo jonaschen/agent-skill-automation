@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-08: Phase 4 in progress. Security suite aggregator: `eval/security_suite.sh` (v1.0) runs all security checks with unified JSON report, wired into `pre-deploy.sh` + `closed_loop.sh`. Researcher agent extended with automated `deprecated_models.json` maintenance + Google I/O tracking queries. Fixed `check-permissions.sh` false positive on orchestration agents (project-reviewer). Previous: CVE-2026-35020 mitigated, initiator-type enforcement, model deprecation guard. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
+**Status as of 2026-04-08: Phase 4 in progress. Integrated `cmd_chain_monitor.sh` into `post-tool-use.sh` (deny-rule bypass defense now active in hook). Fixed BSP `graph_nodes` perf metric (kuzu read-only mode prevents lock conflicts in EXIT trap). Wrote steering notes for ARM MRS (P0: stale arm-pmu.md day 3) and BSP Knowledge (P1: orphan graph nodes day 4). Previous: security suite aggregator, CVE-2026-35020 mitigation, initiator-type enforcement, model deprecation guard. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
 
 ---
 
@@ -198,7 +198,7 @@ SKILL.md files from natural language requirements.
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
-- [ ] Integrate monitor into `.claude/hooks/post-tool-use.sh` (manual step — see `scripts/HOOK_INTEGRATION.md`)
+- [x] Integrate `cmd_chain_monitor.sh` into `.claude/hooks/post-tool-use.sh` — Bash tool calls now checked for deny-rule bypass via long command chains (alert >30, block >45 subcommands) ✅ 2026-04-08
 - [x] Add MCP config validation step to CI/CD gate (`eval/mcp_config_validator.sh` — validates JSON, required fields, deprecated auth patterns, placeholder env vars) ✅ 2026-04-04
 - [x] Extend `eval/mcp_config_validator.sh` with static content scanning: injection phrase detection, length limits, credential keyword rejection, allowlist bypass (`eval/mcp_server_allowlist.json`) — P0 ✅ 2026-04-05
 - [x] Lock Python deps (`requirements.txt`) + `npm audit --audit-level=high` (warning) in pre-deploy.sh — P1 ✅ 2026-04-05
@@ -216,6 +216,8 @@ SKILL.md files from natural language requirements.
 - [x] **Model deprecation guard**: `eval/model_deprecation_check.sh` + `eval/deprecated_models.json` (append-only, researcher-maintained). Greps agent configs for deprecated model IDs; fails pre-deploy gate when referenced model retires within 30 days — P1 ✅ 2026-04-08
 - [x] **Security suite aggregator**: `eval/security_suite.sh` — runs permissions, MCP config, model deprecation, and dependency audit in sequence; versioned JSON report (v1.0). Wired into `pre-deploy.sh` and `closed_loop.sh` SECURITY_SCAN node. Also fixed `check-permissions.sh` false positive on orchestration agents with Task tool (project-reviewer) — P1 ✅ 2026-04-08
 - [x] **Researcher agent: automated deprecation + I/O tracking**: Extended `agentic-ai-researcher.md` with (1) automated `eval/deprecated_models.json` maintenance (append-only, official sources only, feeds pre-deploy guard), (2) Google I/O-specific sweep queries (ADK v2.0, Gemini 4, A2A v1.1 tracking through May 2026) — P2 ✅ 2026-04-08
+- [x] **Fix BSP `graph_nodes` perf metric**: Changed kuzu DB connection to `read_only=True` in `daily_bsp_knowledge_steward.sh` — prevents lock conflicts when EXIT trap fires while Claude session may still hold the database. Added diagnostic logging on failure. Bug persisted 4 days — P2 ✅ 2026-04-08
+- [x] **Write steering notes for escalated stewards**: Created `.claude/steering-notes.md` in ARM MRS repo (P0: update arm-pmu.md, P1: define post-H8 milestones) and BSP Knowledge repo (P1: fix orphan graph nodes, P2: fix CLAUDE.md phase status) — acting on project-reviewer escalations — P1 ✅ 2026-04-08
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
