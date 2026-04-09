@@ -1,0 +1,70 @@
+# Stress Test Requirements — 50 Diverse Skill Specifications
+# Used by scripts/closed_loop.sh for Phase 4.2 stress test
+# Each line is a natural language requirement fed to meta-agent-factory
+# Categories: DevOps (10), Security (8), Data/ML (8), Frontend (6), Backend (6), Mobile (4), Infra (4), Specialized (4)
+
+# --- DevOps (10) ---
+Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps
+Build a Terraform plan reviewer skill that analyzes terraform plan output for security risks, cost anomalies, and drift detection
+Create a Docker image optimization expert skill that reviews Dockerfiles for layer caching, multi-stage builds, and image size reduction
+Build a CI/CD pipeline debugger skill that analyzes GitHub Actions workflow failures, identifies flaky steps, and suggests fixes
+Create a Helm chart validator skill that checks chart templates for best practices, missing values, and Kubernetes API deprecations
+Build a GitOps drift detector skill that compares deployed state vs. git-declared state and generates reconciliation reports
+Create a log aggregation expert skill that designs Fluentd/Vector configs and troubleshoots log pipeline failures
+Build a release management skill that creates changelogs from conventional commits, manages semantic versioning, and drafts release notes
+Create an incident response runbook generator skill that converts post-mortem findings into actionable runbooks
+Build a container registry cleanup skill that identifies unused images, enforces retention policies, and calculates storage savings
+
+# --- Security (8) ---
+Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code
+Build a secrets scanner skill that detects hardcoded credentials, API keys, and tokens in code repositories
+Create a network security policy generator skill that builds Kubernetes NetworkPolicies from observed traffic patterns
+Build a CVE triage skill that assesses vulnerability severity for a given dependency tree and recommends upgrade paths
+Create a compliance audit skill that checks infrastructure configurations against CIS benchmarks for AWS/GCP
+Build a threat modeling skill that generates STRIDE-based threat models from architecture diagrams
+Create a penetration test report generator skill that structures findings by severity with remediation timelines
+Build an access control reviewer skill that analyzes IAM policies for privilege escalation paths and excessive permissions
+
+# --- Data/ML (8) ---
+Create a SQL query optimizer skill that analyzes slow queries, suggests index improvements, and rewrites for performance
+Build a data pipeline monitoring skill that checks Airflow DAG health, detects SLA breaches, and identifies bottleneck tasks
+Create a machine learning model card generator skill that documents model metadata, performance metrics, and ethical considerations
+Build a data quality validator skill that profiles datasets for null rates, type mismatches, distribution shifts, and duplicate detection
+Create a feature engineering advisor skill that suggests feature transformations based on data types and modeling objectives
+Build an ETL error diagnostics skill that analyzes Spark/Flink job failures, identifies data skew, and suggests partitioning fixes
+Create a vector database schema designer skill that optimizes embedding storage, indexing strategies, and similarity search configurations
+Build a data governance cataloger skill that classifies data assets by sensitivity level and generates PII detection rules
+
+# --- Frontend (6) ---
+Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities
+Build a CSS architecture reviewer skill that detects specificity conflicts, unused styles, and suggests CSS module refactoring
+Create an accessibility audit skill that checks WCAG 2.1 AA compliance, generates aria attributes, and prioritizes remediation
+Build a design system documentation skill that generates Storybook stories and component API docs from TypeScript interfaces
+Create a web vitals optimizer skill that analyzes Core Web Vitals scores and recommends specific LCP, CLS, and INP improvements
+Build a responsive design validator skill that tests layouts across breakpoints and detects overflow and touch target issues
+
+# --- Backend (6) ---
+Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas
+Build a database migration validator skill that analyzes Prisma/Drizzle migrations for data loss risks and backward compatibility
+Create a microservice dependency mapper skill that traces service call graphs and identifies circular dependencies and single points of failure
+Build a rate limiter configuration skill that designs token bucket parameters based on API traffic patterns and SLO targets
+Create a message queue optimization skill that tunes RabbitMQ/Kafka consumer configs for throughput vs. latency tradeoffs
+Build a gRPC service generator skill that creates protobuf definitions, server stubs, and client SDKs from natural language API specs
+
+# --- Mobile (4) ---
+Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks
+Build an iOS app size optimizer skill that analyzes IPA contents, suggests asset compression, and identifies unused frameworks
+Create a React Native bridge performance skill that detects serialization bottlenecks and suggests Turbo Module migrations
+Build a mobile deep link validator skill that tests universal links and app links configurations across platforms
+
+# --- Infrastructure (4) ---
+Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage
+Build a DNS configuration auditor skill that validates zone files, checks propagation, and detects misconfigurations
+Create a load balancer tuning skill that optimizes health check intervals, connection draining, and backend weight distribution
+Build a CDN cache strategy designer skill that configures cache keys, TTLs, and purge rules based on content type analysis
+
+# --- Specialized (4) ---
+Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness
+Build a code migration assistant skill that converts Python 2 to Python 3 with compatibility verification
+Create a monorepo workspace dependency analyzer skill that detects phantom dependencies, circular references, and version conflicts
+Build a game server scaling skill that designs auto-scaling policies based on player concurrency patterns and match lifecycle

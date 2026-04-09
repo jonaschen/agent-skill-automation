@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-09 (NIGHT): Phase 4 in progress. New: changeling router validation test (`eval/changeling_validation.sh` — 8-check static validator, all 23 roles pass). Previous: effort impact analysis tool, pipeline cost analysis, permission cache design doc, effort_level tracking, cross-project deprecation checks. Fleet: 100% success rate (18/18 runs last 3 days), effort monitoring window open (Apr 9-12), no cost ceiling alerts. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
+**Status as of 2026-04-09 (EVE): Phase 4 in progress. New: 50-skill stress test requirements file (`eval/stress_test_requirements.txt` — 8 categories, ready for execution), regression test script (`scripts/regression_test.sh` — Bayesian baseline comparison). Previous: changeling router validation, effort monitoring, cost analysis, permission cache design. Fleet: 100% success rate (9/9 runs last 3 days), effort monitoring window (Apr 9-12), security suite green. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
 
 ---
 
@@ -186,8 +186,10 @@ SKILL.md files from natural language requirements.
 
 #### 4.2 End-to-end closed-loop stress test
 - [x] Build closed-loop orchestrator (`scripts/closed_loop.sh`) — factory→validate→optimize→deploy pipeline ✅
-- [ ] Stress test: generate, validate, optimize, and deploy 50 new Skills within 24 hours
-- [ ] Regression test: confirm no existing agent trigger rates degrade after new Skill deploy
+- [x] **Stress test requirements**: Created `eval/stress_test_requirements.txt` — 50 diverse skill specifications across 8 categories (DevOps 10, Security 8, Data/ML 8, Frontend 6, Backend 6, Mobile 4, Infra 4, Specialized 4). Ready for `scripts/closed_loop.sh` execution ✅ 2026-04-09
+- [ ] Stress test execution: run `scripts/closed_loop.sh eval/stress_test_requirements.txt` — generate, validate, optimize, and deploy all 50 Skills within 24 hours
+- [x] **Regression test script**: `scripts/regression_test.sh` — runs eval suite, computes Bayesian posterior, compares against stored baseline. Supports `--update-baseline`, `--check-only`, auto-comparison modes. Detects regression when CI lower drops >0.05 below baseline ✅ 2026-04-09
+- [ ] Regression test: run regression_test.sh after stress test to confirm no existing agent trigger rates degrade
 - [x] Cost analysis infrastructure: `scripts/pipeline_cost_analysis.py` — reads stress_test_log.json for per-skill pipeline cost + fleet daily compute from perf JSONs. Fleet baseline: 3.3h/day across 6 agents ✅ 2026-04-09
 - [ ] Cost analysis: run 50-skill stress test and report full pipeline token consumption and wall-clock time per Skill
 
