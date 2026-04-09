@@ -30,6 +30,10 @@ unset TERMINAL
 # Initiator-type context for post-tool-use.sh policy enforcement
 export CLAUDE_INITIATOR_TYPE=cron-automated
 
+# Per-agent effort level (discussion 2026-04-09: prepared commented-out, enable if costs spike >50%)
+# Routine/mechanical agent → medium effort; uncomment to override default
+# export CLAUDE_CODE_EFFORT=medium
+
 # Post-session commit recovery: if Claude wrote files but failed to commit, catch them
 recover_uncommitted() {
   local repo_dir="$1"
@@ -106,6 +110,7 @@ print(total)
   "files_changed": $files_changed,
   "eval_count_before": ${PRE_EVAL_COUNT:-292},
   "eval_count_after": $post_eval_count,
+  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
   "exit_code": $exit_code
 }
 PERF_EOF
@@ -124,6 +129,15 @@ trap finalize EXIT INT TERM HUP
 
 echo "=== ARM MRS Steward Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+
+# Pre-flight: check target repo for deprecated model references (warning-only, .claude/ scoped)
+echo "" >> "$LOG_FILE"
+echo "--- Deprecation Pre-flight Check ---" >> "$LOG_FILE"
+if [ -d "$TARGET_REPO/.claude" ]; then
+  bash "$REPO_ROOT/scripts/lib/check_target_deprecations.sh" "$TARGET_REPO" >> "$LOG_FILE" 2>&1 || true
+else
+  echo "SKIP: No .claude/ directory in target repo" >> "$LOG_FILE"
+fi
 
 echo "" >> "$LOG_FILE"
 echo "--- H8 / Next Milestone Work ---" >> "$LOG_FILE"

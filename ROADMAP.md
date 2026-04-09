@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-08: Phase 4 in progress. Integrated `cmd_chain_monitor.sh` into `post-tool-use.sh` (deny-rule bypass defense now active in hook). Fixed BSP `graph_nodes` perf metric (kuzu read-only mode prevents lock conflicts in EXIT trap). Wrote steering notes for ARM MRS (P0: stale arm-pmu.md day 3) and BSP Knowledge (P1: orphan graph nodes day 4). Previous: security suite aggregator, CVE-2026-35020 mitigation, initiator-type enforcement, model deprecation guard. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
+**Status as of 2026-04-09: Phase 4 in progress. Added `effort_level` field to all 6 performance JSONs + prepared commented-out `CLAUDE_CODE_EFFORT` config in all daily scripts (monitor 3 days, enable if costs spike >50%). Added cross-project deprecation pre-flight checks to 3 steward scripts (warning-only, .claude/ scoped). Verified `deprecated_models.json` completeness (claude-3-haiku-20240307 → 2026-04-19 confirmed). Annotated ROADMAP: A2A evaluation deferred to post-Google I/O; Phase 7 three-target deployment architecture captured. Previous: cmd_chain_monitor integration, BSP graph_nodes fix, steering notes, security suite, CVE mitigation, initiator-type enforcement. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
 
 ---
 
@@ -218,6 +218,9 @@ SKILL.md files from natural language requirements.
 - [x] **Researcher agent: automated deprecation + I/O tracking**: Extended `agentic-ai-researcher.md` with (1) automated `eval/deprecated_models.json` maintenance (append-only, official sources only, feeds pre-deploy guard), (2) Google I/O-specific sweep queries (ADK v2.0, Gemini 4, A2A v1.1 tracking through May 2026) — P2 ✅ 2026-04-08
 - [x] **Fix BSP `graph_nodes` perf metric**: Changed kuzu DB connection to `read_only=True` in `daily_bsp_knowledge_steward.sh` — prevents lock conflicts when EXIT trap fires while Claude session may still hold the database. Added diagnostic logging on failure. Bug persisted 4 days — P2 ✅ 2026-04-08
 - [x] **Write steering notes for escalated stewards**: Created `.claude/steering-notes.md` in ARM MRS repo (P0: update arm-pmu.md, P1: define post-H8 milestones) and BSP Knowledge repo (P1: fix orphan graph nodes, P2: fix CLAUDE.md phase status) — acting on project-reviewer escalations — P1 ✅ 2026-04-08
+- [x] **Effort level tracking + config**: Added `effort_level` field to all 6 performance JSONs; prepared commented-out `CLAUDE_CODE_EFFORT` exports in all daily scripts (high for reasoning-heavy agents, medium for routine). Monitor 3 days (through April 12), enable selectively if costs spike >50% — P1 ✅ 2026-04-09
+- [x] **Steward cross-project deprecation check**: Added `scripts/lib/check_target_deprecations.sh` — shared helper runs `deprecated_models.json` check against target repo `.claude/` dirs. Integrated into android-sw, arm-mrs, bsp-knowledge steward scripts as pre-flight warning (never blocks). Logs to steering notes if deprecated models found — P1 ✅ 2026-04-09
+- [x] **Deprecated models verification**: Confirmed `claude-3-haiku-20240307` entry in `deprecated_models.json` with correct retirement date (2026-04-19) and replacement model. Verified `model_deprecation_check.sh` grep pattern handles both old (date-suffix) and new (version-suffix) model ID formats — P0 ✅ 2026-04-09
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
@@ -250,7 +253,7 @@ SKILL.md files from natural language requirements.
 - [ ] Test Track B conservative default for medium-coupling band (0.35–0.65)
 
 #### 5.3.0 A2A protocol evaluation (pre-implementation gate)
-- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**) vs. custom 6-message-type bus for scrum-team-orchestrator. **Critical test: can A2A message format express all 6 message types natively?** Decision required before Phase 5 implementation begins. Time-boxed 2-4 hour research task. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2
+- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**) vs. custom 6-message-type bus for scrum-team-orchestrator. **Critical test: can A2A message format express all 6 message types natively?** Decision required before Phase 5 implementation begins. Time-boxed 2-4 hour research task. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2 **Deferred to post-Google I/O (after May 20, 2026)**. A2A v1.1 expected at I/O; evaluating v1.0 before then wastes effort. Continue monitoring pre-I/O leaks.
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
@@ -337,6 +340,13 @@ SKILL.md files from natural language requirements.
 **Prerequisite:** Phases 1–6 complete; production traffic available for billing instrumentation.
 
 **Design consideration (2026-04-07)**: Two deployment models are emerging — CLI-native (SKILL.md files for Claude Code/Gemini CLI) and cloud-native (persistent services via Conway/A2A/Gemini Enterprise). Phase 7 AaaS should support both: local SKILL.md for developer consumption + distributable packages for cloud platforms. Conway's `.cnw.zip` and A2A agent registration are candidate bridge mechanisms.
+
+**Deployment targets (2026-04-09)**: Three distinct deployment targets, each serving a different market:
+1. **SKILL.md** (local, CLI) — developer consumption via Claude Code / Gemini CLI
+2. **Managed Agents** (cloud, API) — enterprise consumption via `ant` CLI or Anthropic API (contingent on Managed Agents GA)
+3. **Conway** (product, persistent) — end-user consumption via persistent cloud agents (contingent on Conway shipping)
+
+Cross-platform SKILL.md format comparison required before transpiler work begins.
 
 ### Tasks
 

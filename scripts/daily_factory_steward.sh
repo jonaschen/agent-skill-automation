@@ -34,6 +34,10 @@ unset TERMINAL
 # Initiator-type context for post-tool-use.sh policy enforcement
 export CLAUDE_INITIATOR_TYPE=cron-automated
 
+# Per-agent effort level (discussion 2026-04-09: prepared commented-out, enable if costs spike >50%)
+# Reasoning-heavy agent → high effort; uncomment to override default
+# export CLAUDE_CODE_EFFORT=high
+
 # Post-session commit recovery: if Claude wrote files but failed to commit, catch them
 recover_uncommitted() {
   local repo_dir="$1"
@@ -81,6 +85,7 @@ finalize() {
   "commits_made": $commits_made,
   "files_changed": $files_changed,
   "adopt_items_available": $adopt_count,
+  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
   "exit_code": $exit_code
 }
 PERF_EOF

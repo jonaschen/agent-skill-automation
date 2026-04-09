@@ -29,6 +29,10 @@ unset TERMINAL
 # Initiator-type context for post-tool-use.sh policy enforcement
 export CLAUDE_INITIATOR_TYPE=cron-automated
 
+# Per-agent effort level (discussion 2026-04-09: prepared commented-out, enable if costs spike >50%)
+# Reasoning-heavy agent → high effort; uncomment to override default
+# export CLAUDE_CODE_EFFORT=high
+
 START_TIME=$(date +%s)
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
@@ -58,6 +62,7 @@ finalize() {
   "commits_made": $commits_made,
   "files_changed": $files_changed,
   "kb_files_updated": $kb_files,
+  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
   "exit_code": $exit_code
 }
 PERF_EOF
