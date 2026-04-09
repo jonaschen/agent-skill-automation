@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-09
+**Last updated**: 2026-04-10
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -15,12 +15,19 @@
 - https://www.infoq.com/news/2026/04/pinterest-mcp-ecosystem/
 - https://mcpplaygroundonline.com/blog/mcp-security-tool-poisoning-owasp-top-10-mcp-scan
 - https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
+- https://www.globenewswire.com/news-release/2026/04/08/3269912/0/en/Lucidworks-Launches-Model-Context-Protocol-to-Reduce-AI-Agent-Integration-Timelines-by-Up-to-10x.html
+- https://dasroot.net/posts/2026/04/model-context-protocol-mcp-technical-deep-dive/
 
 ## Overview
 
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-10 -- Lucidworks MCP Server Launched; MCP v2.1 Host Adoption; Ecosystem at 2,300+ Public Servers
+- **What**: (1) **Lucidworks launched its MCP server** (April 8) — an enterprise-focused MCP server for connecting AI agents to enterprise data. Claims 10x reduction in AI integration timelines, $150K+ savings per integration. Targeted at enterprises rolling out AI-powered applications. (2) **MCP v2.1 host adoption confirmed**: Claude Desktop v3.2.1 and Cursor v2.5.0 now implement full MCP v2.1 spec support including enhanced logging and user consent prompts for enterprise compliance. (3) **Ecosystem size discrepancy**: Earlier data cited 10,000+ MCP servers in "public directories" but a separate April 2026 source counts 2,300+ MCP servers. The discrepancy likely reflects different counting methodologies (registered vs. indexed vs. self-hosted). The 200+ host clients figure is confirmed. (4) **Claude Code v2.1.97 MCP fixes**: Critical MCP HTTP/SSE memory leak fixed (~50 MB/hr on reconnect) and OAuth `authServerMetadataUrl` token refresh bug fixed — both important for production MCP server connections. (5) No new MCP spec changes or blog posts. Current spec version remains 2025-11-25. 2026 roadmap priorities unchanged: transport/session evolution, `.well-known` discovery, tool annotation expansion.
+- **Significance**: Lucidworks is a significant enterprise MCP adopter — validates the "enterprise integration" use case beyond developer tooling. The Claude Code MCP memory leak fix is critical for any long-running agent using MCP servers. The ecosystem size counting needs clarification — we should track the modelcontextprotocol.io registry count as the canonical figure.
+- **Source**: https://www.globenewswire.com/news-release/2026/04/08/3269912/0/en/Lucidworks-Launches-Model-Context-Protocol-to-Reduce-AI-Agent-Integration-Timelines-by-Up-to-10x.html, https://dasroot.net/posts/2026/04/model-context-protocol-mcp-technical-deep-dive/
 
 ### 2026-04-09 -- MCP Ecosystem Stabilized; No New Blog Posts or Spec Changes; 10K+ Servers Milestone Confirmed
 - **What**: No new MCP specification changes, blog posts, or major ecosystem developments since the April 8 entry. The MCP Blog has not published since March 16 (Tool Annotations as Risk Vocabulary). The ecosystem continues to grow with 10,000+ public MCP servers confirmed as of April 2026. The 2026 roadmap priorities remain active: (1) evolving transport/session model for horizontal scaling without server-side state, (2) `.well-known` metadata format for offline server discovery, (3) tool annotation expansion (5 SEPs filed for new annotation types beyond read-only/destructive/idempotent). The protocol is governed by the Linux Foundation's Agentic AI Foundation (AAIF). Current spec version: 2025-11-25. Key features in spec: Streamable HTTP transport, MCP Tasks (SEP-1686), Triggers, OAuth 2.1. Claude Managed Agents (launched April 8) supports MCP servers as a built-in tool category — this is the first Anthropic managed service to natively integrate MCP server connections.

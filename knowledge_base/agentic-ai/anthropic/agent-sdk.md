@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-09
+**Last updated**: 2026-04-10
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -14,12 +14,23 @@
 - https://releasebot.io/updates/anthropic
 - https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md (TS v0.2.89-v0.2.92)
 - https://platform.claude.com/docs/en/managed-agents/overview
+- https://the-decoder.com/anthropic-launches-managed-infrastructure-for-autonomous-ai-agents/
 
 ## Overview
 
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-10 — Claude Cowork Enterprise GA; Managed Agents Day 2 Adoption Data
+- **What**: Two major enterprise developments: (1) **Claude Cowork now GA for all paid enterprise plans** (announced April 9) — Anthropic's autonomous AI assistant Cowork is now generally available across all paid subscription tiers with a suite of enterprise controls. Key enterprise features: **role-based access controls (RBAC)** via SCIM integration with identity providers, admin group management for defining which Claude capabilities each group can access, enterprise-grade deployment controls. This creates Anthropic's complete enterprise agent stack: Claude Code (developer CLI) + Cowork (consumer/enterprise desktop) + Managed Agents (cloud API) + Agent SDK (custom). Early adopters for Cowork enterprise include Notion, Rakuten, Asana, Vibecode, and Sentry. (2) See below for Managed Agents Day 2 details.
+- **Significance**: Cowork GA + Managed Agents creates a two-prong enterprise strategy: Cowork for human-interactive agent workflows with enterprise controls, Managed Agents for programmatic cloud-hosted agent deployments. The SCIM/RBAC integration is critical for enterprise adoption — it lets security teams control agent capabilities at the user/group level. For our pipeline: Cowork's enterprise controls could inform our own permission model in Phase 5.
+- **Source**: https://9to5mac.com/2026/04/09/anthropic-scales-up-with-enterprise-features-for-claude-cowork-and-managed-agents/, https://blockchain.news/news/anthropic-claude-cowork-enterprise-rollout-april-2026
+
+### 2026-04-10 — Managed Agents Day 2: Early Adoption Data; Pricing Confirmed at $0.08/session-hour
+- **What**: Claude Managed Agents public beta continues to roll out. Key details confirmed since launch: (1) **Pricing**: Standard token rates plus **$0.08 per session hour** — relatively accessible for enterprise agent deployment. (2) **Early customers**: Notion (workspace task delegation), Rakuten (multi-department Slack/Teams agents, deployed within one week), Sentry (debugging with automated patch generation and PRs). (3) **Infrastructure**: Runs exclusively on Anthropic infrastructure — no AWS Bedrock or Google Vertex AI availability announced. (4) **Managed Agents multiagent** (research preview): enables agents to spawn additional agents, coordinate parallel tasks, evaluate outputs, and manage memory. Access via waitlist only. (5) **Branding enforcement**: Partners may use "Claude Agent" but explicitly prohibited from using "Claude Code", "Claude Cowork", or Claude Code ASCII art branding. (6) Claude Code v2.1.97 improvements (MCP memory leak fix, permission hardening) benefit Agent SDK users running local agents. No new Agent SDK version releases (Python stays at v0.1.54+, TypeScript at v0.2.90+).
+- **Significance**: The $0.08/session-hour pricing makes Managed Agents cost-competitive with self-hosted agent infrastructure for medium-duration tasks. Rakuten's one-week deployment validates the "10x faster" claim. The Anthropic-only infrastructure is a limitation for multi-cloud enterprises. For our pipeline: the pricing model means our nightly steward agents (typically 30-60 min each) would cost $0.04-$0.08/run in session fees plus tokens — comparable to current API costs. But the exclusive infrastructure and no Bedrock support means it's not viable for our setup yet.
+- **Source**: https://the-decoder.com/anthropic-launches-managed-infrastructure-for-autonomous-ai-agents/, https://platform.claude.com/docs/en/managed-agents/overview
 
 ### 2026-04-09 — Claude Managed Agents Launched (Public Beta); `ant` CLI Released
 - **What**: Two major Anthropic platform launches on April 8, 2026: (1) **Claude Managed Agents** — a fully managed agent harness for running Claude as an autonomous agent with secure sandboxing, built-in tools, and SSE streaming. Core concepts: **Agent** (model + system prompt + tools + MCP servers + skills), **Environment** (configured container template with packages and network access), **Session** (running agent instance), **Events** (SSE messages between app and agent). Built-in tools: Bash, file operations (read/write/edit/glob/grep), web search/fetch, MCP servers. Key capabilities: long-running tasks (minutes to hours), cloud containers with pre-installed packages (Python/Node.js/Go), stateful sessions with persistent file systems, mid-execution steering/interruption. Rate limits: 60 creates/min, 600 reads/min per org. Beta header: `managed-agents-2026-04-01` (set automatically by SDK). Enabled by default for all API accounts. Research preview features (requiring separate access): outcomes, multiagent, memory. Branding: partners may use "Claude Agent" but NOT "Claude Code" or "Claude Cowork" branding. (2) **`ant` CLI** — a command-line client for the Claude API with native Claude Code integration and YAML versioning of API resources. (3) **Messages API on Amazon Bedrock** (April 7) — research preview at `/anthropic/v1/messages` endpoint, same request shape as first-party API, zero operator access, us-east-1 only, invitation required.

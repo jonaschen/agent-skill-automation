@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-09
+**Last updated**: 2026-04-10
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -12,12 +12,18 @@
 - https://medium.com/@richardhightower/claude-code-subagents-and-main-agent-coordination-a-complete-guide-to-ai-agent-delegation-patterns-a4f88ae8f46c
 - https://www.anthropic.com/engineering/harness-design-long-running-apps
 - https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/
+- https://www.the-ai-corner.com/p/anthropic-30b-arr-passed-openai-revenue-2026
 
 ## Overview
 
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-10 -- Agentic Coding Trends Report Gaining Industry Traction; Managed Agents Multiagent Waitlist Active
+- **What**: (1) **2026 Agentic Coding Trends Report** continues generating significant industry coverage. The report identifies 8 trends: shifting engineering roles, multi-agent coordination replacing single-agent workflows, human-AI collaboration patterns, scaling agentic coding beyond engineering teams. Featured case studies: Rakuten, CRED, TELUS, Zapier. Anthropic's internal data shows typical three-agent harness workflows span 5-15 iterations, occasionally extending to four hours. (2) **Managed Agents multiagent waitlist active** — the research preview enables agents to spawn additional agents, coordinate parallel tasks, evaluate outputs, and manage memory. No public documentation yet on orchestration patterns or limits. (3) **Three-agent harness** (planner/generator/evaluator) solidifying as industry reference architecture: InfoQ, Bitcoin News, and Pathmode all published analyses. The harness separates subjective evaluation from generation — "tuning a standalone evaluator to be skeptical is far more tractable than making a generator critical of its own work." The pattern uses context resets and sprint contracts between agents. (4) **Anthropic $30B ARR** (reported April 2026) — signals massive revenue growth that funds continued multi-agent R&D. TeammateTool remains feature-gated in Claude Code.
+- **Significance**: The three-agent harness is becoming the recognized standard for autonomous development. Our pipeline's multi-agent topology (Phase 5) should incorporate this planner/generator/evaluator separation. The $30B ARR validates sustained investment in the agent platform.
+- **Source**: https://resources.anthropic.com/2026-agentic-coding-trends-report, https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/, https://www.the-ai-corner.com/p/anthropic-30b-arr-passed-openai-revenue-2026
 
 ### 2026-04-09 -- Claude Managed Agents "Multiagent" Research Preview; TeammateTool Still Feature-Gated
 - **What**: Two multi-agent developments: (1) **Managed Agents multiagent mode** (research preview) — Claude Managed Agents (launched April 8) includes a "multiagent" feature in research preview, requiring separate access request. No public documentation yet on how it works, but it's listed alongside "outcomes" and "memory" as gated Managed Agents capabilities. This is the first indication of Anthropic offering managed multi-agent orchestration as a cloud service. (2) **TeammateTool remains feature-gated** in Claude Code — the 13 operations (spawnTeam, write, broadcast, approvePlan, requestShutdown, etc.) are fully implemented but behind `I9()`/`qFB()` feature gates. No change in gate status with v2.1.94/v2.1.96. Community workaround (claude-sneakpeek) continues to provide early access. The three-agent harness pattern (planner/generator/evaluator) continues spreading — now adopted by Swarms framework. Gartner's 1,445% surge in multi-agent inquiries (Q1 2024→Q2 2025) validates the space.

@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-09
+**Last updated**: 2026-04-10
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -16,12 +16,20 @@
 - https://capybara.com/
 - https://wavespeed.ai/blog/posts/claude-mythos-opus-5-leak-what-we-know/
 - https://www.rsa.com/resources/blog/zero-trust/claude-mythos-and-capybara-best-practices-for-the-next-evolution-in-ai-powered-cybersecurity-risks/
+- https://techcrunch.com/2026/04/07/anthropic-compute-deal-google-broadcom-tpus/
+- https://www.the-ai-corner.com/p/anthropic-30b-arr-passed-openai-revenue-2026
+- https://siliconcanals.com/sc-w-why-anthropic-is-locking-in-3-5-gigawatts-of-compute-years-before-it-comes-online/
 
 ## Overview
 
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-10 -- No New Model Releases; Haiku 3 Retirement in 9 Days; Anthropic Expands Google Cloud TPU Deal
+- **What**: (1) **No new model releases**. Current lineup unchanged: Opus 4.6, Sonnet 4.6, Haiku 4.5. Mythos Preview remains invitation-only under Project Glasswing for defensive cybersecurity. (2) **Deprecation countdown**: Haiku 3 (`claude-3-haiku-20240307`) retires **April 19** (9 days). 1M context beta (`context-1m-2025-08-07`) for Sonnet 4.5 and Sonnet 4 sunsets **April 30** (20 days). (3) **Anthropic expands Google Cloud/TPU deal** (April 6-7): Anthropic secured expanded compute capacity with Google Cloud and Broadcom for TPU infrastructure amid "skyrocketing demand." Anthropic is locking in 3.5 gigawatts of compute years before it comes online. (4) **Anthropic reportedly passed $30B ARR** (April 2026) — surpassing OpenAI. This massive revenue growth funds continued model development and infrastructure expansion. (5) **300K max_tokens** on Message Batches API remains available via `output-300k-2026-03-24` beta header for Opus 4.6 and Sonnet 4.6. (6) **Messages API on Amazon Bedrock** (research preview, April 7) — same request shape as first-party API, us-east-1, invitation required.
+- **Significance**: The compute infrastructure expansion (3.5 GW) and $30B ARR signal Anthropic is preparing for much larger model training runs — likely Mythos or a next-generation model family. The Haiku 3 retirement is now 9 days away — our deprecation guard should flag this. No new models to integrate.
+- **Source**: https://techcrunch.com/2026/04/07/anthropic-compute-deal-google-broadcom-tpus/, https://www.the-ai-corner.com/p/anthropic-30b-arr-passed-openai-revenue-2026, https://siliconcanals.com/sc-w-why-anthropic-is-locking-in-3-5-gigawatts-of-compute-years-before-it-comes-online/
 
 ### 2026-04-09 -- No New Model Releases; Deprecation Timeline Update: Haiku 3 in 10 Days, 1M Beta in 21 Days
 - **What**: No new model releases or announcements. Current deprecation countdown: (1) **Claude Haiku 3** (`claude-3-haiku-20240307`) retires **April 19, 2026** (10 days). Migrate to Haiku 4.5. (2) **1M context beta** (`context-1m-2025-08-07`) for Sonnet 4.5 and Sonnet 4 sunsets **April 30, 2026** (21 days). Requests exceeding 200k tokens on these models will error. Migrate to Sonnet 4.6 or Opus 4.6 (native 1M, no beta header). (3) **Claude Sonnet 3.7** retirement previously scheduled; already retired February 19. Current model lineup: Opus 4.6 (Feb 5), Sonnet 4.6 (Feb 17), Haiku 4.5 (Oct 15, 2025). Mythos Preview remains invitation-only under Project Glasswing. The **300k max_tokens** cap on Message Batches API (via `output-300k-2026-03-24` beta header) for Opus 4.6 and Sonnet 4.6 is now available. The **Managed Agents** platform (launched April 8) can run any of the current models — agent, environment, and model are configured independently.

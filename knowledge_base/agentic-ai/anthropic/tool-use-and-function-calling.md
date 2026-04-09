@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-09
+**Last updated**: 2026-04-10
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,11 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-10 -- Tool Input Validation Fix for Streaming; Message Batches 300K Output; No New Tool APIs
+- **What**: (1) **Streaming tool input validation fix**: Anthropic fixed tool input validation failures when streaming emits array/object fields as JSON-encoded strings — this affected tools with complex nested schemas during streaming. (2) **Message Batches API 300K max_tokens** (announced March 30, confirmed active): `output-300k-2026-03-24` beta header enables 300K output tokens for Opus 4.6 and Sonnet 4.6 in batch processing — useful for large code generation and structured data extraction via tool use. (3) No new tool use API surfaces or features. The complete GA tool stack remains: Tool Search, Programmatic Tool Calling, Tool Use Examples, web search/fetch, code execution v2, memory tool, fine-grained tool streaming. Context editing remains the only beta. (4) Managed Agents tool execution (server-side) continues as the alternative to client-side tool orchestration.
+- **Significance**: The streaming tool input validation fix is important for production tool use with complex schemas — streaming tool calls with nested arrays/objects were silently producing invalid inputs. No new features to track. Tool use is fully stabilized.
+- **Source**: https://releasebot.io/updates/anthropic, https://platform.claude.com/docs/en/release-notes/overview
 
 ### 2026-04-09 -- Managed Agents Introduces Hosted Tool Execution; No New API Tool Use Changes
 - **What**: No new tool use API changes since the February 17 GA graduation. However, Claude Managed Agents (launched April 8) introduces a new execution context for tool use: built-in tools (Bash, file ops, web search/fetch, MCP) run inside managed containers rather than locally. This is the first Anthropic product where tool execution is fully server-side rather than client-orchestrated. The tool result persistence override (`_meta["anthropic/maxResultSizeChars"]` up to 500K, from Claude Code v2.1.91) also applies in Managed Agents sessions. The `strict: true` option on tool definitions (ensuring schema-exact tool calls) remains available. All advanced tool features (Tool Search, Programmatic Calling, Examples, Dynamic Filtering) remain GA with no beta headers required.
