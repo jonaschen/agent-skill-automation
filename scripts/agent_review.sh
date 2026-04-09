@@ -124,8 +124,41 @@ print_agent_section() {
     echo "  Avg duration: $((AVG_DURATION / 60))m $((AVG_DURATION % 60))s"
     echo "  Last run:     $LATEST_DATE ($((LATEST_DURATION / 60))m $((LATEST_DURATION % 60))s)"
 
-    # Agent-specific metrics from latest perf file
+    # Show effort level if tracked
     local LATEST_PERF="$PERF_DIR/${PERF_PREFIX}-${LATEST_DATE}.json"
+    if [ -f "$LATEST_PERF" ]; then
+        local EFFORT=$(grep -oP '"effort_level"\s*:\s*"\K[^"]+' "$LATEST_PERF" 2>/dev/null || echo "")
+        if [ -n "$EFFORT" ]; then
+            echo "  Effort level: $EFFORT"
+        fi
+    fi
+
+    # Duration trend (last 3 runs) — helps detect cost spikes from effort level changes
+    local TREND_DURATIONS=()
+    local TREND_DATES=()
+    for i in $(seq 0 $((DAYS - 1))); do
+        local TREND_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
+        local TREND_FILE="$PERF_DIR/${PERF_PREFIX}-${TREND_DATE}.json"
+        if [ -f "$TREND_FILE" ]; then
+            local TREND_DUR=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$TREND_FILE" 2>/dev/null || echo "0")
+            TREND_DURATIONS+=("$TREND_DUR")
+            TREND_DATES+=("$TREND_DATE")
+        fi
+        [ "${#TREND_DURATIONS[@]}" -ge 3 ] && break
+    done
+    if [ "${#TREND_DURATIONS[@]}" -ge 2 ]; then
+        local TREND_STR="  Duration trend:"
+        for idx in $(seq $((${#TREND_DURATIONS[@]} - 1)) -1 0); do
+            local d=${TREND_DURATIONS[$idx]}
+            TREND_STR="$TREND_STR $((d / 60))m$((d % 60))s"
+            if [ "$idx" -gt 0 ]; then
+                TREND_STR="$TREND_STR →"
+            fi
+        done
+        echo "$TREND_STR"
+    fi
+
+    # Agent-specific metrics from latest perf file
     if [ -f "$LATEST_PERF" ]; then
         case "$AGENT_NAME" in
             factory)

@@ -61,6 +61,12 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 | 2026-04-03 | sweeps/2026-04-03.md | Updated sweep: Claude Code source leak (KAIROS, anti-distillation, Capybara tier), x402 agent payment protocol at MCP Dev Summit, Gemma 4 + Gemini Nano 4 on 140M devices, ADK Java 1.0, A2A signed cards, Agent SDK progress summaries |
 | 2026-04-02 | sweeps/2026-04-02.md | First full sweep: 17 topics across Anthropic, Google/DeepMind, cross-cutting |
 
+## Evaluations
+
+| Topic | File | Last Updated |
+|-------|------|-------------|
+| Permission Cache Design (Phase 5 HITL) | evaluations/permission-cache-design.md | 2026-04-09 |
+
 ## Discussion Transcripts
 
 | Date | File | Summary |
