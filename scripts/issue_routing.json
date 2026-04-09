@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "description": "Maps GitHub issue characteristics to specialist agents for automated triage",
+  "label_to_agent": {
+    "agent:meta-factory": "meta-agent-factory",
+    "agent:validator": "skill-quality-validator",
+    "agent:optimizer": "autoresearch-optimizer",
+    "agent:cicd-gate": "agentic-cicd-gate",
+    "agent:changeling": "changeling-router",
+    "agent:researcher": "agentic-ai-researcher",
+    "agent:android-sw": "android-sw-steward",
+    "agent:arm-mrs": "arm-mrs-steward",
+    "agent:bsp-knowledge": "bsp-knowledge-steward",
+    "agent:factory": "factory-steward",
+    "agent:reviewer": "project-reviewer",
+    "agent:topology": "topology-aware-router"
+  },
+  "keyword_rules": [
+    {
+      "pattern": "skill.*(generat|creat|build|defin|new agent|new skill)",
+      "agent": "meta-agent-factory",
+      "label": "agent:meta-factory"
+    },
+    {
+      "pattern": "valid|quality|audit|trigger.*(rate|accuracy)|eval.*(fail|broken)",
+      "agent": "skill-quality-validator",
+      "label": "agent:validator"
+    },
+    {
+      "pattern": "optimi|trigger.*low|improve.*description|autoresearch|eval.*score",
+      "agent": "autoresearch-optimizer",
+      "label": "agent:optimizer"
+    },
+    {
+      "pattern": "deploy|ci.?cd|gate|rollback|flaky|pre-deploy",
+      "agent": "agentic-cicd-gate",
+      "label": "agent:cicd-gate"
+    },
+    {
+      "pattern": "changeling|role.*switch|persona|identity",
+      "agent": "changeling-router",
+      "label": "agent:changeling"
+    },
+    {
+      "pattern": "research|anthropic|google.*ai|gemini.*agent|claude.*code.*update|MCP|A2A|ADK",
+      "agent": "agentic-ai-researcher",
+      "label": "agent:researcher"
+    },
+    {
+      "pattern": "android|aosp|AAOS|HAL|SELinux|device.*tree",
+      "agent": "android-sw-steward",
+      "label": "agent:android-sw"
+    },
+    {
+      "pattern": "ARM|AArch64|MRS|instruction.*set|GIC|CoreSight|PMU|FEAT_",
+      "agent": "arm-mrs-steward",
+      "label": "agent:arm-mrs"
+    },
+    {
+      "pattern": "BSP|knowledge.*graph|Kuzu|MediaTek|Qualcomm|SoC|TRM|AMBA",
+      "agent": "bsp-knowledge-steward",
+      "label": "agent:bsp-knowledge"
+    },
+    {
+      "pattern": "pipeline|cron|daily.*script|eval.*infra|factory.*improve|hook|ROADMAP",
+      "agent": "factory-steward",
+      "label": "agent:factory"
+    },
+    {
+      "pattern": "review|steering|steward.*quality|nightly.*output|regression",
+      "agent": "project-reviewer",
+      "label": "agent:reviewer"
+    },
+    {
+      "pattern": "topolog|TCI|parallel.*agent|multi-agent.*route|coupling",
+      "agent": "topology-aware-router",
+      "label": "agent:topology"
+    }
+  ],
+  "triage_label": "triaged",
+  "needs_human_label": "needs-human",
+  "wip_label": "agent-wip"
+}

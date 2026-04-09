@@ -213,7 +213,7 @@ print_agent_section() {
 }
 
 # Print each agent section
-print_agent_section "factory" "Factory Steward" "factory" "factory" "9:00 PM"
+print_agent_section "factory" "Factory Steward" "factory" "factory" "12pm/5pm/9pm"
 print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2:00 AM"
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
