@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-09 (PM): Phase 4 in progress. Permission cache design doc written to `evaluations/` (Phase 5 HITL preparation, ADOPT #5). Agent review dashboard enhanced with effort_level display + duration trend lines (supports 3-day effort monitoring window). All 2026-04-08 and 2026-04-09 ADOPT items now complete. Previous: effort_level tracking, cross-project deprecation checks, deprecated_models.json verification, A2A deferral, Phase 7 three-target architecture, CVE mitigation, initiator-type enforcement, security suite. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
+**Status as of 2026-04-09 (EVE): Phase 4 in progress. New: effort impact analysis tool (`scripts/effort_impact_analysis.sh`) and pipeline cost analysis tool (`scripts/pipeline_cost_analysis.py`) — Phase 4.2 cost analysis infrastructure. Fleet daily compute: 3.3h across 6 agents, 100% success rate. Effort monitoring window open (Apr 9-12): no cost ceiling alerts. Previous: permission cache design doc, effort_level tracking, cross-project deprecation checks, all ADOPT items from Apr 8-9 discussions. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
 
 ---
 
@@ -188,13 +188,15 @@ SKILL.md files from natural language requirements.
 - [x] Build closed-loop orchestrator (`scripts/closed_loop.sh`) — factory→validate→optimize→deploy pipeline ✅
 - [ ] Stress test: generate, validate, optimize, and deploy 50 new Skills within 24 hours
 - [ ] Regression test: confirm no existing agent trigger rates degrade after new Skill deploy
-- [ ] Cost analysis: measure full pipeline token consumption and wall-clock time per Skill
+- [x] Cost analysis infrastructure: `scripts/pipeline_cost_analysis.py` — reads stress_test_log.json for per-skill pipeline cost + fleet daily compute from perf JSONs. Fleet baseline: 3.3h/day across 6 agents ✅ 2026-04-09
+- [ ] Cost analysis: run 50-skill stress test and report full pipeline token consumption and wall-clock time per Skill
 
 #### 4.3 Observability
 - [x] Build agent legion health dashboard (`scripts/health_dashboard.py`) ✅
 - [x] Implement Skill lifecycle tracking (`eval/lifecycle_tracker.py`) ✅
 - [x] Set up anomaly alerting (`scripts/anomaly_alerter.py`) — regression, stall, cost detection ✅
 - [x] Implement hooks: `post-tool-use.sh` (lifecycle logging + permission check), `stop.sh` (graceful shutdown) ✅
+- [x] **Effort impact analysis tool**: `scripts/effort_impact_analysis.sh` — compares agent durations before/after effort default change, checks cost ceiling alerts, recommends per-agent effort overrides. Supports 3-day monitoring window (Apr 9-12) ✅ 2026-04-09
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
