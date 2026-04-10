@@ -80,7 +80,11 @@ agent runs.
 1. Read the three mandatory documents above
 2. Check `ROADMAP.md` for current phase status and next incomplete tasks
 3. Run `cd /home/jonas/gemini-home/agent-skill-automation && bash scripts/agent_review.sh 7` to see recent agent performance
-4. Read the latest files in `knowledge_base/agentic-ai/discussions/` for ADOPT/DEFER/REJECT items
+4. Read the most recent discussion file in `knowledge_base/agentic-ai/discussions/`.
+   Look for the `## Summary` section and its ADOPT table — each row has an ID,
+   priority (P0-P3), and one-line action. Cross-check against recent git log
+   (`git log --oneline -20`) to identify which ADOPT items are already implemented.
+   Prioritize unimplemented P0/P1 items for this session.
 5. Read any pending proposals in `knowledge_base/agentic-ai/proposals/` (focus on P0/P1)
 6. Read any pending ready-to-execute prompts in `knowledge_base/agentic-ai/proposals/ready/`
 

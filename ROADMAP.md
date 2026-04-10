@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-10 (EVE): Phase 4 in progress. New: promote_cases.py --audit mode for eval expansion readiness checks, regression baseline established (T=0.895 CI [0.781, 0.970]), bayesian_eval.py --passes/--total support, regression_test.sh scipy-free. Eval suite expansion still deferred (8 real-world log entries, need 50). All agents 100% success rate. Remaining: stress test execution, regression test run, cost analysis. Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
+**Status as of 2026-04-10 (9PM): Phase 4 in progress. All ADOPT items from 2026-04-09 and 2026-04-10 discussions implemented. Fleet healthy: 100% success rate across all 6 agents. Security suite: PASS (0 errors). Changeling validation: 8/8 checks PASS. Effort monitoring (day 2 of 3, Apr 9-12): all agents improved or stable, no cost alerts — trending toward keeping `high` default. Eval expansion deferred (8/50 real-world log entries). Remaining: stress test execution, regression test run, cost analysis, effort window closure (Apr 12). Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
 
 ---
 
