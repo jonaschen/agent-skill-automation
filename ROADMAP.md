@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-10 (NIGHT): Phase 4 in progress. New: structured ADOPT format for researcher, I/O freeze instruction for factory-steward, ROADMAP risk table expanded. Effort monitoring day 2: all agents stable or improved, no cost ceiling alerts. Eval suite expansion deferred (only 8 real-world log entries, below 50-threshold). Remaining: stress test execution, regression test, cost analysis. Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
+**Status as of 2026-04-10 (EVE): Phase 4 in progress. New: promote_cases.py --audit mode for eval expansion readiness checks, regression baseline established (T=0.895 CI [0.781, 0.970]), bayesian_eval.py --passes/--total support, regression_test.sh scipy-free. Eval suite expansion still deferred (8 real-world log entries, need 50). All agents 100% success rate. Remaining: stress test execution, regression test run, cost analysis. Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
 
 ---
 
@@ -189,6 +189,7 @@ SKILL.md files from natural language requirements.
 - [x] **Stress test requirements**: Created `eval/stress_test_requirements.txt` — 50 diverse skill specifications across 8 categories (DevOps 10, Security 8, Data/ML 8, Frontend 6, Backend 6, Mobile 4, Infra 4, Specialized 4). Ready for `scripts/closed_loop.sh` execution ✅ 2026-04-09
 - [ ] Stress test execution: run `scripts/closed_loop.sh eval/stress_test_requirements.txt` — generate, validate, optimize, and deploy all 50 Skills within 24 hours
 - [x] **Regression test script**: `scripts/regression_test.sh` — runs eval suite, computes Bayesian posterior, compares against stored baseline. Supports `--update-baseline`, `--check-only`, auto-comparison modes. Detects regression when CI lower drops >0.05 below baseline ✅ 2026-04-09
+- [x] **Regression baseline established**: `eval/regression_baseline.json` — T=0.895, 33/36, CI [0.781, 0.970]. Fixed bayesian_eval.py to support `--passes`/`--total` args; removed scipy dependency from regression_test.sh fallback path ✅ 2026-04-10
 - [ ] Regression test: run regression_test.sh after stress test to confirm no existing agent trigger rates degrade
 - [x] Cost analysis infrastructure: `scripts/pipeline_cost_analysis.py` — reads stress_test_log.json for per-skill pipeline cost + fleet daily compute from perf JSONs. Fleet baseline: 3.3h/day across 6 agents ✅ 2026-04-09
 - [ ] Cost analysis: run 50-skill stress test and report full pipeline token consumption and wall-clock time per Skill
@@ -272,6 +273,7 @@ SKILL.md files from natural language requirements.
 - [ ] Test Track A: parallel frontend/backend Skill generation, confirm zero message loss
 
 #### 5.3.1 Skill lifecycle automation (planning)
+- [x] **Eval expansion audit mode**: Added `promote_cases.py --audit` — auto-discovers skill_usage_log.jsonl from instrumented projects, reports volume vs. 50-invocation threshold, analyzes novel prompts vs. existing eval suite, identifies promotion candidates. Currently: 8 entries across 1 project (below 20-minimum). ✅ 2026-04-10
 - [ ] **Auto-promotion design**: Extend `promote_cases.py` with `--auto-detect` mode — count skill-name + trigger-verb pairs, surface promotion candidates when threshold exceeded (>5 same-verb triggers). Requires >100 logged invocations. Minimal viable version of Gemini CLI's passive skill extraction — P2 (2026-04-07 analysis)
 
 #### 5.4 `watchdog-circuit-breaker` agent

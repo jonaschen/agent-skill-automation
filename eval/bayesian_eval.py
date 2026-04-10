@@ -71,24 +71,30 @@ def get_stats(results):
 def main():
     parser = argparse.ArgumentParser(description="Bayesian Evaluation Module")
     parser.add_argument("--results", nargs="+", help="List of PASS/FAIL/SKIP results")
-    parser.add_argument("--compare", nargs=2, metavar=("OLD_JSON", "NEW_JSON"), 
+    parser.add_argument("--passes", type=int, help="Number of passing tests (use with --total)")
+    parser.add_argument("--total", type=int, help="Total number of tests (use with --passes)")
+    parser.add_argument("--compare", nargs=2, metavar=("OLD_JSON", "NEW_JSON"),
                         help="Compare two results; exits 0 if new is significantly better")
-    
+
     args = parser.parse_args()
-    
+
     if args.compare:
         with open(args.compare[0]) as f: old = json.load(f)
         with open(args.compare[1]) as f: new = json.load(f)
-        
+
         print(f"Old: {old['posterior_mean']:.3f} CI [{old['ci_lower']:.3f}, {old['ci_upper']:.3f}]")
         print(f"New: {new['posterior_mean']:.3f} CI [{new['ci_lower']:.3f}, {new['ci_upper']:.3f}]")
-        
+
         # Rule: New CI lower > Old CI upper (no overlap)
         improved = new['ci_lower'] > old['ci_upper']
         print(f"Significant Improvement: {'✅ YES' if improved else '❌ NO'}")
         sys.exit(0 if improved else 1)
-        
-    if args.results:
+
+    if args.passes is not None and args.total is not None:
+        # Synthesize a results list from pass/total counts
+        results = ["PASS"] * args.passes + ["FAIL"] * (args.total - args.passes)
+        print(json.dumps(get_stats(results), indent=2))
+    elif args.results:
         print(json.dumps(get_stats(args.results), indent=2))
     elif not sys.stdin.isatty():
         results = sys.stdin.read().split()

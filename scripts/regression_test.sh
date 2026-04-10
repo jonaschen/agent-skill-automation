@@ -50,23 +50,13 @@ run_eval_and_score() {
   bayesian_output=$(python3 "$BAYESIAN_EVAL" --passes "$pass_count" --total "$total_count" 2>&1) || true
 
   local posterior_mean ci_lower ci_upper
-  posterior_mean=$(echo "$bayesian_output" | grep -oP 'posterior_mean["\s:]+\K[0-9.]+' | head -1 || echo "0.0")
-  ci_lower=$(echo "$bayesian_output" | grep -oP 'ci_lower["\s:]+\K[0-9.]+' | head -1 || echo "0.0")
-  ci_upper=$(echo "$bayesian_output" | grep -oP 'ci_upper["\s:]+\K[0-9.]+' | head -1 || echo "0.0")
+  posterior_mean=$(echo "$bayesian_output" | grep -oP '"posterior_mean":\s*\K[0-9.]+' | head -1 || echo "0.0")
+  ci_lower=$(echo "$bayesian_output" | grep -oP '"ci_lower":\s*\K[0-9.]+' | head -1 || echo "0.0")
+  ci_upper=$(echo "$bayesian_output" | grep -oP '"ci_upper":\s*\K[0-9.]+' | head -1 || echo "0.0")
 
-  # Fallback: compute from pass/total if Bayesian didn't produce output
+  # Fallback: simple posterior mean if Bayesian module produced no JSON
   if [ "$posterior_mean" = "0.0" ] && [ "$total_count" -gt 0 ]; then
     posterior_mean=$(python3 -c "print(round(($pass_count + 1) / ($total_count + 2), 3))" 2>/dev/null || echo "0.0")
-    ci_lower=$(python3 -c "
-from scipy.stats import beta
-lo, hi = beta.interval(0.95, $pass_count + 1, $total_count - $pass_count + 1)
-print(round(lo, 3))
-" 2>/dev/null || echo "0.0")
-    ci_upper=$(python3 -c "
-from scipy.stats import beta
-lo, hi = beta.interval(0.95, $pass_count + 1, $total_count - $pass_count + 1)
-print(round(hi, 3))
-" 2>/dev/null || echo "0.0")
   fi
 
   echo "$pass_count $total_count $posterior_mean $ci_lower $ci_upper"

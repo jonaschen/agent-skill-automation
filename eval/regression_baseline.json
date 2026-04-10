@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-04-10T13:00:00Z",
+  "git_sha": "a19e559",
+  "split": "train",
+  "pass_count": 33,
+  "total_count": 36,
+  "posterior_mean": 0.8947,
+  "ci_lower": 0.7809,
+  "ci_upper": 0.9697
+}
