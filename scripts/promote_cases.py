@@ -23,16 +23,42 @@ SPLITS_PATH = os.path.join(REPO_ROOT, "eval", "splits.json")
 
 
 def load_log(path):
-    """Load JSONL log file."""
+    """Load log file — supports both JSONL (one object per line) and
+    concatenated pretty-printed JSON objects."""
     entries = []
     with open(path) as f:
-        for line in f:
+        content = f.read()
+
+    # Try JSONL first (one JSON object per line)
+    lines = content.strip().splitlines()
+    if lines and lines[0].strip().startswith("{") and lines[0].strip().endswith("}"):
+        for line in lines:
             line = line.strip()
             if line:
                 try:
                     entries.append(json.loads(line))
                 except json.JSONDecodeError:
                     continue
+        if entries:
+            return entries
+
+    # Fall back to concatenated pretty-printed JSON objects
+    # Use JSONDecoder to parse successive objects from the string
+    decoder = json.JSONDecoder()
+    idx = 0
+    while idx < len(content):
+        # Skip whitespace
+        while idx < len(content) and content[idx] in " \t\n\r":
+            idx += 1
+        if idx >= len(content):
+            break
+        try:
+            obj, end_idx = decoder.raw_decode(content, idx)
+            entries.append(obj)
+            idx = end_idx
+        except json.JSONDecodeError:
+            idx += 1
+
     return entries
 
 

@@ -261,7 +261,7 @@ SKILL.md files from natural language requirements.
 - [ ] Test Track B conservative default for medium-coupling band (0.35–0.65)
 
 #### 5.3.0 A2A protocol evaluation (pre-implementation gate)
-- [ ] Evaluate A2A v1.0.0 (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**) vs. custom 6-message-type bus for scrum-team-orchestrator. **Critical test: can A2A message format express all 6 message types natively?** Decision required before Phase 5 implementation begins. Time-boxed 2-4 hour research task. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2 **Deferred to post-Google I/O (after May 20, 2026)**. A2A v1.1 expected at I/O; evaluating v1.0 before then wastes effort. Continue monitoring pre-I/O leaks.
+- [ ] Evaluate A2A v1.1 SDK integration patterns for scrum-team-orchestrator transport (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**). **Expanded scope**: not just "can A2A express our 6 message types?" but "what SDK integration pattern gives us A2A-native transport?" Python A2A SDK is the expected implementation target. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2 **Deferred to post-Google I/O (after May 20, 2026)**. A2A v1.1 expected at I/O; evaluating v1.0 before then wastes effort. Continue monitoring pre-I/O leaks.
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
