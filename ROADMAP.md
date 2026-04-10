@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-09 (EVE): Phase 4 in progress. New: 50-skill stress test requirements file (`eval/stress_test_requirements.txt` — 8 categories, ready for execution), regression test script (`scripts/regression_test.sh` — Bayesian baseline comparison). Previous: changeling router validation, effort monitoring, cost analysis, permission cache design. Fleet: 100% success rate (9/9 runs last 3 days), effort monitoring window (Apr 9-12), security suite green. Phase 4 hard deadline: May 9, 2026 (before Google I/O).**
+**Status as of 2026-04-10 (EVE): Phase 4 in progress. New: fleet version check (`scripts/lib/check_fleet_version.sh` — >=2.1.97, all 6 scripts), prototype collision audit (clean). Remaining: stress test execution, regression test, cost analysis. Fleet: 100% success rate (last 3 days), effort monitoring window (Apr 9-12, day 2 of 3). Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
 
 ---
 
@@ -227,6 +227,8 @@ SKILL.md files from natural language requirements.
 - [x] **Deprecated models verification**: Confirmed `claude-3-haiku-20240307` entry in `deprecated_models.json` with correct retirement date (2026-04-19) and replacement model. Verified `model_deprecation_check.sh` grep pattern handles both old (date-suffix) and new (version-suffix) model ID formats — P0 ✅ 2026-04-09
 - [x] **Permission cache design doc**: Created `knowledge_base/agentic-ai/evaluations/permission-cache-design.md` — policy-focused design for Phase 5.5 HITL session-scoped permission cache (auto-approve patterns, expiry model, initiator-type interaction, subagent inheritance rules). Informed by Gemini CLI v0.38.0 context-aware approvals — P2 ✅ 2026-04-09
 - [x] **Agent review dashboard: effort monitoring**: Enhanced `scripts/agent_review.sh` with effort_level display from perf JSONs + duration trend lines (last 3 runs, oldest→newest). Directly supports 3-day effort monitoring window for cost impact assessment — P1 ✅ 2026-04-09
+- [x] **Prototype collision audit**: Grepped `.claude/` configs for JS prototype property names (toString, valueOf, hasOwnProperty, constructor, __proto__). Clean — zero matches. Closes audit gap from v2.1.97 changelog — P0 ✅ 2026-04-10
+- [x] **Fleet version check**: Created `scripts/lib/check_fleet_version.sh` + `scripts/lib/fleet_min_version.txt` (>=2.1.97). Sourced from all 6 daily scripts. Warns on version mismatch, never blocks. Picks up MCP memory leak fix, 429 retry fix, and permission hardening — P1 ✅ 2026-04-10
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 

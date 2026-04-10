@@ -21,8 +21,9 @@ TARGET_REPO="/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets"
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 
-# Source shared cost ceiling library
+# Source shared libraries
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
+source "$SCRIPT_DIR/lib/check_fleet_version.sh"
 
 # CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
 unset TERMINAL
@@ -152,6 +153,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== BSP Knowledge Steward Session — $DATE ===" >> "$LOG_FILE"
+check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 
 # Pre-flight: check target repo for deprecated model references (warning-only, .claude/ scoped)
