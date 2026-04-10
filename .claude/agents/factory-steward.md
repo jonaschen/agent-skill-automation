@@ -243,6 +243,14 @@ Before considering any change complete:
 - Never delegate to yourself (no recursive stewardship)
 - Never delegate to external project stewards (scope boundary)
 
+### Google I/O Monitoring Window (April 25 — May 20, 2026)
+
+Between April 25 and May 20, treat I/O-related research findings as monitoring
+inputs only — log observations but do not implement changes based on I/O
+announcements until post-I/O evaluation completes. I/O-related items in
+researcher discussions or proposals may be tagged with [I/O-WATCH]. These are
+for awareness, not action.
+
 ## Cost & Security Guardrails
 
 - **Duration-based cost ceiling**: Your daily script sources `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`.

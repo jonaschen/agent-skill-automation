@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-10 (EVE): Phase 4 in progress. New: fleet version check (`scripts/lib/check_fleet_version.sh` — >=2.1.97, all 6 scripts), prototype collision audit (clean). Remaining: stress test execution, regression test, cost analysis. Fleet: 100% success rate (last 3 days), effort monitoring window (Apr 9-12, day 2 of 3). Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
+**Status as of 2026-04-10 (NIGHT): Phase 4 in progress. New: structured ADOPT format for researcher, I/O freeze instruction for factory-steward, ROADMAP risk table expanded. Effort monitoring day 2: all agents stable or improved, no cost ceiling alerts. Eval suite expansion deferred (only 8 real-world log entries, below 50-threshold). Remaining: stress test execution, regression test, cost analysis. Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
 
 ---
 
@@ -263,6 +263,8 @@ SKILL.md files from natural language requirements.
 #### 5.3.0 A2A protocol evaluation (pre-implementation gate)
 - [ ] Evaluate A2A v1.1 SDK integration patterns for scrum-team-orchestrator transport (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**). **Expanded scope**: not just "can A2A express our 6 message types?" but "what SDK integration pattern gives us A2A-native transport?" Python A2A SDK is the expected implementation target. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2 **Deferred to post-Google I/O (after May 20, 2026)**. A2A v1.1 expected at I/O; evaluating v1.0 before then wastes effort. Continue monitoring pre-I/O leaks.
 
+**Design principle (2026-04-10)**: Implement the 6-message-type bus directly on the A2A Python SDK — not as a custom protocol with an A2A wrapper. A2A is now the de facto inter-agent standard (150+ orgs, triple hyperscaler integration). Our message types map to A2A Task metadata.
+
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
 - [ ] Implement A2A message bus with six valid message types only (TASK_ASSIGNMENT, PARTIAL_OUTPUT, REVIEW_REQUEST, REVIEW_RESULT, ESCALATION, WATCHDOG_HALT)
@@ -277,6 +279,7 @@ SKILL.md files from natural language requirements.
 - [ ] Implement loop detection: halt when any agent pair exceeds 8 messages
 - [ ] Implement token velocity monitor: halt when >5,000 tokens/min (Track A) or >15,000 tokens/min (Track B)
 - [ ] Test WATCHDOG_HALT broadcast reaches all active agents and freezes task thread
+- [ ] Monitor process RSS alongside token velocity — alert on sustained >200MB/hr growth. Thresholds TBD from real Phase 5 session profiles
 
 #### 5.5 Defensive architecture (Pre-Execution Reflection + HITL)
 - [ ] Implement `PreToolUse` hook: mandatory reflection gate for DESTRUCTIVE tools (Write, Edit, Bash, MCP write/delete)
@@ -323,6 +326,7 @@ SKILL.md files from natural language requirements.
 - [ ] Implement `eval/edge_package.sh` — exports SKILL.md + model weights to `.edge-skill` bundle
 - [ ] Support ONNX export for CPU/NPU and GGUF for ARM/Apple Silicon (Gemma 4 supported by llama.cpp, Ollama, vLLM)
 - [x] Evaluate Gemma 4 E2B zero-shot function calling (86.4% tool use) — eliminates fine-tuning step ✅ 2026-04-04 (confirmed: native function calling, <1.5GB, standard runtimes)
+- [ ] Optional: Evaluate EAGLE3 speculative decoding for Gemma 4 — 1.72x speedup with 277MB draft head. Note: verify serving framework compatibility with Gemma 4 hybrid attention
 - [ ] Implement secure OTA: SHA-256 verification + code signing + atomic apply + rollback on failed post-update eval
 
 #### 6.5 Cloud-edge state synchronization
@@ -498,6 +502,8 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Capybara/Mythos model release invalidates eval baselines and routing behavior | 3-4 | Model migration runbook (eval/model_migration_runbook.md); nightly researcher monitors for release | UPGRADED P2->P1 — runbook created 2026-04-05 |
 | Phase 7 billing assumes Stripe-only; 4 competing agent payment protocols may require multi-rail support | 7 | Task 7.7 evaluation; defer implementation until protocol war settles | New — monitoring |
 | MCP cost amplification via prolonged tool-calling chains (658x demonstrated) | 4 | MCP tool-call depth monitor in post-tool-use.sh (alert >15, block >25); per-run duration ceiling (5x 30-day avg); future: CI/CD gate MCP pattern rejection | New — P0, mitigated 2026-04-07 |
+| A2A v1.0→v1.1 migration risk | 5 | Defer Phase 5 implementation to post-I/O; evaluate v1.1 SDK before committing to integration pattern | New — deferred pending I/O |
+| Fleet Claude Code version skew | 4 | Fleet version check script (>=minimum); warn on mismatch in all daily scripts | New — mitigation implemented 2026-04-10 |
 
 ---
 

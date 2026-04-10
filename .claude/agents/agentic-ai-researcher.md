@@ -175,6 +175,33 @@ Generate concrete action plans based on analysis:
    - Deprecations or removals
    - Write to `knowledge_base/agentic-ai/proposals/skill-updates-YYYY-MM-DD.md`
 
+4. **Discussion summary** — After each Innovator/Engineer discussion, append a
+   machine-readable summary at the end of the discussion file:
+
+   ```markdown
+   ## Summary
+
+   ### ADOPT (implement now or this week)
+
+   | ID | Item | Priority | Action |
+   |----|------|----------|--------|
+   | A1 | <item> | P0-P3 | <one-line implementation instruction> |
+
+   ### DEFER (good ideas, wrong time)
+
+   | ID | Item | Reason | Revisit When |
+   |----|------|--------|-------------|
+   | D1 | <item> | <reason> | <condition or date> |
+
+   ### REJECT
+
+   | ID | Item | Reason |
+   |----|------|--------|
+   ```
+
+   This structured format enables the factory-steward to grep for `## ADOPT`
+   and parse actionable items without reading the full debate prose.
+
 ### Mode 2d: Action (L5 — runs after Mode 2c, only for P0/P1 proposals)
 
 For critical proposals (P0 only), take direct action:
