@@ -34,6 +34,22 @@ export CLAUDE_INITIATOR_TYPE=cron-automated
 # Reasoning-heavy agent → high effort; uncomment to override default
 # export CLAUDE_CODE_EFFORT=high
 
+# Post-session commit recovery: if Claude wrote files but failed to commit, catch them
+recover_uncommitted() {
+  local repo_dir="$1"
+  local session_name="$2"
+  local log_file="$3"
+  cd "$repo_dir" || return 0
+  local dirty
+  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1 || true)
+  if [ -n "$dirty" ]; then
+    echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
+    git status --short >> "$log_file" 2>&1
+    git add -A >> "$log_file" 2>&1
+    git commit -m "research(auto): $session_name uncommitted work ($DATE)" >> "$log_file" 2>&1 || true
+  fi
+}
+
 START_TIME=$(date +%s)
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
@@ -41,6 +57,9 @@ PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown"
 finalize() {
   local exit_code=$?
   set +euo pipefail  # ensure cleanup completes even on errors
+
+  # Recover any uncommitted changes from this session
+  recover_uncommitted "$REPO_ROOT" "researcher" "$LOG_FILE"
 
   local end_time=$(date +%s)
   local duration=$((end_time - ${START_TIME:-$end_time}))
@@ -83,6 +102,9 @@ trap finalize EXIT INT TERM HUP
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+
+# Recover any uncommitted changes from a previous crashed session
+recover_uncommitted "$REPO_ROOT" "researcher-previous" "$LOG_FILE"
 
 # Run the research sweep — split into Anthropic and Google tracks to avoid timeouts
 cd "$REPO_ROOT"
