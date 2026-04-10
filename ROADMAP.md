@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-10 (9PM): Phase 4 in progress. All ADOPT items from 2026-04-09 and 2026-04-10 discussions implemented. Fleet healthy: 100% success rate across all 6 agents. Security suite: PASS (0 errors). Changeling validation: 8/8 checks PASS. Effort monitoring (day 2 of 3, Apr 9-12): all agents improved or stable, no cost alerts — trending toward keeping `high` default. Eval expansion deferred (8/50 real-world log entries). Remaining: stress test execution, regression test run, cost analysis, effort window closure (Apr 12). Phase 4 hard deadline: May 9, 2026 (29 days, before Google I/O).**
+**Status as of 2026-04-10 (late): Phase 4 in progress. All ADOPT items implemented. Fleet 100% healthy. Security: PASS. Changeling: 8/8 PASS. Effort monitoring (day 2/3, Apr 9-12): all agents improved or stable, no cost alerts — trending toward keeping `high` default. Eval expansion: 38/50 real-world log entries after fixing nested-dir discovery bug (was 8/50). 21 completed proposals moved to done/. Fleet version WARNING: running v2.1.87, minimum v2.1.97. Remaining: stress test execution, regression test, cost analysis, effort window closure (Apr 12). Phase 4 deadline: May 9, 2026 (29 days).**
 
 ---
 
@@ -273,7 +273,7 @@ SKILL.md files from natural language requirements.
 - [ ] Test Track A: parallel frontend/backend Skill generation, confirm zero message loss
 
 #### 5.3.1 Skill lifecycle automation (planning)
-- [x] **Eval expansion audit mode**: Added `promote_cases.py --audit` — auto-discovers skill_usage_log.jsonl from instrumented projects, reports volume vs. 50-invocation threshold, analyzes novel prompts vs. existing eval suite, identifies promotion candidates. Currently: 8 entries across 1 project (below 20-minimum). ✅ 2026-04-10
+- [x] **Eval expansion audit mode**: Added `promote_cases.py --audit` — auto-discovers skill_usage_log.jsonl from instrumented projects (including nested directory structures), reports volume vs. 50-invocation threshold, analyzes novel prompts vs. existing eval suite, identifies promotion candidates. Currently: 38 entries across 2 projects, 9 novel cases (approaching 50 threshold). ✅ 2026-04-10
 - [ ] **Auto-promotion design**: Extend `promote_cases.py` with `--auto-detect` mode — count skill-name + trigger-verb pairs, surface promotion candidates when threshold exceeded (>5 same-verb triggers). Requires >100 logged invocations. Minimal viable version of Gemini CLI's passive skill extraction — P2 (2026-04-07 analysis)
 
 #### 5.4 `watchdog-circuit-breaker` agent

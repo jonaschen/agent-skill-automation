@@ -234,11 +234,23 @@ def interactive_review(entries, target_skill=None):
 
 
 def discover_log_files():
-    """Auto-discover skill_usage_log.jsonl files from instrumented projects."""
+    """Auto-discover skill_usage_log.jsonl files from instrumented projects.
+
+    Searches both the direct .claude/ path and one level of subdirectories
+    to handle projects with nested directory structures (e.g., monorepos
+    where the .claude/ dir is inside a subdirectory).
+    """
     found = []
     for project_dir in INSTRUMENTED_PROJECTS:
-        log_path = os.path.join(project_dir, ".claude", "skill_usage_log.jsonl")
         project_name = os.path.basename(project_dir)
+        log_path = os.path.join(project_dir, ".claude", "skill_usage_log.jsonl")
+
+        # Also search one level of subdirectories for nested project structures
+        if not os.path.exists(log_path):
+            for candidate in glob.glob(os.path.join(project_dir, "*", ".claude", "skill_usage_log.jsonl")):
+                log_path = candidate
+                break
+
         if os.path.exists(log_path):
             size = os.path.getsize(log_path)
             entries = load_log(log_path)
@@ -252,7 +264,7 @@ def discover_log_files():
         else:
             found.append({
                 "project": project_name,
-                "path": log_path,
+                "path": os.path.join(project_dir, ".claude", "skill_usage_log.jsonl"),
                 "size_bytes": 0,
                 "entry_count": 0,
                 "entries": [],
@@ -302,7 +314,7 @@ def audit_logs(verbose=False):
     total = len(all_entries)
     print(f"\n  Total entries across all projects: {total}")
     print(f"  Promotion threshold: {PROMOTION_THRESHOLD}")
-    print(f"  Current eval suite: {len(os.listdir(PROMPTS_DIR))} test cases")
+    print(f"  Current eval suite: {len(glob.glob(os.path.join(PROMPTS_DIR, 'test_*.txt')))} test cases")
 
     if not has_any_log:
         print(f"\n  STATUS: NO LOGS FOUND")
