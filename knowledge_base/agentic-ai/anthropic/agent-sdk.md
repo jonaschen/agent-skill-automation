@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 — Agent SDK Python v0.1.57-58: Cross-User Prompt Caching, Auto Permission Mode, Thinking Fix
+- **What**: Two Python SDK releases on April 9: (1) **v0.1.57** — three notable changes: (a) **Cross-user prompt caching** via `exclude_dynamic_sections` option on `SystemPromptPreset` — moves per-user dynamic sections (working directory, memory, git status) out of the system prompt, enabling cross-user prompt cache hits. This is a significant cost reduction for multi-user Agent SDK deployments where the system prompt is identical except for user-specific context. (b) **Auto permission mode** — added `"auto"` to the `PermissionMode` type, bringing Python SDK to parity with TypeScript SDK and CLI v2.1.90+. The `auto` mode lets the agent choose permission level based on context. (c) **Thinking configuration fix** — `thinking={"type": "adaptive"}` was incorrectly mapping to `--max-thinking-tokens 32000` instead of `--thinking adaptive`. Similarly `disabled` now uses `--thinking disabled` instead of `--max-thinking-tokens 0`. This aligns Python SDK with TypeScript SDK behavior. Bundled CLI updated to v2.1.96. (2) **v0.1.58** — bundled CLI updated to v2.1.97 (Focus view, MCP leak fix, permission hardening).
+- **Significance**: Cross-user prompt caching is the most cost-impactful SDK feature in weeks — for our daily agent fleet, if we used Agent SDK, this could save 40-60% of input tokens when multiple agents share the same system prompt base. The thinking configuration fix was a silent correctness bug — agents requesting adaptive thinking were actually getting fixed 32K budget, potentially producing different (worse) behavior than expected. For our pipeline: (1) If Phase 5 topology uses Agent SDK, cross-user caching is critical for cost control. (2) The auto permission mode aligns with our Phase 4 closed-loop permission model.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases (v0.1.57, v0.1.58)
 
 ### 2026-04-10 — Claude Cowork Enterprise GA; Managed Agents Day 2 Adoption Data
 - **What**: Two major enterprise developments: (1) **Claude Cowork now GA for all paid enterprise plans** (announced April 9) — Anthropic's autonomous AI assistant Cowork is now generally available across all paid subscription tiers with a suite of enterprise controls. Key enterprise features: **role-based access controls (RBAC)** via SCIM integration with identity providers, admin group management for defining which Claude capabilities each group can access, enterprise-grade deployment controls. This creates Anthropic's complete enterprise agent stack: Claude Code (developer CLI) + Cowork (consumer/enterprise desktop) + Managed Agents (cloud API) + Agent SDK (custom). Early adopters for Cowork enterprise include Notion, Rakuten, Asana, Vibecode, and Sentry. (2) See below for Managed Agents Day 2 details.

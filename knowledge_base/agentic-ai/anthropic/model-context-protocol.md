@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -23,6 +23,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 -- MCP: No New Developments; Claude Code v2.1.98 MCP OAuth Metadata Fix
+- **What**: No new MCP specification changes, blog posts, or major ecosystem announcements. The only MCP-relevant change is from Claude Code v2.1.98 (April 9 late): **MCP OAuth metadata URL handling improvements** — fixes for `authServerMetadataUrl` token refresh and OAuth metadata discovery. This builds on the v2.1.97 MCP HTTP/SSE memory leak fix (~50 MB/hr). Together, these two fixes address the two most critical MCP production issues: memory leaks on long-running connections and OAuth token refresh failures. Current spec version remains 2025-11-25. MCP Blog last published March 16. Ecosystem continues at 2,300+ public servers (canonical count). 2026 roadmap priorities unchanged.
+- **Significance**: The OAuth metadata fix completes the critical MCP stability pair (memory leak + auth). Production MCP deployments should update to v2.1.98+. No new features or spec changes to track.
+- **Source**: https://github.com/anthropics/claude-code/releases (v2.1.98), https://blog.modelcontextprotocol.io/
 
 ### 2026-04-10 -- Lucidworks MCP Server Launched; MCP v2.1 Host Adoption; Ecosystem at 2,300+ Public Servers
 - **What**: (1) **Lucidworks launched its MCP server** (April 8) — an enterprise-focused MCP server for connecting AI agents to enterprise data. Claims 10x reduction in AI integration timelines, $150K+ savings per integration. Targeted at enterprises rolling out AI-powered applications. (2) **MCP v2.1 host adoption confirmed**: Claude Desktop v3.2.1 and Cursor v2.5.0 now implement full MCP v2.1 spec support including enhanced logging and user consent prompts for enterprise compliance. (3) **Ecosystem size discrepancy**: Earlier data cited 10,000+ MCP servers in "public directories" but a separate April 2026 source counts 2,300+ MCP servers. The discrepancy likely reflects different counting methodologies (registered vs. indexed vs. self-hosted). The 200+ host clients figure is confirmed. (4) **Claude Code v2.1.97 MCP fixes**: Critical MCP HTTP/SSE memory leak fixed (~50 MB/hr on reconnect) and OAuth `authServerMetadataUrl` token refresh bug fixed — both important for production MCP server connections. (5) No new MCP spec changes or blog posts. Current spec version remains 2025-11-25. 2026 roadmap priorities unchanged: transport/session evolution, `.well-known` discovery, tool annotation expansion.

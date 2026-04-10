@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 -- Astra Quiet Integration Phase Day 6; Samsung Galaxy Glasses August Launch Approaching; I/O 38 Days
+- **What**: Project Astra remains in quiet integration phase: (1) **No new Astra-specific features or announcements** — capabilities continue being absorbed into Gemini Live. (2) **Samsung Galaxy Glasses August 2026 launch** — confirmed $600-$900 price, 12MP camera, Android XR, Gemini AI integration. Now 4.3 months from consumer hardware launch. (3) **Google I/O 2026 (May 19-20)** now 38 days away — official blog confirms "agentic coding and latest Gemini model updates." Android XR glasses hardware reveal expected as a headline I/O announcement. (4) **Pre-I/O announcement window** typically opens 2-3 weeks before event (late April / early May) — watch for hardware renders or spec leaks.
+- **Significance**: Day 6 of quiet phase. No new intelligence. The I/O official blog confirmation increases confidence that Android XR glasses + Astra/Gemini Live integration will be a major I/O announcement. Continue monitoring for pre-I/O leaks.
+- **Source**: https://deepmind.google/models/project-astra/, https://developers.googleblog.com/get-ready-for-google-io-2026/
 
 ### 2026-04-10 -- Astra Quiet Integration Phase Day 5; Samsung Galaxy Glasses August 2026 Launch Confirmed; Android XR April Security Bulletin; Glimmer Design Language
 - **What**: Project Astra remains in quiet integration phase with hardware timeline solidifying: (1) **Samsung Galaxy Glasses confirmed for August 2026 launch** — $600-$900 price range, shipping alongside Galaxy Z Fold 8 and Galaxy Watch 9. Features: 12MP camera at eye level, built-in microphones/speakers, tap/swipe controls, 245mAh battery (6-8h), Gemini AI integration via Android XR. Hardware partnerships with Gentle Monster and Warby Parker for fashion-forward designs. (2) **Android XR April 2026 Security Bulletin** published (Apr 6) — no XR-specific security patches, but references security patch level 2026-04-05. The existence of regular XR security bulletins confirms Android XR is a production-ready platform receiving active security maintenance. (3) **Android XR Glimmer design language** documented — new UI interaction paradigm for XR devices including touchpads and dedicated buttons for cameras and displays, with Gemini as the primary AI assistant. (4) **No new Astra-specific features or announcements** — Astra capabilities continue being absorbed into Gemini Live, globally deployed in 200+ countries. (5) **Core research prototype** remains in limited trusted tester access. (6) **Pre-I/O leak window now active** — Google I/O (May 19-20) is 39 days away. The pre-announcement window (typically 2-3 weeks before) opens in about 2 weeks. Watch for Samsung Galaxy Glasses spec leaks or Android XR developer announcements in late April / early May. (7) **I/O expectations crystallizing**: Gemini 4 announcement increasingly likely at I/O, alongside Android XR glasses hardware reveal and deeper Astra integration into consumer products.

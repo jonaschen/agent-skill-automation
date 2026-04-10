@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), and Claude 4.6 (February 2026). The current flagship models are Opus 4.6 (1M context, $5/$25 per MTok) and Sonnet 4.6 (1M context, $3/$15 per MTok). An unreleased "Mythos" model is reportedly in internal testing with capabilities beyond Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 -- No New Model Releases; Advisor Tool Redefines Model Economics; Haiku 3 Retirement in 8 Days
+- **What**: (1) **No new model releases**. Current lineup unchanged: Opus 4.6, Sonnet 4.6, Haiku 4.5. Mythos Preview remains invitation-only under Project Glasswing. (2) **Advisor Tool reshapes model economics** — launched April 9, the advisor pattern (`advisor-tool-2026-03-01` beta) lets Sonnet 4.6 or Haiku 4.5 consult Opus 4.6 as an advisor mid-generation. This creates a new cost tier: "Sonnet with Opus guidance" — near-Opus intelligence with Sonnet-dominated token costs. The advisor produces only 400-700 text tokens per call while the executor handles all bulk generation. Pricing: advisor tokens billed at Opus rates ($15/$75 per MTok), executor tokens at executor rates (Sonnet: $3/$15, Haiku: $1/$5). For typical coding tasks with 2-3 advisor calls, total cost is ~40-60% of Opus-only. (3) **Deprecation countdown**: Haiku 3 (`claude-3-haiku-20240307`) retires **April 19** (8 days). 1M context beta for Sonnet 4.5/4 sunsets **April 30** (19 days). (4) **Deprecation guard status**: `eval/deprecated_models.json` already contains Haiku 3 entry — no update needed.
+- **Significance**: The advisor pattern effectively creates a new "virtual model tier" between Sonnet and Opus without requiring a new model release. This is an economic innovation, not a model innovation — but it changes the competitive landscape since it makes Opus-quality reasoning accessible at lower cost. Our Phase 3 optimizer and Phase 5 topology should evaluate advisor mode for cost optimization.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool, https://platform.claude.com/docs/en/about-claude/models/overview
 
 ### 2026-04-10 -- No New Model Releases; Haiku 3 Retirement in 9 Days; Anthropic Expands Google Cloud TPU Deal
 - **What**: (1) **No new model releases**. Current lineup unchanged: Opus 4.6, Sonnet 4.6, Haiku 4.5. Mythos Preview remains invitation-only under Project Glasswing for defensive cybersecurity. (2) **Deprecation countdown**: Haiku 3 (`claude-3-haiku-20240307`) retires **April 19** (9 days). 1M context beta (`context-1m-2025-08-07`) for Sonnet 4.5 and Sonnet 4 sunsets **April 30** (20 days). (3) **Anthropic expands Google Cloud/TPU deal** (April 6-7): Anthropic secured expanded compute capacity with Google Cloud and Broadcom for TPU infrastructure amid "skyrocketing demand." Anthropic is locking in 3.5 gigawatts of compute years before it comes online. (4) **Anthropic reportedly passed $30B ARR** (April 2026) — surpassing OpenAI. This massive revenue growth funds continued model development and infrastructure expansion. (5) **300K max_tokens** on Message Batches API remains available via `output-300k-2026-03-24` beta header for Opus 4.6 and Sonnet 4.6. (6) **Messages API on Amazon Bedrock** (research preview, April 7) — same request shape as first-party API, us-east-1, invitation required.

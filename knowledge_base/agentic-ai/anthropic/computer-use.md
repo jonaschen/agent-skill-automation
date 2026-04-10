@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 -- Computer Use: No New Developments; Holding Pattern Continues
+- **What**: No new Computer Use announcements since April 10. Feature continues in research preview for Pro/Max subscribers on macOS and Windows. No change in API-level availability (`computer_20250124` tool). Managed Agents still does NOT include Computer Use. No public timeline for GA. Dispatch (phone-to-desktop delegation) continues operational on both platforms.
+- **Significance**: Computer Use remains in holding pattern. No action items for our pipeline.
+- **Source**: https://releasebot.io/updates/anthropic
 
 ### 2026-04-10 -- Computer Use: No New Developments; Dispatch Operational on Both Platforms
 - **What**: No new Computer Use announcements since April 9. The feature continues in research preview for Pro/Max subscribers on macOS and Windows. Key operational status: (1) **Dispatch** (phone-to-desktop delegation) remains operational on both platforms — assign tasks from phone, interact with results on desktop. (2) **Service connectors** for Slack, Google Calendar, and similar services remain the first-priority tool before screen control. (3) **Managed Agents still does NOT include Computer Use** as a built-in tool — confirming it remains a consumer/Pro feature. (4) No updates on the browser automation benchmark gap (ChatGPT agent mode 87% vs Claude 56% on isolated browser tasks). (5) No public statement on Computer Use GA timeline. The zero-config consumer setup (no API keys, no terminal, no configuration) continues to differentiate from developer-oriented approaches.

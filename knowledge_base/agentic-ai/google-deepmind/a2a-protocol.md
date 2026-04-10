@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-10
+**Last updated**: 2026-04-11
 **Sources**:
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
 - https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/
@@ -21,6 +21,11 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-11 -- A2A Post-Anniversary Stabilization Day 2; No New Releases; I/O 38 Days
+- **What**: A2A protocol continues post-anniversary stabilization: (1) **No new A2A spec releases or SDK updates** since v1.0.0 (Mar 12). All 5 language SDKs remain at same versions. (2) **Anniversary press coverage continuing** — the 150+ org milestone, triple hyperscaler integration, and enterprise production deployments continue generating third-party analysis and adoption guides. (3) **Google I/O 2026 (May 19-20)** now 38 days away — official Google Developers Blog confirms I/O will cover "agentic coding and latest Gemini model updates." A2A v1.1 or major ecosystem tooling update remains expected at I/O. (4) **ADK v1.29.0** (Apr 9) shipped with continued A2A integration — no A2A-specific changes in this release but the ADK+A2A stack remains the recommended production path.
+- **Significance**: Day 2 of post-anniversary stabilization. The ongoing press coverage from the anniversary milestone continues to build momentum without requiring protocol changes. The I/O blog confirmation of "agentic coding" topics increases the likelihood of A2A ecosystem announcements at I/O. No action items for our pipeline — continue monitoring for I/O.
+- **Source**: https://github.com/a2aproject/A2A, https://developers.googleblog.com/get-ready-for-google-io-2026/
 
 ### 2026-04-10 -- A2A One-Year Anniversary: 150+ Orgs, 22K Stars, Major Cloud Platform Integration, Enterprise Production Deployments
 - **What**: The A2A Protocol project published its **one-year anniversary milestone report** (April 9 press release, reviewed April 10): (1) **150+ organizations** now support the standard (up from 50+ at launch in April 2025) — including AWS, Cisco, Google, IBM, Microsoft, Salesforce, SAP, and ServiceNow. (2) **22,000+ GitHub stars** for the core repository — strong developer community signal. (3) **5 production-ready SDKs**: Python, JavaScript, Java, Go, and .NET — covering all major enterprise language ecosystems. (4) **Major cloud platform integrations confirmed**: **Microsoft Azure AI Foundry + Copilot Studio**, **AWS Amazon Bedrock AgentCore Runtime**, and deep Google Cloud integration. This is the first confirmation that all three hyperscalers have integrated A2A into their agent platforms. (5) **Enterprise production deployments** active across supply chain, financial services, insurance, and IT operations — organizations using A2A to coordinate autonomous systems across tools, vendors, and environments. (6) **V1.0 spec capabilities confirmed**: multi-protocol support, enterprise-grade multi-tenancy, modernized security flows, signed Agent Cards for cryptographic identity verification, web-aligned architecture. (7) **Framework compatibility confirmed**: LangGraph and CrewAI explicitly cited as compatible. (8) **AP2 (Agent Payments Protocol)** — 60+ organizations in the payments layer. (9) **Future roadmap items**: interoperability specifications, registry consolidation, expanded testing/tooling, security/deployment best practices.
