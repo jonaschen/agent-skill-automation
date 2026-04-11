@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-11: Phase 4 in progress. Metacharacter detection added to cmd_chain_monitor.sh (detect-only, binary-level allowlist, 30-day baseline started). Effort monitoring day 2/3 interim check: 5/6 agents stable/improved, android-sw +23% (within variance), 0 cost ceiling alerts — plan to close window Apr 12. Fleet version BLOCKER: running v2.1.87, minimum v2.1.98 — human upgrade pending. Security: PASS. Changeling: 8/8 PASS. Eval expansion: 38/50 real-world log entries. Countdowns: Haiku 3 retirement 8d (Apr 19), 1M context beta sunset 19d (Apr 30), Google I/O 38d (May 19-20), Phase 4 deadline 28d (May 9).**
+**Status as of 2026-04-11: Phase 4 in progress. Effort monitoring window CLOSED — 3-day analysis (Apr 9-12): 5/6 agents stable/improved, android-sw +23% (within normal variance, not actionable), 0 cost ceiling alerts; no effort overrides needed. Workflow convergence pattern note written to KB. Fleet version BLOCKER: running v2.1.87, minimum v2.1.98 — human upgrade pending. Security: PASS. Changeling: 8/8 PASS. Eval expansion: 38/50 real-world log entries (below 50 threshold). Countdowns: Haiku 3 retirement 8d (Apr 19), 1M context beta sunset 19d (Apr 30), Google I/O 38d (May 19-20), Phase 4 deadline 28d (May 9).**
 
 ---
 
@@ -202,6 +202,8 @@ SKILL.md files from natural language requirements.
 - [x] Implement hooks: `post-tool-use.sh` (lifecycle logging + permission check), `stop.sh` (graceful shutdown) ✅
 - [x] **Effort impact analysis tool**: `scripts/effort_impact_analysis.sh` — compares agent durations before/after effort default change, checks cost ceiling alerts, recommends per-agent effort overrides. Supports 3-day monitoring window (Apr 9-12) ✅ 2026-04-09
 - [x] **Thinking mode tracking**: Added `thinking_mode` field to all 7 daily script performance JSONs. Records `"default"` for current fleet config. Supports debugging future effort/duration anomalies if thinking configuration changes ✅ 2026-04-11
+- [x] **Effort monitoring window closed**: 3-day analysis (Apr 9-12) complete. Results: 5/6 agents stable/improved (factory -16%, researcher -7%, arm-mrs -7%, bsp -35%, reviewer -26%), android-sw +23% (within normal day-to-day variance, not actionable), 0 cost ceiling alerts. No effort overrides needed — default thinking mode sufficient for all agents ✅ 2026-04-11
+- [x] **Workflow convergence pattern note**: Created `knowledge_base/agentic-ai/evaluations/workflow-state-convergence.md` — three-way convergence analysis (ADK lazy scan dedup, Vercel WDK deterministic replay, our state machine skip). Design reference for Phase 5.3.2 task-level workflow state tracking ✅ 2026-04-11
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
