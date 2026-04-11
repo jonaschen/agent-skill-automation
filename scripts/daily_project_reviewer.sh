@@ -111,7 +111,7 @@ check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
-echo "--- Review All Three Stewards ---" >> "$LOG_FILE"
+echo "--- Review All Four Stewards ---" >> "$LOG_FILE"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 (cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
 
