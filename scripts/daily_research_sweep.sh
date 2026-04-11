@@ -83,6 +83,7 @@ finalize() {
   "files_changed": $files_changed,
   "kb_files_updated": $kb_files,
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

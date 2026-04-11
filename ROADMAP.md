@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-10 (late): Phase 4 in progress. All ADOPT items implemented. Fleet 100% healthy. Security: PASS. Changeling: 8/8 PASS. Effort monitoring (day 2/3, Apr 9-12): all agents improved or stable, no cost alerts — trending toward keeping `high` default. Eval expansion: 38/50 real-world log entries after fixing nested-dir discovery bug (was 8/50). 21 completed proposals moved to done/. Fleet version WARNING: running v2.1.87, minimum v2.1.97. Remaining: stress test execution, regression test, cost analysis, effort window closure (Apr 12). Phase 4 deadline: May 9, 2026 (29 days).**
+**Status as of 2026-04-11: Phase 4 in progress. 2026-04-11 ADOPT items implemented (fleet_min_version→2.1.98, thinking_mode in all 7 perf JSONs, ROADMAP design notes for P2/P3 items). Fleet version BLOCKER: running v2.1.87, minimum v2.1.98 — human upgrade pending. Security: PASS. Changeling: 8/8 PASS. Effort monitoring (day 2/3, Apr 9-12): trending stable. Eval expansion: 38/50 real-world log entries. Countdowns: Haiku 3 retirement 8d (Apr 19), 1M context beta sunset 19d (Apr 30), Google I/O 38d (May 19-20), Phase 4 deadline 28d (May 9).**
 
 ---
 
@@ -151,6 +151,7 @@ SKILL.md files from natural language requirements.
 - [ ] Collect 100 successful Opus 4.6 output cases per Skill as baseline dataset
 - [ ] Run distillation loop: Haiku 4.5 uses same SKILL.md → identify failure modes → add constraints/examples → re-eval
 - [ ] Target: Haiku pass rate ≥ 90% of Opus baseline at ~15% of the token cost
+- [ ] Evaluate Sonnet+Opus advisor as intermediate distillation tier (Opus → Sonnet+advisor → Haiku+advisor → Haiku standalone). Advisor tool is beta (`advisor_20260301`); verify API stability before detailed experiment design — P3
 
 #### 3.6 SkyPilot parallelization *(optional scale-out)*
 - [ ] Design task distribution interface for spreading experiment branches across Kubernetes
@@ -200,6 +201,7 @@ SKILL.md files from natural language requirements.
 - [x] Set up anomaly alerting (`scripts/anomaly_alerter.py`) — regression, stall, cost detection ✅
 - [x] Implement hooks: `post-tool-use.sh` (lifecycle logging + permission check), `stop.sh` (graceful shutdown) ✅
 - [x] **Effort impact analysis tool**: `scripts/effort_impact_analysis.sh` — compares agent durations before/after effort default change, checks cost ceiling alerts, recommends per-agent effort overrides. Supports 3-day monitoring window (Apr 9-12) ✅ 2026-04-09
+- [x] **Thinking mode tracking**: Added `thinking_mode` field to all 7 daily script performance JSONs. Records `"default"` for current fleet config. Supports debugging future effort/duration anomalies if thinking configuration changes ✅ 2026-04-11
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
@@ -230,6 +232,8 @@ SKILL.md files from natural language requirements.
 - [x] **Agent review dashboard: effort monitoring**: Enhanced `scripts/agent_review.sh` with effort_level display from perf JSONs + duration trend lines (last 3 runs, oldest→newest). Directly supports 3-day effort monitoring window for cost impact assessment — P1 ✅ 2026-04-09
 - [x] **Prototype collision audit**: Grepped `.claude/` configs for JS prototype property names (toString, valueOf, hasOwnProperty, constructor, __proto__). Clean — zero matches. Closes audit gap from v2.1.97 changelog — P0 ✅ 2026-04-10
 - [x] **Fleet version check**: Created `scripts/lib/check_fleet_version.sh` + `scripts/lib/fleet_min_version.txt` (>=2.1.97). Sourced from all 6 daily scripts. Warns on version mismatch, never blocks. Picks up MCP memory leak fix, 429 retry fix, and permission hardening — P1 ✅ 2026-04-10
+- [x] **Fleet minimum version bump to >=2.1.98**: Updated `fleet_min_version.txt`. v2.1.98 adds PID namespace isolation and compound command hardening. Human upgrade pending — P0 ✅ 2026-04-11
+- [ ] **Metacharacter pattern detection**: Add detect-only metacharacter pattern detection to `cmd_chain_monitor.sh`. Scope: Claude-generated Bash tool inputs only (not our scripts). Initial allowlist seeded from known-safe patterns (`grep | head`, `git log | sort`, `jq | wc`). Logs structured alerts to `logs/security/metachar_alert.jsonl`. Start 30-day baseline for Phase 5.5 PreToolUse allowlist calibration — P2
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
@@ -261,10 +265,17 @@ SKILL.md files from natural language requirements.
 - [ ] Implement routing decision log (stores TCI score, selected track, and task outcome for feedback loop)
 - [ ] Test Track B conservative default for medium-coupling band (0.35–0.65)
 
+> **Design note (2026-04-11)**: The Anthropic Advisor Tool (`advisor_20260301`, public beta) creates a fourth topology option for medium-coupling tasks (TCI 0.35-0.65): a Sonnet executor consults Opus at 2-3 key decision points (approach planning, stuck recovery, completion verification). Cost: -11.9% vs pure Opus; quality: +2.7pp SWE-bench. Re-evaluate when advisor reaches GA and Phase 5 implementation begins. Do not hardcode TCI routing ranges until then.
+
 #### 5.3.0 A2A protocol evaluation (pre-implementation gate)
 - [ ] Evaluate A2A v1.1 SDK integration patterns for scrum-team-orchestrator transport (Linux Foundation, gRPC, Agent Cards, **8-org TSC governance confirmed 2026-04-07**). **Expanded scope**: not just "can A2A express our 6 message types?" but "what SDK integration pattern gives us A2A-native transport?" Python A2A SDK is the expected implementation target. Write findings to `knowledge_base/agentic-ai/evaluations/a2a-sdk-eval.md` — P2 **Deferred to post-Google I/O (after May 20, 2026)**. A2A v1.1 expected at I/O; evaluating v1.0 before then wastes effort. Continue monitoring pre-I/O leaks.
 
 **Design principle (2026-04-10)**: Implement the 6-message-type bus directly on the A2A Python SDK — not as a custom protocol with an A2A wrapper. A2A is now the de facto inter-agent standard (150+ orgs, triple hyperscaler integration). Our message types map to A2A Task metadata.
+
+#### 5.3.2 Task-level workflow state tracking (JSON)
+- [ ] Extend `health_dashboard.py` with per-step state tracking (pending/running/completed/failed) for multi-agent workflows. Reference: ADK v2.0.0-alpha.3 lazy scan dedup + Vercel WDK deterministic replay. Output: structured JSON, not web UI (web visualization is Phase 7 observability chrome) — P2
+
+> **Design note (2026-04-11)**: When adopting Agent SDK for fleet execution, separate CLAUDE.md into static base (cacheable across agents) and dynamic session context (per-agent: git status, memory, date). Reference: Agent SDK `exclude_dynamic_sections` on `SystemPromptPreset`. Implementation consideration: current CLAUDE.md mixes static architecture descriptions with dynamic status — a structural split (`CLAUDE_BASE.md` + `CLAUDE_STATUS.md`) would be needed.
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
@@ -329,6 +340,9 @@ SKILL.md files from natural language requirements.
 - [ ] Support ONNX export for CPU/NPU and GGUF for ARM/Apple Silicon (Gemma 4 supported by llama.cpp, Ollama, vLLM)
 - [x] Evaluate Gemma 4 E2B zero-shot function calling (86.4% tool use) — eliminates fine-tuning step ✅ 2026-04-04 (confirmed: native function calling, <1.5GB, standard runtimes)
 - [ ] Optional: Evaluate EAGLE3 speculative decoding for Gemma 4 — 1.72x speedup with 277MB draft head. Note: verify serving framework compatibility with Gemma 4 hybrid attention
+
+> **Inference SLA note (2026-04-11)**: Gemma 4 MTP heads are stripped from public HuggingFace weights; MTP only available via Google's proprietary LiteRT. Plan inference latency targets accordingly: AICore/LiteRT deployments get 1.8x MTP speedup; self-hosted (vLLM/Ollama/llama.cpp) gets 1.0x baseline without EAGLE3, ~1.72x with EAGLE3 draft head (277MB additional). Qwen 3.5 at 35 tok/s vs Gemma 4 at 11 tok/s on same hardware provides an alternative if latency dominates over open-weight control.
+
 - [ ] Implement secure OTA: SHA-256 verification + code signing + atomic apply + rollback on failed post-update eval
 
 #### 6.5 Cloud-edge state synchronization
@@ -366,6 +380,7 @@ Cross-platform SKILL.md format comparison required before transpiler work begins
 
 #### 7.1 `outcome-billing-engine` agent + OpenTelemetry instrumentation
 - [ ] Write `.claude/agents/outcome-billing-engine.md`
+- [ ] Reference Anthropic's `usage.iterations[]` billing decomposition (from advisor tool responses) for per-component cost attribution design. Schema: separate token counts and costs for each inference iteration within a single API call. Mark as beta — verify schema stability at Phase 7 start — P3
 - [ ] Instrument all Skill invocations, task events, and tool calls with OpenTelemetry spans
 - [ ] Implement event classifier: maps spans to five billable outcome unit types
 - [ ] Implement tenant attribution and deduplication (idempotent span processing)
@@ -501,6 +516,7 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Claude Code deny-rule bypass (50+ subcommands) | 4 | Command-chain length monitor in post-tool-use hook; avoid auto-accept on untrusted projects | Mitigated — monitor implemented |
 | MCP tool poisoning via malicious descriptions | 2-4 | Static content scanning in mcp_config_validator.sh; allowlist bypass; dynamic fetching deferred to Phase 5 | New — P0 mitigation implemented 2026-04-05 |
 | Supply chain compromise of Python/npm dependencies used by eval tools or Claude Code | 4 | pip freeze + require-hashes (blocking); npm audit (warning); cmd_chain_monitor for runtime | New — mitigation implemented 2026-04-05 |
+| Fleet running outdated Claude Code (11+ versions behind, missing PID namespace, MCP memory leak fix, permission hardening) | 4 | `check_fleet_version.sh` warns; `fleet_min_version.txt` updated to >=2.1.98; human must upgrade; post-upgrade validation via `agent_review.sh` | ⚠️ P0 — upgrade pending |
 | Capybara/Mythos model release invalidates eval baselines and routing behavior | 3-4 | Model migration runbook (eval/model_migration_runbook.md); nightly researcher monitors for release | UPGRADED P2->P1 — runbook created 2026-04-05 |
 | Phase 7 billing assumes Stripe-only; 4 competing agent payment protocols may require multi-rail support | 7 | Task 7.7 evaluation; defer implementation until protocol war settles | New — monitoring |
 | MCP cost amplification via prolonged tool-calling chains (658x demonstrated) | 4 | MCP tool-call depth monitor in post-tool-use.sh (alert >15, block >25); per-run duration ceiling (5x 30-day avg); future: CI/CD gate MCP pattern rejection | New — P0, mitigated 2026-04-07 |

@@ -136,6 +136,7 @@ except Exception as e:
   "eval_count_after": $post_eval_count,
   "graph_nodes": ${graph_nodes:-0},
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

@@ -112,6 +112,7 @@ print(total)
   "eval_count_before": ${PRE_EVAL_COUNT:-292},
   "eval_count_after": $post_eval_count,
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

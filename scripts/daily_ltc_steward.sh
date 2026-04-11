@@ -88,6 +88,7 @@ finalize() {
   "test_count_after": $post_test_count,
   "compliance_violations": "$compliance_violations",
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

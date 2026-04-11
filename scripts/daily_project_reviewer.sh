@@ -89,6 +89,7 @@ finalize() {
   "stewards_needs_correction": $needs_correction,
   "escalations": $escalations,
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

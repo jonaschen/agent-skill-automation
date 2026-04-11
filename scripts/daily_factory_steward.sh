@@ -87,6 +87,7 @@ finalize() {
   "files_changed": $files_changed,
   "adopt_items_available": $adopt_count,
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF

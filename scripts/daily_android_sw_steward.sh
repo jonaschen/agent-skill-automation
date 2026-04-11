@@ -85,6 +85,7 @@ finalize() {
   "test_count_before": ${PRE_TEST_COUNT:-0},
   "test_count_after": $post_test_count,
   "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
   "exit_code": $exit_code
 }
 PERF_EOF
