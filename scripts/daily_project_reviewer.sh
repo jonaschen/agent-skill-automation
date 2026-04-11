@@ -2,10 +2,10 @@
 # daily_project_reviewer.sh — Cron-triggered nightly review of steward agent work
 #
 # Runs the project-reviewer agent to assess the quality and direction of
-# tonight's android-sw-steward, arm-mrs-steward, and bsp-knowledge-steward runs.
-# Writes feedback reviews and steering notes for the next session.
+# tonight's android-sw-steward, arm-mrs-steward, bsp-knowledge-steward, and
+# ltc-steward runs. Writes feedback reviews and steering notes for the next session.
 #
-# Runs at 6am — after all three stewards finish (3am, 4am, 5am).
+# Runs at 7am — after all stewards finish (3-6am nightly, LTC 8am-6pm daily).
 #
 # Usage: Called by cron, or manually: ./scripts/daily_project_reviewer.sh
 
@@ -117,12 +117,13 @@ echo "--- Review All Three Stewards ---" >> "$LOG_FILE"
 
 Execute a review session for today's steward runs ($DATE):
 
-For each of the three stewards (android-sw, arm-mrs, bsp-knowledge):
-1. Read their log: logs/{android-sw,arm-mrs,bsp-knowledge}-${DATE}.log
-2. Read their perf JSON: logs/performance/{android-sw,arm-mrs,bsp-knowledge}-${DATE}.json
+For each of the four stewards (android-sw, arm-mrs, bsp-knowledge, ltc):
+1. Read their log: logs/{android-sw,arm-mrs,bsp-knowledge,ltc}-${DATE}.log
+2. Read their perf JSON: logs/performance/{android-sw,arm-mrs,bsp-knowledge,ltc}-${DATE}.json
 3. Go to the target repo, run 'git log --oneline -5' and 'git diff HEAD~1' to see actual changes
 4. Read the target repo's ROADMAP.md and CLAUDE.md for alignment check
 5. Assess: correctness, alignment with ROADMAP, meaningful progress, risks, next priorities
+Note: LTC steward runs multiple times daily — review the previous day's logs if the reviewer runs at 7am before LTC's first session.
 
 Then:
 6. Write a structured review to knowledge_base/steward-reviews/${DATE}.md with per-steward verdicts (on-track / needs-correction / blocked), findings, and advice
@@ -205,6 +206,7 @@ NOTES_EOF
   propagate_steering "ARM MRS" "/home/jonas/arm-mrs-2025-03-aarchmrs" "$REVIEW_FILE" "$LOG_FILE" || true
   propagate_steering "BSP Knowledge" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "$REVIEW_FILE" "$LOG_FILE" || true
   propagate_steering "Android-SW" "/home/jonas/gemini-home/Android-Software" "$REVIEW_FILE" "$LOG_FILE" || true
+  propagate_steering "LTC" "/home/jonas/gemini-home/long-term-care-expert" "$REVIEW_FILE" "$LOG_FILE" || true
 fi
 
 # Performance JSON, log footer, and cleanup handled by finalize() trap

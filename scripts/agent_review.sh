@@ -3,11 +3,12 @@
 #
 # Summarizes recent performance of:
 #   1. factory-steward (12pm/5pm/9pm daily)
-#   2. agentic-ai-researcher (2am daily)
-#   3. android-sw-steward (3am daily)
-#   4. arm-mrs-steward (4am daily)
-#   5. bsp-knowledge-steward (5am daily)
-#   6. project-reviewer (7am daily)
+#   2. ltc-steward (5x weekday, 3x weekend)
+#   3. agentic-ai-researcher (2am daily)
+#   4. android-sw-steward (3am daily)
+#   5. arm-mrs-steward (4am daily)
+#   6. bsp-knowledge-steward (5am daily)
+#   7. project-reviewer (7am daily)
 #
 # Usage:
 #   ./scripts/agent_review.sh              # Last 7 days (default)
@@ -161,6 +162,13 @@ print_agent_section() {
     # Agent-specific metrics from latest perf file
     if [ -f "$LATEST_PERF" ]; then
         case "$AGENT_NAME" in
+            ltc)
+                local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local TESTS=$(grep -oP '"test_count_after"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                local COMPLIANCE=$(grep -oP '"compliance_violations"\s*:\s*"\K[^"]+' "$LATEST_PERF" 2>/dev/null || echo "?")
+                echo "  Last commits: $COMMITS | Files changed: $FILES | Tests: $TESTS | Compliance violations: $COMPLIANCE"
+                ;;
             factory)
                 local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
@@ -214,6 +222,7 @@ print_agent_section() {
 
 # Print each agent section
 print_agent_section "factory" "Factory Steward" "factory" "factory" "12pm/5pm/9pm"
+print_agent_section "ltc" "LTC Steward" "ltc" "ltc" "5x wkday, 3x weekend"
 print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2:00 AM"
 print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
 print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
@@ -229,11 +238,11 @@ TOTAL_RUNS=$(find "$PERF_DIR" -name "*.json" -newer "$PERF_DIR" -mtime -"$DAYS" 
 # Count runs from both perf JSON and log files
 TOTAL_RUNS=0
 TOTAL_LOG_ONLY=0
-LOG_PREFIXES=("factory" "sweep" "android-sw" "arm-mrs" "bsp-knowledge" "reviewer")
-PERF_PREFIXES=("factory" "researcher" "android-sw" "arm-mrs" "bsp-knowledge" "reviewer")
+LOG_PREFIXES=("factory" "ltc" "sweep" "android-sw" "arm-mrs" "bsp-knowledge" "reviewer")
+PERF_PREFIXES=("factory" "ltc" "researcher" "android-sw" "arm-mrs" "bsp-knowledge" "reviewer")
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-    for j in 0 1 2 3 4 5; do
+    for j in 0 1 2 3 4 5 6; do
         if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}-${CHECK_DATE}.json" ]; then
             TOTAL_RUNS=$((TOTAL_RUNS + 1))
         elif [ -f "$LOG_DIR/${LOG_PREFIXES[$j]}-${CHECK_DATE}.log" ]; then
@@ -242,15 +251,15 @@ for i in $(seq 0 $((DAYS - 1))); do
     done
 done
 
-echo "  Total agent runs: $TOTAL_RUNS with metrics + $TOTAL_LOG_ONLY log-only (across all 6 agents, last $DAYS days)"
-echo "  Expected runs:    $((DAYS * 6))"
+echo "  Total agent runs: $TOTAL_RUNS with metrics + $TOTAL_LOG_ONLY log-only (across all 7 agents, last $DAYS days)"
+echo "  Expected runs:    ~$((DAYS * 7)) (varies — LTC runs 5x wkday, 3x weekend)"
 echo ""
 
 # Check git activity in target repos
 echo -e "${BOLD}--- Git Activity ---${RESET}"
 echo ""
 
-for REPO_PATH in "/home/jonas/gemini-home/Android-Software" "/home/jonas/arm-mrs-2025-03-aarchmrs" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "/home/jonas/gemini-home/agent-skill-automation"; do
+for REPO_PATH in "/home/jonas/gemini-home/Android-Software" "/home/jonas/arm-mrs-2025-03-aarchmrs" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "/home/jonas/gemini-home/long-term-care-expert" "/home/jonas/gemini-home/agent-skill-automation"; do
     REPO_NAME=$(basename "$REPO_PATH")
     COMMIT_COUNT=$(cd "$REPO_PATH" && git rev-list --after="$(date -d "-${DAYS} days" +%Y-%m-%d 2>/dev/null || date -v-${DAYS}d +%Y-%m-%d)" HEAD 2>/dev/null | wc -l) || COMMIT_COUNT="?"
     echo "  $REPO_NAME: $COMMIT_COUNT commits in last $DAYS days"
