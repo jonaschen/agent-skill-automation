@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources**:
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
 - https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/
@@ -21,6 +21,11 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 -- A2A Post-Anniversary Stabilization Day 3; No New Releases; I/O 37 Days
+- **What**: A2A protocol continues post-anniversary stabilization: (1) **No new A2A spec releases or SDK updates** since v1.0.0 (Mar 12). All 5 language SDKs remain at same versions. Now 31 days since v1.0 release. (2) **No A2A v1.1 pre-announcements detected** — Google I/O (May 19-20) remains the expected venue. (3) **Third-party adoption** continues building quietly — enterprise pilot feedback presumably flowing back to TSC (Google, AWS, Microsoft, IBM, Cisco, Salesforce, SAP, ServiceNow). (4) **Google I/O 2026** now 37 days away.
+- **Significance**: Day 3 of post-anniversary stabilization. No action items for our pipeline. The 31-day gap since v1.0 is healthy stabilization — enterprise customers need time to integrate before spec changes. Continue monitoring for I/O pre-announcements.
+- **Source**: https://github.com/a2aproject/A2A
 
 ### 2026-04-11 -- A2A Post-Anniversary Stabilization Day 2; No New Releases; I/O 38 Days
 - **What**: A2A protocol continues post-anniversary stabilization: (1) **No new A2A spec releases or SDK updates** since v1.0.0 (Mar 12). All 5 language SDKs remain at same versions. (2) **Anniversary press coverage continuing** — the 150+ org milestone, triple hyperscaler integration, and enterprise production deployments continue generating third-party analysis and adoption guides. (3) **Google I/O 2026 (May 19-20)** now 38 days away — official Google Developers Blog confirms I/O will cover "agentic coding and latest Gemini model updates." A2A v1.1 or major ecosystem tooling update remains expected at I/O. (4) **ADK v1.29.0** (Apr 9) shipped with continued A2A integration — no A2A-specific changes in this release but the ADK+A2A stack remains the recommended production path.

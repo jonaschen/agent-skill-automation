@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 -- Astra Quiet Integration Phase Day 7; No New Developments; I/O 37 Days
+- **What**: Project Astra remains in quiet integration phase: (1) **No new Astra-specific features or announcements** — capabilities continue being absorbed into Gemini Live. (2) **Samsung Galaxy Glasses August 2026 launch** — now 4.2 months from consumer hardware launch. (3) **Google I/O 2026 (May 19-20)** now 37 days away. Android XR glasses hardware reveal expected as headline I/O announcement. (4) **Pre-I/O announcement window** now ~2 weeks away (late April / early May).
+- **Significance**: Day 7 of quiet phase. No new intelligence. Continue monitoring for pre-I/O hardware leaks.
+- **Source**: https://deepmind.google/models/project-astra/
 
 ### 2026-04-11 -- Astra Quiet Integration Phase Day 6; Samsung Galaxy Glasses August Launch Approaching; I/O 38 Days
 - **What**: Project Astra remains in quiet integration phase: (1) **No new Astra-specific features or announcements** — capabilities continue being absorbed into Gemini Live. (2) **Samsung Galaxy Glasses August 2026 launch** — confirmed $600-$900 price, 12MP camera, Android XR, Gemini AI integration. Now 4.3 months from consumer hardware launch. (3) **Google I/O 2026 (May 19-20)** now 38 days away — official blog confirms "agentic coding and latest Gemini model updates." Android XR glasses hardware reveal expected as a headline I/O announcement. (4) **Pre-I/O announcement window** typically opens 2-3 weeks before event (late April / early May) — watch for hardware renders or spec leaks.

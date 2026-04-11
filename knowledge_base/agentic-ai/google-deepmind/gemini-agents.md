@@ -1,8 +1,9 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases
+- https://ai.google.dev/gemini-api/docs/changelog
 - https://releasebot.io/updates/google/gemini-cli
 - https://github.com/google-gemini/gemini-cli/releases
 - https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tooling-updates/
@@ -31,6 +32,11 @@
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 -- Gemini CLI v0.39.0-nightly.20260411 Released; Stability and Performance Fixes; Gemini API Unchanged; I/O 37 Days Away
+- **What**: One new nightly build since last sweep: (1) **Gemini CLI v0.39.0-nightly.20260411** (Apr 11) — stability-focused release with: **UTF-8 encoding fixes for error messages** (internationalization improvement), **memory leak fix via listener cleanup** (addresses resource leaks in long-running sessions), **OOM prevention on large output streams** (guards against crashes when agents produce very large outputs), **strategic re-evaluation guidance added to system prompts** (improves agent decision-making on multi-step tasks), **Windows sandbox initialization optimization via native ACL application** (faster sandbox startup on Windows), **keytar→@github/keytar migration** (updated credential storage dependency), **audio MIME normalization and validation in file reads** (improved audio handling). (2) **Gemini API changelog** — still no new entries after April 2. Now **10 days without API changes**. (3) **Stable channel** remains v0.37.1 (Apr 9). (4) **Google I/O 2026 (May 19-20)** now 37 days away.
+- **Significance**: This is a pure stability/hardening release — no new features, but important quality fixes. The **memory leak fix via listener cleanup** is the most impactful change for production use, as it addresses resource leaks that accumulate during long-running agent sessions (a problem first identified in Claude Code's MCP connections at v2.1.97). The **OOM prevention** guards against a practical failure mode when agents generate very large tool outputs. The **Windows sandbox optimization via native ACL** improves the developer experience on Windows, the second-largest platform. The **10-day API changelog silence** deepens the pre-I/O freeze pattern. Combined with ADK's double release on Apr 9 and then silence, the entire Google AI developer stack appears frozen for I/O preparation.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases
 
 ### 2026-04-11 -- Gemini CLI v0.37.1 Stable Released; v0.39.0-nightly.20260410 Adds Linux Sandbox Path Refactor, Unified Subagent Invocation, OAuth Memory Leak Fix; Gemini API Unchanged; I/O 38 Days Away
 - **What**: Three developments since last sweep: (1) **Gemini CLI v0.37.1 stable** released April 9, 2026 — a patch release to the v0.37.0 stable branch. Full changelog compares v0.37.0 to v0.37.1. (2) **Gemini CLI v0.39.0-nightly.20260410** (Apr 10) — refactored **path resolution for Linux sandboxes** (improving sandbox reliability), **unified subagent tool invocation** (single code path for all subagent tool calls — reduces maintenance burden and behavioral inconsistencies), **explicit git identity environment variables** to prevent sandbox errors during git operations, **fixed memory leaks in OAuth flows**, and improved **retry delay handling for 503 errors**. (3) **Gemini API changelog** — no new entries after April 2. (4) **Google I/O 2026 (May 19-20)** now 38 days away. Official Google Developers Blog confirms I/O will cover "agentic coding and the latest Gemini model updates." (5) **No Gemini 4 model confirmed** — no official model by that name in API catalogs. Predictions center on 2M+ token context, world model capabilities, and unified multimodal generation. If historical patterns hold, a preview at I/O with wider rollout late 2026/early 2027.

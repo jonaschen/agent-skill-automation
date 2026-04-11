@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 -- Computer Use: Cowork GA Confirmed with Task Scheduling; Still Research Preview for Automation
+- **What**: No new Computer Use-specific announcements since April 10. Status update: (1) **Claude Cowork is now generally available** on macOS and Windows in the Claude Desktop app — the primary consumer surface for Computer Use. Cowork includes expanded analytics, OpenTelemetry support, and RBAC for Enterprise plans. (2) **Task scheduling** — users can create both recurring and on-demand tasks in Cowork, enabling scheduled desktop automation (e.g., "every Monday morning, open Jira and create the sprint summary"). (3) **Customize section** in Claude Desktop groups skills, plugins, and connectors. (4) **Computer Use capabilities**: open apps, control keyboard/mouse, use service connectors (Slack, Google Calendar), pairs with Dispatch for phone-to-desktop delegation. (5) **Computer Use remains in research preview** for Pro/Max subscribers. NOT available in Managed Agents or via the standard API (`computer_20250124` tool exists but is not promoted for GA use). (6) **No timeline for GA**. (7) **Haiku 3 retirement in 7 days** (April 19) does not affect Computer Use — it runs on Opus 4.6/Sonnet 4.6.
+- **Significance**: Cowork GA with task scheduling is the most significant Computer Use milestone since the Mac/Windows launches. Scheduled tasks create persistent automation — this is Anthropic's consumer answer to cron jobs. However, the research preview label and absence from Managed Agents confirm Computer Use is not yet ready for production developer workflows. For our pipeline: no action items. Computer Use remains a consumer feature.
+- **Source**: https://releasebot.io/updates/anthropic, https://www.scoophike.com/technology/anthropic-claude-computer-use-windows/
 
 ### 2026-04-11 -- Computer Use: No New Developments; Holding Pattern Continues
 - **What**: No new Computer Use announcements since April 10. Feature continues in research preview for Pro/Max subscribers on macOS and Windows. No change in API-level availability (`computer_20250124` tool). Managed Agents still does NOT include Computer Use. No public timeline for GA. Dispatch (phone-to-desktop delegation) continues operational on both platforms.

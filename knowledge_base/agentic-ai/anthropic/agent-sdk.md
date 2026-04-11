@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -18,9 +18,14 @@
 
 ## Overview
 
-The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 2, 2026, Python is at v0.1.54 and TypeScript is at v0.2.90. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
+The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 12, 2026, Python is at v0.1.58 and TypeScript is at v0.2.92+. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 — Agent SDK: No New Releases; Python v0.1.58 / TypeScript v0.2.92+ Remain Current
+- **What**: No new Agent SDK releases since v0.1.58 (April 9). Python SDK remains at v0.1.58 (bundled CLI v2.1.97). TypeScript SDK confirmed at v0.2.92+. The cross-user prompt caching feature (`exclude_dynamic_sections`) from v0.1.57 remains the most recent significant addition. Claude Code v2.1.101 was released but the Agent SDK has not yet been updated to bundle it — expect a v0.1.59 soon to pick up the v2.1.101 security fixes (command injection in `which`, memory leak, `permissions.deny` override). The `get_context_usage()` method and `typing.Annotated` per-parameter descriptions (from v0.1.56) continue as the latest API additions. Agent SDK still requires Python 3.10+. MIT licensed.
+- **Significance**: The SDK is in a stable period following the April 9 flurry. The gap between Claude Code v2.1.101 and bundled CLI v2.1.97 means SDK users are 4 versions behind on security fixes. For our pipeline: no action needed until v0.1.59 ships with the v2.1.101 bundle.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://pypi.org/project/claude-agent-sdk/
 
 ### 2026-04-11 — Agent SDK Python v0.1.57-58: Cross-User Prompt Caching, Auto Permission Mode, Thinking Fix
 - **What**: Two Python SDK releases on April 9: (1) **v0.1.57** — three notable changes: (a) **Cross-user prompt caching** via `exclude_dynamic_sections` option on `SystemPromptPreset` — moves per-user dynamic sections (working directory, memory, git status) out of the system prompt, enabling cross-user prompt cache hits. This is a significant cost reduction for multi-user Agent SDK deployments where the system prompt is identical except for user-specific context. (b) **Auto permission mode** — added `"auto"` to the `PermissionMode` type, bringing Python SDK to parity with TypeScript SDK and CLI v2.1.90+. The `auto` mode lets the agent choose permission level based on context. (c) **Thinking configuration fix** — `thinking={"type": "adaptive"}` was incorrectly mapping to `--max-thinking-tokens 32000` instead of `--thinking adaptive`. Similarly `disabled` now uses `--thinking disabled` instead of `--max-thinking-tokens 0`. This aligns Python SDK with TypeScript SDK behavior. Bundled CLI updated to v2.1.96. (2) **v0.1.58** — bundled CLI updated to v2.1.97 (Focus view, MCP leak fix, permission hardening).

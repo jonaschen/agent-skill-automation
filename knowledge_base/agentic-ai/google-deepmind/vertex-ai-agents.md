@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-11
+**Last updated**: 2026-04-12
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-12 -- Vertex AI Stabilization Day 9; "AI Applications" Rename Confirmed in Docs; No New Releases; I/O 37 Days
+- **What**: Vertex AI continues deepest pre-I/O stabilization: (1) **Vertex AI GenAI release notes** — no entries after April 6 (RAG Engine Metadata Search). Now **6 days without GenAI releases**. (2) **Agent Builder release notes** — still no entries after February 18 (Code Execution GA), now **53 days without Agent Builder-specific releases**. (3) **"AI Applications" rename confirmed** in official documentation — the product name change from "Agent Builder" to "AI Applications" is now reflected in console, documentation, and marketing materials. Product functionality and API endpoints unchanged. (4) **Google I/O 2026** now 37 days away — the 53-day Agent Builder silence plus rename makes a major platform relaunch at I/O near-certain.
+- **Significance**: Day 9 of deep stabilization. The official documentation now consistently uses "AI Applications" instead of "Agent Builder," confirming this is not a rumor but a completed rebrand. The 53-day gap is the longest ever for this product line. No action items — continue monitoring for I/O.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes
 
 ### 2026-04-11 -- Vertex AI Stabilization Day 8; RAG Engine Metadata Search (Apr 6) Confirmed; "AI Applications" Rename Progressing; No New Releases Since Apr 6; I/O 38 Days
 - **What**: Vertex AI continues deep pre-I/O stabilization: (1) **Vertex AI GenAI release notes** — last entry is April 6 (RAG Engine Metadata Search, enabling schema-based metadata filtering within RAG corpus resources during context retrieval). Eight days without new Vertex AI releases if counting from Apr 3 (RAG Engine Serverless), five days from Apr 6. (2) **Agent Builder release notes** — still no entries after February 18 (Code Execution GA), now **52 days without Agent Builder-specific releases**. (3) **"AI Applications" rename confirmed** across documentation — Vertex AI Agent Builder product has been renamed to "AI Applications" in console, documentation, and marketing. Product functionality and endpoints unchanged. (4) **ADK v1.29.0** (Apr 9) shipped with continued Vertex AI Agent Engine compatibility — EnvironmentToolset and auth improvements available for Agent Engine-deployed agents. (5) **Google I/O 2026 (May 19-20)** now 38 days away — 52-day Agent Builder silence plus rename strongly suggests a major platform relaunch at I/O under the "AI Applications" brand.
