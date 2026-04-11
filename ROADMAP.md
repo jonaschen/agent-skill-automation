@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-11: Phase 4 in progress. 2026-04-11 ADOPT items implemented (fleet_min_version→2.1.98, thinking_mode in all 7 perf JSONs, ROADMAP design notes for P2/P3 items). Fleet version BLOCKER: running v2.1.87, minimum v2.1.98 — human upgrade pending. Security: PASS. Changeling: 8/8 PASS. Effort monitoring (day 2/3, Apr 9-12): trending stable. Eval expansion: 38/50 real-world log entries. Countdowns: Haiku 3 retirement 8d (Apr 19), 1M context beta sunset 19d (Apr 30), Google I/O 38d (May 19-20), Phase 4 deadline 28d (May 9).**
+**Status as of 2026-04-11: Phase 4 in progress. Metacharacter detection added to cmd_chain_monitor.sh (detect-only, binary-level allowlist, 30-day baseline started). Effort monitoring day 2/3 interim check: 5/6 agents stable/improved, android-sw +23% (within variance), 0 cost ceiling alerts — plan to close window Apr 12. Fleet version BLOCKER: running v2.1.87, minimum v2.1.98 — human upgrade pending. Security: PASS. Changeling: 8/8 PASS. Eval expansion: 38/50 real-world log entries. Countdowns: Haiku 3 retirement 8d (Apr 19), 1M context beta sunset 19d (Apr 30), Google I/O 38d (May 19-20), Phase 4 deadline 28d (May 9).**
 
 ---
 
@@ -233,7 +233,7 @@ SKILL.md files from natural language requirements.
 - [x] **Prototype collision audit**: Grepped `.claude/` configs for JS prototype property names (toString, valueOf, hasOwnProperty, constructor, __proto__). Clean — zero matches. Closes audit gap from v2.1.97 changelog — P0 ✅ 2026-04-10
 - [x] **Fleet version check**: Created `scripts/lib/check_fleet_version.sh` + `scripts/lib/fleet_min_version.txt` (>=2.1.97). Sourced from all 6 daily scripts. Warns on version mismatch, never blocks. Picks up MCP memory leak fix, 429 retry fix, and permission hardening — P1 ✅ 2026-04-10
 - [x] **Fleet minimum version bump to >=2.1.98**: Updated `fleet_min_version.txt`. v2.1.98 adds PID namespace isolation and compound command hardening. Human upgrade pending — P0 ✅ 2026-04-11
-- [ ] **Metacharacter pattern detection**: Add detect-only metacharacter pattern detection to `cmd_chain_monitor.sh`. Scope: Claude-generated Bash tool inputs only (not our scripts). Initial allowlist seeded from known-safe patterns (`grep | head`, `git log | sort`, `jq | wc`). Logs structured alerts to `logs/security/metachar_alert.jsonl`. Start 30-day baseline for Phase 5.5 PreToolUse allowlist calibration — P2
+- [x] **Metacharacter pattern detection**: Added detect-only metacharacter pattern detection to `cmd_chain_monitor.sh`. Scope: Claude-generated Bash tool inputs. Binary-level allowlist (60+ safe binaries) — each command in a chain is checked; if ALL are safe, logged as "safe", otherwise "advisory". Logs structured JSON alerts to `logs/security/metachar_alert.jsonl`. METACHAR_MODE env var supports future "block" mode. 30-day baseline for Phase 5.5 PreToolUse allowlist calibration started ✅ 2026-04-11
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
