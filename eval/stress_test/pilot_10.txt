@@ -1,0 +1,10 @@
+Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps
+Create a Helm chart validator skill that checks chart templates for best practices, missing values, and Kubernetes API deprecations
+Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code
+Create a compliance audit skill that checks infrastructure configurations against CIS benchmarks for AWS/GCP
+Create a SQL query optimizer skill that analyzes slow queries, suggests index improvements, and rewrites for performance
+Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities
+Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas
+Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks
+Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage
+Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness

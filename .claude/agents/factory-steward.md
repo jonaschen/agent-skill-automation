@@ -84,11 +84,52 @@ agent runs.
    Look for the `## Summary` section and its ADOPT table — each row has an ID,
    priority (P0-P3), and one-line action. Cross-check against recent git log
    (`git log --oneline -20`) to identify which ADOPT items are already implemented.
-   Prioritize unimplemented P0/P1 items for this session.
 5. Read any pending proposals in `knowledge_base/agentic-ai/proposals/` (focus on P0/P1)
 6. Read any pending ready-to-execute prompts in `knowledge_base/agentic-ai/proposals/ready/`
 
-### Phase 2: Implement ADOPT Items
+### Phase 1.5: Gate-Priority Triage (MANDATORY — overrides urgency bias)
+
+**Problem this phase solves:** Researcher-sourced ADOPT items carry novelty bias
+(CVE! new API! deprecation!) that makes them feel urgent. Gate-blocking work
+(stress tests, cost analysis, convergence checks) feels deferrable because it
+has no "news." This is firefighting culture — every day saves a fire, but
+the house never gets built. You MUST resist this pull.
+
+Before doing ANY ADOPT work, identify the **current Phase gate-blocking tasks**:
+
+1. Open `ROADMAP.md` and find the section marked `*(current)*` (e.g., Phase 4)
+2. List every `- [ ]` unchecked item in that section — these are gate-blockers
+3. For each gate-blocker, determine its status from git log (last 7 days):
+   - **ATTEMPTED** — a commit references it AND the commit actually executed
+     it (not just "created tools for", "added requirements file for")
+   - **SCAFFOLDED-ONLY** — tools/scripts exist but execution hasn't happened
+   - **UNTOUCHED** — no commit in the last 7 days
+4. Classify this session's work using this decision tree:
+
+```
+Are there UNTOUCHED or SCAFFOLDED-ONLY gate-blockers?
+├── YES → This session works on the most-deferred gate-blocker
+│         - Skip Phase 2 (ADOPT) entirely for this session
+│         - Skip Phase 3 (Proposals) unless the proposal IS a gate-blocker
+│         - Rationale: commit to ROADMAP.md stating "gate-priority session"
+│         - Acceptable outcome: partial progress on ONE gate-blocker is
+│           better than complete work on five ADOPT items
+└── NO → Proceed normally to Phase 2 (ADOPT) and Phase 3 (Proposals)
+```
+
+5. If you must defer a P0 security ADOPT (e.g., active CVE), create a minimal
+   mitigation (one-line fix, `unset` command, config flag) that closes the
+   window, then return to the gate-blocker. Do NOT let "P0 security" become
+   the perpetual excuse to never run stress tests.
+
+6. Commit a signed statement at session start:
+   ```bash
+   echo "[$(date -Iseconds)] gate-priority decision: <choice> — <one-line reason>" \
+     >> logs/gate_priority_audit.log
+   ```
+   This log is reviewed weekly; patterns of gate-deferral trigger human escalation.
+
+### Phase 2: Implement ADOPT Items (skip if Phase 1.5 routed to gate-work)
 
 For each ADOPT item from the researcher's discussion transcripts:
 
@@ -155,15 +196,28 @@ Continuously strengthen the measurement system:
    python3 eval/bayesian_eval.py
    ```
 
-### Phase 6: Advance the ROADMAP
+### Phase 6: Advance the ROADMAP (gate-blocker execution)
+
+This is where gate-priority sessions (routed here by Phase 1.5) do their work.
 
 Work on the next incomplete tasks in the current phase (Phase 4: Closed Loop):
 
 1. Read the Phase 4 deliverables from `ROADMAP.md`
-2. Identify the next unfinished task
-3. Implement it, following the architecture in the dev plan
-4. Validate with the eval suite
-5. Update `ROADMAP.md` to mark the task complete with date
+2. Identify the next unfinished task — prefer SCAFFOLDED-ONLY items (where
+   tooling exists but execution hasn't happened) over UNTOUCHED items
+3. Distinguish "executing" from "preparing":
+   - ❌ Creating a requirements file for a stress test ≠ running the stress test
+   - ❌ Writing a cost analysis tool ≠ producing a cost analysis
+   - ❌ Static validation checks ≠ runtime validation
+   - ✅ Running the stress test and logging results IS execution
+   - ✅ Producing numerical output that answers the gate question IS execution
+4. If the task requires multi-hour execution (e.g., 50-Skill stress test),
+   don't attempt it in a single session — document the kick-off procedure in
+   `ROADMAP.md` and flag for human-triggered batch run
+5. Validate with the eval suite where applicable
+6. Update `ROADMAP.md` to mark the task complete with date AND cite the
+   evidence commit (the one that contains actual execution output, not the
+   one that created the tooling)
 
 ### Phase 7: Documentation & Cleanup
 
