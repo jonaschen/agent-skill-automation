@@ -185,18 +185,57 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
 
       GENERATE)
         echo "[GENERATE] Invoking meta-agent-factory..."
-        factory_output=$(claude --dangerously-skip-permissions -p "$requirement" 2>&1) || true
+        # CRITICAL: redirect stdin from /dev/null to prevent claude from
+        # consuming the outer while-loop's stdin (the REQUIREMENTS_FILE).
+        # Without this, claude slurps remaining lines and outer loop exits early.
+        # Capture skills/ dir state BEFORE the call so we can detect orphan dirs.
+        skills_before=$(ls -1 "$REPO_ROOT/.claude/skills/" 2>/dev/null | sort || true)
+        factory_output=$(claude --dangerously-skip-permissions -p "$requirement" < /dev/null 2>&1) || true
 
-        # Extract skill name
+        # Extract skill name from factory output (primary: explicit path mention)
         skill_name=$(echo "$factory_output" | grep -oP '(?<=skills/)[a-z0-9-]+(?=/)' | head -1 || true)
         if [ -z "$skill_name" ]; then
           skill_name=$(echo "$factory_output" | grep -oP '(?<=agents/)[a-z0-9-]+(?=\.md)' | head -1 || true)
         fi
 
+        # Fallback: diff skills/ dir for newly-created entries
+        if [ -z "$skill_name" ]; then
+          skills_after=$(ls -1 "$REPO_ROOT/.claude/skills/" 2>/dev/null | sort || true)
+          new_skills=$(comm -13 <(echo "$skills_before") <(echo "$skills_after") 2>/dev/null || true)
+          # If exactly one new skill dir, use that
+          if [ -n "$new_skills" ] && [ "$(echo "$new_skills" | wc -l)" = "1" ]; then
+            skill_name="$new_skills"
+            echo "[GENERATE] skill_name recovered from dir diff: $skill_name"
+          elif [ -n "$new_skills" ]; then
+            # Multiple new dirs — likely batch-generation artifact; clean up orphans
+            echo "[GENERATE] WARNING: factory created multiple new dirs: $(echo $new_skills | tr '\n' ' ')"
+            for orphan in $new_skills; do
+              orphan_path="$REPO_ROOT/.claude/skills/$orphan"
+              if [ -z "$(ls -A "$orphan_path" 2>/dev/null)" ]; then
+                rmdir "$orphan_path" 2>/dev/null && echo "[GENERATE] cleaned orphan empty dir: $orphan"
+              fi
+            done
+          fi
+        fi
+
+        # If we have a name but SKILL.md is empty/missing, it's an orphan stub
+        if [ -n "$skill_name" ]; then
+          skill_md="$REPO_ROOT/.claude/skills/$skill_name/SKILL.md"
+          agent_md="$REPO_ROOT/.claude/agents/$skill_name.md"
+          if [ ! -s "$skill_md" ] && [ ! -s "$agent_md" ]; then
+            echo "[GENERATE] FAILED — skill_name extracted ($skill_name) but SKILL.md/agent .md is empty/missing"
+            # Clean up empty dir if we created one
+            [ -d "$REPO_ROOT/.claude/skills/$skill_name" ] && [ -z "$(ls -A "$REPO_ROOT/.claude/skills/$skill_name" 2>/dev/null)" ] && rmdir "$REPO_ROOT/.claude/skills/$skill_name"
+            skill_name=""
+            state="REPORT_FAILURE"
+            status="FAILED_GENERATION_STUB"
+          fi
+        fi
+
         if [ -z "$skill_name" ]; then
           echo "[GENERATE] FAILED — could not extract skill name"
           state="REPORT_FAILURE"
-          status="FAILED_GENERATION"
+          status="${status:-FAILED_GENERATION}"
         else
           echo "[GENERATE] Created: $skill_name"
           log_lifecycle "$skill_name" "created" "meta-agent-factory"
@@ -257,7 +296,7 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
 
         claude --dangerously-skip-permissions -p \
           "Use the autoresearch-optimizer to improve the trigger rate of $eval_target. Run one iteration only." \
-          2>/dev/null || true
+          < /dev/null 2>/dev/null || true
 
         sleep "$INTER_TEST_DELAY"
         state="VALIDATE"

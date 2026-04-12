@@ -57,7 +57,7 @@ echo ""
 if [ $DRY_RUN -eq 1 ]; then
   echo "DRY RUN — would execute:"
   echo "  1. Back up crontab → $CRONTAB_BACKUP"
-  [ $PAUSE_CRON -eq 1 ] && echo "  2. Pause all overnight agents (researcher, 3 stewards, reviewer)"
+  [ $PAUSE_CRON -eq 1 ] && echo "  2. Pause ALL daily agents (researcher, 3 stewards, reviewer, ltc, factory-steward)"
   echo "  3. nohup $SCRIPT_DIR/closed_loop.sh $PILOT_FILE > $LOG_FILE 2>&1 &"
   echo "  4. Write PID to $REPO_ROOT/logs/stress_pilot.pid"
   echo "  5. Display monitoring commands"
@@ -70,13 +70,17 @@ fi
 crontab -l > "$CRONTAB_BACKUP" 2>/dev/null || { echo "No existing crontab — nothing to pause"; PAUSE_CRON=0; }
 echo "[1/4] Crontab backed up → $CRONTAB_BACKUP"
 
-# Pause overnight agents (preserve factory-steward — pilot writes here, no conflict)
+# Pause ALL agents — including factory-steward — during the pilot.
+# Previous version kept factory-steward active under the assumption its Phase 1.5
+# triage would stand down. That didn't work: factory-steward's cron just called
+# claude -p concurrently with the pilot's claude -p, starving the pilot of quota.
+# Pilot 2026-04-12 failed because of this quota contention. Never again.
 if [ $PAUSE_CRON -eq 1 ]; then
   cat "$CRONTAB_BACKUP" \
-    | grep -v "daily_research_sweep\|daily_android_sw_steward\|daily_arm_mrs_steward\|daily_bsp_knowledge_steward\|daily_project_reviewer\|daily_ltc_steward" \
+    | grep -v "daily_research_sweep\|daily_android_sw_steward\|daily_arm_mrs_steward\|daily_bsp_knowledge_steward\|daily_project_reviewer\|daily_ltc_steward\|daily_factory_steward" \
     | crontab -
-  echo "[2/4] Paused: researcher, 3 project stewards, reviewer, ltc-steward"
-  echo "      Still active: factory-steward (5x/3x)"
+  echo "[2/4] Paused: ALL daily agents (researcher, 3 stewards, reviewer, ltc, factory)"
+  echo "      Only non-agent crons (if any) remain active"
 fi
 
 # Kick off pilot in background
