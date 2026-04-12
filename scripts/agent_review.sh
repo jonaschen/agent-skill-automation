@@ -229,6 +229,50 @@ print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
 print_agent_section "bsp-knowledge" "BSP Knowledge Steward" "bsp-knowledge" "bsp-knowledge" "5:00 AM"
 print_agent_section "reviewer" "Project Reviewer" "reviewer" "reviewer" "7:00 AM"
 
+# Fleet Version Status
+echo -e "${BOLD}--- Fleet Version Status ---${RESET}"
+echo ""
+
+FLEET_MIN_FILE="$SCRIPT_DIR/lib/fleet_min_version.txt"
+FLEET_ALERT_FILE="$LOG_DIR/security/fleet_version.jsonl"
+
+if [ -f "$FLEET_MIN_FILE" ]; then
+    FLEET_MIN=$(cat "$FLEET_MIN_FILE" | tr -d '[:space:]')
+    # Get current running version
+    FLEET_CURRENT=$(claude --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1 || echo "unknown")
+    if [ "$FLEET_CURRENT" = "unknown" ]; then
+        echo -e "  Current:  ${YELLOW}unknown (could not detect)${RESET}"
+        echo "  Required: >= $FLEET_MIN"
+    else
+        FLEET_OLDEST=$(printf '%s\n%s\n' "$FLEET_MIN" "$FLEET_CURRENT" | sort -V | head -1)
+        if [ "$FLEET_OLDEST" = "$FLEET_MIN" ]; then
+            echo -e "  Current:  ${GREEN}$FLEET_CURRENT${RESET}"
+            echo "  Required: >= $FLEET_MIN"
+            echo -e "  Status:   ${GREEN}OK${RESET}"
+        else
+            # Calculate days since first escalation
+            FLEET_DAYS_SINCE=0
+            if [ -f "$FLEET_ALERT_FILE" ]; then
+                FLEET_FIRST_DATE=$(head -1 "$FLEET_ALERT_FILE" 2>/dev/null | grep -oP '"timestamp"\s*:\s*"\K[0-9-]+' || echo "")
+                if [ -n "$FLEET_FIRST_DATE" ]; then
+                    FLEET_FIRST_EPOCH=$(date -d "$FLEET_FIRST_DATE" +%s 2>/dev/null || echo "0")
+                    FLEET_NOW_EPOCH=$(date +%s)
+                    if [ "$FLEET_FIRST_EPOCH" -gt 0 ]; then
+                        FLEET_DAYS_SINCE=$(( (FLEET_NOW_EPOCH - FLEET_FIRST_EPOCH) / 86400 ))
+                    fi
+                fi
+            fi
+            echo -e "  Current:  ${RED}$FLEET_CURRENT${RESET}"
+            echo "  Required: >= $FLEET_MIN"
+            echo -e "  Status:   ${RED}UPGRADE NEEDED${RESET} (${FLEET_DAYS_SINCE} days since first escalation)"
+            echo -e "  Action:   ${YELLOW}Human must run: npm i -g @anthropic-ai/claude-code@latest${RESET}"
+        fi
+    fi
+else
+    echo -e "  ${YELLOW}fleet_min_version.txt not found${RESET}"
+fi
+echo ""
+
 # Summary table
 echo -e "${BOLD}--- Weekly Summary ---${RESET}"
 echo ""

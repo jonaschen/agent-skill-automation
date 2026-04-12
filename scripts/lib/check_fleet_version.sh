@@ -39,10 +39,35 @@ check_fleet_version() {
   local oldest
   oldest=$(printf '%s\n%s\n' "$min_version" "$running_version" | sort -V | head -1)
 
+  # Ensure security alert directory exists
+  local alert_dir="$(cd "$lib_dir/../.." && pwd)/logs/security"
+  mkdir -p "$alert_dir"
+  local alert_file="$alert_dir/fleet_version.jsonl"
+
   if [ "$oldest" = "$min_version" ]; then
     echo "[FLEET-VERSION] running=$running_version minimum=$min_version status=OK" >> "$log_file"
   else
     echo "[FLEET-VERSION] running=$running_version minimum=$min_version status=WARN — version below minimum!" >> "$log_file"
+    # Write structured JSON alert for dashboard consumption
+    local ts
+    ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    local agent_name="${CLAUDE_AGENT_NAME:-unknown}"
+    # Calculate days since first escalation from alert file
+    local first_escalation_date=""
+    local days_since_escalation=0
+    if [ -f "$alert_file" ]; then
+      first_escalation_date=$(head -1 "$alert_file" 2>/dev/null | grep -oP '"timestamp"\s*:\s*"\K[0-9-]+' || echo "")
+    fi
+    if [ -n "$first_escalation_date" ]; then
+      local first_epoch
+      local now_epoch
+      first_epoch=$(date -d "$first_escalation_date" +%s 2>/dev/null || echo "0")
+      now_epoch=$(date +%s)
+      if [ "$first_epoch" -gt 0 ]; then
+        days_since_escalation=$(( (now_epoch - first_epoch) / 86400 ))
+      fi
+    fi
+    echo "{\"timestamp\":\"$ts\",\"agent\":\"$agent_name\",\"current_version\":\"$running_version\",\"min_required\":\"$min_version\",\"status\":\"MISMATCH\",\"days_since_escalation\":$days_since_escalation}" >> "$alert_file"
   fi
 
   return 0  # Never block — warning only
