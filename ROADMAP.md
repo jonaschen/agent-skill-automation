@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-12: Phase 4 in progress. Fleet version BLOCKER: running v2.1.87, minimum v2.1.101 — human upgrade pending. Researcher lazy provisioning implemented (GitHub release pre-flight, skip on quiet days, 3-skip safety cap). Session state logging live. ROADMAP design notes applied (credential isolation, external session state, hybrid scheduling). Security: PASS. Changeling: 8/8 PASS. Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
+**Status as of 2026-04-12: Phase 4 in progress. Fleet version OK: running v2.1.104 (≥2.1.101). All 7 agents 100% success rate (40 runs, 7 days). LTC steward newly scheduled (2 days of data). Researcher lazy provisioning live. Session state logging live. ROADMAP design notes applied. Security: PASS. Changeling: 8/8 PASS. Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
 
 ---
 
