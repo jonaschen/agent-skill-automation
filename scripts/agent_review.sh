@@ -239,7 +239,8 @@ FLEET_ALERT_FILE="$LOG_DIR/security/fleet_version.jsonl"
 if [ -f "$FLEET_MIN_FILE" ]; then
     FLEET_MIN=$(cat "$FLEET_MIN_FILE" | tr -d '[:space:]')
     # Get current running version
-    FLEET_CURRENT=$(claude --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1 || echo "unknown")
+    CLAUDE_BIN="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
+    FLEET_CURRENT=$("$CLAUDE_BIN" --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1 || claude --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1 || echo "unknown")
     if [ "$FLEET_CURRENT" = "unknown" ]; then
         echo -e "  Current:  ${YELLOW}unknown (could not detect)${RESET}"
         echo "  Required: >= $FLEET_MIN"
