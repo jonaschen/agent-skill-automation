@@ -28,6 +28,7 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 # Source shared libraries
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 source "$SCRIPT_DIR/lib/check_fleet_version.sh"
+source "$SCRIPT_DIR/lib/session_log.sh"
 
 # CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
 unset TERMINAL
@@ -56,6 +57,9 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+
+# Initialize session logging
+init_session_log "factory" "$REPO_ROOT"
 
 # Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
@@ -92,6 +96,9 @@ finalize() {
 }
 PERF_EOF
 
+  # Log session end
+  log_session_end "$exit_code" "$duration"
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   check_cost_ceiling "factory" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
@@ -106,10 +113,12 @@ trap finalize EXIT INT TERM HUP
 
 echo "=== Factory Steward Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+log_session_start "main"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
+log_task_start "adopt-items"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 (cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
@@ -126,11 +135,13 @@ Execute a factory improvement session:
 
 Focus on 1-2 high-impact improvements. Quality over quantity.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] ADOPT session complete" >> "$LOG_FILE"
+log_task_complete "adopt-items"
 
 (recover_uncommitted "$REPO_ROOT" "adopt-items" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
+log_task_start "performance-review"
 (cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
@@ -146,6 +157,7 @@ Run a performance review and tuning session:
 
 Be conservative — only change agent scripts/definitions when there's clear evidence of a problem.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Performance review session complete" >> "$LOG_FILE"
+log_task_complete "performance-review"
 
 (recover_uncommitted "$REPO_ROOT" "perf-tuning" "$LOG_FILE") || true
 

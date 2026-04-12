@@ -18,6 +18,52 @@ fi
 
 echo "🚀 Pre-deploy check: $SKILL_PATH"
 
+# --- Dependency Lock Check (Python) ---
+check_python_deps() {
+  if [ -f "$REPO_ROOT/requirements.txt" ]; then
+    local diff_output
+    diff_output=$(pip freeze 2>/dev/null | diff - "$REPO_ROOT/requirements.txt" 2>&1) || true
+    if [ -n "$diff_output" ]; then
+      echo "[DEPLOY-GATE] FAIL: Python dependencies differ from requirements.txt"
+      echo "[DEPLOY-GATE] Run 'pip freeze > requirements.txt' and commit the update"
+      return 1
+    fi
+    echo "[DEPLOY-GATE] PASS: Python dependencies match locked manifest"
+  else
+    echo "[DEPLOY-GATE] WARN: No requirements.txt found — run 'pip freeze > requirements.txt'"
+  fi
+  return 0
+}
+
+# --- npm Audit Check (warning-only) ---
+check_npm_audit() {
+  if command -v npm >/dev/null 2>&1 && [ -f "$REPO_ROOT/package-lock.json" ]; then
+    set +e
+    npm audit --audit-level=high 2>/dev/null
+    local audit_exit=$?
+    set -e
+    if [ $audit_exit -ne 0 ]; then
+      echo "[DEPLOY-GATE] WARN: npm audit found high-severity vulnerabilities"
+    else
+      echo "[DEPLOY-GATE] PASS: npm audit clean"
+    fi
+  fi
+  return 0  # Always pass — npm audit is warning-only
+}
+
+echo "--- Dependency checks ---"
+set +e
+check_python_deps
+PYTHON_DEPS_EXIT=$?
+set -e
+
+if [ "$PYTHON_DEPS_EXIT" -ne 0 ]; then
+  echo "Dependency lock mismatch. Update requirements.txt before deployment."
+  exit 1
+fi
+
+check_npm_audit
+
 # --- Security Suite ---
 # Run all security checks via the unified aggregator.
 SECURITY_SUITE="$REPO_ROOT/eval/security_suite.sh"

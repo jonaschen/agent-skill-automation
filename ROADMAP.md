@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-12: Phase 4 in progress. Fleet version BLOCKER: running v2.1.87, minimum v2.1.101 — human upgrade pending (bumped from v2.1.98; 3 additional security fixes). Fleet version check now writes structured JSON alerts + dashboard integration. Post-I/O response playbook created (6-category announcement matrix). Security: PASS. Changeling: 8/8 PASS. Eval expansion: 38/50 real-world log entries (below 50 threshold). Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
+**Status as of 2026-04-12: Phase 4 in progress. Fleet version BLOCKER: running v2.1.87, minimum v2.1.101 — human upgrade pending. Session state logging (JSONL) integrated into all 7 daily scripts. Dependency pinning gate implemented in pre-deploy.sh. Security: PASS. Changeling: 8/8 PASS. Eval expansion: blocked (no skill usage logs found). Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
 
 ---
 
@@ -204,6 +204,7 @@ SKILL.md files from natural language requirements.
 - [x] **Thinking mode tracking**: Added `thinking_mode` field to all 7 daily script performance JSONs. Records `"default"` for current fleet config. Supports debugging future effort/duration anomalies if thinking configuration changes ✅ 2026-04-11
 - [x] **Effort monitoring window closed**: 3-day analysis (Apr 9-12) complete. Results: 5/6 agents stable/improved (factory -16%, researcher -7%, arm-mrs -7%, bsp -35%, reviewer -26%), android-sw +23% (within normal day-to-day variance, not actionable), 0 cost ceiling alerts. No effort overrides needed — default thinking mode sufficient for all agents ✅ 2026-04-11
 - [x] **Workflow convergence pattern note**: Created `knowledge_base/agentic-ai/evaluations/workflow-state-convergence.md` — three-way convergence analysis (ADK lazy scan dedup, Vercel WDK deterministic replay, our state machine skip). Design reference for Phase 5.3.2 task-level workflow state tracking ✅ 2026-04-11
+- [x] **Session state logging**: Created `scripts/lib/session_log.sh` — shared library with `log_event(type, payload)` writing append-only JSONL to `logs/sessions/{agent}-{date}.jsonl`. Event types: SESSION_START, TASK_START, TASK_COMPLETE, TASK_SKIP, ERROR, CHECKPOINT, SESSION_END. Integrated into all 7 daily scripts (factory, researcher, android-sw, arm-mrs, bsp-knowledge, ltc, reviewer). 30-day retention. Foundation for Phase 5.3.2 task-level workflow state tracking. Crash-recovery logic deferred to Phase 5 ✅ 2026-04-12
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04

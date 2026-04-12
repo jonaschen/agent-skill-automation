@@ -24,6 +24,7 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 # Source shared libraries
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 source "$SCRIPT_DIR/lib/check_fleet_version.sh"
+source "$SCRIPT_DIR/lib/session_log.sh"
 
 # CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
 unset TERMINAL
@@ -52,6 +53,7 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+init_session_log "bsp-knowledge" "$REPO_ROOT"
 
 # Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$TARGET_REPO" && git rev-parse HEAD 2>/dev/null || echo "unknown")
@@ -141,6 +143,8 @@ except Exception as e:
 }
 PERF_EOF
 
+  log_session_end "$exit_code" "$duration"
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   check_cost_ceiling "bsp-knowledge" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
@@ -156,6 +160,7 @@ trap finalize EXIT INT TERM HUP
 echo "=== BSP Knowledge Steward Session — $DATE ===" >> "$LOG_FILE"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+log_session_start "steward"
 
 # Pre-flight: check target repo for deprecated model references (warning-only, .claude/ scoped)
 echo "" >> "$LOG_FILE"
@@ -168,6 +173,7 @@ fi
 
 echo "" >> "$LOG_FILE"
 echo "--- Phase 3/4 Work ---" >> "$LOG_FILE"
+log_task_start "phase-work"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
 
@@ -183,11 +189,13 @@ Execute a stewardship session:
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
 At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Phase work session complete" >> "$LOG_FILE"
+log_task_complete "phase-work"
 
 (recover_uncommitted "$TARGET_REPO" "phase-work" "$LOG_FILE") || true
 
 echo "" >> "$LOG_FILE"
 echo "--- Research & Knowledge Graph Expansion ---" >> "$LOG_FILE"
+log_task_start "research"
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the bsp-knowledge-steward agent. Read $REPO_ROOT/.claude/agents/bsp-knowledge-steward.md for your full instructions.
 
 Run a research session:
@@ -201,6 +209,7 @@ Run a research session:
 
 Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Research session complete" >> "$LOG_FILE"
+log_task_complete "research"
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 

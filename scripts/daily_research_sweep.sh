@@ -23,6 +23,7 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 # Source shared libraries
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 source "$SCRIPT_DIR/lib/check_fleet_version.sh"
+source "$SCRIPT_DIR/lib/session_log.sh"
 
 # CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
 unset TERMINAL
@@ -51,6 +52,7 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+init_session_log "researcher" "$REPO_ROOT"
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
@@ -88,6 +90,8 @@ finalize() {
 }
 PERF_EOF
 
+  log_session_end "$exit_code" "$duration"
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   check_cost_ceiling "researcher" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
@@ -103,6 +107,7 @@ trap finalize EXIT INT TERM HUP
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+log_session_start "research-sweep"
 
 # Recover any uncommitted changes from a previous crashed session
 recover_uncommitted "$REPO_ROOT" "researcher-previous" "$LOG_FILE"
@@ -112,6 +117,7 @@ cd "$REPO_ROOT"
 
 echo "" >> "$LOG_FILE"
 echo "--- Anthropic Track ---" >> "$LOG_FILE"
+log_task_start "anthropic-track"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 
@@ -121,9 +127,11 @@ Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, 
 3. Write or append findings to the correct file under knowledge_base/agentic-ai/anthropic/
 4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Anthropic track complete" >> "$LOG_FILE"
+log_task_complete "anthropic-track"
 
 echo "" >> "$LOG_FILE"
 echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
+log_task_start "google-deepmind-track"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 
 Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
@@ -132,18 +140,22 @@ Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Prot
 3. Write or append findings to the correct file under knowledge_base/agentic-ai/google-deepmind/
 4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Google/DeepMind track complete" >> "$LOG_FILE"
+log_task_complete "google-deepmind-track"
 
 echo "" >> "$LOG_FILE"
 echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
+log_task_start "sweep-report"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 
 1. Read all files in knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
 2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
 3. Update knowledge_base/agentic-ai/INDEX.md with today's date for all updated topics") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Sweep report complete" >> "$LOG_FILE"
+log_task_complete "sweep-report"
 
 echo "" >> "$LOG_FILE"
 echo "--- Deep Analysis (L2-L3) ---" >> "$LOG_FILE"
+log_task_start "deep-analysis"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
 Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 
@@ -154,9 +166,11 @@ Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 5. Flag any threats to our architecture (breaking changes, competing frameworks, security issues)
 6. Write analysis to knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Deep analysis complete" >> "$LOG_FILE"
+log_task_complete "deep-analysis"
 
 echo "" >> "$LOG_FILE"
 echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
+log_task_start "discussion"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
 
 First, read these files to understand the context:
@@ -183,9 +197,11 @@ Write the full discussion transcript and summary to knowledge_base/agentic-ai/di
 
 Format the file with clear round headers, speaker labels, and the final ADOPT/DEFER/REJECT table.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Discussion complete" >> "$LOG_FILE"
+log_task_complete "discussion"
 
 echo "" >> "$LOG_FILE"
 echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
+log_task_start "strategic-planning"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
 Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
 
@@ -198,9 +214,11 @@ Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
 7. Write any needed skill update suggestions to knowledge_base/agentic-ai/proposals/skill-updates-$(date +%Y-%m-%d).md
 8. Focus on actionable, specific proposals with clear priority (P0-P3)") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Strategic planning complete" >> "$LOG_FILE"
+log_task_complete "strategic-planning"
 
 echo "" >> "$LOG_FILE"
 echo "--- Action (L5) ---" >> "$LOG_FILE"
+log_task_start "action"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2d: Action.
 Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
 
@@ -211,6 +229,7 @@ Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and sa
 5. Log all actions taken to knowledge_base/agentic-ai/actions/$(date +%Y-%m-%d).md
 6. Git add all changed files and commit with message 'research: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Action phase complete" >> "$LOG_FILE"
+log_task_complete "action"
 
 # Performance JSON, log footer, and cleanup handled by finalize() trap
 exit 0

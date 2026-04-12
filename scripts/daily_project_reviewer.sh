@@ -26,6 +26,7 @@ mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR" "$REPO_ROOT/knowledge_base/s
 # Source shared libraries
 source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 source "$SCRIPT_DIR/lib/check_fleet_version.sh"
+source "$SCRIPT_DIR/lib/session_log.sh"
 
 # CVE-2026-35020 mitigation: neutralize TERMINAL env var injection (CVSS 8.4)
 unset TERMINAL
@@ -54,6 +55,7 @@ recover_uncommitted() {
 }
 
 START_TIME=$(date +%s)
+init_session_log "reviewer" "$REPO_ROOT"
 
 # Capture pre-run state (before trap setup so they're available in finalize)
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
@@ -94,6 +96,8 @@ finalize() {
 }
 PERF_EOF
 
+  log_session_end "$exit_code" "$duration"
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   check_cost_ceiling "reviewer" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
@@ -109,9 +113,11 @@ trap finalize EXIT INT TERM HUP
 echo "=== Project Reviewer Session — $DATE ===" >> "$LOG_FILE"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
+log_session_start "review"
 
 echo "" >> "$LOG_FILE"
 echo "--- Review All Four Stewards ---" >> "$LOG_FILE"
+log_task_start "steward-review"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 (cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the project-reviewer agent. Read .claude/agents/project-reviewer.md for your full instructions.
 
@@ -136,6 +142,7 @@ If a steward didn't run today (no log file), note it as 'no run' and skip.
 
 Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review: steward work assessment ${DATE}'") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Review session complete" >> "$LOG_FILE"
+log_task_complete "steward-review"
 
 (recover_uncommitted "$REPO_ROOT" "review" "$LOG_FILE") || true
 
