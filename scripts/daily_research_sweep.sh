@@ -55,6 +55,124 @@ START_TIME=$(date +%s)
 init_session_log "researcher" "$REPO_ROOT"
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
+# --- Lazy Provisioning Pre-Flight ---
+# Check GitHub releases for tracked repos before spinning up a full Claude session.
+# If no new releases since last successful sweep, write SKIP perf JSON and exit.
+# Safety: always run full session if last run had errors or if forced via FORCE_SWEEP=1.
+TRACKED_REPOS="anthropics/claude-code anthropics/anthropic-sdk-python google/A2A google/adk-python"
+
+preflight_check() {
+  # Skip pre-flight if forced
+  if [ "${FORCE_SWEEP:-0}" = "1" ]; then
+    echo "[preflight] FORCE_SWEEP=1 — skipping pre-flight check" >> "$LOG_FILE"
+    return 0  # 0 = proceed with full sweep
+  fi
+
+  # Always run if last perf JSON had non-zero exit or was a skip (prevent skip loops)
+  local last_perf
+  last_perf=$(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -1)
+  if [ -n "$last_perf" ]; then
+    local last_exit last_status
+    last_exit=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('exit_code',1))" 2>/dev/null || echo "1")
+    last_status=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('status','run'))" 2>/dev/null || echo "run")
+    if [ "$last_exit" != "0" ]; then
+      echo "[preflight] Last run had exit_code=$last_exit — forcing full sweep" >> "$LOG_FILE"
+      return 0
+    fi
+    # Get consecutive skip count
+    local skip_count
+    skip_count=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('consecutive_skips',0))" 2>/dev/null || echo "0")
+    if [ "$skip_count" -ge 3 ] 2>/dev/null; then
+      echo "[preflight] $skip_count consecutive skips — forcing full sweep to prevent silent drift" >> "$LOG_FILE"
+      return 0
+    fi
+  fi
+
+  # Get last successful sweep timestamp
+  local last_sweep_ts=""
+  for pf in $(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -5); do
+    local pf_exit pf_status
+    pf_exit=$(python3 -c "import json; d=json.load(open('$pf')); print(d.get('exit_code',1))" 2>/dev/null || echo "1")
+    pf_status=$(python3 -c "import json; d=json.load(open('$pf')); print(d.get('status','run'))" 2>/dev/null || echo "run")
+    if [ "$pf_exit" = "0" ] && [ "$pf_status" != "skip" ]; then
+      last_sweep_ts=$(python3 -c "import json; d=json.load(open('$pf')); print(d.get('date',''))" 2>/dev/null || echo "")
+      break
+    fi
+  done
+  if [ -z "$last_sweep_ts" ]; then
+    echo "[preflight] No prior successful sweep found — running full sweep" >> "$LOG_FILE"
+    return 0
+  fi
+
+  # Check each tracked repo for new releases since last sweep
+  local has_new_releases=0
+  local gh_token="${GITHUB_TOKEN:-}"
+  local auth_header=""
+  [ -n "$gh_token" ] && auth_header="Authorization: token $gh_token"
+
+  for repo in $TRACKED_REPOS; do
+    local api_url="https://api.github.com/repos/${repo}/releases?per_page=1"
+    local release_date
+    if [ -n "$auth_header" ]; then
+      release_date=$(curl -sf -H "$auth_header" "$api_url" 2>/dev/null | python3 -c "import json,sys; r=json.load(sys.stdin); print(r[0]['published_at'][:10] if r else '')" 2>/dev/null || echo "")
+    else
+      release_date=$(curl -sf "$api_url" 2>/dev/null | python3 -c "import json,sys; r=json.load(sys.stdin); print(r[0]['published_at'][:10] if r else '')" 2>/dev/null || echo "")
+    fi
+
+    if [ -z "$release_date" ]; then
+      echo "[preflight] Could not fetch releases for $repo — assuming new content" >> "$LOG_FILE"
+      has_new_releases=1
+      break
+    fi
+
+    if [[ "$release_date" > "$last_sweep_ts" ]] || [[ "$release_date" == "$last_sweep_ts" ]]; then
+      echo "[preflight] New release in $repo (released: $release_date, last sweep: $last_sweep_ts)" >> "$LOG_FILE"
+      has_new_releases=1
+      break
+    fi
+  done
+
+  if [ "$has_new_releases" = "0" ]; then
+    echo "[preflight] No new releases since $last_sweep_ts — skipping full sweep" >> "$LOG_FILE"
+    return 1  # 1 = skip
+  fi
+  return 0  # 0 = proceed
+}
+
+write_skip_perf_json() {
+  local prev_skips=0
+  local last_perf
+  last_perf=$(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -1)
+  if [ -n "$last_perf" ]; then
+    prev_skips=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('consecutive_skips',0))" 2>/dev/null || echo "0")
+  fi
+  local new_skips=$((prev_skips + 1))
+
+  cat > "$PERF_FILE" << SKIP_EOF
+{
+  "agent": "agentic-ai-researcher",
+  "date": "$DATE",
+  "duration_seconds": $(($(date +%s) - START_TIME)),
+  "status": "skip",
+  "skip_reason": "no new releases in tracked repos",
+  "consecutive_skips": $new_skips,
+  "pre_commit": "${PRE_COMMIT:-unknown}",
+  "commit": "${PRE_COMMIT:-unknown}",
+  "commits_made": 0,
+  "files_changed": 0,
+  "kb_files_updated": 0,
+  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "thinking_mode": "default",
+  "exit_code": 0
+}
+SKIP_EOF
+
+  if [ "$new_skips" -ge 3 ]; then
+    echo "[preflight] WARNING: $new_skips consecutive skips — next run will force full sweep" >> "$LOG_FILE"
+    log_error "consecutive_skips=$new_skips (threshold: 3)"
+  fi
+}
+
 # Finalize: write perf JSON and log footer on ANY exit (normal, error, or signal)
 finalize() {
   local exit_code=$?
@@ -79,6 +197,8 @@ finalize() {
   "agent": "agentic-ai-researcher",
   "date": "$DATE",
   "duration_seconds": $duration,
+  "status": "run",
+  "consecutive_skips": 0,
   "pre_commit": "${PRE_COMMIT:-unknown}",
   "commit": "$commit",
   "commits_made": $commits_made,
@@ -108,6 +228,20 @@ echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "research-sweep"
+
+# Lazy provisioning: check if there's new content to research
+log_task_start "preflight-check"
+if ! preflight_check; then
+  log_task_complete "preflight-check" "skip"
+  echo "[$(date)] Pre-flight: no new releases — skipping full sweep" >> "$LOG_FILE"
+  write_skip_perf_json
+  log_session_end "0" "$(($(date +%s) - START_TIME))"
+  # Bypass the finalize trap's perf JSON write (we already wrote it)
+  trap - EXIT INT TERM HUP
+  echo "Finished (skipped): $(date)" >> "$LOG_FILE"
+  exit 0
+fi
+log_task_complete "preflight-check" "new-releases-found"
 
 # Recover any uncommitted changes from a previous crashed session
 recover_uncommitted "$REPO_ROOT" "researcher-previous" "$LOG_FILE"

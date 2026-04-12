@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-12: Phase 4 in progress. Fleet version BLOCKER: running v2.1.87, minimum v2.1.101 — human upgrade pending. Session state logging (JSONL) integrated into all 7 daily scripts. Dependency pinning gate implemented in pre-deploy.sh. Security: PASS. Changeling: 8/8 PASS. Eval expansion: blocked (no skill usage logs found). Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
+**Status as of 2026-04-12: Phase 4 in progress. Fleet version BLOCKER: running v2.1.87, minimum v2.1.101 — human upgrade pending. Researcher lazy provisioning implemented (GitHub release pre-flight, skip on quiet days, 3-skip safety cap). Session state logging live. ROADMAP design notes applied (credential isolation, external session state, hybrid scheduling). Security: PASS. Changeling: 8/8 PASS. Countdowns: Haiku 3 retirement 7d (Apr 19), 1M context beta sunset 18d (Apr 30), Google I/O 37d (May 19-20), Phase 4 deadline 27d (May 9).**
 
 ---
 
@@ -206,6 +206,7 @@ SKILL.md files from natural language requirements.
 - [x] **Effort monitoring window closed**: 3-day analysis (Apr 9-12) complete. Results: 5/6 agents stable/improved (factory -16%, researcher -7%, arm-mrs -7%, bsp -35%, reviewer -26%), android-sw +23% (within normal day-to-day variance, not actionable), 0 cost ceiling alerts. No effort overrides needed — default thinking mode sufficient for all agents ✅ 2026-04-11
 - [x] **Workflow convergence pattern note**: Created `knowledge_base/agentic-ai/evaluations/workflow-state-convergence.md` — three-way convergence analysis (ADK lazy scan dedup, Vercel WDK deterministic replay, our state machine skip). Design reference for Phase 5.3.2 task-level workflow state tracking ✅ 2026-04-11
 - [x] **Session state logging**: Created `scripts/lib/session_log.sh` — shared library with `log_event(type, payload)` writing append-only JSONL to `logs/sessions/{agent}-{date}.jsonl`. Event types: SESSION_START, TASK_START, TASK_COMPLETE, TASK_SKIP, ERROR, CHECKPOINT, SESSION_END. Integrated into all 7 daily scripts (factory, researcher, android-sw, arm-mrs, bsp-knowledge, ltc, reviewer). 30-day retention. Foundation for Phase 5.3.2 task-level workflow state tracking. Crash-recovery logic deferred to Phase 5 ✅ 2026-04-12
+- [x] **Researcher lazy provisioning**: Added GitHub API pre-flight to `daily_research_sweep.sh` — checks tracked repos (claude-code, agent-sdk, A2A, adk-python) for new releases since last successful sweep. Skips full Claude session if no new releases; writes SKIP performance JSON with `status: "skip"` and `consecutive_skips` counter. Safety: forces full sweep after 3 consecutive skips or prior run failure. `FORCE_SWEEP=1` env var overrides. Dashboard shows skip status. Steward lazy provisioning deferred until event-driven activation exists ✅ 2026-04-12
 
 #### 4.4 Security hardening for autonomous execution
 - [x] Implement `scripts/cmd_chain_monitor.sh` — command-chain length monitor (alert >30, block >45 subcommands) ✅ 2026-04-04
@@ -283,7 +284,12 @@ SKILL.md files from natural language requirements.
 
 > **Design note (2026-04-11)**: When adopting Agent SDK for fleet execution, separate CLAUDE.md into static base (cacheable across agents) and dynamic session context (per-agent: git status, memory, date). Reference: Agent SDK `exclude_dynamic_sections` on `SystemPromptPreset`. Implementation consideration: current CLAUDE.md mixes static architecture descriptions with dynamic status — a structural split (`CLAUDE_BASE.md` + `CLAUDE_STATUS.md`) would be needed.
 
+> **Design note (2026-04-12)**: External session state design required for stateless router pattern. Managed Agents' brain-hands architecture demonstrates: stateless harness reads task state from append-only event log, invokes agents via `execute(name, input) → string`, resumes via `wake(sessionId)` + `getSession(id)`. Our topology-aware-router should adopt this pattern: read task state from external log on startup, invoke agents as tool calls, treat agent failures as retryable tool errors (not fatal), support resume from any pending task ID. Session state logging (Phase 4.3 task) establishes the event log format.
+
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
+
+> **Security requirement (2026-04-12)**: Credential isolation for Phase 5 multi-agent execution. When Phase 5 tests generated skills in sandboxes, those sandboxes must NOT inherit parent agent credentials. Reference architecture: Managed Agents' two patterns — (1) resource-bundled auth (initialize resources during setup, sandbox operates without direct credential access), (2) vault-based MCP proxy (OAuth tokens in secure vaults, accessed only via MCP proxy servers). Design document: `knowledge_base/agentic-ai/evaluations/credential-isolation-design.md`. Full implementation required for Phase 7 multi-tenant AaaS.
+
 - [ ] Write `.claude/agents/scrum-team-orchestrator.md` — PO/Dev/QA context forking, typed A2A message schema
 - [ ] Implement A2A message bus with six valid message types only (TASK_ASSIGNMENT, PARTIAL_OUTPUT, REVIEW_REQUEST, REVIEW_RESULT, ESCALATION, WATCHDOG_HALT)
 - [ ] Enforce message schema validation — untyped agent-to-agent chat is prohibited
@@ -299,6 +305,8 @@ SKILL.md files from natural language requirements.
 - [ ] Implement token velocity monitor: halt when >5,000 tokens/min (Track A) or >15,000 tokens/min (Track B)
 - [ ] Test WATCHDOG_HALT broadcast reaches all active agents and freezes task thread
 - [ ] Monitor process RSS alongside token velocity — alert on sustained >200MB/hr growth. Thresholds TBD from real Phase 5 session profiles
+
+> **Design note (2026-04-12)**: Agent classification for future hybrid scheduling (cron + event triggers). Event-reactive agents (activate on external events): `agentic-ai-researcher` (new releases), `arm-mrs-steward` (ARM spec updates), `bsp-knowledge-steward` (Linux kernel/ARM TRM releases). Schedule-driven agents (periodic autonomous work): `factory-steward` (ROADMAP advancement), `project-reviewer` (quality audits), `ltc-steward` (phase work). Hybrid agents (both): `android-sw-steward` (AOSP tracking + phase work). MCP Triggers & Events (spec expected ~June 2026) is the target transport for event-driven activation. Full design document deferred until spec draft appears.
 
 #### 5.5 Defensive architecture (Pre-Execution Reflection + HITL)
 - [ ] Implement `PreToolUse` hook: mandatory reflection gate for DESTRUCTIVE tools (Write, Edit, Bash, MCP write/delete)

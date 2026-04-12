@@ -179,7 +179,13 @@ print_agent_section() {
                 local KB_FILES=$(grep -oP '"kb_files_updated"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
                 local FILES=$(grep -oP '"files_changed"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
-                echo "  Last KB updates: $KB_FILES files | Commits: $COMMITS | Files changed: $FILES"
+                local STATUS=$(grep -oP '"status"\s*:\s*"\K[^"]+' "$LATEST_PERF" 2>/dev/null || echo "run")
+                local SKIPS=$(grep -oP '"consecutive_skips"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "0")
+                if [ "$STATUS" = "skip" ]; then
+                    echo -e "  ${YELLOW}SKIPPED${RESET} (no new releases) | Consecutive skips: $SKIPS"
+                else
+                    echo "  Last KB updates: $KB_FILES files | Commits: $COMMITS | Files changed: $FILES"
+                fi
                 ;;
             android-sw)
                 local COMMITS=$(grep -oP '"commits_made"\s*:\s*\K\d+' "$LATEST_PERF" 2>/dev/null || echo "?")
