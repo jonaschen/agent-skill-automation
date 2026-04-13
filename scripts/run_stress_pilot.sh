@@ -5,8 +5,8 @@
 # Pauses overnight agents during the run to avoid quota contention, then
 # restores them.
 #
-# Expected wall-clock: 8-12 hours for 10 skills
-#   (1-2 min GENERATE + ~27 min VALIDATE + possible OPTIMIZE retries per skill)
+# Expected wall-clock: ~1-2 hours with --pilot-mode (structural validation)
+#   (1-2 min GENERATE + ~1 min VALIDATE per skill; full eval runs 8-12h without --pilot-mode)
 #
 # Usage:
 #   ./scripts/run_stress_pilot.sh              # Run 10-skill pilot
@@ -84,7 +84,7 @@ if [ $PAUSE_CRON -eq 1 ]; then
 fi
 
 # Kick off pilot in background
-# --pilot-mode: use structural validation instead of full 44-test eval per skill.
+# --pilot-mode: use structural validation instead of full 59-test eval per skill.
 # This cuts wall-clock from ~12h to ~1-2h. Full regression test runs after pilot.
 cd "$REPO_ROOT"
 nohup bash -c "
