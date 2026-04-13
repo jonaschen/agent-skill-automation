@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-13: Phase 4 in progress. Fleet version OK: running v2.1.104 (≥2.1.101). Security: PASS. Changeling: 8/8 PASS. Pilot Run 2 ready (--pilot-mode fixes applied: git-add safety + structural validation). Kick off tonight ~22:00. Countdowns: Haiku 3 retirement 6d (Apr 19), 1M context beta sunset 17d (Apr 30), Google I/O 36d (May 19-20), Phase 4 deadline 26d (May 9).**
+**Status as of 2026-04-13 (evening): Phase 4 in progress. Fleet healthy: all 7 agents 100% success (41 runs last 7d). Fleet version OK: v2.1.104 (≥2.1.101). Security: PASS. Changeling: 8/8 PASS. Pilot Run 2 ready — stress_test_log.json reset, regression baseline confirmed (T=0.895). Kick off tonight ~22:00. All 7 ADOPT items from 2026-04-12 discussion implemented. Eval suite expansion at 47/50 threshold (14 novel cases waiting). Countdowns: Haiku 3 retirement 6d (Apr 19), 1M context beta sunset 17d (Apr 30), Google I/O 36d (May 19-20), Phase 4 deadline 26d (May 9).**
 
 ---
 
