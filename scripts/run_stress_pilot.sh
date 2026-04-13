@@ -84,8 +84,21 @@ if [ $PAUSE_CRON -eq 1 ]; then
 fi
 
 # Kick off pilot in background
+# --pilot-mode: use structural validation instead of full 44-test eval per skill.
+# This cuts wall-clock from ~12h to ~1-2h. Full regression test runs after pilot.
 cd "$REPO_ROOT"
-nohup bash "$SCRIPT_DIR/closed_loop.sh" "$PILOT_FILE" --inter-test-delay 30 > "$LOG_FILE" 2>&1 &
+nohup bash -c "
+  bash '$SCRIPT_DIR/closed_loop.sh' '$PILOT_FILE' --pilot-mode --inter-test-delay 30
+  PILOT_EXIT=\$?
+  echo ''
+  echo '=========================================='
+  echo 'POST-PILOT: Running regression test...'
+  echo '=========================================='
+  bash '$SCRIPT_DIR/regression_test.sh' --check-only 2>&1 || true
+  echo ''
+  echo 'Pilot exit code: '\$PILOT_EXIT
+  echo 'Restore agents with: crontab $CRONTAB_BACKUP'
+" > "$LOG_FILE" 2>&1 &
 PID=$!
 echo $PID > "$REPO_ROOT/logs/stress_pilot.pid"
 echo "[3/4] Pilot launched — PID $PID"
