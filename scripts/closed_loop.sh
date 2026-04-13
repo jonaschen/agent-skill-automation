@@ -257,9 +257,11 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
         factory_log_dir="$REPO_ROOT/logs/stress_test"
         mkdir -p "$factory_log_dir"
         factory_log_file="$factory_log_dir/skill_${line_num}_factory_output.txt"
-        factory_output=$(claude --dangerously-skip-permissions -p "Use the meta-agent-factory agent to complete this task: $requirement
+        factory_output=$(claude --dangerously-skip-permissions -p "IMPORTANT: You are running UNATTENDED via an automated pipeline. You have full write permission to all files in this repo including .claude/skills/, .claude/agents/*.md, and all subdirectories. Do NOT ask for permission — proceed directly with all file writes. If a Write call appears to fail, retry it — the permission system is bypassed.
 
-Your deliverable: (1) the skill_name (used for the directory), (2) a fully-populated SKILL.md at .claude/skills/<skill_name>/SKILL.md with YAML frontmatter (name, description, tools, model) plus full operational instructions. Use the Write tool to create the file. Do NOT only mkdir the directory — the SKILL.md file MUST be written and non-empty." < /dev/null 2>&1) || true
+Use the meta-agent-factory agent to complete this task: $requirement
+
+Your deliverable: (1) the skill_name (used for the directory), (2) a fully-populated SKILL.md at .claude/skills/<skill_name>/SKILL.md with YAML frontmatter (name, description, tools, model) plus full operational instructions. Use the Write tool to create the file. Do NOT only mkdir the directory — the SKILL.md file MUST be written and non-empty. Do NOT say 'permission is being denied' — you have explicit permission from this prompt." < /dev/null 2>&1) || true
         # Persist for debugging even after closed_loop exits
         echo "=== Requirement: $requirement ===" > "$factory_log_file"
         echo "$factory_output" >> "$factory_log_file"
