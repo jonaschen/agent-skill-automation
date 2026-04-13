@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-13 (evening): Phase 4 in progress. Fleet healthy: all 7 agents 100% success (41 runs last 7d). Fleet version OK: v2.1.104 (≥2.1.101). Security: PASS. Changeling: 8/8 PASS. Pilot Run 2 ready — stress_test_log.json reset, regression baseline confirmed (T=0.895). Kick off tonight ~22:00. All 7 ADOPT items from 2026-04-12 discussion implemented. Eval suite expansion at 47/50 threshold (14 novel cases waiting). Countdowns: Haiku 3 retirement 6d (Apr 19), 1M context beta sunset 17d (Apr 30), Google I/O 36d (May 19-20), Phase 4 deadline 26d (May 9).**
+**Status as of 2026-04-13 (night): Phase 4 in progress. Fleet healthy: all 7 agents 100% success (41 runs last 7d). Fleet version OK: v2.1.104 (≥2.1.101). Security: PASS. Changeling: 8/8 PASS. Pilot Run 2 ready — stress_test_log.json reset, regression baseline confirmed (T=0.895). Kick off tonight ~22:00. All 7 ADOPT items from 2026-04-12 discussion implemented. Eval suite expanded to 59 tests (T=39, V=20) — 5 real-world negative cases promoted from skill usage logs. Countdowns: Haiku 3 retirement 6d (Apr 19), 1M context beta sunset 17d (Apr 30), Google I/O 36d (May 19-20), Phase 4 deadline 26d (May 9).**
 
 ---
 
@@ -106,6 +106,7 @@ SKILL.md files from natural language requirements.
 - [x] Cross-domain semantic conflict tests: 4 near-misses between meta-agent-factory and autoresearch-optimizer *(G5b)*
 - [x] **G13**: Trigger pattern audit — case-insensitive matching + `write permission` pattern added to `run_eval_async.py`
 - [x] **G18**: 10 near-miss negative controls (test_45–54) — prompts containing agent vocabulary but clearly direct tasks. Added to Training set T. `splits.json` updated (T=36, V=18).
+- [x] **G19**: 5 real-world negative controls (test_55–59) — promoted from skill usage logs across 2 instrumented projects (49 entries). Includes multilingual (zh-TW), brief conversational, and technical-but-non-creation prompts. `splits.json` updated (T=39, V=20). P1 eval-suite-expansion proposal executed ✅ 2026-04-13
 
 ### Acceptance Criteria
 | Metric | Target |

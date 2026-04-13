@@ -1,0 +1,1 @@
+Actually I'd like to build voice PoC first, because it's the pipeline we don't have now. Let's focus on getting the audio streaming working end to end.

@@ -1,0 +1,1 @@
+Sprint 3 的 Python Voice PoC 做得非常好，Barge-in 和模型連線都驗證成功了！接下來我們要進入 Sprint 4，目標是部署到 Cloud Run 上。

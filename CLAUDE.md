@@ -163,12 +163,14 @@ Thirteen+ agent runs are scheduled daily via cron, staggered to avoid resource c
 
 ### Test Set
 
-- **44 prompts total**: `eval/prompts/test_1.txt` – `test_44.txt`
+- **59 prompts total**: `eval/prompts/test_1.txt` – `test_59.txt`
   - Tests 1–22: positive cases (should trigger `meta-agent-factory`)
   - Tests 23–39: hallucination/false-positive traps (should NOT trigger)
   - Tests 40–44: cross-domain conflict cases (near-misses with `autoresearch-optimizer`)
-- **Training set** (T, 26 prompts): optimizer reads failures from these only
-- **Validation set** (V, 18 prompts): held out — used only for final assessment
+  - Tests 45–54: near-miss negative controls (agent vocabulary but direct tasks)
+  - Tests 55–59: real-world negative controls (promoted from skill usage logs)
+- **Training set** (T, 39 prompts): optimizer reads failures from these only
+- **Validation set** (V, 20 prompts): held out — used only for final assessment
 
 ---
 
