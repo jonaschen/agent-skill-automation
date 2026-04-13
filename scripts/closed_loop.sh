@@ -249,7 +249,20 @@ while IFS= read -r requirement || [ -n "$requirement" ]; do
         # Without this, claude slurps remaining lines and outer loop exits early.
         # Capture skills/ dir state BEFORE the call so we can detect orphan dirs.
         skills_before=$(ls -1 "$REPO_ROOT/.claude/skills/" 2>/dev/null | sort || true)
-        factory_output=$(claude --dangerously-skip-permissions -p "$requirement" < /dev/null 2>&1) || true
+        # EXPLICIT ROUTING: with 15+ agents, generic "Create a X skill..." prompts
+        # get intercepted by steward agents (factory-steward Phase 1.5, changeling-router,
+        # etc.). They explore but don't Write SKILL.md, leaving empty mkdir'd dirs.
+        # Explicit agent invocation bypasses routing competition — matches OPTIMIZE pattern.
+        # Also capture full factory output to file for post-hoc diagnosis.
+        factory_log_dir="$REPO_ROOT/logs/stress_test"
+        mkdir -p "$factory_log_dir"
+        factory_log_file="$factory_log_dir/skill_${line_num}_factory_output.txt"
+        factory_output=$(claude --dangerously-skip-permissions -p "Use the meta-agent-factory agent to complete this task: $requirement
+
+Your deliverable: (1) the skill_name (used for the directory), (2) a fully-populated SKILL.md at .claude/skills/<skill_name>/SKILL.md with YAML frontmatter (name, description, tools, model) plus full operational instructions. Use the Write tool to create the file. Do NOT only mkdir the directory — the SKILL.md file MUST be written and non-empty." < /dev/null 2>&1) || true
+        # Persist for debugging even after closed_loop exits
+        echo "=== Requirement: $requirement ===" > "$factory_log_file"
+        echo "$factory_output" >> "$factory_log_file"
 
         # Extract skill name from factory output (primary: explicit path mention)
         skill_name=$(echo "$factory_output" | grep -oP '(?<=skills/)[a-z0-9-]+(?=/)' | head -1 || true)
