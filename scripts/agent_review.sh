@@ -121,6 +121,22 @@ print_agent_section() {
         RUN_SUMMARY="$RUN_COUNT / $DAYS days (+ $LOG_ONLY_COUNT log-only, no perf data)"
     fi
     echo "  Runs:         $RUN_SUMMARY"
+
+    # For multi-run agents, count total sessions from session logs
+    local SESSION_DIR="$LOG_DIR/sessions"
+    local TOTAL_SESSIONS=0
+    for i in $(seq 0 $((DAYS - 1))); do
+        local SESS_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
+        local SESS_FILE="$SESSION_DIR/${PERF_PREFIX}-${SESS_DATE}.jsonl"
+        if [ -f "$SESS_FILE" ]; then
+            local DAY_SESSIONS=$(grep -c '"SESSION_START"' "$SESS_FILE" 2>/dev/null || echo "0")
+            TOTAL_SESSIONS=$((TOTAL_SESSIONS + DAY_SESSIONS))
+        fi
+    done
+    if [ "$TOTAL_SESSIONS" -gt "$RUN_COUNT" ]; then
+        echo "  Sessions:     $TOTAL_SESSIONS total (across $RUN_COUNT days with data)"
+    fi
+
     echo -e "  Success rate: ${RATE_COLOR}${SUCCESS_RATE}%${RESET} ($SUCCESS_COUNT/$RUN_COUNT)"
     echo "  Avg duration: $((AVG_DURATION / 60))m $((AVG_DURATION % 60))s"
     echo "  Last run:     $LATEST_DATE ($((LATEST_DURATION / 60))m $((LATEST_DURATION % 60))s)"
@@ -302,7 +318,26 @@ for i in $(seq 0 $((DAYS - 1))); do
     done
 done
 
+# Count total sessions from session logs (more accurate for multi-run agents)
+SESSION_DIR="$LOG_DIR/sessions"
+TOTAL_SESSIONS=0
+if [ -d "$SESSION_DIR" ]; then
+    for i in $(seq 0 $((DAYS - 1))); do
+        SESS_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
+        for PREFIX in "${PERF_PREFIXES[@]}"; do
+            SESS_FILE="$SESSION_DIR/${PREFIX}-${SESS_DATE}.jsonl"
+            if [ -f "$SESS_FILE" ]; then
+                DAY_SESSIONS=$(grep -c '"SESSION_START"' "$SESS_FILE" 2>/dev/null || echo "0")
+                TOTAL_SESSIONS=$((TOTAL_SESSIONS + DAY_SESSIONS))
+            fi
+        done
+    done
+fi
+
 echo "  Total agent runs: $TOTAL_RUNS with metrics + $TOTAL_LOG_ONLY log-only (across all 7 agents, last $DAYS days)"
+if [ "$TOTAL_SESSIONS" -gt 0 ]; then
+    echo "  Total sessions:   $TOTAL_SESSIONS (from session logs — includes multi-run agents)"
+fi
 echo "  Expected runs:    ~$((DAYS * 7)) (varies — LTC runs 5x wkday, 3x weekend)"
 echo ""
 
