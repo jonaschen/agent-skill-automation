@@ -1,0 +1,2 @@
+Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps
+Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code

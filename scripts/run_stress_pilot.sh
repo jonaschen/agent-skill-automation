@@ -23,28 +23,42 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 DATE=$(date +"%Y-%m-%d")
-LOG_FILE="$REPO_ROOT/logs/stress_pilot_${DATE}.log"
-PILOT_FILE="$REPO_ROOT/eval/stress_test/pilot_10.txt"
+PILOT_FILE="$REPO_ROOT/eval/stress_test/pilot_10.txt"   # default; override with --requirements
 CRONTAB_BACKUP="$REPO_ROOT/logs/crontab_backup_${DATE}.txt"
 
 DRY_RUN=0
 PAUSE_CRON=1
+LOG_SUFFIX=""
 
-for arg in "$@"; do
-  case "$arg" in
-    --dry-run)  DRY_RUN=1 ;;
-    --no-pause) PAUSE_CRON=0 ;;
-    *) echo "Unknown option: $arg" >&2; exit 1 ;;
+# Argument parsing — supports --requirements <file> for retry runs (e.g., 6-10 only)
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dry-run)  DRY_RUN=1; shift ;;
+    --no-pause) PAUSE_CRON=0; shift ;;
+    --requirements)
+      [ -f "$2" ] || { echo "--requirements file not found: $2" >&2; exit 1; }
+      PILOT_FILE="$2"
+      # Derive log suffix from filename stem so retries get distinct log files
+      LOG_SUFFIX="_$(basename "$2" .txt)"
+      shift 2 ;;
+    *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
 done
+
+# Log file depends on suffix (default: stress_pilot_YYYY-MM-DD.log; retry: stress_pilot_YYYY-MM-DD_<stem>.log)
+LOG_FILE="$REPO_ROOT/logs/stress_pilot_${DATE}${LOG_SUFFIX}.log"
 
 # Preflight checks
 [ -f "$PILOT_FILE" ] || { echo "Missing $PILOT_FILE"; exit 1; }
 [ -x "$SCRIPT_DIR/closed_loop.sh" ] || { echo "closed_loop.sh not executable"; exit 1; }
 command -v claude >/dev/null || { echo "'claude' CLI not found in PATH"; exit 1; }
 
+# Flexible requirement count: 1-10 supported (typical pilot=10, retry subset=1-9)
 REQ_COUNT=$(grep -cE "^[A-Z]" "$PILOT_FILE")
-[ "$REQ_COUNT" -eq 10 ] || { echo "Expected 10 requirements, found $REQ_COUNT"; exit 1; }
+if [ "$REQ_COUNT" -lt 1 ] || [ "$REQ_COUNT" -gt 10 ]; then
+  echo "Expected 1-10 requirements, found $REQ_COUNT in $PILOT_FILE" >&2
+  exit 1
+fi
 
 echo "=== Stress Test Pilot — $DATE ==="
 echo "Requirements file: $PILOT_FILE ($REQ_COUNT skills)"

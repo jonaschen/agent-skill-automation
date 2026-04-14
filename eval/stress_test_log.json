@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 236,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 2,
+    "requirement": "Create a Helm chart validator skill that checks chart templates for best practices, missing values, and Kubernetes API deprecations",
+    "skill_name": "helm-chart-validator",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 305,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 3,
+    "requirement": "Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 259,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 4,
+    "requirement": "Create a compliance audit skill that checks infrastructure configurations against CIS benchmarks for AWS/GCP",
+    "skill_name": "cis-compliance-auditor",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 320,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 5,
+    "requirement": "Create a SQL query optimizer skill that analyzes slow queries, suggests index improvements, and rewrites for performance",
+    "skill_name": "sql-query-optimizer",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 390,
+    "trigger_score": 0.95
+  }
+]

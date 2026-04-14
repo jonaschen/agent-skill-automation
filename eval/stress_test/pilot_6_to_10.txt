@@ -1,0 +1,5 @@
+Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities
+Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas
+Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks
+Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage
+Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness

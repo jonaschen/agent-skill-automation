@@ -1,0 +1,209 @@
+[
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 165,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 2,
+    "requirement": "Create a Helm chart validator skill that checks chart templates for best practices, missing values, and Kubernetes API deprecations",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 135,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 3,
+    "requirement": "Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 256,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 4,
+    "requirement": "Create a compliance audit skill that checks infrastructure configurations against CIS benchmarks for AWS/GCP",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 258,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 5,
+    "requirement": "Create a SQL query optimizer skill that analyzes slow queries, suggests index improvements, and rewrites for performance",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 260,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 6,
+    "requirement": "Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 322,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 7,
+    "requirement": "Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 183,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 8,
+    "requirement": "Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 214,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 9,
+    "requirement": "Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 264,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 10,
+    "requirement": "Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness",
+    "skill_name": "",
+    "status": "UNKNOWN",
+    "optimize_retries": 0,
+    "duration_seconds": 35,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 197,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 2,
+    "requirement": "Create a Helm chart validator skill that checks chart templates for best practices, missing values, and Kubernetes API deprecations",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 259,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 3,
+    "requirement": "Create a SAST code review skill that identifies OWASP Top 10 vulnerabilities in Python and JavaScript code",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 268,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 4,
+    "requirement": "Create a compliance audit skill that checks infrastructure configurations against CIS benchmarks for AWS/GCP",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 235,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 5,
+    "requirement": "Create a SQL query optimizer skill that analyzes slow queries, suggests index improvements, and rewrites for performance",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 157,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 6,
+    "requirement": "Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 172,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 7,
+    "requirement": "Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 164,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 8,
+    "requirement": "Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 141,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 9,
+    "requirement": "Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 357,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 10,
+    "requirement": "Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 192,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "UNKNOWN",
+    "optimize_retries": 0,
+    "duration_seconds": 31,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 259,
+    "trigger_score": 0.0
+  },
+  {
+    "line": 1,
+    "requirement": "Create a Kubernetes deployment health checker skill that monitors pod status, detects CrashLoopBackOff, and suggests remediation steps",
+    "skill_name": "",
+    "status": "FAILED_GENERATION_STUB",
+    "optimize_retries": 0,
+    "duration_seconds": 259,
+    "trigger_score": 0.0
+  }
+]
