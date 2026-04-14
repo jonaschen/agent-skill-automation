@@ -43,5 +43,50 @@
     "optimize_retries": 0,
     "duration_seconds": 390,
     "trigger_score": 0.95
+  },
+  {
+    "line": 1,
+    "requirement": "Create a React performance profiler skill that identifies unnecessary re-renders, heavy bundles, and lazy loading opportunities",
+    "skill_name": "react-perf-profiler",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 219,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 2,
+    "requirement": "Create a REST API design reviewer skill that checks OpenAPI specs for naming consistency, pagination patterns, and error schemas",
+    "skill_name": "rest-api-design-reviewer",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 322,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 3,
+    "requirement": "Create an Android performance profiler skill that identifies memory leaks, janky frames, and excessive wake locks",
+    "skill_name": "android-perf-profiler",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 280,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 4,
+    "requirement": "Create a cost optimization skill that analyzes AWS Cost Explorer data and recommends rightsizing, reserved instances, and spot usage",
+    "skill_name": "aws-cost-optimizer",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 425,
+    "trigger_score": 0.95
+  },
+  {
+    "line": 5,
+    "requirement": "Create a technical writing style guide enforcer skill that checks documentation for clarity, consistency, and audience appropriateness",
+    "skill_name": "tech-writing-style-enforcer",
+    "status": "DEPLOYED",
+    "optimize_retries": 0,
+    "duration_seconds": 677,
+    "trigger_score": 0.95
   }
 ]
