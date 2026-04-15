@@ -111,7 +111,13 @@ nohup bash -c "
   bash '$SCRIPT_DIR/regression_test.sh' --check-only 2>&1 || true
   echo ''
   echo 'Pilot exit code: '\$PILOT_EXIT
-  echo 'Restore agents with: crontab $CRONTAB_BACKUP'
+  # Auto-restore crontab so nightly agents resume without manual intervention
+  if [ -f '$CRONTAB_BACKUP' ]; then
+    crontab '$CRONTAB_BACKUP'
+    echo '[AUTO-RESTORE] Crontab restored from $CRONTAB_BACKUP'
+  else
+    echo '[WARN] Crontab backup not found at $CRONTAB_BACKUP — manual restore needed'
+  fi
 " > "$LOG_FILE" 2>&1 &
 PID=$!
 echo $PID > "$REPO_ROOT/logs/stress_pilot.pid"
