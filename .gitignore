@@ -7,3 +7,6 @@ node_modules/
 docs/build/
 docs/.docusaurus/
 logs/
+
+# Personal/private materials — keep local, never push
+Hokkaido/
