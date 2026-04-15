@@ -2,3 +2,38 @@ calude --resume f5f52d07-f24f-4f52-945a-9384f41c25ca
 
 
 The --cwd flag isn't supported by this version of Claude CLI
+
+
+  建議流程                                                                                                                                                                              
+                                                                                                                                                                                        
+  # 1. 先在另一個 terminal (非 claude) 啟動 pilot                                                                                                                                       
+  /home/jonas/gemini-home/agent-skill-automation/scripts/run_stress_pilot.sh                                                                                                            
+                                                                                                                                                                                        
+  # 2. 確認 PID 寫入                                                                                                                                                                    
+  cat /home/jonas/gemini-home/agent-skill-automation/logs/stress_pilot.pid                                                                                                              
+                                                                                                                                                                                        
+  # 3. 關掉我這個 session + pts/1 的另一個 claude session                                                                                                                               
+  #    → 用 /exit 或直接關 terminal
+                                                                                                                                                                                        
+  # 4. 只用 non-Claude tool 監看（tail / ps / cat）                                                                                                                                     
+  tail -f /home/jonas/gemini-home/agent-skill-automation/logs/stress_pilot_2026-04-13.log                                                                                               
+                                                                                                                                                                                        
+  為什麼現在啟動比 21:00 更好                                                                                                                                                           
+                                                                                                                                                                                        
+  - 時長充裕：18:20 啟動 → 約 00:20-04:20 結束，甚至可以趕在 crontab 原本恢復的 7am reviewer 之前完成                                                                                   
+  - 你白天在公司，晚上回家：現在啟動等於「晚飯前丟進去，睡前看結果」                                                                                                                  
+  - 21:00 factory-steward 不會跑 — 因為 run_stress_pilot.sh 一啟動就把它從 cron 移除了                                                                                                  
+                                                                                                                                                                                        
+  明早 post-mortem 順序                                                                                                                                                                 
+                                                                                                                                                                                        
+  # 1. 確認 pilot 結束                                                                                                                                                                  
+  ps -p $(cat /home/jonas/gemini-home/agent-skill-automation/logs/stress_pilot.pid) 2>/dev/null || echo "finished"                                                                      
+                                                                                                                                                                                        
+  # 2. 看結果統計                                                                                                                                                                       
+  grep -E "DEPLOYED|FAILED|SKIPPED|State:" /home/jonas/gemini-home/agent-skill-automation/logs/stress_pilot_2026-04-13.log | tail -50                                                   
+  cat /home/jonas/gemini-home/agent-skill-automation/eval/stress_test_log.json | python3 -m json.tool                                                                                   
+                                                                                                                                                                                        
+  # 3. 恢復 cron                                                                                                                                                                        
+  crontab /home/jonas/gemini-home/agent-skill-automation/logs/crontab_backup_2026-04-13.txt                                                                                             
+                                                                                                                                                                                        
+  要不要現在就結束這個 session，你去另一個 terminal 啟動 pilot？  

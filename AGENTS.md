@@ -8,8 +8,10 @@ This file defines the rules of engagement for multi-agent collaboration on this 
 
 | File | Owner | Purpose |
 |------|-------|---------|
-| `ROADMAP.md` | Both (coordinate) | Single source of truth: phases, tasks, measurement, risks, lessons |
+| `ROADMAP.md` | Gemini/Claude (coordinate) | Single source of truth: phases, tasks, measurement, risks, lessons |
 | `AGENTS.md` | Human only | This protocol document |
+| `GEMINI.md` | Gemini only | Gemini's operating mandates |
+| `CLAUDE.md` | Claude only | Claude's operating mandates |
 | All code/scripts | Whoever is assigned | Task assignee owns the write |
 
 ---

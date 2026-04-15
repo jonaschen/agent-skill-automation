@@ -1,0 +1,154 @@
+{
+  "helm-chart-validator": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T12:36:26.172736+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T12:36:26.760728+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T12:36:41.488983+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "cis-compliance-auditor": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T12:46:19.886316+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T12:46:20.029708+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T12:46:20.447720+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "sql-query-optimizer": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T12:52:49.995397+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T12:52:50.288228+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T12:52:50.743945+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "react-perf-profiler": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T22:22:34.116797+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T22:22:34.341424+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T22:22:35.063220+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "rest-api-design-reviewer": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T22:27:56.268127+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T22:27:56.709067+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T22:27:57.128552+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "android-perf-profiler": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T22:32:37.188824+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T22:32:37.325002+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T22:32:37.747030+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "aws-cost-optimizer": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T22:39:41.978248+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T22:39:42.112321+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T22:39:42.529855+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  },
+  "tech-writing-style-enforcer": {
+    "events": [
+      {
+        "stage": "created",
+        "timestamp": "2026-04-14T22:50:58.591588+00:00",
+        "note": "meta-agent-factory"
+      },
+      {
+        "stage": "validated",
+        "timestamp": "2026-04-14T22:50:58.886072+00:00",
+        "note": "pilot-structural score=0.95"
+      },
+      {
+        "stage": "deployed",
+        "timestamp": "2026-04-14T22:50:59.286737+00:00",
+        "note": "pilot score=0.95 retries=0"
+      }
+    ]
+  }
+}

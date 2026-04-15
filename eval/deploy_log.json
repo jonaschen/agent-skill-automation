@@ -1,0 +1,50 @@
+[
+  {
+    "skill": "helm-chart-validator",
+    "timestamp": "2026-04-14T12:36:41Z",
+    "git_sha": "c264948",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "cis-compliance-auditor",
+    "timestamp": "2026-04-14T12:46:20Z",
+    "git_sha": "c264948",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "sql-query-optimizer",
+    "timestamp": "2026-04-14T12:52:50Z",
+    "git_sha": "c264948",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "react-perf-profiler",
+    "timestamp": "2026-04-14T22:22:34Z",
+    "git_sha": "6bad388",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "rest-api-design-reviewer",
+    "timestamp": "2026-04-14T22:27:57Z",
+    "git_sha": "6bad388",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "android-perf-profiler",
+    "timestamp": "2026-04-14T22:32:37Z",
+    "git_sha": "6bad388",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "aws-cost-optimizer",
+    "timestamp": "2026-04-14T22:39:42Z",
+    "git_sha": "6bad388",
+    "status": "deployed-pilot"
+  },
+  {
+    "skill": "tech-writing-style-enforcer",
+    "timestamp": "2026-04-14T22:50:59Z",
+    "git_sha": "6bad388",
+    "status": "deployed-pilot"
+  }
+]
