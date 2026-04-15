@@ -7,23 +7,26 @@ on:
     branches: ["**"]
 
 jobs:
-  permission-checks:
-    name: SKILL.md Permission Checks
+  test-suite:
+    name: Static Test Suite
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Make scripts executable
-        run: chmod +x eval/check-permissions.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-      - name: Run permission checks on all SKILL.md files
-        run: |
-          FAILED=0
-          for skill in .claude/skills/*/SKILL.md; do
-            echo "=== $skill ==="
-            if ! eval/check-permissions.sh "$skill"; then
-              FAILED=1
-            fi
-            echo ""
-          done
-          exit $FAILED
+      - name: Make scripts executable
+        run: chmod +x scripts/run_test_suite.sh eval/*.sh
+
+      - name: Run static test suites (permissions, security, changeling)
+        run: ./scripts/run_test_suite.sh
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: logs/test-reports/
+          retention-days: 30
