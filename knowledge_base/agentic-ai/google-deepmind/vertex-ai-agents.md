@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-12
+**Last updated**: 2026-04-16
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-16 -- Vertex AI AI Applications: Agent Builder Day 57 Silence Continues; Gemini 3.1 Flash TTS on Vertex AI (Apr 15); I/O 33 Days
+- **What**: (1) **Vertex AI Agent Builder (AI Applications) release notes** — still no entries after February 18, 2026 (Code Execution GA). Now **57 consecutive days without Agent Builder-specific releases** — deepest silence ever for this product line. "AI Applications" naming now fully consistent across console, docs, and marketing. (2) **Vertex AI GenAI release notes** — Gemini 3.1 Flash TTS launched April 15 in public preview on Vertex AI (see Gemini Agents KB for full details); robotics model updated April 14 on Vertex AI. Documentation updated April 14. (3) **ADK v1.30.0** (Apr 13) confirmed compatible with Vertex AI Agent Engine — Gemma 4 model support, auth provider registry, Parameter Manager integration all available for Agent Engine-deployed agents. (4) **Google I/O 2026** now 33 days away. 57-day silence + "AI Applications" rebrand + ADK v2.0 beta expected = near-certain major platform relaunch at I/O. (5) **No pricing or quota changes** detected.
+- **Significance**: The 57-day Agent Builder silence is the clearest signal yet of an imminent major platform relaunch at I/O — Google is not shipping incremental features because a full refresh is being prepared. The Gemini 3.1 Flash TTS landing on Vertex AI (Apr 15) shows that new capabilities continue arriving in the GenAI layer, even as the Agent Builder layer remains frozen. The ADK v1.30.0 Gemma 4 support means enterprise teams can now build Agent Engine-hosted agents using Gemma 4 as an open-weight backend — a fully open, managed deployment option. Pre-I/O window opens in ~2 weeks — watch for AI Applications documentation previews or developer blog posts.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes, https://releasebot.io/updates/google/vertex-ai
 
 ### 2026-04-12 -- Vertex AI Stabilization Day 9; "AI Applications" Rename Confirmed in Docs; No New Releases; I/O 37 Days
 - **What**: Vertex AI continues deepest pre-I/O stabilization: (1) **Vertex AI GenAI release notes** — no entries after April 6 (RAG Engine Metadata Search). Now **6 days without GenAI releases**. (2) **Agent Builder release notes** — still no entries after February 18 (Code Execution GA), now **53 days without Agent Builder-specific releases**. (3) **"AI Applications" rename confirmed** in official documentation — the product name change from "Agent Builder" to "AI Applications" is now reflected in console, documentation, and marketing materials. Product functionality and API endpoints unchanged. (4) **Google I/O 2026** now 37 days away — the 53-day Agent Builder silence plus rename makes a major platform relaunch at I/O near-certain.

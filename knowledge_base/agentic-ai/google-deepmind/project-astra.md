@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-12
+**Last updated**: 2026-04-16
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-16 -- Astra Quiet Integration Phase Day 11; Gemini 3.1 Flash TTS Extends Live API; Pre-I/O Window Opens ~May 2; I/O 33 Days
+- **What**: Project Astra remains in quiet integration phase (day 11): (1) **No new Astra-specific features or announcements** — capabilities continue being absorbed into Gemini Live. (2) **Gemini 3.1 Flash TTS Preview** (Apr 15) — the new text-to-speech model extends the Gemini Live / Astra stack: audio tags for expressive voice, multi-speaker support, 70+ languages, SynthID watermarking. Directly enhances the voice quality layer that underlies Astra's conversational AI. (3) **Samsung Galaxy Glasses August 2026 launch** — now 4.0 months from consumer hardware launch. $600-$900 price confirmed. (4) **Google I/O 2026 (May 19-20)** now 33 days away. Pre-announcement window opens approximately May 2 (17 days). Android XR glasses hardware reveal and Astra/Gemini Live integration update remain the expected I/O headline. (5) **Gemini 4** increasingly expected at I/O — would significantly enhance on-device Astra intelligence.
+- **Significance**: The Gemini 3.1 Flash TTS launch is indirectly relevant to Astra — it upgrades the voice output quality for all Gemini Live-based experiences, including Astra's real-time audio responses. The 70-language support closes a geographic gap: Astra can now provide expressive voice responses across far more markets. The pre-I/O window opening May 2 (17 days from now) is the next critical monitoring trigger — Samsung Galaxy Glasses spec confirmations, Android XR developer kit announcements, or Astra capability reveals would appear then. Continue monitoring for hardware leaks.
+- **Source**: https://deepmind.google/models/project-astra/, https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-tts/
 
 ### 2026-04-12 -- Astra Quiet Integration Phase Day 7; No New Developments; I/O 37 Days
 - **What**: Project Astra remains in quiet integration phase: (1) **No new Astra-specific features or announcements** — capabilities continue being absorbed into Gemini Live. (2) **Samsung Galaxy Glasses August 2026 launch** — now 4.2 months from consumer hardware launch. (3) **Google I/O 2026 (May 19-20)** now 37 days away. Android XR glasses hardware reveal expected as headline I/O announcement. (4) **Pre-I/O announcement window** now ~2 weeks away (late April / early May).

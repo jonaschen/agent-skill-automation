@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-12
+**Last updated**: 2026-04-16
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,11 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-16 -- Mariner Quiet Phase Day 11; Gemini CLI v0.38.0 Advances Browser Agent; I/O Pre-Announcement Window Opening; I/O 33 Days
+- **What**: Project Mariner remains in post-reorganization quiet phase (day 11): (1) **No new Mariner-specific announcements** — technology absorption into Gemini Agent product continues. Consumer product at labs.google.com/mariner/ remains available for AI Ultra subscribers ($249.99/month). (2) **Gemini CLI v0.38.0** (Apr 14) ships context compression and background memory for skill extraction — both directly benefit the `browser_agent` subagent for long-running web automation sessions. v0.38.1 patch (Apr 15) also in stable. (3) **Google I/O 2026 (May 19-20)** now 33 days away — the pre-announcement window (typically 2-3 weeks before I/O) opens in approximately 7-14 days. Q2 Mariner Studio (visual task flow builder) should be announced in this window if on schedule. (4) **Mariner Enterprise API** (Q1 2026 roadmap) — status still unclear, no public confirmation.
+- **Significance**: Day 11 of quiet phase. The Gemini CLI burst (v0.37.2, v0.38.0, v0.38.1, v0.39.0-preview.0) suggests the team has been heads-down on a feature push that benefits browser agent capabilities (context compression is critical for long web sessions). The imminent pre-I/O window (opens ~May 2) is the next monitoring trigger — any Mariner Studio previews or Enterprise API documentation updates would appear then. If Q2 Mariner Studio is on schedule, we may see a blog post or developer guide within the next 3 weeks.
+- **Source**: https://deepmind.google/models/project-mariner/, https://github.com/google-gemini/gemini-cli/releases
 
 ### 2026-04-12 -- Mariner Quiet Phase Day 7; No New Developments; I/O 37 Days
 - **What**: Project Mariner remains in post-reorganization quiet phase: (1) **No new Mariner-specific announcements** — technology absorption into Gemini Agent product continues. Consumer product at labs.google.com/mariner/ remains available for AI Ultra subscribers ($249.99/month). (2) **Gemini CLI v0.39.0-nightly.20260411** (Apr 11) includes stability fixes (memory leak, OOM prevention) that benefit the browser_agent subagent. (3) **Q2 Mariner Studio** milestone approaching — potentially coinciding with Google I/O (May 19-20, 37 days). (4) **Enterprise API** (Q1 2026 roadmap) status still unclear.

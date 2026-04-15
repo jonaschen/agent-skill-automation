@@ -1,31 +1,35 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-12 (Google/DeepMind track updated)
+**Last sweep**: 2026-04-16 (both tracks updated)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-12 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-12 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-12 |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-12 |
-| Computer Use | anthropic/computer-use.md | 2026-04-12 |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-12 |
-| Model Releases | anthropic/model-releases.md | 2026-04-12 |
+| Claude Code | anthropic/claude-code.md | 2026-04-16 |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-16 |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-16 |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-16 |
+| Computer Use | anthropic/computer-use.md | 2026-04-16 |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-16 |
+| Model Releases | anthropic/model-releases.md | 2026-04-16 |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-12 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-12 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-12 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-12 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-12 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-12 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-12 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-16 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-16 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-16 |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-16 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-16 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-16 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-16 |
+
+Note: 2026-04-16 Google/DeepMind sweep: **Gemini CLI burst (Apr 13-15)** — 6 releases in 3 days: v0.37.2 stable (plan mode GA, Tokyo Night theme, Windows MIC sandboxing), v0.38.0 stable (context compression service, background memory/skill extraction, terminal buffer mode), v0.38.1 patch, v0.39.0-preview.0 (/memory inbox full skill lifecycle, context-aware approvals, PTY/MCP leak fixes), plus 2 nightlies. **Gemini 3.1 Flash TTS Preview** (Apr 15) — new model: audio tags for expressive voice control, multi-speaker native dialogue, 70+ languages, SynthID watermark, Elo 1211 on TTS leaderboard, on Vertex AI + AI Studio. **Robotics model updated** (Apr 14) — instrument reading + improved spatial/physical reasoning; old version retiring Apr 30. **ADK Python v1.30.0** (Apr 13) — Gemma 4 native support (closes issue #5237), Auth Provider registry + credential leakage fix, Parameter Manager integration, Live avatar support, BigQuery tools GA, express mode UX. **A2A** day 35 post-v1.0 stabilization, no releases. **Vertex AI / AI Applications** day 57 Agent Builder silence — no new features; Gemini 3.1 Flash TTS lands in GenAI tier. **Project Mariner** day 11 quiet phase. **Project Astra** day 11 quiet phase; pre-I/O window opens ~May 2 (17 days). **Gemma 4** day 14 — ADK v1.30.0 official support closes open-source stack loop; vLLM EAGLE3 WIP progressing; HuggingFace Transformers stable (no source install needed). **Google I/O 33 days** — pre-announcement window opening soon.
+
+Note: 2026-04-16 Anthropic-only sweep: **Claude Code v2.1.105/107/108/109** (Apr 13-15) — PreCompact hook (block compaction from hooks), Background Monitor manifest key (auto-arm at session start), EnterWorktree path param, Skill description cap 250→1,536 chars, WebFetch strips style/script, stalled-stream 5-min abort, ENABLE_PROMPT_CACHING_1H + FORCE_PROMPT_CACHING_5M env vars, /recap session recap feature, Skill tool discovers built-in slash commands, extended-thinking rotating progress hint. **Agent SDK Python v0.1.59** (Apr 13) — bundles CLI v2.1.105. **TypeScript SDK V2 interface (unstable preview)** — send()/stream() replaces async generators, createSession/resumeSession/prompt API, await using for auto-cleanup, session ID resume, V2 exports prefixed unstable_v2_*. **MCP 2026 roadmap deep read** — 4 priority areas: stateless Streamable HTTP + Server Cards (.well-known discovery), Tasks primitive lifecycle (retry/expiry semantics), Contributor Ladder + WG delegation model, Enterprise WG (XAA auth, audit trails, gateway patterns, config portability); On Horizon: Triggers/Events (SEP-1686), streamed/reference results, DPoP (SEP-1932), Workload Identity (SEP-1933). **Multi-agent research system blog** — orchestrator-worker, 90% time reduction, 40% time savings from better tool descriptions, synchronous cohort + external memory, outcome-focused LLM judge eval. **2026 Agentic Coding Trends Report** — 8 trends, multi-agent teams now mainstream. **Model deprecations UPDATED**: Claude Sonnet 4 + Opus 4 retiring June 15, 2026 — added to deprecated_models.json. Mythos benchmarks confirmed: 93.9% SWE-bench (vs 80.8% Opus 4.6), 97.6% USAMO 2026, 79.6% OSWorld. **Haiku 3 retires in 3 days (Apr 19)**. **1M beta ends Apr 30** (14d). **Google I/O May 19-20** (33d).
 
 Note: 2026-04-12 Full sweep (comprehensive KB read + report): **Managed Agents architecture deep dive** — brain-hands decoupling: harness invokes sandboxes via `execute(name,input)→string`, 60% median TTFT reduction, >90% P95 reduction from lazy provisioning, vault-based credential isolation via MCP proxies. **MCP maintainer expansion** — Clare Liguori (AWS Sr. Principal Engineer) joins Core Maintainers (Triggers & Events WG), Den Delimarsky promoted to Lead Maintainer. **Claude Code v2.1.101** (Apr 10) — `/team-onboarding`, OS CA cert trust default, command injection fix in POSIX `which`, memory leak fix for long sessions, `permissions.deny` PreToolUse hook override fix, subagent MCP tool inheritance fix. **Agent SDK** stable at Python v0.1.58 (bundles CLI v2.1.97 — 4 versions behind v2.1.101). **Google AI developer stack frozen** — Gemini API 10-day silence, ADK 3 days post-double-release, Agent Builder 53 days without releases, "AI Applications" rebrand confirmed. **Gemma 4 day 10** — ecosystem stabilizing, fine-tuning production-viable, vLLM EAGLE3 WIP. **Haiku 3 retires Apr 19** (7d). **1M beta ends Apr 30** (18d). **Google I/O May 19-20** (37d).
 
@@ -65,6 +69,7 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-16 | sweeps/2026-04-16-google.md | Google/DeepMind track: Gemini CLI burst (6 releases Apr 13-15: v0.37.2/v0.38.0/v0.38.1/v0.39.0-preview.0 + 2 nightlies), Gemini 3.1 Flash TTS Preview (audio tags, multi-speaker, 70 langs, SynthID), Robotics model update (instrument reading), ADK v1.30.0 (Gemma 4 support, Auth Provider, Parameter Manager, Live avatar), A2A day 35 stabilization, Vertex AI day 57 Agent Builder silence, Mariner/Astra day 11 quiet. I/O 33 days. Pre-I/O window opens ~May 2. |
 | 2026-04-12 | sweeps/2026-04-12.md | Managed Agents architecture deep dive — brain-hands decoupling, 60% TTFT reduction, vault-based credential isolation. MCP maintainer expansion — AWS Sr. Principal Engineer joins Core Maintainers, Triggers & Events working group. Claude Code v2.1.101 — /team-onboarding, OS CA trust, command injection fix, memory leak fix, permissions.deny override fix. Google AI stack frozen for I/O (37d) — 10-day API silence, 53-day Agent Builder gap, "AI Applications" rebrand confirmed. Haiku 3 in 7 days. I/O in 37 days. |
 | 2026-04-11 | sweeps/2026-04-11.md | Advisor Tool launched (Sonnet+Opus: +2.7pp SWE-bench, -11.9% cost; Haiku+Opus: 2x BrowseComp at 85% less cost). Claude Code v2.1.98/100 — PID namespace sandboxing, Vertex AI wizard, Perforce mode, Monitor tool. Agent SDK v0.1.57-58 — cross-user prompt caching (40-60% savings). ADK v1.29.0+v2.0.0-alpha.3 breaks 8-day freeze — EnvironmentToolset, workflow graph visualization. Gemma 4 MTP heads confirmed missing from public weights. Anthropic explores custom chips at $30B ARR. Haiku 3 in 8 days. I/O in 38 days. |
 | 2026-04-10 | sweeps/2026-04-10.md | A2A one-year anniversary: 150+ orgs, triple hyperscaler integration (Azure+AWS+Google), enterprise production. Claude Code v2.1.97 — Focus view, MCP memory leak fix (50 MB/hr), permission hardening. Claude Cowork enterprise GA with RBAC. Managed Agents Day 2 — $0.08/session-hr, Notion/Rakuten/Sentry/Asana. Gemini CLI v0.39.0 nightlies — /memory inbox, skill activation confirmation. ADK day 8 freeze. EAGLE3 1.72x speedup for Gemma 4 31B. Haiku 3 in 9 days. I/O in 39 days. |
