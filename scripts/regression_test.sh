@@ -22,7 +22,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BASELINE_FILE="$REPO_ROOT/eval/regression_baseline.json"
 LAST_RUN_FILE="$REPO_ROOT/eval/regression_last_run.json"
 EVAL_RUNNER="$REPO_ROOT/eval/run_eval_async.py"
-BAYESIAN_EVAL="$REPO_ROOT/eval/bayesian_eval.py"
+SKILL_PATH="$REPO_ROOT/.claude/agents/meta-agent-factory.md"
 
 MODE="${1:---run}"
 
@@ -32,29 +32,20 @@ run_eval_and_score() {
   local output
 
   echo "Running eval (split=$split)..." >&2
-  output=$(python3 "$EVAL_RUNNER" --split "$split" --inter-test-delay 10 2>&1) || true
+  output=$(python3 "$EVAL_RUNNER" "$SKILL_PATH" --split "$split" --inter-test-delay 10 --verbose 2>&1) || true
 
-  # Extract pass count and total from eval output
+  # Count PASS/FAIL from individual test result lines
   local pass_count total_count
-  pass_count=$(echo "$output" | grep -oP 'PASS:\s*\K[0-9]+' | tail -1 || echo "0")
-  total_count=$(echo "$output" | grep -oP 'Total:\s*\K[0-9]+' | tail -1 || echo "0")
+  pass_count=$(echo "$output" | grep -cP '^Test\s+\d+:\s+PASS' || echo "0")
+  total_count=$(echo "$output" | grep -cP '^Test\s+\d+:\s+(PASS|FAIL)' || echo "0")
 
-  if [ "$total_count" -eq 0 ]; then
-    # Try alternate parsing
-    pass_count=$(echo "$output" | grep -cP '^\s*PASS' || echo "0")
-    total_count=$(echo "$output" | grep -cP '^\s*(PASS|FAIL)' || echo "0")
-  fi
-
-  # Run Bayesian scoring
-  local bayesian_output
-  bayesian_output=$(python3 "$BAYESIAN_EVAL" --passes "$pass_count" --total "$total_count" 2>&1) || true
-
+  # Parse the summary line: SPLIT (TRAIN): 0.829 CI [0.702, 0.927]
   local posterior_mean ci_lower ci_upper
-  posterior_mean=$(echo "$bayesian_output" | grep -oP '"posterior_mean":\s*\K[0-9.]+' | head -1 || echo "0.0")
-  ci_lower=$(echo "$bayesian_output" | grep -oP '"ci_lower":\s*\K[0-9.]+' | head -1 || echo "0.0")
-  ci_upper=$(echo "$bayesian_output" | grep -oP '"ci_upper":\s*\K[0-9.]+' | head -1 || echo "0.0")
+  posterior_mean=$(echo "$output" | grep -oP 'SPLIT \([A-Z]+\):\s*\K[0-9.]+' | head -1 || echo "0.0")
+  ci_lower=$(echo "$output" | grep -oP 'CI \[\K[0-9.]+' | head -1 || echo "0.0")
+  ci_upper=$(echo "$output" | grep -oP 'CI \[[0-9.]+,\s*\K[0-9.]+' | head -1 || echo "0.0")
 
-  # Fallback: simple posterior mean if Bayesian module produced no JSON
+  # Fallback: compute from pass/total if summary parsing failed
   if [ "$posterior_mean" = "0.0" ] && [ "$total_count" -gt 0 ]; then
     posterior_mean=$(python3 -c "print(round(($pass_count + 1) / ($total_count + 2), 3))" 2>/dev/null || echo "0.0")
   fi
