@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-15: Phase 4.2a GATE CLOSED + regression/cost verified. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Regression test: NO REGRESSION (33/39 PASS, mean 0.829, CI [0.702, 0.927] on T=39). Cost analysis: 5.7m/skill avg, 10.5 skills/hr, fleet 2.3h/day. Fixed regression_test.sh (missing skill_path, stale output parsing). Fleet healthy: all 7 agents 100% success. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 15d (Apr 30), Google I/O 34d (May 19-20), Phase 4 deadline 24d (May 9). Remaining Phase 4 unchecked: mcp-sec-audit eval (P2), MCP security consolidation (P3) — both low-priority deferred items. Phase 4 core is effectively complete.**
+**Status as of 2026-04-16: Phase 4 core complete. 2026-04-16 factory session: P0 model_audit.sh added (Haiku 3 retirement in 3 days) + integrated into pre-deploy.sh; P1 Optimization Priority added to factory-steward.md; Phase 5 ROADMAP updated with ADK/A2A HOLD (until post-I/O 2026-05-20) and TCI calibration thresholds. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Regression test: NO REGRESSION (33/39 PASS, mean 0.829, CI [0.702, 0.927] on T=39). Cost analysis: 5.7m/skill avg, 10.5 skills/hr, fleet 2.3h/day. Fleet healthy: all 7 agents 100% success. Eval suite at 59 tests (T=39, V=20). Countdowns: Haiku 3 retirement 3d (Apr 19), 1M context beta sunset 14d (Apr 30), Google I/O 33d (May 19-20). Remaining Phase 4 unchecked: mcp-sec-audit eval (P2), MCP security consolidation (P3) — both deferred. Phase 4 core complete.**
 
 ---
 
@@ -268,6 +268,7 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 - [x] **Fleet minimum version bump to >=2.1.101**: Updated `fleet_min_version.txt`. v2.1.99-101 add memory leak fix (long sessions), `permissions.deny` enforcement fix, subagent MCP tool inheritance, command injection fix in POSIX `which` fallback, OS CA cert store trust. Enhanced `check_fleet_version.sh` with structured JSON alerts to `logs/security/fleet_version.jsonl` (timestamp, versions, days-since-escalation). Added "Fleet Version Status" section to `agent_review.sh` dashboard ✅ 2026-04-12
 - [x] **Post-I/O response playbook**: Created `knowledge_base/agentic-ai/evaluations/post-io-response-playbook.md` — 6-category announcement matrix (new model, agent framework, A2A protocol, platform rebrand, edge model, MCP changes) with per-category action tables, pre-I/O checklist, I/O day manual triggers, post-I/O stabilization steps ✅ 2026-04-12
 - [x] **Credential isolation design document**: Created `knowledge_base/agentic-ai/evaluations/credential-isolation-design.md` — current credential surface mapping (7 env vars audited, most agents need only ANTHROPIC_API_KEY), credential flow diagram (crontab→script→session→tools), two Managed Agents reference patterns (resource-bundled auth, vault-based MCP proxy), Agent SDK `exclude_dynamic_sections` implications, minimal Phase 5 isolation model (`env -i` + explicit passthrough), full Phase 7 model (MCP proxy + per-tenant vault), migration path. Becomes Phase 5.3 security requirements input ✅ 2026-04-13
+- [x] **Model Audit Script (cron/eval gap)**: `scripts/model_audit.sh` — greps operational scripts/eval/agent configs for deprecated model IDs (from `eval/deprecated_models.json`) and sunset 1M beta headers; closes gap vs. deploy-time-only `eval/model_deprecation_check.sh` (cron scripts bypass the deploy hook). Integrated into `pre-deploy.sh` after existing deprecation check. Confirmed clean pass on 2026-04-16: no Haiku 3 references in operational code — P0 ✅ 2026-04-16
 - [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
@@ -286,6 +287,20 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 **Goal:** Upgrade from dynamic identity switching to a parallel-collaborative AI Scrum Team with intelligent pre-execution routing. Prevent the Sequential Penalty on highly coupled tasks.
 
 **Prerequisite:** Phases 1–4 complete and stable.
+
+> ⛔ **HOLD: No ADK/A2A integration until post-Google I/O (after 2026-05-20)**
+> This hold applies to all A2A protocol work and ADK SDK integration in Phase 5. ADK v2.0 and A2A v1.1 are expected at Google I/O (May 19-20, 2026) and may introduce breaking changes.
+> **Gate-removal criteria** (ALL three must be met before ADK/A2A work proceeds):
+> (1) Google I/O 2026 has passed (after 2026-05-20)
+> (2)  post-I/O run confirms A2A v1.1 wire format is stable (no breaking changes)
+> (3) ADK v2.0 release notes reviewed and integration approach confirmed
+> **Decision frame**: Adopt A2A/ADK only if mixing Anthropic + Google agents provides concrete cost or capability benefit (e.g., cheaper models for subset tasks). If Phase 5 stays Anthropic-stack-only, A2A adds complexity with no benefit. Default: stay on native Claude Agent SDK subagent calls.
+
+**TCI Calibration Thresholds** (empirical starting points — validate against actual task distribution in 4.2b):
+- **TCI ≤ 2** (1 agent, 1-3 tool calls, single-step output) → **Track A** (parallel execution)
+- **TCI 3-6** (2-9 agents, moderate interdependency) → **Evaluation required** (may route to either track; test Track B conservative default first)
+- **TCI ≥ 7** (10+ agents, divided responsibilities, tightly coupled state) → **Track B** (single flagship agent)
+- *Calibration source: Anthropic multi-agent research system engineering blog, 2026-04-16. Thresholds describe Anthropic's research task distribution (document synthesis, web search) — our pipeline tasks (skill gen, eval, optimization) may have different profiles. Validate thresholds against 4.2b task distribution before finalizing.*
 
 ### Tasks
 

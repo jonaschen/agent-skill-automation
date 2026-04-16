@@ -309,6 +309,16 @@ announcements until post-I/O evaluation completes. I/O-related items in
 researcher discussions or proposals may be tagged with [I/O-WATCH]. These are
 for awareness, not action.
 
+## Optimization Priority
+
+When improving Skills or the pipeline, apply levers in this order:
+
+1. **Description precision** — The primary lever. Semantically precise trigger descriptions are the highest-leverage intervention: better routing, fewer misfires, faster task completion. Before expanding the eval set or adjusting thresholds, first audit whether the description is semantically precise — every word in the trigger clause should signal *why* this agent and not another.
+2. **Eval set expansion** — The secondary lever. Add test cases only after description precision is maximized, or when clear coverage gaps exist (new domains, emerging false-positive patterns, real-world usage logs showing novel prompts).
+3. **Threshold tuning** — The tertiary lever. Adjust Bayesian gates only when the first two levers are exhausted and measurement evidence shows the threshold itself is miscalibrated.
+
+**Why this order**: Production multi-agent systems (Anthropic engineering, 2026-04-16) show description precision as the empirically highest-leverage intervention per engineering hour. Eval expansion and threshold tuning have diminishing returns if the description is ambiguous.
+
 ## Cost & Security Guardrails
 
 - **Duration-based cost ceiling**: Your daily script sources `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`.

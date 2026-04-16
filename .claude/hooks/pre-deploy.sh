@@ -94,6 +94,19 @@ if [ -f "$DEPRECATION_CHECK" ]; then
   fi
 fi
 
+# --- Model Audit (cron/eval scripts — closes gap vs. deploy-time-only guard) ---
+MODEL_AUDIT="$REPO_ROOT/scripts/model_audit.sh"
+if [ -f "$MODEL_AUDIT" ]; then
+  set +e
+  bash "$MODEL_AUDIT"
+  AUDIT_EXIT=$?
+  set -e
+  if [ "$AUDIT_EXIT" -ne 0 ]; then
+    echo "❌ Deprecated model IDs found in operational scripts/eval. Migrate before deployment."
+    exit 1
+  fi
+fi
+
 # Call the Bayesian async runner.
 set +e
 EVAL_OUTPUT=$($EVAL_RUNNER "$SKILL_PATH")
