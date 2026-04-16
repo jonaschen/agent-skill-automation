@@ -1,31 +1,35 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-16 (both tracks updated)
+**Last sweep**: 2026-04-17 (Full consolidated sweep — Anthropic + Google/DeepMind)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-16 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-16 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-16 |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-16 |
-| Computer Use | anthropic/computer-use.md | 2026-04-16 |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-16 |
-| Model Releases | anthropic/model-releases.md | 2026-04-16 |
+| Claude Code | anthropic/claude-code.md | 2026-04-17 |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-17 |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-17 |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-17 |
+| Computer Use | anthropic/computer-use.md | 2026-04-17 |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-17 |
+| Model Releases | anthropic/model-releases.md | 2026-04-17 |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-16 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-16 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-16 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-16 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-16 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-16 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-16 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-17 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-17 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-17 |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-17 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-17 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-17 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-17 |
+
+Note: 2026-04-17 Full consolidated sweep: **Claude Opus 4.7 launched Apr 16** (`claude-opus-4-7`) — **pricing held flat at $5/$25 MTok** (same as 4.6), SWE-bench Verified 87.6, Terminal-Bench 2.0 69.4, OSWorld-Verified 78.0, SWE-bench Pro 64.3; new **`xhigh` effort tier** between `high` and `max`; 128K output window. **Claude Code v2.1.110 + v2.1.111** (Apr 15–16) ship Opus 4.7 support with `/effort` interactive slider, **`/less-permission-prompts`** allowlist builder (steward-agent productivity win), **`/ultrareview`** cloud parallel multi-agent review, `/tui` flicker-free fullscreen, push notification tool, Windows PowerShell tool, Plan files renamed after prompts. **Claude Code Desktop App redesign + Routines research preview** (Apr 14) — shift to orchestration-centric workflows. **Three-Agent Harness (Planning/Generation/Evaluation) formalized** in Apr 4 engineering blog — structured handoff artifacts replace shared rolling context, Playwright MCP 4-axis evaluator, 5–15 iterations over ~4 hours; maps 1:1 onto our meta-agent-factory + skill-quality-validator + autoresearch-optimizer. **Programmatic Tool Calling GA on Opus 4.7** via `code_execution_20260120`; BrowseComp/DeepSearchQA benchmarks show programmatic calling was the key unlock for multi-step web research. **Computer Use on Opus 4.7** upgrades to **2576-pixel long-edge with 1:1 coordinate mapping** (no scale-factor conversion). **MCP maintainer team expansion**: Clare Liguori (AWS) joined Core Maintainers, Den Delimarsky (Anthropic) promoted to Lead Maintainer; Triggers & Events WG forming. **Google side post-burst quiet day 2.** Gemini CLI stable at v0.38.1 (Apr 15); v0.39.0-preview.0 still the preview track. Gemini API changelog silent since Apr 15. **ADK Python v1.30.0 stabilization day 4** (v2.0.0a3 still newest pre-release). **A2A day 36 post-v1.0.0 — longest ever stable window, 0 pre-I/O leaks.** **Vertex AI Agent Builder (AI Applications) day 58 silence — deepest-ever freeze.** Project Mariner day 12 quiet; I/O session list has **no Mariner-branded session** → "Gemini Agent" umbrella rebrand likely at keynote. Project Astra day 12 quiet; I/O **"Adaptive Everywhere" XR track confirmed for Day 2** → Android XR SDK + smart-glasses developer story expected. Gemma 4 day 15, no new variants; **Gemini Nano 3 API surface for Android 17 expected at I/O**. Deprecations: **Haiku 3 retires Apr 19 (2d!)**, **`gemini-robotics-er-1.5-preview` retires Apr 30 (13d)**, 1M beta ends Apr 30 (13d), **Claude Sonnet 4 + Opus 4 retire June 15 (59d)**. **Google I/O 2026 May 19-20 (32d)**, pre-I/O window opens ~May 2 (15d). Action items: **upgrade fleet to `claude-opus-4-7` (P0)**, update Claude Code to v2.1.111 for `/less-permission-prompts` + `xhigh` (P0), verify deprecated_models.json entries, experiment with `xhigh` on hard eval prompts (P1), adopt structured handoff artifacts in Phase 4 closed loop (P1), Phase 5 TCI router add three-topology dispatch (P1).
+
+Note: 2026-04-17 Google/DeepMind sweep: **Post-burst quiet day.** **Gemini CLI** stable at v0.38.1 (Apr 15); no new releases Apr 16-17. **Gemini API changelog** silent since Apr 15 (TTS) and Apr 14 (robotics). **ADK Python** stable at v1.30.0 (day 4); v2.0.0a3 still newest pre-release — likely reserving v1.31 / v2.0 beta for I/O. **A2A** day 36 post-v1.0.0 (longest stable window ever, 0 pre-I/O leaks). **Vertex AI Agent Builder (AI Applications)** day 58 silence — deepest-ever freeze; Vertex GenAI also now 2 days quiet. **Project Mariner** day 12 quiet; I/O session list (Apr 14) has NO Mariner-branded session → "Gemini Agent" umbrella rebrand likely at keynote. **Project Astra** day 12 quiet; I/O "Adaptive Everywhere" XR track confirmed for Day 2 → Android XR SDK + smart-glasses dev story expected. **Gemma 4** day 15, no new variants; Gemini Nano 3 API surface for Android 17 expected at I/O. **Gemini 3.1 Flash TTS details confirmed** — 200+ audio tags, native multi-speaker, 70+ langs, Elo 1211, SynthID, on API/AI Studio/Vertex AI/Google Vids. **`gemini-robotics-er-1.5-preview` retires Apr 30** (13d) — added to deprecated_models.json. **I/O 2026 now 32d away**, pre-I/O window opens ~May 2 (15d). **Haiku 3 retires Apr 19** (2d). Action items: zero near-term code changes; plan Phase 6 voice-agent design exercise around 3.1 Flash TTS-class capabilities; monitor Android 17 Gemini Nano 3 API reveal at I/O.
 
 Note: 2026-04-16 Full consolidated sweep: **Claude Mythos on Vertex AI confirmed** at $25/$125/MTok (invitation-only via Glasswing consortium on Google Cloud — first external cloud distribution). **ADK Java v1.1.0** (Apr 10) — ToolConfirmation HITL, GoogleMapsTool, event compaction, ContainerCodeExecutor. **Firebase Studio** revealed as agentic cloud IDE (Firebase + ADK) pre-I/O. **Gemini CLI 6-release burst** (Apr 13-15) ending pre-I/O freeze: v0.38.0 context compression service, v0.39.0-preview.0 passive skill lifecycle (extract→inbox→approve→activate). **Claude Code v2.1.105-109**: PreCompact hook (pipeline control over compaction), 1h prompt cache TTL env vars, skill description cap 250→1,536, Background Monitor manifest key, session recap, Skill tool discovers built-in slash commands. **TypeScript SDK V2 interface** (unstable preview) — `send()`/`stream()` replaces async generators, session resume via `session_id`. **Gemini 3.1 Flash TTS** (Apr 15) — Elo 1211, audio tags, multi-speaker, SynthID; no Anthropic TTS equivalent. **Haiku 3 retires Apr 19** (3d). **1M beta ends Apr 30** (14d). **Google I/O May 19-20** (33d). Pre-I/O window opens ~May 2 (17d).
 
@@ -71,6 +75,7 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-17 | sweeps/2026-04-17.md | Full consolidated sweep: Claude Opus 4.7 launched Apr 16 at flat $5/$25 MTok (87.6 SWE-bench Verified, 69.4 Terminal-Bench 2.0, 78.0 OSWorld-Verified); new `xhigh` effort tier. Claude Code v2.1.110/v2.1.111 ship Opus 4.7 support, `/less-permission-prompts` allowlist builder, `/ultrareview` cloud parallel review, `/tui` flicker-free mode, push notification tool, Windows PowerShell tool. Claude Code Desktop App redesign + Routines research preview (Apr 14). Three-Agent Harness (Planning/Generation/Evaluation) formalized with structured handoff artifacts and Playwright MCP 4-axis evaluator. Programmatic Tool Calling GA on Opus 4.7 via `code_execution_20260120`. Computer Use Opus 4.7 → 2576-px long edge with 1:1 coordinates (no scaling). MCP maintainer expansion (AWS Core + Anthropic Lead). Google side post-burst quiet day 2: Gemini CLI v0.38.1 stable, ADK v1.30.0 day 4, A2A day 36 (longest ever), Agent Builder day 58 silence, Mariner/Astra day 12, Gemma 4 day 15. I/O sessions list — no Mariner track (likely "Gemini Agent" rebrand), Day 2 "Adaptive Everywhere" XR track confirmed. Haiku 3 retires in 2 days, robotics model in 13 days, Sonnet 4/Opus 4 in 59 days. I/O 32 days. |
 | 2026-04-16 | sweeps/2026-04-16.md | Full consolidated sweep: Claude Code v2.1.105-109 (PreCompact hook, 1h prompt cache TTL, 1536-char skill cap, Background Monitor, session recap, Skill+built-in command unification). Agent SDK Python v0.1.59; TypeScript SDK V2 unstable preview (send/stream replaces async generators). Claude Mythos on Vertex AI confirmed at $25/$125/MTok (invitation-only). Gemini CLI 6-release burst (context compression service, passive skill lifecycle). Gemini 3.1 Flash TTS (audio tags, 70+ langs, Elo 1211). ADK Python v1.30.0 (Gemma 4) + Java v1.1.0 (HITL, GoogleMapsTool). Firebase Studio agentic cloud IDE announced. A2A day 35 stabilization. I/O 33 days. |
 | 2026-04-16 | sweeps/2026-04-16-google.md | Google/DeepMind track only: Gemini CLI burst (6 releases Apr 13-15: v0.37.2/v0.38.0/v0.38.1/v0.39.0-preview.0 + 2 nightlies), Gemini 3.1 Flash TTS Preview (audio tags, multi-speaker, 70 langs, SynthID), Robotics model update (instrument reading), ADK v1.30.0 (Gemma 4 support, Auth Provider, Parameter Manager, Live avatar), A2A day 35 stabilization, Vertex AI day 57 Agent Builder silence, Mariner/Astra day 11 quiet. I/O 33 days. |
 | 2026-04-12 | sweeps/2026-04-12.md | Managed Agents architecture deep dive — brain-hands decoupling, 60% TTFT reduction, vault-based credential isolation. MCP maintainer expansion — AWS Sr. Principal Engineer joins Core Maintainers, Triggers & Events working group. Claude Code v2.1.101 — /team-onboarding, OS CA trust, command injection fix, memory leak fix, permissions.deny override fix. Google AI stack frozen for I/O (37d) — 10-day API silence, 53-day Agent Builder gap, "AI Applications" rebrand confirmed. Haiku 3 in 7 days. I/O in 37 days. |
