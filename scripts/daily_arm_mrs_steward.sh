@@ -156,6 +156,7 @@ log_task_start "milestone-work"
 Execute a stewardship session:
 1. Orient: Read all five mandatory documents (CLAUDE.md, AARCH64_AGENT_SKILL_DEV_PLAN.md, ROADMAP.md, README.md, .claude/steering-notes.md)
 2. **BLOCKING — Read steering notes**: Read $TARGET_REPO/.claude/steering-notes.md (if it exists). Address ALL P0 items BEFORE any other work. P0 items have been unresolved for multiple days — they are your top priority. Also check $REPO_ROOT/knowledge_base/steward-reviews/ for the latest review file.
+   **IMPORTANT**: You may READ .claude/steering-notes.md but do NOT attempt to WRITE or MODIFY it — the project-reviewer agent writes steering notes and has write permission; you do not. Attempting to write will fail silently and create junk commits.
 3. Assess: Check ROADMAP.md for current status, identify next incomplete milestone
 4. Execute: Work on the next milestone — design, implement, or expand
 5. If current milestones are complete, work on data expansion (T32/A32, GIC, CoreSight, PMU)
@@ -167,6 +168,15 @@ Keep your work focused — aim to complete one deliverable or make substantial p
 At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Milestone session complete" >> "$LOG_FILE"
 log_task_complete "milestone-work"
+
+# Clean up known scratch files the agent may create (e.g. note.txt, scratch.md)
+# These are temporary notes, not artifacts — delete before auto-recovery to avoid junk commits
+for scratch in note.txt scratch.txt scratch.md tmp.md; do
+  if [ -f "$TARGET_REPO/$scratch" ]; then
+    echo "[CLEANUP] Removing scratch file: $scratch" >> "$LOG_FILE"
+    rm -f "$TARGET_REPO/$scratch"
+  fi
+done
 
 (recover_uncommitted "$TARGET_REPO" "milestone-work" "$LOG_FILE") || true
 
@@ -187,6 +197,14 @@ Run a research session:
 Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Research session complete" >> "$LOG_FILE"
 log_task_complete "research"
+
+# Clean up scratch files before auto-recovery (research session may also create them)
+for scratch in note.txt scratch.txt scratch.md tmp.md; do
+  if [ -f "$TARGET_REPO/$scratch" ]; then
+    echo "[CLEANUP] Removing scratch file: $scratch" >> "$LOG_FILE"
+    rm -f "$TARGET_REPO/$scratch"
+  fi
+done
 
 (recover_uncommitted "$TARGET_REPO" "research" "$LOG_FILE") || true
 

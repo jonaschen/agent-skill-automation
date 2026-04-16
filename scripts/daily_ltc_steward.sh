@@ -126,6 +126,7 @@ fi
 echo "" >> "$LOG_FILE"
 echo "--- Phase Work ---" >> "$LOG_FILE"
 log_task_start "phase-work"
+PHASE_WORK_START=$(date +%s)
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the ltc-steward agent. Read $REPO_ROOT/.claude/agents/ltc-steward.md for your full instructions.
 
 Execute a stewardship session:
@@ -141,11 +142,20 @@ Keep your work focused — aim to complete one deliverable or make substantial p
 At the end, output a brief JSON summary: {\"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false, \"compliance_violations\": 0}") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Phase work session complete" >> "$LOG_FILE"
 log_task_complete "phase-work"
+PHASE_WORK_DURATION=$(( $(date +%s) - PHASE_WORK_START ))
 
 (recover_uncommitted "$TARGET_REPO" "phase-work" "$LOG_FILE") || true
 
+# Rate limit guard: if phase-work finished in < 60s it likely hit a rate limit or
+# API key error. Skip the research session to avoid burning quota on a second 13s run.
 echo "" >> "$LOG_FILE"
 echo "--- Research & Quality Check ---" >> "$LOG_FILE"
+if [ "$PHASE_WORK_DURATION" -lt 60 ]; then
+  echo "[SKIP] Phase-work duration ${PHASE_WORK_DURATION}s < 60s — likely rate-limited or API key invalid." >> "$LOG_FILE"
+  echo "[SKIP] Skipping research session to avoid burning quota. Human action required: check ANTHROPIC_API_KEY in $TARGET_REPO/.env" >> "$LOG_FILE"
+  log_task_complete "research"
+  exit 0
+fi
 log_task_start "research"
 (cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the ltc-steward agent. Read $REPO_ROOT/.claude/agents/ltc-steward.md for your full instructions.
 

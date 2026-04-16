@@ -107,6 +107,7 @@ SKILL.md files from natural language requirements.
 - [x] **G13**: Trigger pattern audit — case-insensitive matching + `write permission` pattern added to `run_eval_async.py`
 - [x] **G18**: 10 near-miss negative controls (test_45–54) — prompts containing agent vocabulary but clearly direct tasks. Added to Training set T. `splits.json` updated (T=36, V=18).
 - [x] **G19**: 5 real-world negative controls (test_55–59) — promoted from skill usage logs across 2 instrumented projects (49 entries). Includes multilingual (zh-TW), brief conversational, and technical-but-non-creation prompts. `splits.json` updated (T=39, V=20). P1 eval-suite-expansion proposal executed ✅ 2026-04-13
+- [ ] **G20**: 5 MCP ecosystem false-positive tests (test_60–64) — prompts using MCP vocabulary that should NOT trigger meta-agent-factory: add OAuth to existing MCP server, debug failing tool calls, update tool list, configure rate limiting, add MCP integration to existing workflow. Sequence: add prompts → update splits.json (T=44, V=20) → run `--update-baseline` → verify all 5 return no-trigger with current description → commit. Source: proposal 2026-04-16-mcp-falsepositive-tests.md — P2
 
 ### Acceptance Criteria
 | Metric | Target |
@@ -323,6 +324,7 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 
 #### 5.3.2 Task-level workflow state tracking (JSON)
 - [ ] Extend `health_dashboard.py` with per-step state tracking (pending/running/completed/failed) for multi-agent workflows. Reference: four-way convergence analysis in `knowledge_base/agentic-ai/evaluations/workflow-state-convergence.md` (ADK lazy scan, WDK replay, Managed Agents event log, our state machine). Recommended pattern: Managed Agents append-only event log (closest to existing session_log.sh). Output: structured JSON, not web UI (web visualization is Phase 7 observability chrome) — P2
+- [ ] **External session state store (crash-recovery contract)**: Phase 5 topology-aware-router MUST store task state in durable external log before dispatching subagents. Fields: task ID, description, TCI score, routing decision, subagent assignments, completed phase log, resume point. Implementation: append-only `logs/phase5_task_state.jsonl`. Resume flag: `--resume-task-id <id>` to restart from last completed phase. Groundwork: `session_log.sh` + `workflow-state-convergence.md` (Phase 5.3 design sprint). Source: roadmap-updates-2026-04-16.md Change 5 — P1
 
 > **Design note (2026-04-11)**: When adopting Agent SDK for fleet execution, separate CLAUDE.md into static base (cacheable across agents) and dynamic session context (per-agent: git status, memory, date). Reference: Agent SDK `exclude_dynamic_sections` on `SystemPromptPreset`. Implementation consideration: current CLAUDE.md mixes static architecture descriptions with dynamic status — a structural split (`CLAUDE_BASE.md` + `CLAUDE_STATUS.md`) would be needed.
 
@@ -405,6 +407,18 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 - [ ] Implement MQTT QoS 1 push (60s periodic sync) and gRPC streaming delta pull (on connect)
 - [ ] Conflict resolution: cloud wins on shared fields; edge wins on device-local fields
 - [ ] Test: 30-minute network isolation → reconnect → confirm zero mutation data loss
+
+#### 6.6 Mythos Model Eval Readiness (when public API ships)
+
+> When `claude-mythos-preview-*` becomes publicly available:
+> 1. Verify `eval/run_eval_async.py --model <model-id>` flag (add if missing — `--model` flag not yet in script)
+> 2. Run: `python eval/run_eval_async.py --model claude-mythos-preview-XXXX --skill .claude/agents/meta-agent-factory.md`
+> 3. Log results to `eval/experiment_log.json` as `model_comparison` experiment type
+> 4. Compare vs. Opus 4.6 baseline on trigger accuracy + convergence speed
+>
+> Expected benefit: if Mythos achieves ≥ 90% trigger rate on first-attempt generation, optimizer
+> iterations needed less frequently → shorter end-to-end pipeline time. Cost tradeoff unknown until
+> pricing announced. Source: analysis 2026-04-16 §1.4; defer until public API available.
 
 ### Acceptance Criteria
 | Metric | Target |
