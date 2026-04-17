@@ -47,7 +47,7 @@
     {
       "model_id": "claude-opus-4-20250514",
       "retirement_date": "2026-06-15",
-      "replacement": "claude-opus-4-6",
+      "replacement": "claude-opus-4-7",
       "source": "https://platform.claude.com/docs/en/about-claude/models/overview"
     },
     {
