@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-17: Phase 4 core complete. 2026-04-17 factory session: P0 post-retirement audit ritual (model_audit.sh --retired-on + factory-steward pre-flight for Apr 19 Haiku 3 retirement); P0 eval runner --model flag for Opus 4.7 shadow eval readiness; P1 fleet version bump 2.1.101→2.1.111 (unlocks /less-permission-prompts, xhigh effort). 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: Haiku 3 retirement 2d (Apr 19), 1M context beta sunset 13d (Apr 30), Google I/O 32d (May 19-20). Remaining Phase 4 unchecked: mcp-sec-audit eval (P2), MCP security consolidation (P3) — both deferred. Phase 4 core complete.**
+**Status as of 2026-04-18: Phase 4 core complete. 2026-04-18 factory session: P0 Opus 4.7 breaking change audit CLEAN (no deprecated temperature/top_p/top_k/budget_tokens in operational code); P1 Programmatic Tool Calling security analysis (blocks code_execution_20260120 pilots — 4/5 security layers bypassed in container); P1 1M context beta sunset audit CLEAN (no beta headers in fleet, model_audit.sh monitors proactively). 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: Haiku 3 retirement 1d (Apr 19), 1M context beta sunset 12d (Apr 30), Google I/O 31d (May 19-20). Shadow eval on Opus 4.7 UNBLOCKED (audit prerequisite cleared). Remaining Phase 4 unchecked: mcp-sec-audit eval (P2), MCP security consolidation (P3) — both deferred. Phase 4 core complete.**
 
 ---
 
@@ -273,7 +273,9 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 - [x] **Post-retirement audit ritual**: Extended `model_audit.sh` with `--retired-on <date>` and `--log <file>` flags. On retirement days, filters to exact-date models, logs structured JSONL to `logs/security/deprecation_audit.jsonl`, auto-appends `verified_clean_post_retirement` to `deprecated_models.json` entries on clean pass. Added `## Pre-Flight Deprecation Audit` section to `factory-steward.md` with retirement schedule (Apr 19, Apr 30, May 11, Jun 15, Jul 5). Excludes documentation-context references from false positives — P0 ✅ 2026-04-17
 - [x] **Eval runner --model flag**: Added `--model <model-id>` to `eval/run_eval_async.py` — passes `--model` through to claude CLI for shadow-eval benchmarking (e.g., `python3 eval/run_eval_async.py --model claude-opus-4-7 .claude/agents/meta-agent-factory.md`). Prerequisite for Opus 4.7 shadow eval gate. No behavior change when flag is omitted — P0 ✅ 2026-04-17
 - [x] **Fleet minimum version bump to >=2.1.111**: Updated `fleet_min_version.txt`. v2.1.111 adds `/less-permission-prompts`, `/effort` slider, `xhigh` tier, `/ultrareview`, `/tui`, push notifications. Human upgrade pending — P1 ✅ 2026-04-17
-- [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion)
+- [x] **Opus 4.7 breaking change audit**: Grepped scripts/, eval/, .claude/ for deprecated API patterns (`temperature`, `top_p`, `top_k`, `budget_tokens`). Result: CLEAN — zero hits in operational code. All matches are in knowledge_base documentation only (descriptive text). 1M context beta headers also clean (model_audit.sh already monitors). Shadow eval on Opus 4.7 is now UNBLOCKED — P0 ✅ 2026-04-18
+- [x] **Programmatic Tool Calling security analysis**: Created `knowledge_base/agentic-ai/evaluations/programmatic-tool-calling-security.md` — three-question analysis of `code_execution_20260120` hook coverage. Finding: 4/5 security layers bypassed (initiator policy, cmd-chain monitor, lifecycle tracker, permission checker). Only MCP depth monitor unaffected (MCP not available in container). Recommendation: add `Tool(code_execution_20260120)` to `permissions.deny`; design container-output audit layer before any pilot. Pilot sequencing: researcher first (read-only surface), factory-steward second (requires audit layer). Blocks D1 from deferred-items 2026-04-18 — P1 ✅ 2026-04-18
+- [ ] **`mcp-sec-audit` standalone evaluation**: Time-boxed 2-4 hour evaluation — confirm installability, marginal value over existing scanner, static-only analysis mode. Prerequisite for CI/CD gate integration — P2 (deferred from 2026-04-07 discussion; elevate to Phase 5 planning period per 2026-04-18 analysis §1.6)
 - [ ] **MCP security suite consolidation**: When 4+ MCP security components exist, consolidate into unified `eval/mcp_security_suite.sh` — P3 (deferred from 2026-04-07 discussion; premature until components exist)
 
 ### Acceptance Criteria
@@ -332,6 +334,14 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 > **Design note (2026-04-11)**: When adopting Agent SDK for fleet execution, separate CLAUDE.md into static base (cacheable across agents) and dynamic session context (per-agent: git status, memory, date). Reference: Agent SDK `exclude_dynamic_sections` on `SystemPromptPreset`. Implementation consideration: current CLAUDE.md mixes static architecture descriptions with dynamic status — a structural split (`CLAUDE_BASE.md` + `CLAUDE_STATUS.md`) would be needed.
 
 > **Design note (2026-04-12)**: External session state design required for stateless router pattern. Managed Agents' brain-hands architecture demonstrates: stateless harness reads task state from append-only event log, invokes agents via `execute(name, input) → string`, resumes via `wake(sessionId)` + `getSession(id)`. Our topology-aware-router should adopt this pattern: read task state from external log on startup, invoke agents as tool calls, treat agent failures as retryable tool errors (not fatal), support resume from any pending task ID. Session state logging (Phase 4.3 task) establishes the event log format.
+
+> **Design note (2026-04-18)**: Session-level checkpointing for optimizer rewind — inspired by ADK v1.31.0 Session Rewind. When migrating to Agent SDK sessions (Phase 5.3.3), evaluate whether `get_subagent_messages()` + session persistence enables rewind-to-checkpoint behavior for the optimizer's parallel branch search. The key value is preserving the agent's in-session understanding of failure patterns across rewind, not just file-level rollback. Reference: fifth pattern in `workflow-state-convergence.md`.
+
+#### 5.3.2a OTEL Tracing Requirements (2026-04-18)
+- [ ] Add `claude-agent-sdk[otel]` as Phase 5 dependency. Initial collector: stdout JSON format (`OTEL_EXPORTER_OTLP_ENDPOINT=stdout`). Jaeger/Tempo deferred to Phase 5.1+. OTEL-native (not vendor-specific) to support both Agent SDK traces and future ADK OTEL integration — P1 (architecture decision, implementation in Phase 5)
+
+#### 5.3.3 CLI to Agent SDK Migration
+- [ ] Migrate fleet execution from `claude -p` CLI invocations to Agent SDK programmatic calls. Enables: OTEL tracing, subagent transcript inspection, session checkpointing. Migration order: factory-steward first (most tested), then researcher, then remaining agents. Preserve existing perf JSON output format for backward compatibility with `agent_review.sh` — P1 (prerequisite for OTEL, implementation in Phase 5)
 
 #### 5.3 `scrum-team-orchestrator` agent + A2A bus
 
@@ -598,6 +608,8 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | MCP cost amplification via prolonged tool-calling chains (658x demonstrated) | 4 | MCP tool-call depth monitor in post-tool-use.sh (alert >15, block >25); per-run duration ceiling (5x 30-day avg); future: CI/CD gate MCP pattern rejection | New — P0, mitigated 2026-04-07 |
 | A2A v1.0→v1.1 migration risk | 5 | Defer Phase 5 implementation to post-I/O; evaluate v1.1 SDK before committing to integration pattern | New — deferred pending I/O |
 | Fleet Claude Code version skew | 4 | Fleet version check script (>=minimum); warn on mismatch in all daily scripts | New — mitigation implemented 2026-04-10 |
+| Opus 4.7 "fewer subagents" behavioral change degrades steward delegation | 4 | L13 explicit naming pattern; monitor duration:commit ratio during rollout; escalate if delegation drops >30% | New — monitoring during rollout |
+| Programmatic Tool Calling (`code_execution_20260120`) bypasses security envelope | 4-5 | Security analysis complete (4/5 hooks bypassed). Gate: `permissions.deny` blocks container use. Pilot blocked until container-output audit layer designed. See `evaluations/programmatic-tool-calling-security.md` | New — P1 analysis complete 2026-04-18 |
 
 ---
 
