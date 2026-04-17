@@ -354,6 +354,8 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 - [ ] Monitor process RSS alongside token velocity — alert on sustained >200MB/hr growth. Thresholds TBD from real Phase 5 session profiles
 
 > **Design note (2026-04-12)**: Agent classification for future hybrid scheduling (cron + event triggers). Event-reactive agents (activate on external events): `agentic-ai-researcher` (new releases), `arm-mrs-steward` (ARM spec updates), `bsp-knowledge-steward` (Linux kernel/ARM TRM releases). Schedule-driven agents (periodic autonomous work): `factory-steward` (ROADMAP advancement), `project-reviewer` (quality audits), `ltc-steward` (phase work). Hybrid agents (both): `android-sw-steward` (AOSP tracking + phase work). MCP Triggers & Events (spec expected ~June 2026) is the target transport for event-driven activation. Full design document deferred until spec draft appears.
+>
+> **Update (2026-04-17)**: `android-sw-steward`, `arm-mrs-steward`, and `bsp-knowledge-steward` **suspended** (resource reallocation). Cron entries disabled. Agent definitions retained for future reactivation. Active fleet reduced to: factory-steward, ltc-steward, agentic-ai-researcher, project-reviewer.
 
 #### 5.5 Defensive architecture (Pre-Execution Reflection + HITL)
 - [ ] Implement `PreToolUse` hook: mandatory reflection gate for DESTRUCTIVE tools (Write, Edit, Bash, MCP write/delete)
