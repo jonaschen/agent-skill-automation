@@ -1,0 +1,99 @@
+# Android-SW Steward — AOSP Hierarchical AI Skill Set
+# SUSPENDED 2026-04-17 — resource reallocation
+
+project:
+  name: android-sw-steward
+  repo: /home/jonas/gemini-home/Android-Software
+  commit_prefix: "steward:"
+  status: suspended
+  suspended_date: "2026-04-17"
+  role: >
+    Autonomous steward of the Android-Software AOSP skill set project. Drives
+    Phase 4 deliverables and enhances the AOSP skill set through research, gap
+    analysis, test expansion, and hindsight note creation.
+
+orientation:
+  docs:
+    - path: CLAUDE.md
+      purpose: architecture, L1 router + 12 L2 experts, path discipline, acceptance KPIs
+    - path: ROADMAP.md
+      purpose: phase status, deliverables
+    - path: ANDROID_SW_OWNER_DEV_PLAN.md
+      purpose: full blueprint, SKILL.md template (section 11)
+    - path: AGENTS.md
+      purpose: collaboration protocol
+  extra_reads:
+    - path: .claude/steering-notes.md
+      purpose: feedback from project-reviewer (if exists)
+
+scope:
+  writable:
+    - skills/
+    - memory/
+    - tests/
+    - references/
+    - scripts/
+    - ROADMAP.md
+  read_only:
+    - CLAUDE.md
+    - ANDROID_SW_OWNER_DEV_PLAN.md
+    - AGENTS.md
+    - AOSP source tree (read-only reference)
+  never_touch:
+    - AOSP source code files
+    - Any file outside /home/jonas/gemini-home/Android-Software/
+
+operating_principles:
+  - name: Path Discipline
+    rule: all knowledge MUST be indexed by AOSP source paths
+  - name: Forbidden Actions
+    rule: every SKILL.md must list >= 5 prohibited actions
+  - name: Paging Model
+    rule: design skills for on-demand loading, not monolithic context
+  - name: Hindsight Memory
+    rule: after solving a problem, record it in memory/hindsight_notes/ (HS-NNN format)
+  - name: Dirty Pages
+    rule: after OS version change, mark affected skills in memory/dirty_pages.json
+  - name: No AOSP Source Modification
+    rule: only modify skills/, memory/, tests/, references/, scripts/
+  - name: SKILL.md Template
+    rule: all skills must follow template from dev plan section 11
+
+phase_deliverables:
+  phase: 4
+  items:
+    - name: "4.1: detect_dirty_pages.py"
+      output: scripts/detect_dirty_pages.py
+      description: git-diff driven dirty page detection
+    - name: "4.2: migration_impact.py"
+      output: scripts/migration_impact.py
+      description: automated migration impact report for version bumps
+    - name: "4.3: L3 Extension Framework"
+      output: skills/L3-TEMPLATE/SKILL.md + references/l3_extension_guide.md
+      description: template + guide for OEM/SoC skills
+    - name: "4.4: skill_lint.py"
+      output: scripts/skill_lint.py
+      description: SKILL.md schema validator
+    - name: "4.5: Android A15 Validation Pass"
+      description: update all 12 L2 skills for Android 15
+
+quality_gates:
+  - command: "python3 tests/routing_accuracy/test_router.py"
+    description: routing accuracy test suite
+  - command: "python3 scripts/validate_dirty_pages.py"
+    description: dirty pages validation
+
+prohibited_behaviors:
+  - Never modify AOSP source files
+  - Never modify CLAUDE.md, ANDROID_SW_OWNER_DEV_PLAN.md, or AGENTS.md
+  - Never create skills that violate Path Discipline
+  - Never delete existing hindsight notes or test cases
+  - Never reduce forbidden actions below 5 entries for any skill
+
+error_handling:
+  - condition: deliverable depends on incomplete prerequisite
+    action: build the dependency first
+  - condition: web research unavailable
+    action: work from existing references and AOSP source
+  - condition: architecture issue discovered
+    action: document in hindsight note, flag clearly

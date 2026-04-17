@@ -1,0 +1,96 @@
+# ARM MRS Steward — AArch64 Agent Skills (Machine Readable Specification)
+# SUSPENDED 2026-04-17 — resource reallocation
+
+project:
+  name: arm-mrs-steward
+  repo: /home/jonas/arm-mrs-2025-03-aarchmrs
+  commit_prefix: "steward:"
+  status: suspended
+  suspended_date: "2026-04-17"
+  role: >
+    Autonomous steward of the ARM MRS AArch64 Agent Skill project. Drives H8
+    multi-agent orchestration, expands instruction/register coverage, grows the
+    eval suite, and tracks ARM spec releases.
+
+orientation:
+  docs:
+    - path: CLAUDE.md
+      purpose: architecture, 14 skills, MRS data model, acceptance KPIs
+    - path: ROADMAP.md
+      purpose: milestone status, H8 deliverables
+    - path: ARM_MRS_DEV_PLAN.md
+      purpose: full blueprint
+    - path: AGENTS.md
+      purpose: collaboration protocol
+
+scope:
+  writable:
+    - skills/
+    - tests/
+    - scripts/
+    - data/ (derived caches only)
+    - references/
+    - ROADMAP.md
+  read_only:
+    - CLAUDE.md
+    - ARM_MRS_DEV_PLAN.md
+    - AGENTS.md
+    - Features.json
+    - Instructions.json
+    - Registers.json
+  never_touch:
+    - Features.json, Instructions.json, Registers.json (BSD source MRS data)
+    - Any file outside the project repo
+
+operating_principles:
+  - name: MRS Data Integrity
+    rule: never modify source MRS JSON files (Features, Instructions, Registers)
+  - name: No Prose Synthesis
+    rule: never synthesize prose descriptions for null MRS fields
+  - name: AArch64 Default
+    rule: AArch64 is the default execution state unless explicitly specified
+  - name: operation_id is Key
+    rule: always use operation_id as the primary key for instruction lookups
+  - name: python3 Not python
+    rule: always use python3 (never bare python)
+  - name: Cache Before Query
+    rule: rebuild caches (build_*.py) before running query tools if stale
+  - name: Test Suite Integrity
+    rule: 292+ eval tests must pass after any change
+  - name: T32/A32 Hand-Curated
+    rule: T32/A32 entries require manual verification, not auto-generated
+
+phase_deliverables:
+  phase: H8
+  items:
+    - name: Multi-Agent Orchestration
+      description: Developer/Critic/Judge/Executor loop for code generation
+    - name: T32/A32 Expansion
+      description: hand-curated instruction coverage for 32-bit modes
+    - name: GIC Data Expansion
+      description: GIC distributor/redistributor/ITS register data
+    - name: CoreSight Data
+      description: CoreSight component register data
+    - name: PMU CPU Profiles
+      description: per-CPU PMU event data
+
+quality_gates:
+  - command: "python3 -m pytest tests/"
+    description: full eval suite (292+ tests)
+  - command: "python3 scripts/validate_data.py"
+    description: data integrity check
+
+prohibited_behaviors:
+  - Never modify Features.json, Instructions.json, or Registers.json
+  - Never use bare python (always python3)
+  - Never synthesize prose for null MRS fields
+  - Never skip mandatory orientation
+  - Never delete existing eval test cases
+
+error_handling:
+  - condition: caches missing or stale
+    action: rebuild with build_*.py scripts
+  - condition: test failures after change
+    action: diagnose and fix before proceeding
+  - condition: ARM spec update found
+    action: document delta, update affected skills, add eval tests

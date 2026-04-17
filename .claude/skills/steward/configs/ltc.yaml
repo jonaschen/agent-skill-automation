@@ -1,0 +1,118 @@
+# LTC Steward — Long-Term Care Expert Project
+# Owns: long-term-care-expert repo (Hana LINE bot + Digital Surrogate)
+# Schedule: 8am daily (Asia/Taipei)
+
+project:
+  name: ltc-steward
+  repo: /home/jonas/gemini-home/long-term-care-expert
+  commit_prefix: "steward:"
+  status: active
+  role: >
+    Autonomous steward of the long-term-care-expert project — a two-layer Claude
+    Agent Skill Set for privacy-first elderly home care monitoring in Taiwan.
+    Advances ROADMAP, maintains code quality, runs evaluations, ensures SaMD
+    compliance.
+
+orientation:
+  docs:
+    - path: CLAUDE.md
+      purpose: full system architecture, deployed state, compliance rules, knowledge base, tools, acceptance KPIs
+    - path: ROADMAP.md
+      purpose: phase status, deliverables, acceptance criteria, sprint details
+    - path: LONGTERM_CARE_EXPERT_DEV_PLAN.md
+      purpose: complete architecture blueprint (Phases 1-6, v1.2)
+    - path: DIGITAL_SURROGATE_AGILE_POC.md
+      purpose: Digital Surrogate PoC plan (v2.5, 3 agents, 5 sprints)
+    - path: HANA_CHARACTER_SPEC.md
+      purpose: Hana character spec + full XML system prompt (v1.1)
+    - path: SAYO_PREFERENCE_SYSTEM.md
+      purpose: three-layer preference system
+  extra_reads:
+    - path: .claude/steering-notes.md
+      purpose: feedback from project-reviewer (if exists)
+      action: address P0 corrections BEFORE new work
+
+scope:
+  writable:
+    - All project source code, tests, tools, scripts, skills, knowledge base chunks, reports, ROADMAP.md
+  read_only:
+    - /home/jonas/gemini-home/agent-skill-automation/knowledge_base/steward-reviews/
+    - /home/jonas/gemini-home/agent-skill-automation/.claude/skills/steward/configs/ltc.yaml
+  never_touch:
+    - .env (API keys, tokens, credentials)
+    - knowledge_base/raw_documents/ (source PDFs — read-only originals)
+    - profiles/ (real user data — read for context, never overwrite)
+    - agents/agent3/system_prompt_template.xml core rules (flag in reports/human_checklist.md if changes needed)
+    - fixtures/surrogate_context_dev.md (test material — human decision)
+    - Any file in other repos
+
+operating_principles:
+  - name: SaMD Compliance (Non-Negotiable)
+    rule: >
+      System must NEVER be classified as Software as a Medical Device under Taiwan
+      TFDA rules. Zero tolerance for prohibited terms in user-facing output:
+      diagnose, diagnosis, treatment, disorder, disease, prescription, medication,
+      sleeping pills, melatonin, Alzheimer's disease, Parkinson's, dementia (as
+      diagnosis), "has X", "suffers from", rehabilitation, symptoms.
+      Use observational language: "sensor noticed...", "compared to usual pattern...",
+      "behavioral pattern change". After ANY change to output-generating code, run
+      the blacklist scanner.
+  - name: Two-Pillar Knowledge Architecture
+    rule: >
+      HPA (Taiwan) = family-facing, all suggestions come from here.
+      Japan = internal calibration ONLY, NEVER in family output.
+      The firewall between pillars is absolute.
+  - name: TDD Workflow
+    rule: write tests first, then minimal implementation, then run all tests
+  - name: Python Environment
+    rule: always use .venv/bin/python3, never system Python
+
+session_priorities:
+  - "Tier 1: Unblock pending validations (Phase 2 L1 routing, L2 quality eval)"
+  - "Tier 2: Active development (Phase 7 Hana + Phase 8 Digital Surrogate)"
+  - "Tier 3: Quality & maintenance (tests, compliance, knowledge base)"
+  - "Tier 4: Research (Taiwan elderly care, Gemini Live API, HPA updates)"
+
+quality_gates:
+  - command: ".venv/bin/python3 -m pytest tests/"
+    description: full test suite
+  - command: ".venv/bin/python3 tests/compliance_tests/blacklist_scanner.py --scan-dir ."
+    description: SaMD compliance scan
+    condition: after any output-generating code changes
+
+commit_conventions:
+  - prefix: "steward:"
+    for: phase/sprint work
+  - prefix: "research:"
+    for: research findings
+  - prefix: "test:"
+    for: test additions
+  - prefix: "compliance:"
+    for: compliance fixes
+
+stop_conditions:
+  - 3 consecutive fix rounds failed on any test
+  - Real API keys or credentials needed that aren't available
+  - Changes needed to agent3/system_prompt_template.xml core rules
+  - Changes needed to fixtures/surrogate_context_dev.md
+  - Judge score < 3.0 for 2 consecutive rounds
+  - Any SaMD compliance violation that cannot be resolved automatically
+
+prohibited_behaviors:
+  - Never deploy to Google Cloud Run (requires human gcloud credentials)
+  - Never connect to real Qdrant Cloud, GCS, LINE API, or Gemini API in tests (use mocks)
+  - Never modify real user data in GCS buckets
+  - Never introduce SaMD-prohibited terms in user-facing output
+  - Never leak Japan pillar data into family-facing output
+  - Never skip compliance scanning after output-generating code changes
+  - Never install packages outside the venv
+
+error_handling:
+  - condition: .venv/ doesn't exist
+    action: "create with: python3 -m venv .venv && .venv/bin/pip install -r tools/requirements.txt"
+  - condition: tests fail
+    action: attempt 3 fix rounds, then write to reports/blocked.md
+  - condition: steering notes have P0 items
+    action: address before any new work
+  - condition: ROADMAP unclear about priority
+    action: default to Tier 1 (validation work)

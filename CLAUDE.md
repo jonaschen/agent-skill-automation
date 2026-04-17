@@ -53,14 +53,25 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `agentic-cicd-gate` | Deployment gating, flaky detection, git rollback | Sonnet 4.6 | Review/Validation |
 | `changeling-router` | Dynamic identity switching from role library | Sonnet 4.6 | Orchestration |
 
-### Autonomous Steward Agents (Daily Nightly Runs)
+### Research Agents
 
-| Agent | Target Project | Role | Model | Status |
-|-------|---------------|------|-------|--------|
-| `agentic-ai-researcher` | This repo (`knowledge_base/`) | Tracks Anthropic + Google agentic AI developments, writes sweep reports, proposes skill/roadmap updates | Opus 4.6 | Active |
-| `agentic-ai-research-lead` | This repo (`knowledge_base/agentic-ai/directives/`) | Reviews research output quality, sets priorities, writes directives that guide researcher and factory-steward | Opus 4.6 | Active |
-| `factory-steward` | This repo | Acts on ADOPT items from research discussions, guided by research-lead directives, tunes agents, advances ROADMAP | Opus 4.6 | Active |
-| `ltc-steward` | `/home/jonas/gemini-home/long-term-care-expert/` | Advances Phases 2/7/8 (validation, Hana hardening, Digital Surrogate sprints), maintains SaMD compliance, runs eval suites, researches elderly care | Opus 4.6 | Active |
+| Agent | Role | Model |
+|-------|------|-------|
+| `agentic-ai-researcher` | L1–L5 research sweep: Anthropic + Google developments, sweep reports, proposals | Opus 4.6 |
+| `agentic-ai-research-lead` | Strategic director: reviews output, writes priority directives | Opus 4.6 |
+
+### Steward Skill (parameterized via YAML configs)
+
+One `steward` skill (`.claude/skills/steward/SKILL.md`) + per-project configs in `.claude/skills/steward/configs/`:
+
+| Config | Project | Status |
+|--------|---------|--------|
+| `factory.yaml` | This repo — pipeline improvement, ADOPT implementation | Active |
+| `ltc.yaml` | long-term-care-expert — Hana LINE bot + Digital Surrogate | Active |
+| `kings-hand.yaml` | The King's Hand — adversarial analysis system | Active |
+| `android-sw.yaml` | Android-Software — AOSP skill set | Suspended |
+| `arm-mrs.yaml` | ARM MRS — AArch64 agent skills | Suspended |
+| `bsp-knowledge.yaml` | BSP Knowledge — Kuzu graph mentor | Suspended |
 
 ### Pipeline Flow
 
@@ -105,6 +116,7 @@ The research pipeline runs **two cycles daily**, each a three-agent chain: resea
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
 | 8:00 AM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Phase work on long-term-care-expert project |
+| 3:00 PM | `kings-hand-steward` | `scripts/daily_kings_hand_steward.sh` | Maintain The King's Hand project |
 
 ### Research Direction Loop
 

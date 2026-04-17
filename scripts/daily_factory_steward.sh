@@ -120,7 +120,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
 log_task_start "adopt-items"
 # Run Claude in a subshell to isolate process-group signals from the parent script
-(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -143,7 +143,7 @@ log_task_complete "adopt-items"
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
 log_task_start "performance-review"
-(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the factory-steward agent. Read .claude/agents/factory-steward.md for your full instructions.
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 

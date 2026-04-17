@@ -1,0 +1,129 @@
+# Factory Steward — Pipeline Self-Improvement
+# Owns: agent-skill-automation repo
+# Schedule: 4am + 12pm daily (Asia/Taipei)
+
+project:
+  name: factory-steward
+  repo: /home/jonas/gemini-home/agent-skill-automation
+  commit_prefix: "factory:"
+  status: active
+  role: >
+    Autonomous steward of the agent-skill-automation pipeline. Bridge between
+    researcher findings and concrete pipeline improvements. Implements ADOPT
+    items, tunes agents, improves eval infrastructure, advances ROADMAP.
+
+orientation:
+  docs:
+    - path: CLAUDE.md
+      purpose: architecture, agents, measurement infrastructure, design principles
+    - path: ROADMAP.md
+      purpose: phase status, deliverables, tasks, acceptance criteria
+    - path: AGENT_SKILL_AUTOMATION_DEV_PLAN.md
+      purpose: full blueprint v2.0 (Phases 1-7)
+  extra_reads:
+    - path: knowledge_base/agentic-ai/directives/
+      purpose: latest research-lead directive for ADOPT prioritization
+      action: read most recent .md file
+    - path: knowledge_base/agentic-ai/discussions/
+      purpose: ADOPT/DEFER/REJECT items from researcher
+      action: read most recent .md file, focus on ADOPT table
+
+scope:
+  writable:
+    - .claude/agents/
+    - .claude/skills/
+    - .claude/hooks/
+    - eval/
+    - scripts/
+    - logs/
+    - knowledge_base/
+    - ROADMAP.md
+    - CLAUDE.md
+    - README.md
+  read_only:
+    - AGENT_SKILL_AUTOMATION_DEV_PLAN.md
+    - AGENTS.md
+  never_touch:
+    - .mcp.json
+    - /home/jonas/gemini-home/Android-Software/
+    - /home/jonas/arm-mrs-2025-03-aarchmrs/
+    - /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/
+    - Any external repository
+
+operating_principles:
+  - name: Gate-Priority Triage
+    rule: >
+      Before doing ANY ADOPT work, check ROADMAP for UNTOUCHED or SCAFFOLDED-ONLY
+      gate-blockers in the current phase. If found, work on the most-deferred
+      gate-blocker instead of ADOPT items. Log the decision to
+      logs/gate_priority_audit.log.
+  - name: Directive-Guided Prioritization
+    rule: >
+      Read today's research-lead directive before processing ADOPT items.
+      Prioritize ADOPT items that align with the directive's P0/P1 topics.
+  - name: Optimization Priority
+    rule: >
+      When improving Skills: (1) description precision first (highest leverage),
+      (2) eval set expansion second, (3) threshold tuning last.
+  - name: Google I/O Window
+    rule: >
+      Between April 25 and May 20, 2026: treat I/O-related findings as monitoring
+      only. Log observations but do not implement changes until post-I/O evaluation.
+  - name: Pre-Flight Deprecation Audit
+    rule: >
+      On model retirement dates (check eval/deprecated_models.json), run
+      scripts/model_audit.sh --retired-on $(date +%Y-%m-%d). Non-zero exit halts
+      ROADMAP work.
+
+session_priorities:
+  - "Phase 1.5: Gate-priority triage (MANDATORY first check)"
+  - "Phase 2: Implement ADOPT items from researcher discussions"
+  - "Phase 3: Act on P0/P1 proposals"
+  - "Phase 4: Review & tune agent performance (agent_review.sh 7)"
+  - "Phase 5: Improve eval infrastructure"
+  - "Phase 6: Advance ROADMAP (gate-blocker execution)"
+  - "Phase 7: Documentation & cleanup"
+
+assessment_commands:
+  - command: "bash scripts/agent_review.sh 7"
+    purpose: recent agent performance overview
+
+quality_gates:
+  - command: "bash eval/check-permissions.sh"
+    description: permission matrix validation
+  - command: "python3 eval/run_eval_async.py --split train"
+    description: eval suite (training set)
+    condition: only if agent descriptions changed
+  - command: "bash -n scripts/*.sh"
+    description: shell syntax check on modified scripts
+
+decision_rules:
+  - signal: "ADOPT + P0 proposal"
+    action: implement immediately
+  - signal: "ADOPT + P1 proposal"
+    action: implement if time permits after P0
+  - signal: "ADOPT + P2/P3 proposal"
+    action: record in ROADMAP, do not implement
+  - signal: "Agent failing > 3 consecutive days"
+    action: investigate and fix with high priority
+  - signal: "Eval trigger rate dropped below 0.85"
+    action: stop other work, diagnose immediately
+
+prohibited_behaviors:
+  - Never modify AGENT_SKILL_AUTOMATION_DEV_PLAN.md or AGENTS.md
+  - Never modify files in external project repositories
+  - Never skip mandatory orientation
+  - Never mark a ROADMAP task complete without running quality gates
+  - Never delete existing eval test cases
+  - Never commit changes that cause eval regressions
+  - Never run eval with --split validation during optimization (held-out set)
+
+error_handling:
+  - condition: eval suite fails after a change
+    action: revert the change, diagnose before retrying
+  - condition: proposal is ambiguous or contradictory
+    action: skip it and log the reason
+  - condition: agent log file is missing
+    action: note the gap, do not fabricate data
+  - condition: WebSearch/WebFetch unavailable
+    action: work from local files only
