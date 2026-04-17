@@ -230,9 +230,9 @@ scripts/
 ├── daily_android_sw_steward.sh   # SUSPENDED — android-sw-steward
 ├── daily_arm_mrs_steward.sh      # SUSPENDED — arm-mrs-steward
 ├── daily_bsp_knowledge_steward.sh # SUSPENDED — bsp-knowledge-steward
-├── daily_ltc_steward.sh           # Cron: 5x wkday, 3x weekend — ltc-steward
-├── daily_factory_steward.sh       # Cron: 9pm — factory-steward
-├── daily_project_reviewer.sh      # Cron: 6am — project-reviewer
+├── daily_ltc_steward.sh           # Cron: 8am — ltc-steward
+├── daily_factory_steward.sh       # Cron: 4am+12pm — factory-steward
+├── daily_project_reviewer.sh      # SUSPENDED — project-reviewer
 ├── agent_review.sh               # Performance review dashboard
 ├── promote_cases.py              # Promote real-world skill usage to eval set
 ├── health_dashboard.py           # Pipeline health dashboard

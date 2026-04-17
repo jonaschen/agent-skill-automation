@@ -8,11 +8,8 @@
     "agent:cicd-gate": "agentic-cicd-gate",
     "agent:changeling": "changeling-router",
     "agent:researcher": "agentic-ai-researcher",
-    "agent:android-sw": "android-sw-steward",
-    "agent:arm-mrs": "arm-mrs-steward",
-    "agent:bsp-knowledge": "bsp-knowledge-steward",
+    "agent:research-lead": "agentic-ai-research-lead",
     "agent:factory": "factory-steward",
-    "agent:reviewer": "project-reviewer",
     "agent:topology": "topology-aware-router"
   },
   "keyword_rules": [
@@ -47,29 +44,14 @@
       "label": "agent:researcher"
     },
     {
-      "pattern": "android|aosp|AAOS|HAL|SELinux|device.*tree",
-      "agent": "android-sw-steward",
-      "label": "agent:android-sw"
-    },
-    {
-      "pattern": "ARM|AArch64|MRS|instruction.*set|GIC|CoreSight|PMU|FEAT_",
-      "agent": "arm-mrs-steward",
-      "label": "agent:arm-mrs"
-    },
-    {
-      "pattern": "BSP|knowledge.*graph|Kuzu|MediaTek|Qualcomm|SoC|TRM|AMBA",
-      "agent": "bsp-knowledge-steward",
-      "label": "agent:bsp-knowledge"
+      "pattern": "research.*direction|research.*priority|research.*lead|directive|team.*composition",
+      "agent": "agentic-ai-research-lead",
+      "label": "agent:research-lead"
     },
     {
       "pattern": "pipeline|cron|daily.*script|eval.*infra|factory.*improve|hook|ROADMAP",
       "agent": "factory-steward",
       "label": "agent:factory"
-    },
-    {
-      "pattern": "review|steering|steward.*quality|nightly.*output|regression",
-      "agent": "project-reviewer",
-      "label": "agent:reviewer"
     },
     {
       "pattern": "topolog|TCI|parallel.*agent|multi-agent.*route|coupling",

@@ -68,11 +68,8 @@ ensure_labels() {
     "agent:cicd-gate|b60205|Delegate to agentic-cicd-gate"
     "agent:changeling|fbca04|Delegate to changeling-router"
     "agent:researcher|0075ca|Delegate to agentic-ai-researcher"
-    "agent:android-sw|c5def5|Delegate to android-sw-steward"
-    "agent:arm-mrs|d4c5f9|Delegate to arm-mrs-steward"
-    "agent:bsp-knowledge|bfdadc|Delegate to bsp-knowledge-steward"
+    "agent:research-lead|c5def5|Delegate to agentic-ai-research-lead"
     "agent:factory|f9d0c4|Delegate to factory-steward"
-    "agent:reviewer|fef2c0|Delegate to project-reviewer"
     "agent:topology|e99695|Delegate to topology-aware-router"
   )
 

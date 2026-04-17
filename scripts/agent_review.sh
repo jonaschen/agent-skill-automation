@@ -1,14 +1,12 @@
 #!/bin/bash
 # agent_review.sh — Review dashboard for all daily agents
 #
-# Summarizes recent performance of:
-#   1. factory-steward (12pm/5pm/9pm daily)
-#   2. ltc-steward (5x weekday, 3x weekend)
-#   3. agentic-ai-researcher (2am daily)
-#   4. android-sw-steward (3am daily)
-#   5. arm-mrs-steward (4am daily)
-#   6. bsp-knowledge-steward (5am daily)
-#   7. project-reviewer (7am daily)
+# Summarizes recent performance of active agents:
+#   1. agentic-ai-researcher (2am + 10am daily)
+#   2. agentic-ai-research-lead (3am + 11am daily)
+#   3. factory-steward (4am + 12pm daily)
+#   4. ltc-steward (8am daily)
+# Also shows historical data for suspended agents if present.
 #
 # Usage:
 #   ./scripts/agent_review.sh              # Last 7 days (default)
@@ -242,14 +240,16 @@ print_agent_section() {
     echo ""
 }
 
-# Print each agent section
-print_agent_section "factory" "Factory Steward" "factory" "factory" "12pm/5pm/9pm"
-print_agent_section "ltc" "LTC Steward" "ltc" "ltc" "5x wkday, 3x weekend"
-print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2:00 AM"
-print_agent_section "android-sw" "Android-SW Steward" "android-sw" "android-sw" "3:00 AM"
-print_agent_section "arm-mrs" "ARM MRS Steward" "arm-mrs" "arm-mrs" "4:00 AM"
-print_agent_section "bsp-knowledge" "BSP Knowledge Steward" "bsp-knowledge" "bsp-knowledge" "5:00 AM"
-print_agent_section "reviewer" "Project Reviewer" "reviewer" "reviewer" "7:00 AM"
+# Print each agent section — active agents first
+print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2am + 10am"
+print_agent_section "research-lead" "Research Lead" "research-lead" "research-lead" "3am + 11am"
+print_agent_section "factory" "Factory Steward" "factory" "factory" "4am + 12pm"
+print_agent_section "ltc" "LTC Steward" "ltc" "ltc" "8:00 AM"
+# Suspended agents — will show "No runs found" if no recent data
+print_agent_section "android-sw" "Android-SW Steward (suspended)" "android-sw" "android-sw" "suspended"
+print_agent_section "arm-mrs" "ARM MRS Steward (suspended)" "arm-mrs" "arm-mrs" "suspended"
+print_agent_section "bsp-knowledge" "BSP Knowledge Steward (suspended)" "bsp-knowledge" "bsp-knowledge" "suspended"
+print_agent_section "reviewer" "Project Reviewer (suspended)" "reviewer" "reviewer" "suspended"
 
 # Fleet Version Status
 echo -e "${BOLD}--- Fleet Version Status ---${RESET}"
@@ -345,7 +345,7 @@ echo ""
 echo -e "${BOLD}--- Git Activity ---${RESET}"
 echo ""
 
-for REPO_PATH in "/home/jonas/gemini-home/Android-Software" "/home/jonas/arm-mrs-2025-03-aarchmrs" "/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets" "/home/jonas/gemini-home/long-term-care-expert" "/home/jonas/gemini-home/agent-skill-automation"; do
+for REPO_PATH in "/home/jonas/gemini-home/agent-skill-automation" "/home/jonas/gemini-home/long-term-care-expert"; do
     REPO_NAME=$(basename "$REPO_PATH")
     COMMIT_COUNT=$(cd "$REPO_PATH" && git rev-list --after="$(date -d "-${DAYS} days" +%Y-%m-%d 2>/dev/null || date -v-${DAYS}d +%Y-%m-%d)" HEAD 2>/dev/null | wc -l) || COMMIT_COUNT="?"
     echo "  $REPO_NAME: $COMMIT_COUNT commits in last $DAYS days"

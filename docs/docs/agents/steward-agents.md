@@ -5,21 +5,20 @@ title: Steward Agents
 
 # Autonomous Steward Agents
 
-The steward agents run nightly via cron, each maintaining a specific project repository. They form a self-correcting cycle: stewards build and commit, the project reviewer assesses quality and writes steering notes, which guide the next session.
+The steward agents run via cron, each maintaining a specific aspect of the pipeline. The research pipeline forms a three-agent cycle that runs twice daily: researcher produces findings, research-lead reviews and directs, factory-steward implements.
 
 ## Overview
 
-| Agent | Target Project | Schedule | Model |
-|-------|---------------|----------|-------|
-| `agentic-ai-researcher` | This repo (knowledge base) | 2:00 AM | Opus 4.6 |
-| `android-sw-steward` | Android-Software (AOSP skill set) | 3:00 AM | Opus 4.6 |
-| `arm-mrs-steward` | ARM MRS (AArch64 agent skills) | 4:00 AM | Opus 4.6 |
-| `bsp-knowledge-steward` | BSP Knowledge Skill Sets | 5:00 AM | Opus 4.6 |
-| `factory-steward` | This repo (pipeline self-improvement) | 12:00 PM + 9:00 PM | Opus 4.6 |
+| Agent | Target | Schedule | Model | Status |
+|-------|--------|----------|-------|--------|
+| `agentic-ai-researcher` | This repo (knowledge base) | 2am + 10am | Opus 4.6 | Active |
+| `agentic-ai-research-lead` | This repo (directives) | 3am + 11am | Opus 4.6 | Active |
+| `factory-steward` | This repo (pipeline) | 4am + 12pm | Opus 4.6 | Active |
+| `ltc-steward` | long-term-care-expert | 8am | Opus 4.6 | Active |
 
 ## agentic-ai-researcher
 
-Runs a five-level pipeline every night:
+Runs a five-level pipeline every sweep:
 
 | Level | Activity |
 |-------|----------|
@@ -29,69 +28,54 @@ Runs a five-level pipeline every night:
 | L4 — Plan | Strategic proposals with priority ratings (P0-P3) |
 | L5 — Act | Implements ADOPT decisions, updates knowledge base |
 
+Reads the latest research-lead directive to adjust priorities per topic (P0 = deep, P2 = watch-only).
+
 **Output**: Sweep reports in `knowledge_base/agentic-ai/sweeps/`, proposals in `knowledge_base/agentic-ai/proposals/`
 
-## android-sw-steward
+## agentic-ai-research-lead
 
-Autonomously maintains the Android-Software AOSP skill set project.
+Strategic director of the research program. Reviews researcher output and sets priorities.
 
-**Current focus** (Phase 4):
-- `detect_dirty_pages.py` — detects modified skill files needing re-evaluation
-- `migration_impact.py` — analyzes impact of AOSP version changes
-- `skill_lint.py` — lints skill definitions for quality issues
-- L3 extension framework
-- Android 15 validation pass
+**Responsibilities**:
+- Assesses sweep quality, depth, and relevance to pipeline goals
+- Writes priority directives (`knowledge_base/agentic-ai/directives/YYYY-MM-DD.md`)
+- Evaluates whether previous directives were followed
+- Proposes team composition changes when needed
 
-**Also**: Researches AOSP/Android updates, creates hindsight notes, expands routing test suite
-
-## arm-mrs-steward
-
-Autonomously maintains the ARM MRS AArch64 agent skill project.
-
-**Current focus** (H8):
-- Multi-agent orchestration design (Developer/Critic/Judge/Executor loop)
-- T32/A32 instruction coverage expansion
-- GIC/CoreSight/PMU data expansion
-- Growing the 292-test eval suite
-- Tracking ARM spec releases (v9Ap7+, new FEAT_* extensions)
-
-## bsp-knowledge-steward
-
-Autonomously maintains the BSP Knowledge Skill Sets project — a three-layer AI mentor system for SoC BSP engineers grounded in a Kuzu knowledge graph (501+ nodes).
-
-**Current focus**:
-- Phase 3 exit: Blackboard eval, Socratic template validation, mentor learner-level detection
-- Phase 4: Sedimentation CLI, business impact reports, CI/CD integration, base graph maintenance
-- Knowledge graph expansion toward 800-1000 nodes
-- Eval coverage growth across all 7 skills
+**Output**: Research directives, team proposals
 
 ## factory-steward
 
-The self-improvement agent for this repository. Runs twice daily.
+The self-improvement agent for this repository. Implements research findings into the pipeline.
 
 **Responsibilities**:
-- Implements ADOPT items from the researcher's nightly discussion transcripts
+- Implements ADOPT items from the researcher's discussion transcripts
+- Reads research-lead directives to prioritize which ADOPT items to tackle
 - Tunes underperforming agents based on `agent_review.sh` data
 - Improves eval infrastructure (test prompts, splits, scoring)
-- Refines agent definitions based on performance data
-- Advances ROADMAP Phase 4 deliverables
+- Advances ROADMAP deliverables
 
-## The Self-Correcting Cycle
+## ltc-steward
+
+Maintains the long-term-care-expert project (Hana LINE bot + Digital Surrogate).
+
+**Current focus**: Phase 7/8 work (Hana hardening, Digital Surrogate sprints), SaMD compliance, eval suites
+
+## The Research Direction Loop
 
 ```
-Stewards build and commit
-        |
-        v
-project-reviewer assesses quality
-        |
-        v
-Steering notes written to each repo
-        |
-        v
-Stewards read steering notes in next session
-        |
-        v
-Corrections applied, cycle repeats
+researcher (L1-L5) → knowledge_base/ → research-lead → directives/
+      ↑                                                    ↓
+      └────────────── reads directive ◄────────────────────┘
+                                                           ↓
+                                              factory-steward (same cycle)
 ```
 
-Skills that fail validation (`posterior_mean < 0.90` or `ci_lower < 0.80`) are flagged as **P0 correction items**.
+## Suspended Agents
+
+The following agents are suspended (2026-04-17, resource reallocation). Definitions preserved for potential reactivation:
+
+- `android-sw-steward` — Android-Software AOSP skill set
+- `arm-mrs-steward` — ARM MRS AArch64 agent skills
+- `bsp-knowledge-steward` — BSP Knowledge Skill Sets
+- `project-reviewer` — Cross-project steward quality reviews

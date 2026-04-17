@@ -48,28 +48,26 @@ Automation Foundation (Phases 1–4)
 └── Changeling Router
 ```
 
-## Seventeen Core Agents
+## Core Agents
 
 **Phases 1–4 (Automation Foundation)**
 
 | Agent | Role | Model |
 |-------|------|-------|
 | `meta-agent-factory` | Generates new Skill/Sub-agent definitions from natural language | Opus 4.6 |
-| `skill-quality-validator` | Static analysis + trigger rate measurement; invoked by `project-reviewer` when stewards modify skills | Sonnet 4.6 |
+| `skill-quality-validator` | Static analysis + trigger rate measurement | Sonnet 4.6 |
 | `autoresearch-optimizer` | Binary eval loop, parallel branch search, model distillation | Opus 4.6 |
 | `agentic-cicd-gate` | Deployment gating, flaky test detection, autonomous rollback | Sonnet 4.6 |
 | `changeling-router` | Dynamic identity switching for multi-persona workflows | Sonnet 4.6 |
 
-**Autonomous Steward Agents (Nightly Cron)**
+**Active Daily Agents (Two Research Cycles + LTC)**
 
-| Agent | Target Project | Schedule | Model |
-|-------|---------------|----------|-------|
-| `agentic-ai-researcher` | This repo — knowledge base | 2:00 AM daily | Opus 4.6 |
-| `android-sw-steward` | Android-Software (AOSP skill set) | 3:00 AM daily | Opus 4.6 |
-| `arm-mrs-steward` | ARM MRS (AArch64 agent skills) | 4:00 AM daily | Opus 4.6 |
-| `bsp-knowledge-steward` | BSP Knowledge Skill Sets | 5:00 AM daily | Opus 4.6 |
-| `factory-steward` | This repo (pipeline self-improvement) | 9:00 PM daily | Opus 4.6 |
-| `project-reviewer` | Reviews all 3 project stewards | 6:00 AM daily | Opus 4.6 |
+| Agent | Role | Schedule | Model |
+|-------|------|----------|-------|
+| `agentic-ai-researcher` | L1–L5 research sweep (Anthropic + Google) | 2am + 10am | Opus 4.6 |
+| `agentic-ai-research-lead` | Reviews research output, writes priority directives | 3am + 11am | Opus 4.6 |
+| `factory-steward` | Implements ADOPT items guided by directives, tunes pipeline | 4am + 12pm | Opus 4.6 |
+| `ltc-steward` | Phase work on long-term-care-expert project | 8am | Opus 4.6 |
 
 **Phase 5 (Orchestration Layer)**
 
@@ -93,39 +91,39 @@ Automation Foundation (Phases 1–4)
 .claude/
 ├── agents/              # Agent definition files (YAML frontmatter + instructions)
 │   ├── (5 core pipeline agents)
-│   ├── agentic-ai-researcher.md     # Nightly: AI research sweep
-│   ├── android-sw-steward.md        # Nightly: Android-Software steward
-│   ├── arm-mrs-steward.md           # Nightly: ARM MRS steward
-│   ├── bsp-knowledge-steward.md     # Nightly: BSP Knowledge steward
-│   ├── factory-steward.md           # Nightly: Factory self-improvement
-│   └── project-reviewer.md          # Nightly: Reviews steward work
+│   ├── agentic-ai-researcher.md     # 2x/day: AI research sweep
+│   ├── agentic-ai-research-lead.md  # 2x/day: Strategic research director
+│   ├── factory-steward.md           # 2x/day: Pipeline self-improvement
+│   ├── ltc-steward.md              # Daily: Long-term-care-expert steward
+│   └── (suspended agent definitions preserved for reactivation)
 ├── skills/              # Skill definitions (SKILL.md + scripts/ + references/)
 └── hooks/               # Lifecycle hooks: pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
 ├── run_eval_async.py    # Primary eval runner (asyncio + semaphore + backoff)
 ├── bayesian_eval.py     # Bayesian posterior + 95% credible intervals
 ├── prompt_cache.py      # Semantic cache — reduces API calls ~40% per iteration
-├── tci_compute.py       # Task Coupling Indexer for Phase 5 topology routing
 ├── flaky_detector.py    # Bayesian flaky test classifier
-├── splits.json          # Train (36) / Validation (18) split definition
+├── splits.json          # Train (39) / Validation (20) split definition
 ├── check-permissions.sh # Static validator for mutually exclusive permission rules
-├── prompts/             # Fixed test prompts (test_1.txt … test_54.txt)
+├── prompts/             # Fixed test prompts (test_1.txt … test_59.txt)
 └── expected/            # Expected outputs for binary pass/fail evaluation
 scripts/
-├── daily_research_sweep.sh       # Cron: 2am — AI research sweep
-├── daily_android_sw_steward.sh   # Cron: 3am — Android-Software steward
-├── daily_arm_mrs_steward.sh      # Cron: 4am — ARM MRS steward
-├── daily_bsp_knowledge_steward.sh # Cron: 5am — BSP Knowledge steward
-├── daily_factory_steward.sh       # Cron: 9pm — Factory self-improvement
-├── daily_project_reviewer.sh      # Cron: 6am — Reviews steward work
-├── agent_review.sh               # Performance review dashboard (all 3 agents)
-└── (other utility scripts)
+├── daily_research_sweep.sh       # Cron: 2am+10am — AI research sweep
+├── daily_research_lead.sh        # Cron: 3am+11am — Research direction
+├── daily_factory_steward.sh      # Cron: 4am+12pm — Pipeline improvement
+├── daily_ltc_steward.sh          # Cron: 8am — LTC steward
+├── agent_review.sh               # Performance review dashboard
+└── (suspended scripts preserved for manual use)
 logs/
 ├── *.log                         # Daily agent run logs (30-day retention)
 └── performance/                  # JSON performance records per agent per day
 knowledge_base/
-├── agentic-ai/                   # Researcher knowledge base (sweeps, analysis, proposals)
-└── steward-reviews/              # Daily project-reviewer assessments of steward work
+└── agentic-ai/                   # Research knowledge base
+    ├── directives/               # Research-lead priority directives
+    ├── sweeps/                   # Daily sweep reports
+    ├── analysis/                 # Deep analysis
+    ├── discussions/              # Innovator-Engineer debates
+    └── proposals/                # Strategic proposals
 ~/.claude/@lib/agents/            # Changeling role library (global, read-only)
 ```
 
@@ -150,53 +148,41 @@ knowledge_base/
 - Four-tier HITL gate (Tier 0: none → Tier 3: synchronous human approval)
 - Watchdog circuit breaker halts Dev-QA infinite loops before budget exhaustion
 
-**Closed-loop quality control** — the nightly fleet forms a self-correcting cycle:
-- Stewards build and commit → project-reviewer assesses quality and validates modified skills via `skill-quality-validator` → steering notes guide next session
-- Factory-steward implements pipeline improvements from the researcher's Innovator-vs-Engineer discussions
-- Skills that fail validation (posterior_mean < 0.90 or ci_lower < 0.80) are flagged as P0 correction items
+**Research direction loop** — a three-agent cycle runs twice daily:
+- `agentic-ai-researcher` produces L1–L5 findings (sweeps, analysis, discussions, proposals)
+- `agentic-ai-research-lead` reviews output quality, sets P0/P1/P2 priorities via directives
+- `factory-steward` implements ADOPT items, guided by the research-lead's directives
+- Directives feed back into the researcher's next sweep, closing the loop
 
-## Nightly Agent Fleet
+## Daily Agent Fleet
 
-Eight agent runs execute daily via cron (6 agents, factory-steward runs 3x):
+Two research cycles run daily, plus an independent LTC steward session:
 
 ```
-12:00 PM ─── factory-steward ────────── Daytime: advances ROADMAP, fixes regressions
-                                         → /home/jonas/gemini-home/agent-skill-automation/
- 5:00 PM ─── factory-steward ────────── Afternoon: continues ROADMAP, acts on proposals
-                                         → /home/jonas/gemini-home/agent-skill-automation/
- 9:00 PM ─── factory-steward ────────── Evening: implements ADOPT items, tunes agents
-                                         → /home/jonas/gemini-home/agent-skill-automation/
- 2:00 AM ─── agentic-ai-researcher ──── Scans Anthropic + Google AI developments
-                                         → knowledge_base/agentic-ai/
- 3:00 AM ─── android-sw-steward ─────── Advances AOSP skill set (Phase 4 work)
-                                         → /home/jonas/gemini-home/Android-Software/
- 4:00 AM ─── arm-mrs-steward ────────── Advances AArch64 skill set (data expansion)
-                                         → /home/jonas/arm-mrs-2025-03-aarchmrs/
- 5:00 AM ─── bsp-knowledge-steward ──── Advances BSP mentor skill sets (Phase 3/4)
-                                         → /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/
- 7:00 AM ─── project-reviewer ────────── Reviews steward work, validates skills
-                                         → reads all 3 project repos, writes feedback
+Night Cycle:
+ 2:00 AM ─── researcher ──────── L1-L5 sweep (reads prior directive)
+ 3:00 AM ─── research-lead ───── Reviews output, writes priority directive
+ 4:00 AM ─── factory-steward ─── Implements ADOPT items guided by directive
+
+Morning Cycle:
+10:00 AM ─── researcher ──────── L1-L5 sweep (reads prior directive)
+11:00 AM ─── research-lead ───── Reviews output, writes priority directive
+12:00 PM ─── factory-steward ─── Implements ADOPT items guided by directive
+
+Independent:
+ 8:00 AM ─── ltc-steward ─────── Phase work on long-term-care-expert
 ```
 
-Each run writes a performance JSON record to `logs/performance/`. Review all agents at once:
+Each run writes a performance JSON record to `logs/performance/`. Review all agents:
 
 ```bash
-./scripts/agent_review.sh        # Last 7 days — success rate, duration, commits, test counts
+./scripts/agent_review.sh        # Last 7 days
 ./scripts/agent_review.sh 30     # Monthly view
 ```
 
-**What the steward agents do autonomously:**
-
-- **android-sw-steward**: Reads project docs, works on the next Phase 4 deliverable (`detect_dirty_pages.py`, `migration_impact.py`, `skill_lint.py`, L3 extension framework, A15 validation), researches AOSP updates, creates hindsight notes, expands the 100-case routing test suite
-- **arm-mrs-steward**: Reads project docs, designs H8 multi-agent orchestration (Developer/Critic/Judge/Executor), expands T32/A32 instruction coverage, adds GIC/CoreSight/PMU data, grows the 292-test eval suite, tracks ARM spec releases
-- **bsp-knowledge-steward**: Reads project docs, completes Phase 3 exit criteria (Blackboard eval, Socratic templates, learner-level detection), starts Phase 4 deliverables (knowledge sedimentation, CI/CD, base graph maintenance), expands the 501-node Kuzu knowledge graph with new ARM/Linux BSP specs
-- **factory-steward**: Owns this repo. Implements ADOPT items from the researcher's Innovator-vs-Engineer discussions, tunes underperforming agents based on `agent_review.sh` data, improves eval infrastructure, advances the ROADMAP
-- **project-reviewer**: Tech lead for all three stewards. Reviews their git commits against each project's ROADMAP, validates modified skill files via `skill-quality-validator`, writes steering notes to `.claude/steering-notes.md` in each repo, escalates stalled or regressing agents
-- **agentic-ai-researcher**: Runs L1–L5 pipeline (collect → analyze → discuss → plan → act), writes sweep reports, proposes skill/roadmap updates
-
 ## Current Status
 
-**Phase 3 in progress.** Phases 0-2 complete. Measurement infrastructure built and verified (Bayesian eval, async runner, semantic cache, T/V split). First optimizer iteration achieved Training posterior mean **0.921** CI [0.818, 0.983] and Validation **0.800** CI [0.604, 0.940] — exceeds the 0.90 deployment gate on training.
+**Phase 4 core complete.** 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Focus: agentic AI research, agent development, and applications.
 
 See [ROADMAP.md](ROADMAP.md) for full task tracking, measurement architecture, and next actions.
 
@@ -205,13 +191,3 @@ See [ROADMAP.md](ROADMAP.md) for full task tracking, measurement architecture, a
 - [ROADMAP.md](ROADMAP.md) — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
 - [AGENT_SKILL_AUTOMATION_DEV_PLAN.md](AGENT_SKILL_AUTOMATION_DEV_PLAN.md) — Full architecture blueprint (Phases 1-7)
 - [README_AUTORESEARCH.md](README_AUTORESEARCH.md) — How Karpathy's AutoResearch pattern maps to this system
-
-## Managed Projects
-
-This repo's steward agents autonomously maintain three external projects:
-
-| Project | Repo | Agent | Current Focus |
-|---------|------|-------|--------------|
-| Android-Software | `/home/jonas/gemini-home/Android-Software/` | `android-sw-steward` | Phase 4: dirty page detection, migration impact, A15 validation |
-| ARM MRS | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | `arm-mrs-steward` | H8: multi-agent orchestration, data expansion (T32/A32, GIC, PMU) |
-| BSP Knowledge | `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/` | `bsp-knowledge-steward` | Phase 3 exit + Phase 4: knowledge graph expansion, ITS mentor validation |

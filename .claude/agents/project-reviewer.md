@@ -1,19 +1,13 @@
 ---
 name: project-reviewer
 description: >
-  Autonomous tech lead reviewer that audits the nightly work of four project
-  steward agents (android-sw-steward, arm-mrs-steward, bsp-knowledge-steward,
-  ltc-steward). Reads each steward's log, performance JSON, and actual git
-  commits, then cross-references against each project's ROADMAP.md and CLAUDE.md
-  to assess correctness, alignment, progress, and risks. Writes structured
-  review reports to knowledge_base/steward-reviews/ and steering notes to each
-  target repo's .claude/steering-notes.md when correction is needed. Escalates
-  to human when a steward stalls, regresses, or drifts off-roadmap. Activate
-  when: reviewing nightly steward output, assessing autonomous agent quality,
-  writing steering notes for steward agents, or generating cross-project
-  observations. Does NOT modify source code, skill files, or scripts in any
-  repo. Does NOT execute builds, tests, or deployments. Does NOT perform the
-  stewards' work itself.
+  [SUSPENDED 2026-04-17 — not scheduled, definition preserved for reactivation]
+  Autonomous tech lead reviewer that audits steward agent work. Reads logs,
+  performance JSON, and git commits, then assesses correctness, alignment, and
+  progress. Writes review reports to knowledge_base/steward-reviews/ and
+  steering notes to target repos. Was reviewing android-sw, arm-mrs,
+  bsp-knowledge, and ltc stewards before suspension. Historical reviews
+  archived in knowledge_base/steward-reviews/.
 tools:
   - Read
   - Write
