@@ -3,7 +3,7 @@
 #
 # Runs the steward skill with kings-hand config to maintain The King's Hand project.
 #
-# Schedule: 3pm daily (Asia/Taipei)
+# Schedule: 7pm daily (Asia/Taipei)
 #
 # Usage: Called by cron, or manually: ./scripts/daily_kings_hand_steward.sh
 

@@ -19,7 +19,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 Seven-phase pipeline for autonomously designing, validating, optimizing, and deploying Claude Code Agent Skills. Phases 1–4 build the core automation loop; Phases 5–7 extend to multi-agent topology, edge AI, and commercial AaaS.
 
-**Current status (2026-04-17):** Phase 4 core complete. 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Three-agent research pipeline runs twice daily: researcher → research-lead → factory-steward (night cycle 2-4am, morning cycle 10am-12pm). LTC steward at 8am. Focus: agentic AI research, agent development, and applications.
+**Current status (2026-04-17):** Phase 4 core complete. 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Three-agent research pipeline runs twice daily: researcher → research-lead → factory-steward (night cycle 1-3am, morning cycle 12-2pm). LTC steward at 8am. Focus: agentic AI research, agent development, and applications.
 
 **Key documents:**
 - `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
@@ -99,24 +99,24 @@ The research pipeline runs **two cycles daily**, each a three-agent chain: resea
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
-| 3:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
-| 4:00 AM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
+| 1:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
+| 2:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
+| 3:00 AM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
 
 **Morning Cycle**
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 10:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
-| 11:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
-| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
+| 12:00 PM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
+| 1:00 PM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
+| 2:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
 
 **Independent**
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
 | 8:00 AM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Phase work on long-term-care-expert project |
-| 3:00 PM | `kings-hand-steward` | `scripts/daily_kings_hand_steward.sh` | Maintain The King's Hand project |
+| 7:00 PM | `kings-hand-steward` | `scripts/daily_kings_hand_steward.sh` | Maintain The King's Hand project |
 
 ### Research Direction Loop
 

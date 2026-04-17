@@ -5,8 +5,8 @@
 # research discussion, act on proposals, review agent performance, improve
 # the eval infrastructure, and advance the ROADMAP.
 #
-# Runs at 9pm — before the other nightly agents — so improvements are in
-# place for tonight's runs.
+# Runs twice daily at 3am and 2pm (Asia/Taipei) — after researcher and
+# research-lead in each cycle.
 #
 # Usage: Called by cron, or manually: ./scripts/daily_factory_steward.sh
 

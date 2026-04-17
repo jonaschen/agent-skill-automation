@@ -6,8 +6,8 @@
 # guide the next researcher sweep and factory-steward implementation.
 #
 # Runs twice daily:
-#   3:00 AM — after night researcher (2am), before night factory (4am)
-#   11:00 AM — after morning researcher (10am), before morning factory (12pm)
+#   2:00 AM — after night researcher (1am), before night factory (3am)
+#   1:00 PM — after morning researcher (12pm), before morning factory (2pm)
 #
 # Usage: Called by cron, or manually: ./scripts/daily_research_lead.sh
 
