@@ -14,11 +14,12 @@ MAX_RETRIES = 5
 TIMEOUT = 300 # seconds per test (factory calls may use tools, taking 2-3 min)
 
 class AsyncEvalRunner:
-    def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0):
+    def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0, model=None):
         self.skill_path = os.path.abspath(skill_path)
         self.verbose = verbose
         self.no_cache = no_cache
         self.inter_test_delay = inter_test_delay
+        self.model = model
         self.cache = PromptCache()
         self.semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         self.repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -75,7 +76,10 @@ class AsyncEvalRunner:
         """
         if engine == "claude":
             claude_bin = self._find_claude_binary()
-            cmd = [claude_bin, "--dangerously-skip-permissions", "-p", prompt]
+            cmd = [claude_bin, "--dangerously-skip-permissions"]
+            if self.model:
+                cmd.extend(["--model", self.model])
+            cmd.extend(["-p", prompt])
         else:
             return f"ERROR: Unsupported engine: {engine}"
 
@@ -278,9 +282,10 @@ async def main():
     parser.add_argument("--expected-dir", help="Custom expected directory")
     parser.add_argument("--inter-test-delay", type=float, default=0,
                         help="Seconds to wait between tests (default 0). Use 30-60 on free-tier to avoid quota burst.")
+    parser.add_argument("--model", help="Override model ID for claude CLI (e.g. claude-opus-4-7 for shadow eval)")
     args = parser.parse_args()
 
-    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache, args.inter_test_delay)
+    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache, args.inter_test_delay, args.model)
     sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split, args.engine))
 
 if __name__ == "__main__":

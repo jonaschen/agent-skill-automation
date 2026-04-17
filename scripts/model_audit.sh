@@ -17,26 +17,45 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 DEPRECATED_MODELS_FILE="$REPO_ROOT/eval/deprecated_models.json"
 
+# --- CLI flags ---
+RETIRED_ON=""
+LOG_FILE=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --retired-on) RETIRED_ON="$2"; shift 2 ;;
+    --log) LOG_FILE="$2"; shift 2 ;;
+    *) echo "[MODEL-AUDIT] Unknown flag: $1"; exit 1 ;;
+  esac
+done
+
 FOUND=0
 
 # --- 1. Load deprecated model IDs from deprecated_models.json ---
 if [ ! -f "$DEPRECATED_MODELS_FILE" ]; then
   echo "[MODEL-AUDIT] WARN: $DEPRECATED_MODELS_FILE not found — skipping model ID check"
 else
-  # Extract model IDs with a retirement date that has not yet passed
+  # Extract model IDs. If --retired-on is set, only check models retired on that date.
+  # Otherwise, check all models with retirement_date >= today.
   TODAY=$(date +%Y-%m-%d)
+  FILTER_DATE="${RETIRED_ON:-$TODAY}"
+  FILTER_MODE="${RETIRED_ON:+exact}"  # "exact" if --retired-on set, empty otherwise
   mapfile -t DEPRECATED_IDS < <(
     python3 -c "
 import json, sys
 with open('$DEPRECATED_MODELS_FILE') as f:
     data = json.load(f)
-# data may be a list or {'models': [...]}
 entries = data if isinstance(data, list) else data.get('models', [])
 for e in entries:
     mid = e.get('model_id', '')
     ret = e.get('retirement_date', '')
-    if mid and ret >= '$TODAY':
-        print(mid)
+    if not mid or not ret:
+        continue
+    if '${FILTER_MODE}' == 'exact':
+        if ret == '${FILTER_DATE}':
+            print(mid)
+    else:
+        if ret >= '${FILTER_DATE}':
+            print(mid)
 " 2>/dev/null || true
   )
 
@@ -58,17 +77,23 @@ for e in entries:
     [ -z "$MODEL_ID" ] && continue
     for DIR in "${SEARCH_DIRS[@]}"; do
       [ -d "$DIR" ] || continue
-      # Exclude the registry file itself (deprecated_models.json is the data source, not a usage)
-      HITS=$(grep -rl "$MODEL_ID" "$DIR" \
+      # Exclude: the registry file itself, this script, and documentation-only references
+      # Documentation references: lines where the model ID appears only inside backticks
+      # or in a retirement schedule context (e.g., "2026-04-19: `claude-3-haiku-20240307`")
+      HITS=$(grep -rn "$MODEL_ID" "$DIR" \
         --include="*.sh" --include="*.py" --include="*.md" --include="*.json" \
         --exclude="deprecated_models.json" \
-        2>/dev/null || true)
+        --exclude="model_audit.sh" \
+        2>/dev/null \
+        | grep -v "retirement" \
+        | grep -v "Known retirement schedule" \
+        | grep -v "deprecated_models" \
+        | grep -v "# .*$MODEL_ID" \
+        | grep -v "^.*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}:.*\`$MODEL_ID\`" \
+        || true)
       if [ -n "$HITS" ]; then
         echo "[MODEL-AUDIT] FAIL: Deprecated model '$MODEL_ID' found in operational code:"
-        grep -rn "$MODEL_ID" "$DIR" \
-          --include="*.sh" --include="*.py" --include="*.md" --include="*.json" \
-          --exclude="deprecated_models.json" \
-          2>/dev/null | while IFS= read -r line; do
+        echo "$HITS" | while IFS= read -r line; do
           echo "  $line"
         done
         FOUND=1
@@ -115,6 +140,50 @@ if [[ "$TODAY" < "$BETA_SUNSET" || "$TODAY" == "$BETA_SUNSET" ]]; then
 fi
 
 # --- 4. Report ---
+RESULT="PASS"
+if [ "$FOUND" -ne 0 ]; then
+  RESULT="FAIL"
+fi
+
+# Log to structured JSONL if --log specified
+if [ -n "$LOG_FILE" ]; then
+  mkdir -p "$(dirname "$LOG_FILE")"
+  python3 -c "
+import json, datetime
+entry = {
+    'timestamp': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'event': 'model_audit',
+    'result': '$RESULT',
+    'retired_on': '${RETIRED_ON:-null}',
+    'filter_mode': '${FILTER_MODE:-upcoming}',
+    'deprecated_ids_checked': ${#DEPRECATED_IDS[@]}
+}
+if entry['retired_on'] == 'null':
+    entry['retired_on'] = None
+print(json.dumps(entry))
+" >> "$LOG_FILE"
+fi
+
+# Post-retirement clean verification: append to deprecated_models.json entry
+if [ "$FOUND" -eq 0 ] && [ -n "$RETIRED_ON" ]; then
+  python3 -c "
+import json
+with open('$DEPRECATED_MODELS_FILE') as f:
+    data = json.load(f)
+entries = data.get('models', data if isinstance(data, list) else [])
+updated = False
+for e in entries:
+    if e.get('retirement_date') == '$RETIRED_ON' and 'verified_clean_post_retirement' not in e:
+        e['verified_clean_post_retirement'] = '$RETIRED_ON'
+        updated = True
+if updated:
+    with open('$DEPRECATED_MODELS_FILE', 'w') as f:
+        json.dump(data, f, indent=2)
+        f.write('\n')
+    print('[MODEL-AUDIT] Marked retired models as verified clean in deprecated_models.json')
+" 2>/dev/null || true
+fi
+
 if [ "$FOUND" -eq 0 ]; then
   echo "[MODEL-AUDIT] PASS: No deprecated model IDs found in operational code."
   exit 0

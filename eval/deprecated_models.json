@@ -2,14 +2,59 @@
   "version": 1,
   "description": "Append-only registry of deprecated model IDs. Updated by agentic-ai-researcher when official retirement announcements are confirmed. Never modify or remove existing entries.",
   "models": [
-    {"model_id": "claude-3-haiku-20240307", "retirement_date": "2026-04-19", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
-    {"model_id": "claude-3.5-sonnet-20241022", "retirement_date": "2026-05-11", "replacement": "claude-sonnet-4-6", "source": "analysis-2026-04-08"},
-    {"model_id": "claude-3-5-sonnet-20241022", "retirement_date": "2026-05-11", "replacement": "claude-sonnet-4-6", "source": "analysis-2026-04-08"},
-    {"model_id": "claude-3.5-haiku-20241022", "retirement_date": "2026-07-05", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
-    {"model_id": "claude-3-5-haiku-20241022", "retirement_date": "2026-07-05", "replacement": "claude-haiku-4-5-20251001", "source": "analysis-2026-04-08"},
-    {"model_id": "gpt-4o", "retirement_date": "2026-06-30", "replacement": "gpt-5.4", "source": "analysis-2026-04-08"},
-    {"model_id": "claude-sonnet-4-20250514", "retirement_date": "2026-06-15", "replacement": "claude-sonnet-4-6", "source": "https://platform.claude.com/docs/en/about-claude/models/overview"},
-    {"model_id": "claude-opus-4-20250514", "retirement_date": "2026-06-15", "replacement": "claude-opus-4-6", "source": "https://platform.claude.com/docs/en/about-claude/models/overview"},
-    {"model_id": "gemini-robotics-er-1.5-preview", "retirement_date": "2026-04-30", "replacement": "gemini-robotics-er (updated 2026-04-14)", "source": "https://ai.google.dev/gemini-api/docs/changelog"}
+    {
+      "model_id": "claude-3-haiku-20240307",
+      "retirement_date": "2026-04-19",
+      "replacement": "claude-haiku-4-5-20251001",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "claude-3.5-sonnet-20241022",
+      "retirement_date": "2026-05-11",
+      "replacement": "claude-sonnet-4-6",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "claude-3-5-sonnet-20241022",
+      "retirement_date": "2026-05-11",
+      "replacement": "claude-sonnet-4-6",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "claude-3.5-haiku-20241022",
+      "retirement_date": "2026-07-05",
+      "replacement": "claude-haiku-4-5-20251001",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "claude-3-5-haiku-20241022",
+      "retirement_date": "2026-07-05",
+      "replacement": "claude-haiku-4-5-20251001",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "gpt-4o",
+      "retirement_date": "2026-06-30",
+      "replacement": "gpt-5.4",
+      "source": "analysis-2026-04-08"
+    },
+    {
+      "model_id": "claude-sonnet-4-20250514",
+      "retirement_date": "2026-06-15",
+      "replacement": "claude-sonnet-4-6",
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+    },
+    {
+      "model_id": "claude-opus-4-20250514",
+      "retirement_date": "2026-06-15",
+      "replacement": "claude-opus-4-6",
+      "source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+    },
+    {
+      "model_id": "gemini-robotics-er-1.5-preview",
+      "retirement_date": "2026-04-30",
+      "replacement": "gemini-robotics-er (updated 2026-04-14)",
+      "source": "https://ai.google.dev/gemini-api/docs/changelog"
+    }
   ]
 }

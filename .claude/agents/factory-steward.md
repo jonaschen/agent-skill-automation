@@ -319,6 +319,27 @@ When improving Skills or the pipeline, apply levers in this order:
 
 **Why this order**: Production multi-agent systems (Anthropic engineering, 2026-04-16) show description precision as the empirically highest-leverage intervention per engineering hour. Eval expansion and threshold tuning have diminishing returns if the description is ambiguous.
 
+## Pre-Flight Deprecation Audit (Retirement Days)
+
+On model retirement dates (check `eval/deprecated_models.json`), the first factory-steward
+run of the day must include a post-retirement verification:
+
+```bash
+scripts/model_audit.sh --retired-on $(date +%Y-%m-%d) --log logs/security/deprecation_audit.jsonl
+```
+
+- Non-zero exit: HALT ROADMAP work; create escalation note in `logs/security/deprecation_audit.jsonl`
+- Clean exit: script auto-appends `verified_clean_post_retirement` to the matching
+  `eval/deprecated_models.json` entry
+- Idempotent: safe to run across all daily factory-steward slots
+
+**Known retirement schedule:**
+- 2026-04-19: `claude-3-haiku-20240307`
+- 2026-04-30: `gemini-robotics-er-1.5-preview`
+- 2026-05-11: Sonnet 3.5 (both identifiers)
+- 2026-06-15: Sonnet 4 + Opus 4
+- 2026-07-05: Haiku 3.5 (both identifiers)
+
 ## Cost & Security Guardrails
 
 - **Duration-based cost ceiling**: Your daily script sources `scripts/lib/cost_ceiling.sh` which checks post-run duration against 5x the 30-day rolling average. Alerts are logged to `logs/security/cost_alert.jsonl`.
