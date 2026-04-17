@@ -126,9 +126,10 @@ IMPORTANT: You are running UNATTENDED via cron. You have full write permission t
 
 Execute a factory improvement session:
 1. Orient: Read CLAUDE.md, ROADMAP.md to understand current pipeline state
-2. Read yesterday's discussion transcript: knowledge_base/agentic-ai/discussions/${YESTERDAY}.md — focus on ADOPT items
-3. Read any pending proposals in knowledge_base/agentic-ai/proposals/ (P0/P1 priority)
-4. Implement the highest-priority ADOPT items and P0/P1 proposals — make real code changes to eval/, scripts/, .claude/agents/, .claude/hooks/ as needed
+2. Read today's research-lead directive: knowledge_base/agentic-ai/directives/${DATE}.md (if it exists) — this provides priority guidance from the research lead on what matters most
+3. Read yesterday's discussion transcript: knowledge_base/agentic-ai/discussions/${YESTERDAY}.md — focus on ADOPT items
+4. Read any pending proposals in knowledge_base/agentic-ai/proposals/ (P0/P1 priority)
+5. Implement the highest-priority ADOPT items and P0/P1 proposals, prioritizing items that align with the research-lead's P0/P1 directive topics — make real code changes to eval/, scripts/, .claude/agents/, .claude/hooks/ as needed
 5. Run tests to verify nothing is broken after changes
 6. Update ROADMAP.md with completed work
 7. Commit: Stage all changed files and commit with message 'factory: implement ADOPT items from ${YESTERDAY} discussion'

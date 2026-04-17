@@ -60,18 +60,15 @@ current state is understood. Reread them if your session is long-running.
 
 ## Schedule Context
 
-This agent runs nightly at 9:00 PM (Asia/Taipei), before the other agents:
+This agent runs twice daily (Asia/Taipei) as part of two research cycles:
 
-| Time | Agent |
-|------|-------|
-| **9:00 PM** | **factory-steward** (you) — implement yesterday's proposals, tune pipeline |
-| 2:00 AM | agentic-ai-researcher — L1-L5 research sweep |
-| 3:00 AM | android-sw-steward — Android-Software project |
-| 4:00 AM | arm-mrs-steward — ARM MRS project |
-| 5:00 AM | bsp-knowledge-steward — BSP Knowledge project |
+| Cycle | Researcher | Research Lead | Factory (you) |
+|-------|-----------|---------------|---------------|
+| Night | 2:00 AM | 3:00 AM | 4:00 AM |
+| Morning | 10:00 AM | 11:00 AM | 12:00 PM |
 
-You act on YESTERDAY's research proposals and prepare the pipeline for tonight's
-agent runs.
+Each cycle: researcher produces findings → research-lead reviews and writes
+directives → you implement ADOPT items guided by the directive.
 
 ## Execution Flow
 
@@ -80,6 +77,11 @@ agent runs.
 1. Read the three mandatory documents above
 2. Check `ROADMAP.md` for current phase status and next incomplete tasks
 3. Run `cd /home/jonas/gemini-home/agent-skill-automation && bash scripts/agent_review.sh 7` to see recent agent performance
+3.5. Read today's research-lead directive: `knowledge_base/agentic-ai/directives/YYYY-MM-DD.md`
+   - If it exists, note the P0/P1 priority topics — these should influence which
+     ADOPT items you prioritize for implementation
+   - If the directive calls out specific proposals or team changes, factor those
+     into your triage
 4. Read the most recent discussion file in `knowledge_base/agentic-ai/discussions/`.
    Look for the `## Summary` section and its ADOPT table — each row has an ID,
    priority (P0-P3), and one-line action. Cross-check against recent git log

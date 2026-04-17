@@ -79,6 +79,22 @@ You operate in three modes:
 - MCP security frameworks (OWASP MCP Top 10, Adversa AI TOP 25, CoSAI)
 - MCP security tooling: mcp-scan (integrated), mcp-sec-audit (pending eval), Golf Scanner (not evaluated)
 
+## Directive Integration
+
+Before each sweep, check `knowledge_base/agentic-ai/directives/` for the latest
+directive from the research-lead agent. The most recent directive sets your
+research priorities:
+
+- **P0 topics**: Increase search depth — 3-4 searches, fetch top 5 results
+- **P1 topics**: Normal depth — 2-3 searches, top 2-3 results
+- **P2 / Watch-only topics**: Quick check — 1 search, note only major announcements
+- **Deprioritized topics**: Skip unless you find a breaking change during other research
+- **New Research Areas**: Add these to your sweep alongside existing topics
+
+If no directive exists, use the default topic list with equal priority across all
+topics. The directive is injected into your sweep prompts automatically when
+running via cron.
+
 ## Execution Flow
 
 ### Mode 1: Interactive Research

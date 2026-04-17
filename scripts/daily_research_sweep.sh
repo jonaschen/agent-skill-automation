@@ -246,6 +246,41 @@ log_task_complete "preflight-check" "new-releases-found"
 # Recover any uncommitted changes from a previous crashed session
 recover_uncommitted "$REPO_ROOT" "researcher-previous" "$LOG_FILE"
 
+# --- Read Research-Lead Directive ---
+# Find the most recent directive file (from today or recent days)
+DIRECTIVE_CONTENT=""
+DIRECTIVE_DATE=""
+for d in $(ls -t "$REPO_ROOT/knowledge_base/agentic-ai/directives/"*.md 2>/dev/null | head -3); do
+  DIRECTIVE_CONTENT=$(cat "$d" 2>/dev/null)
+  if [ -n "$DIRECTIVE_CONTENT" ]; then
+    DIRECTIVE_DATE=$(basename "$d" .md)
+    echo "[$(date)] Using research directive from $DIRECTIVE_DATE" >> "$LOG_FILE"
+    break
+  fi
+done
+
+# Build directive preamble for Claude prompts
+DIRECTIVE_PREAMBLE=""
+if [ -n "$DIRECTIVE_CONTENT" ]; then
+  DIRECTIVE_PREAMBLE="
+RESEARCH DIRECTIVE (from research-lead, $DIRECTIVE_DATE):
+The following directive sets your priorities for this sweep. Adjust your research depth accordingly:
+- P0 topics: increase depth — 3-4 searches, fetch top 5 results
+- P1 topics: normal depth — 2-3 searches, top 2-3 results
+- P2/Watch-only: quick check — 1 search, note only major announcements
+- Deprioritized: skip unless you find a breaking change
+- New Research Areas: add alongside existing topics
+
+---
+$DIRECTIVE_CONTENT
+---
+
+Now proceed with your research task:
+"
+else
+  echo "[$(date)] No research directive found — using default priorities" >> "$LOG_FILE"
+fi
+
 # Run the research sweep — split into Anthropic and Google tracks to avoid timeouts
 cd "$REPO_ROOT"
 
@@ -254,7 +289,7 @@ echo "--- Anthropic Track ---" >> "$LOG_FILE"
 log_task_start "anthropic-track"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
-
+${DIRECTIVE_PREAMBLE}
 Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, Tool Use, Computer Use, Multi-agent Patterns, Model Releases):
 1. WebSearch for latest developments
 2. WebFetch the top 2 results
@@ -267,7 +302,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
 log_task_start "google-deepmind-track"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
-
+${DIRECTIVE_PREAMBLE}
 Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
 1. WebSearch for latest developments
 2. WebFetch the top 2 results
@@ -280,7 +315,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
 log_task_start "sweep-report"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
-
+${DIRECTIVE_PREAMBLE}
 1. Read all files in knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
 2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
 3. Update knowledge_base/agentic-ai/INDEX.md with today's date for all updated topics") >> "$LOG_FILE" 2>&1 || true
@@ -292,7 +327,7 @@ echo "--- Deep Analysis (L2-L3) ---" >> "$LOG_FILE"
 log_task_start "deep-analysis"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
 Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
-
+${DIRECTIVE_PREAMBLE}
 1. Read ROADMAP.md to understand our pipeline phases and current state
 2. Read today's sweep findings from knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
 3. Perform gap analysis: for each significant finding, assess impact on our pipeline
@@ -306,7 +341,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
 log_task_start "discussion"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
-
+${DIRECTIVE_PREAMBLE}
 First, read these files to understand the context:
 1. knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md (today's research analysis)
 2. ROADMAP.md (current pipeline state)
@@ -338,7 +373,7 @@ echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
 log_task_start "strategic-planning"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
 Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
-
+${DIRECTIVE_PREAMBLE}
 1. Read today's analysis from knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md
 2. Read today's improvement discussion from knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md — prioritize items marked ADOPT
 3. Read ROADMAP.md for current pipeline state
@@ -355,7 +390,7 @@ echo "--- Action (L5) ---" >> "$LOG_FILE"
 log_task_start "action"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2d: Action.
 Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
-
+${DIRECTIVE_PREAMBLE}
 1. Read all proposals from knowledge_base/agentic-ai/proposals/ dated today
 2. For P0 proposals that suggest new Changeling roles: create them directly in ~/.claude/@lib/agents/
 3. For P0/P1 proposals that suggest new skills: write a ready-to-execute prompt to knowledge_base/agentic-ai/proposals/ready/

@@ -19,7 +19,7 @@ This file provides guidance to Claude Code when working in this repository.
 
 Seven-phase pipeline for autonomously designing, validating, optimizing, and deploying Claude Code Agent Skills. Phases 1–4 build the core automation loop; Phases 5–7 extend to multi-agent topology, edge AI, and commercial AaaS.
 
-**Current status (2026-04-17):** Phase 4 core complete. 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Four active daily agents (factory-steward, ltc-steward, agentic-ai-researcher, project-reviewer). Three project stewards suspended (android-sw, arm-mrs, bsp-knowledge) — resource reallocation.
+**Current status (2026-04-17):** Phase 4 core complete. 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Three-agent research pipeline runs twice daily: researcher → research-lead → factory-steward (night cycle 2-4am, morning cycle 10am-12pm). LTC steward at 8am. Focus: agentic AI research, agent development, and applications.
 
 **Key documents:**
 - `ROADMAP.md` — Single source of truth: phases, tasks, measurement architecture, risks, lessons learned
@@ -58,12 +58,13 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | Agent | Target Project | Role | Model | Status |
 |-------|---------------|------|-------|--------|
 | `agentic-ai-researcher` | This repo (`knowledge_base/`) | Tracks Anthropic + Google agentic AI developments, writes sweep reports, proposes skill/roadmap updates | Opus 4.6 | Active |
+| `agentic-ai-research-lead` | This repo (`knowledge_base/agentic-ai/directives/`) | Reviews research output quality, sets priorities, writes directives that guide researcher and factory-steward | Opus 4.6 | Active |
+| `factory-steward` | This repo | Acts on ADOPT items from research discussions, guided by research-lead directives, tunes agents, advances ROADMAP | Opus 4.6 | Active |
+| `ltc-steward` | `/home/jonas/gemini-home/long-term-care-expert/` | Advances Phases 2/7/8 (validation, Hana hardening, Digital Surrogate sprints), maintains SaMD compliance, runs eval suites, researches elderly care | Opus 4.6 | Active |
 | `android-sw-steward` | `/home/jonas/gemini-home/Android-Software/` | Drives Phase 4 deliverables (dirty page detection, migration impact, L3 framework, skill lint, A15 validation), researches AOSP updates | Opus 4.6 | **Suspended** |
 | `arm-mrs-steward` | `/home/jonas/arm-mrs-2025-03-aarchmrs/` | Drives H8 multi-agent orchestration, expands T32/A32 + GIC + CoreSight + PMU data, tracks ARM spec releases | Opus 4.6 | **Suspended** |
 | `bsp-knowledge-steward` | `/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets/` | Completes Phase 3 exit criteria, advances Phase 4 deliverables, expands Kuzu knowledge graph, researches ARM/Linux BSP updates | Opus 4.6 | **Suspended** |
-| `ltc-steward` | `/home/jonas/gemini-home/long-term-care-expert/` | Advances Phases 2/7/8 (validation, Hana hardening, Digital Surrogate sprints), maintains SaMD compliance, runs eval suites, researches elderly care | Opus 4.6 | Active |
-| `factory-steward` | This repo | Acts on ADOPT items from research discussions, tunes underperforming agents, refines eval/pipeline, advances ROADMAP | Opus 4.6 | Active |
-| `project-reviewer` | All four project repos (read) | Reviews steward commits for correctness and alignment, writes steering notes, escalates stalled/regressing agents | Opus 4.6 | Active |
+| `project-reviewer` | All four project repos (read) | Reviews steward commits for correctness and alignment, writes steering notes, escalates stalled/regressing agents | Opus 4.6 | **Suspended** |
 
 ### Pipeline Flow
 
@@ -81,22 +82,44 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ## Daily Agent Fleet
 
-Active agent runs are scheduled daily via cron, staggered to avoid resource contention and quota limits. Each writes a performance JSON record to `logs/performance/` for tracking.
+The research pipeline runs **two cycles daily**, each a three-agent chain: researcher → research-lead → factory-steward. LTC steward runs independently. Each agent writes a performance JSON record to `logs/performance/`.
 
-> **Note (2026-04-17):** `android-sw-steward`, `arm-mrs-steward`, and `bsp-knowledge-steward` are **suspended** (resource reallocation). Cron entries commented out. Scripts remain for manual use if needed.
+> **Note (2026-04-17):** Project stewards (`android-sw`, `arm-mrs`, `bsp-knowledge`) and `project-reviewer` are **suspended** (resource reallocation). Focus shifted to agentic AI research, agent development, and applications.
 
-### Schedule (Asia/Taipei) — Active Only
+### Schedule (Asia/Taipei)
+
+**Night Cycle**
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Daytime session: advances ROADMAP, improves eval |
-| 1:00 PM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Afternoon session: phase work + eval runs |
-| 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | Anthropic + Google research sweep (L1–L5: collect → analyze → discuss → plan → act) |
-| 7:00 AM | `project-reviewer` | `scripts/daily_project_reviewer.sh` | Reviews steward work, validates skills, writes steering notes, escalates issues |
+| 2:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
+| 3:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
+| 4:00 AM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
+
+**Morning Cycle**
+
+| Time | Agent | Script | What It Does |
+|------|-------|--------|-------------|
+| 10:00 AM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
+| 11:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
+| 12:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
+
+**Independent**
+
+| Time | Agent | Script | What It Does |
+|------|-------|--------|-------------|
+| 8:00 AM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Phase work on long-term-care-expert project |
+
+### Research Direction Loop
+
+```
+researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → researcher (next cycle)
+                                                      ↘ directives/ → factory-steward (same cycle)
+```
 
 ### Performance Tracking
 
-- **JSON records**: `logs/performance/{factory,researcher,android-sw,arm-mrs,bsp-knowledge,ltc,reviewer}-YYYY-MM-DD.json`
+- **JSON records**: `logs/performance/{factory,researcher,research-lead,ltc}-YYYY-MM-DD.json`
 - **Metrics tracked**: duration, exit code, commits made, files changed, test counts (agent-specific)
 - **30-day retention**: auto-cleaned by each script
 - **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all agents' recent performance
@@ -104,10 +127,10 @@ Active agent runs are scheduled daily via cron, staggered to avoid resource cont
 ### Manual Runs
 
 ```bash
-./scripts/daily_factory_steward.sh      # Run factory steward now
 ./scripts/daily_research_sweep.sh       # Run researcher now
+./scripts/daily_research_lead.sh        # Run research lead now
+./scripts/daily_factory_steward.sh      # Run factory steward now
 ./scripts/daily_ltc_steward.sh          # Run LTC steward now
-./scripts/daily_project_reviewer.sh     # Run project reviewer now
 ./scripts/agent_review.sh              # Review last 7 days
 ./scripts/agent_review.sh 30           # Monthly review
 ```
@@ -116,10 +139,10 @@ Active agent runs are scheduled daily via cron, staggered to avoid resource cont
 
 | Agent | Log file | Perf file |
 |-------|----------|-----------|
-| Factory | `logs/factory-YYYY-MM-DD.log` | `logs/performance/factory-YYYY-MM-DD.json` |
 | Researcher | `logs/sweep-YYYY-MM-DD.log` | `logs/performance/researcher-YYYY-MM-DD.json` |
+| Research Lead | `logs/research-lead-YYYY-MM-DD.log` | `logs/performance/research-lead-YYYY-MM-DD.json` |
+| Factory | `logs/factory-YYYY-MM-DD.log` | `logs/performance/factory-YYYY-MM-DD.json` |
 | LTC | `logs/ltc-YYYY-MM-DD.log` | `logs/performance/ltc-YYYY-MM-DD.json` |
-| Reviewer | `logs/reviewer-YYYY-MM-DD.log` | `logs/performance/reviewer-YYYY-MM-DD.json` |
 
 ---
 
@@ -179,13 +202,14 @@ Active agent runs are scheduled daily via cron, staggered to avoid resource cont
 │   ├── autoresearch-optimizer.md
 │   ├── agentic-cicd-gate.md
 │   ├── changeling-router.md
-│   ├── agentic-ai-researcher.md     # Nightly: Anthropic + Google AI research
+│   ├── agentic-ai-researcher.md     # 2x/day: Anthropic + Google AI research
+│   ├── agentic-ai-research-lead.md  # 2x/day: Strategic research director
+│   ├── factory-steward.md           # 2x/day: Pipeline improvement steward
+│   ├── ltc-steward.md              # Daily: Long-term-care-expert project steward
 │   ├── android-sw-steward.md        # SUSPENDED: Android-Software project steward
 │   ├── arm-mrs-steward.md           # SUSPENDED: ARM MRS project steward
 │   ├── bsp-knowledge-steward.md     # SUSPENDED: BSP Knowledge skill sets steward
-│   ├── ltc-steward.md              # 5x/day: Long-term-care-expert project steward
-│   ├── factory-steward.md           # Nightly: Factory self-improvement steward
-│   └── project-reviewer.md          # Nightly: Reviews steward work, writes steering notes
+│   └── project-reviewer.md          # SUSPENDED: Reviews steward work
 ├── skills/              # Per-skill subdirectories (SKILL.md + scripts/ + references/)
 └── hooks/               # pre-deploy.sh, post-tool-use.sh, stop.sh
 eval/
@@ -201,7 +225,8 @@ eval/
 ├── prompts/             # test_1.txt … test_44.txt
 └── expected/            # Expected trigger/content per test
 scripts/
-├── daily_research_sweep.sh       # Cron: 2am — agentic-ai-researcher
+├── daily_research_sweep.sh       # Cron: 2am+10am — agentic-ai-researcher
+├── daily_research_lead.sh        # Cron: 3am+11am — agentic-ai-research-lead
 ├── daily_android_sw_steward.sh   # SUSPENDED — android-sw-steward
 ├── daily_arm_mrs_steward.sh      # SUSPENDED — arm-mrs-steward
 ├── daily_bsp_knowledge_steward.sh # SUSPENDED — bsp-knowledge-steward
@@ -222,16 +247,18 @@ logs/
     ├── android-sw-YYYY-MM-DD.json    # suspended
     ├── arm-mrs-YYYY-MM-DD.json       # suspended
     ├── bsp-knowledge-YYYY-MM-DD.json # suspended
+    ├── research-lead-YYYY-MM-DD.json
     ├── ltc-YYYY-MM-DD.json
     ├── factory-YYYY-MM-DD.json
-    └── reviewer-YYYY-MM-DD.json
+    └── reviewer-YYYY-MM-DD.json  # suspended
 knowledge_base/
-└── agentic-ai/                   # Researcher knowledge base
+└── agentic-ai/                   # Research knowledge base
     ├── INDEX.md
     ├── anthropic/                # Anthropic track findings
     ├── google-deepmind/          # Google/DeepMind track findings
     ├── sweeps/                   # Daily sweep reports
     ├── analysis/                 # L2-L3 deep analysis
+    ├── directives/               # Research-lead priority directives
     ├── proposals/                # L4 strategic proposals
     └── actions/                  # L5 action logs
 ~/.claude/@lib/agents/            # Changeling role library (global, read-only)
