@@ -105,13 +105,13 @@ skill-quality-validator → JSON report {trigger_rate, ci_lower, ci_upper}
 
 ## Daily Agent Fleet
 
-The research pipeline runs **two cycles daily**, each a three-agent chain: researcher → research-lead → factory-steward. LTC steward runs independently. Each agent writes a performance JSON record to `logs/performance/`.
+The Claude research pipeline runs **two cycles daily** (night + afternoon), each a three-agent chain: researcher → research-lead → factory-steward. The Gemini team runs one cycle (morning), offset to avoid API overlap. Each agent writes a performance JSON record to `logs/performance/`.
 
-> **Note (2026-04-17):** Project stewards (`android-sw`, `arm-mrs`, `bsp-knowledge`) and `project-reviewer` are **suspended** (resource reallocation). Focus shifted to agentic AI research, agent development, and applications.
+> **Note (2026-04-18):** Schedule consolidated from 17 to 11 sessions/day (~35% compute savings). Project stewards (`android-sw`, `arm-mrs`, `bsp-knowledge`) and `project-reviewer` remain **suspended**.
 
 ### Schedule (Asia/Taipei)
 
-**Night Cycle**
+**Claude Night Cycle** (primary — catches Asia-afternoon + Europe releases)
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
@@ -119,19 +119,30 @@ The research pipeline runs **two cycles daily**, each a three-agent chain: resea
 | 2:00 AM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
 | 3:00 AM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
 
-**Morning Cycle**
+**Gemini Morning Cycle** (offset from Claude to avoid API overlap)
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
-| 12:00 PM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep (reads prior directive for priorities) |
-| 1:00 PM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
-| 2:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items guided by research-lead directive |
+| 5:00 AM | Gemini researcher | `daily_research_sweep_gemini.sh` | L1–L2 data collection |
+| 6:00 AM | Gemini research-lead | `daily_research_lead_gemini.sh` | L3–L4 priorities + hypotheses |
+| 7:00 AM | Gemini factory-steward | `daily_factory_steward_gemini.sh` | L5 ADOPT implementation |
+| 9:00 AM | Gemini elite research | `daily_elite_research_gemini.sh` | Cross-vendor synthesis + paper generation |
+| 10:00 AM | Gemini dashboard | `agent_review_gemini.sh 1` | Performance dashboard |
 
-**Independent**
+**Claude Afternoon Cycle** (catches US-morning announcements)
+
+| Time | Agent | Script | What It Does |
+|------|-------|--------|-------------|
+| 2:00 PM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep |
+| 3:00 PM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
+| 4:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items |
+
+**Independent Projects** (once daily each)
 
 | Time | Agent | Script | What It Does |
 |------|-------|--------|-------------|
 | 8:00 AM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Phase work on long-term-care-expert project |
+| 12:00 PM | `kings-hand-assessment` | `The-King-s-Hand/.../daily_kings_hand_assessment.sh` | Kings Hand assessment (separate repo) |
 | 7:00 PM | `kings-hand-steward` | `scripts/daily_kings_hand_steward.sh` | Maintain The King's Hand project |
 
 **On-Demand**

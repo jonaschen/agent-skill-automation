@@ -7,7 +7,9 @@
 
 ---
 
-*Abstract: To be written after all sections are finalized.*
+## Abstract
+
+Managing complex software pipelines with multiple AI agents introduces fundamental challenges in orchestration, quality assurance, and operational reliability. We present the design, implementation, and operational evaluation of a heterogeneous multi-agent orchestration system comprising 14 specialized agents that autonomously manage a software skill automation pipeline. Using 14 days of continuous production data (69 agent session records, 108 git commits, zero failures), we conduct two empirical studies. First, we analyze serial cron-based orchestration and find 28.3% pipeline utilization with a 1.47x parallel speedup ceiling, bounded by Amdahl's Law due to bottleneck dominance by a single research agent (69% of serial compute time). Second, we evaluate a structured Innovator/Engineer adversarial debate format across 13 sessions (136 proposals) and find a 62.5% adoption rate [95% CI: 54.1%, 70.2%], 35.4% substantive pushback rate, and 76.9% date-level implementation conversion, demonstrating debate-as-governance as an effective decision-making mechanism for multi-agent pipeline management. Our production deployment yields operational lessons that benchmark evaluations cannot surface, including urgency bias in agent fleets, routing trust degradation with fleet expansion, and the necessity of Bayesian credible intervals for evaluating non-deterministic LLM systems. We release all operational data and measurement infrastructure to support reproducibility.
 
 ---
 
@@ -180,7 +182,7 @@ Our evaluation addresses three research questions:
 
 - **RQ1**: What is the throughput efficiency and reliability profile of serial cron-based orchestration in a production multi-agent pipeline?
 - **RQ2**: Does structured adversarial debate (Innovator/Engineer format) produce actionable engineering decisions with measurable implementation conversion?
-- **RQ3**: (Phase 2, ongoing) Do heterogeneous agent teams (Claude + Gemini) working independently on the same task produce research outputs with broader coverage than either team alone?
+We additionally describe the design of a third, ongoing study (cross-vendor orchestration with Claude and Gemini teams) whose results are reported as future work in Section 7.
 
 ### 4.2 Experiment 1: Orchestration Topology Comparison
 
@@ -211,11 +213,7 @@ Our evaluation addresses three research questions:
 
 **Measurement Definitions.** An ADOPT item is "implemented" if a git commit message references it by name or ID, or the specific file/change it proposes appears in git diff within 7 days. The pushback rate measures the proportion of Innovator proposals where the Engineer either rejects outright, proposes a simpler alternative, or adds conditions before accepting.
 
-### 4.4 Experiment 3: Cross-Vendor Orchestration (Phase 2)
-
-This experiment will compare independent paper candidates produced by Claude and Gemini teams working from the same knowledge base. Metrics include topic coverage (Jaccard similarity), unique insight count, cross-cutting reference count, and citation diversity. As a case study (N=2), findings will be framed as qualitative comparative analysis. Results are pending Phase 2 execution.
-
-### 4.5 Threats to Validity
+### 4.4 Threats to Validity
 
 **Internal validity.** Agents run on the same machine; background load may affect duration. No randomization of run order (fixed cron schedule). The structured debate's Innovator and Engineer are implemented as prompt-engineered roles within the same LLM, not as separate agents with different capabilities.
 
@@ -464,7 +462,7 @@ Three strategic priorities shape our future research:
 
 **S1: Automatic Agent/Skill Improvement.** Building a meta-optimization layer that detects when new model capabilities make current agent approaches suboptimal and automatically generates upgrade tasks. The current autoresearch-optimizer improves trigger descriptions; the next step is a "capability diff" system that compares new model releases against agent assumptions and generates adaptation tasks.
 
-**S2: Multi-Agent Orchestration (continued).** Phase 5 will implement topology-aware routing using Task Coupling Index (TCI) scores to select between parallel and sequential execution patterns. The TCI router will dispatch low-coupling tasks to parallel agent teams and high-coupling tasks to a single flagship agent, calibrated against empirical task distribution data. The cross-vendor orchestration experiment (Experiment 3) will provide data on heterogeneous agent team effectiveness.
+**S2: Multi-Agent Orchestration (continued).** Phase 5 will implement topology-aware routing using Task Coupling Index (TCI) scores to select between parallel and sequential execution patterns. The TCI router will dispatch low-coupling tasks to parallel agent teams and high-coupling tasks to a single flagship agent, calibrated against empirical task distribution data. A cross-vendor orchestration experiment (Claude + Gemini teams working independently on the same task from shared data) is in progress; preliminary qualitative observations suggest heterogeneous teams surface complementary insights, but rigorous evaluation awaits completion of Phase 2 cross-review. We also plan to investigate Hybrid Elastic Gating (HEG) — dynamically relaxing Bayesian deployment thresholds for structurally novel changes to avoid over-conservative stalling — as an extension to our current fixed-threshold BSG deployment gate.
 
 **S3: Platform Generalization.** Extending agent portability across both Claude and Gemini platforms. The cross-vendor paper experiment (this project) is a first step: both Claude and Gemini teams produce independent paper candidates from shared data, testing whether cross-platform collaboration produces richer outputs than single-vendor teams. Longer-term, we aim to develop a portable agent definition format consumable by both Claude Code and Gemini CLI.
 
