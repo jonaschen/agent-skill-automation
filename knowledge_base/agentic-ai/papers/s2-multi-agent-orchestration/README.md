@@ -69,9 +69,9 @@ Three experiments provide the empirical backbone of the paper:
 
 | # | Name | Data Source | Status |
 |---|------|-------------|--------|
-| 1 | Orchestration Topology Comparison | `logs/performance/*.json` (14+ days) | Protocol needed |
-| 2 | Structured Debate Effectiveness | `knowledge_base/agentic-ai/discussions/` (13+ transcripts) | Protocol needed |
-| 3 | Cross-Vendor Orchestration | Claude vs Gemini paper candidates (this project) | Meta-experiment |
+| 1 | Orchestration Topology Comparison | `logs/performance/*.json` (14 days, 69 records) | Analysis complete |
+| 2 | Structured Debate Effectiveness | `knowledge_base/agentic-ai/discussions/` (13 transcripts) | Analysis complete |
+| 3 | Cross-Vendor Orchestration | Claude vs Gemini paper candidates (this project) | Phase 2 |
 
 Protocols in `knowledge_base/agentic-ai/experiments/`.
 

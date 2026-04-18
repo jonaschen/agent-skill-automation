@@ -1,0 +1,47 @@
+{
+  "title": "Structured Debate ADOPT/DEFER/REJECT Distribution Over Time",
+  "chart_type": "stacked_bar",
+  "description": "Shows the ADOPT/DEFER/REJECT breakdown per discussion date. Demonstrates consistent adversarial review with ~35% pushback rate and ~63% adoption rate.",
+  "x_axis": {"label": "Discussion Date", "type": "category"},
+  "y_axis": {"label": "Number of Proposals", "range": [0, 16]},
+  "categories": {
+    "ADOPT": {"color": "#22c55e"},
+    "DEFER": {"color": "#f59e0b"},
+    "REJECT": {"color": "#ef4444"}
+  },
+  "data": [
+    {"date": "Apr 5", "ADOPT": 6, "DEFER": 4, "REJECT": 3},
+    {"date": "Apr 6", "ADOPT": 7, "DEFER": 2, "REJECT": 0},
+    {"date": "Apr 7", "ADOPT": 3, "DEFER": 5, "REJECT": 1},
+    {"date": "Apr 8", "ADOPT": 9, "DEFER": 3, "REJECT": 3},
+    {"date": "Apr 9", "ADOPT": 7, "DEFER": 3, "REJECT": 0},
+    {"date": "Apr 10", "ADOPT": 7, "DEFER": 3, "REJECT": 0},
+    {"date": "Apr 11", "ADOPT": 8, "DEFER": 3, "REJECT": 3},
+    {"date": "Apr 12", "ADOPT": 7, "DEFER": 4, "REJECT": 1},
+    {"date": "Apr 16", "ADOPT": 9, "DEFER": 0, "REJECT": 0},
+    {"date": "Apr 17", "ADOPT": 8, "DEFER": 6, "REJECT": 1},
+    {"date": "Apr 18", "ADOPT": 6, "DEFER": 0, "REJECT": 0},
+    {"date": "Apr 18e", "ADOPT": 3, "DEFER": 3, "REJECT": 1},
+    {"date": "Apr 18n", "ADOPT": 5, "DEFER": 2, "REJECT": 0}
+  ],
+  "summary_line": {
+    "label": "Cumulative ADOPT Rate",
+    "color": "#1e40af",
+    "style": "line_overlay",
+    "data": [
+      {"date": "Apr 5", "value": 0.462},
+      {"date": "Apr 6", "value": 0.591},
+      {"date": "Apr 7", "value": 0.516},
+      {"date": "Apr 8", "value": 0.543},
+      {"date": "Apr 9", "value": 0.571},
+      {"date": "Apr 10", "value": 0.594},
+      {"date": "Apr 11", "value": 0.588},
+      {"date": "Apr 12", "value": 0.590},
+      {"date": "Apr 16", "value": 0.619},
+      {"date": "Apr 17", "value": 0.614},
+      {"date": "Apr 18", "value": 0.623},
+      {"date": "Apr 18e", "value": 0.617},
+      {"date": "Apr 18n", "value": 0.625}
+    ]
+  }
+}

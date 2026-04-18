@@ -1,0 +1,94 @@
+{
+  "title": "Pipeline Utilization: Serial Cron vs Parallel Ceiling",
+  "chart_type": "grouped_bar_with_annotations",
+  "description": "Compares the actual serial cron execution model against the theoretical parallel execution ceiling, showing the pipeline utilization gap and speedup opportunity.",
+  "panels": [
+    {
+      "panel_id": "A",
+      "title": "Agent Duration Distribution (Box Plot)",
+      "chart_type": "box_plot",
+      "y_axis": {"label": "Duration (minutes)"},
+      "data": {
+        "Researcher": {
+          "min": 26.6,
+          "q1": 29.1,
+          "median": 33.5,
+          "q3": 40.4,
+          "max": 48.9,
+          "mean": 35.3,
+          "n": 12
+        },
+        "Research-Lead": {
+          "min": 3.1,
+          "q1": 3.1,
+          "median": 3.1,
+          "q3": 3.1,
+          "max": 3.1,
+          "mean": 3.1,
+          "n": 1,
+          "note": "Single observation"
+        },
+        "Factory-Steward": {
+          "min": 10.1,
+          "q1": 12.0,
+          "median": 14.0,
+          "q3": 14.4,
+          "max": 22.7,
+          "mean": 14.0,
+          "n": 13
+        }
+      }
+    },
+    {
+      "panel_id": "B",
+      "title": "Pipeline Time Allocation",
+      "chart_type": "horizontal_bar",
+      "x_axis": {"label": "Time (minutes)", "range": [0, 200]},
+      "data": [
+        {
+          "label": "Serial Compute\n(actual work)",
+          "value": 51.0,
+          "color": "#2563eb",
+          "detail": "Researcher (35.3) + Lead (3.1) + Factory (14.0) = 52.4 min mean"
+        },
+        {
+          "label": "Inter-Agent Idle\n(cron gaps)",
+          "value": 129.0,
+          "color": "#d1d5db",
+          "detail": "Waiting for next cron trigger"
+        },
+        {
+          "label": "Parallel Ceiling\n(all concurrent)",
+          "value": 34.8,
+          "color": "#22c55e",
+          "detail": "max(Researcher, Lead, Factory) = 34.8 min mean"
+        }
+      ],
+      "annotations": [
+        {"text": "28.3% utilization", "position": "above_serial"},
+        {"text": "1.47x speedup possible", "position": "above_parallel"}
+      ]
+    },
+    {
+      "panel_id": "C",
+      "title": "Throughput Comparison",
+      "chart_type": "grouped_bar",
+      "y_axis": {"label": "Rate"},
+      "groups": ["Commits/hour", "Files/hour"],
+      "data": {
+        "Researcher": {"Commits/hour": 2.10, "Files/hour": 47.27},
+        "Factory-Steward": {"Commits/hour": 8.99, "Files/hour": 43.12}
+      },
+      "note": "Factory produces 4.3x more commits/hour (implementation focus) but similar files/hour"
+    }
+  ],
+  "key_statistics": {
+    "pipeline_utilization_pct": 28.3,
+    "parallel_speedup": 1.47,
+    "idle_time_minutes": 129.0,
+    "researcher_dominance_pct": 69.3,
+    "reliability_pct": 100.0,
+    "observation_days": 14,
+    "total_agent_sessions": 26
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "experiment": "Structured Debate Effectiveness",
+  "analysis_date": "2026-04-18",
+  "date_range": "2026-04-05 to 2026-04-18",
+  "discussions": [
+    {
+      "date": "2026-04-05",
+      "rounds": 3,
+      "adopt": 6,
+      "defer": 4,
+      "reject": 3,
+      "total": 13,
+      "adopt_rate": 0.462,
+      "file_references": 29
+    },
+    {
+      "date": "2026-04-06",
+      "rounds": 3,
+      "adopt": 7,
+      "defer": 2,
+      "reject": 0,
+      "total": 9,
+      "adopt_rate": 0.778,
+      "file_references": 29
+    },
+    {
+      "date": "2026-04-07",
+      "rounds": 3,
+      "adopt": 3,
+      "defer": 5,
+      "reject": 1,
+      "total": 9,
+      "adopt_rate": 0.333,
+      "file_references": 36
+    },
+    {
+      "date": "2026-04-08",
+      "rounds": 3,
+      "adopt": 9,
+      "defer": 3,
+      "reject": 3,
+      "total": 15,
+      "adopt_rate": 0.6,
+      "file_references": 19
+    },
+    {
+      "date": "2026-04-09",
+      "rounds": 3,
+      "adopt": 7,
+      "defer": 3,
+      "reject": 0,
+      "total": 10,
+      "adopt_rate": 0.7,
+      "file_references": 13
+    },
+    {
+      "date": "2026-04-10",
+      "rounds": 3,
+      "adopt": 7,
+      "defer": 3,
+      "reject": 0,
+      "total": 10,
+      "adopt_rate": 0.7,
+      "file_references": 14
+    },
+    {
+      "date": "2026-04-11",
+      "rounds": 3,
+      "adopt": 8,
+      "defer": 3,
+      "reject": 3,
+      "total": 14,
+      "adopt_rate": 0.571,
+      "file_references": 19
+    },
+    {
+      "date": "2026-04-12",
+      "rounds": 3,
+      "adopt": 7,
+      "defer": 4,
+      "reject": 1,
+      "total": 12,
+      "adopt_rate": 0.583,
+      "file_references": 23
+    },
+    {
+      "date": "2026-04-16",
+      "rounds": 6,
+      "adopt": 9,
+      "defer": 0,
+      "reject": 0,
+      "total": 9,
+      "adopt_rate": 1.0,
+      "file_references": 36
+    },
+    {
+      "date": "2026-04-17",
+      "rounds": 6,
+      "adopt": 8,
+      "defer": 6,
+      "reject": 1,
+      "total": 15,
+      "adopt_rate": 0.533,
+      "file_references": 25
+    },
+    {
+      "date": "2026-04-18-evening",
+      "rounds": 0,
+      "adopt": 3,
+      "defer": 3,
+      "reject": 1,
+      "total": 7,
+      "adopt_rate": 0.429,
+      "file_references": 0
+    },
+    {
+      "date": "2026-04-18-night",
+      "rounds": 6,
+      "adopt": 5,
+      "defer": 2,
+      "reject": 0,
+      "total": 7,
+      "adopt_rate": 0.714,
+      "file_references": 14
+    },
+    {
+      "date": "2026-04-18",
+      "rounds": 6,
+      "adopt": 6,
+      "defer": 0,
+      "reject": 0,
+      "total": 6,
+      "adopt_rate": 1.0,
+      "file_references": 15
+    }
+  ],
+  "totals": {
+    "adopt": 85,
+    "defer": 38,
+    "reject": 13,
+    "total": 136,
+    "adopt_rate": 0.625,
+    "adopt_ci95": [
+      0.541,
+      0.702
+    ]
+  },
+  "per_discussion_adopt_rate": {
+    "mean": 0.646,
+    "median": 0.6,
+    "std": 0.2,
+    "ci95": [
+      0.537,
+      0.755
+    ]
+  },
+  "temporal_trend": {
+    "spearman_rho": 0.3022,
+    "spearman_p": 0.2931
+  },
+  "pushback_rate": {
+    "mean": 0.354,
+    "median": 0.4,
+    "ci95": [
+      0.245,
+      0.462
+    ]
+  },
+  "early_vs_late": {
+    "early_period": "2026-04-05 to 2026-04-09",
+    "early_n": 5,
+    "early_adopt_rate": 0.571,
+    "late_period": "2026-04-10 to 2026-04-18",
+    "late_n": 8,
+    "late_adopt_rate": 0.662
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "experiment": "Orchestration Topology Comparison",
+  "date_range": "2026-04-04 to 2026-04-18",
+  "agents": {
+    "researcher": {
+      "records": [
+        {
+          "date": "2026-04-04",
+          "duration_seconds": 1598,
+          "commits_made": 0,
+          "files_changed": 0,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-05",
+          "duration_seconds": 2452,
+          "commits_made": 0,
+          "files_changed": 0,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-06",
+          "duration_seconds": 2008,
+          "commits_made": 0,
+          "files_changed": 0,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-07",
+          "duration_seconds": 1820,
+          "commits_made": 0,
+          "files_changed": 0,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-08",
+          "duration_seconds": 2396,
+          "commits_made": 1,
+          "files_changed": 26,
+          "kb_files_updated": 26,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-09",
+          "duration_seconds": 1773,
+          "commits_made": 1,
+          "files_changed": 24,
+          "kb_files_updated": 24,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-10",
+          "duration_seconds": 1716,
+          "commits_made": 1,
+          "files_changed": 27,
+          "kb_files_updated": 27,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-11",
+          "duration_seconds": 2015,
+          "commits_made": 1,
+          "files_changed": 22,
+          "kb_files_updated": 22,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-12",
+          "duration_seconds": 1716,
+          "commits_made": 1,
+          "files_changed": 27,
+          "kb_files_updated": 27,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-16",
+          "duration_seconds": 2290,
+          "commits_made": 3,
+          "files_changed": 33,
+          "kb_files_updated": 32,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-17",
+          "duration_seconds": 2695,
+          "commits_made": 1,
+          "files_changed": 34,
+          "kb_files_updated": 33,
+          "exit_code": 0,
+          "adopt_items_available": null
+        },
+        {
+          "date": "2026-04-18",
+          "duration_seconds": 2936,
+          "commits_made": 1,
+          "files_changed": 33,
+          "kb_files_updated": 32,
+          "exit_code": 0,
+          "adopt_items_available": null
+        }
+      ],
+      "summary": {
+        "duration": {
+          "n": 12,
+          "mean": 2117.92,
+          "median": 2011.5,
+          "std": 431.13,
+          "min": 1598,
+          "max": 2936,
+          "iqr": 679,
+          "ci95_lower": 1873.98,
+          "ci95_upper": 2361.85
+        },
+        "commits": {
+          "n": 12,
+          "mean": 0.83,
+          "median": 1.0,
+          "std": 0.83,
+          "min": 0,
+          "max": 3,
+          "iqr": 1,
+          "ci95_lower": 0.36,
+          "ci95_upper": 1.31
+        },
+        "files_changed": {
+          "n": 12,
+          "mean": 18.83,
+          "median": 25.0,
+          "std": 14.37,
+          "min": 0,
+          "max": 34,
+          "iqr": 33,
+          "ci95_lower": 10.7,
+          "ci95_upper": 26.96
+        }
+      }
+    },
+    "research-lead": {
+      "records": [
+        {
+          "date": "2026-04-18",
+          "duration_seconds": 264,
+          "commits_made": 2,
+          "files_changed": 14,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": null
+        }
+      ],
+      "summary": {
+        "duration": {
+          "n": 1,
+          "mean": 264.0,
+          "median": 264,
+          "std": 0.0,
+          "min": 264,
+          "max": 264,
+          "iqr": 0,
+          "ci95_lower": 264.0,
+          "ci95_upper": 264.0
+        },
+        "commits": {
+          "n": 1,
+          "mean": 2.0,
+          "median": 2,
+          "std": 0.0,
+          "min": 2,
+          "max": 2,
+          "iqr": 0,
+          "ci95_lower": 2.0,
+          "ci95_upper": 2.0
+        },
+        "files_changed": {
+          "n": 1,
+          "mean": 14.0,
+          "median": 14,
+          "std": 0.0,
+          "min": 14,
+          "max": 14,
+          "iqr": 0,
+          "ci95_lower": 14.0,
+          "ci95_upper": 14.0
+        }
+      }
+    },
+    "factory-steward": {
+      "records": [
+        {
+          "date": "2026-04-04",
+          "duration_seconds": 923,
+          "commits_made": 2,
+          "files_changed": 10,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 0
+        },
+        {
+          "date": "2026-04-06",
+          "duration_seconds": 881,
+          "commits_made": 2,
+          "files_changed": 9,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 8
+        },
+        {
+          "date": "2026-04-07",
+          "duration_seconds": 837,
+          "commits_made": 2,
+          "files_changed": 12,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 10
+        },
+        {
+          "date": "2026-04-08",
+          "duration_seconds": 777,
+          "commits_made": 2,
+          "files_changed": 5,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 4
+        },
+        {
+          "date": "2026-04-09",
+          "duration_seconds": 607,
+          "commits_made": 1,
+          "files_changed": 3,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 15
+        },
+        {
+          "date": "2026-04-10",
+          "duration_seconds": 865,
+          "commits_made": 2,
+          "files_changed": 24,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 18
+        },
+        {
+          "date": "2026-04-11",
+          "duration_seconds": 694,
+          "commits_made": 2,
+          "files_changed": 9,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 13
+        },
+        {
+          "date": "2026-04-12",
+          "duration_seconds": 753,
+          "commits_made": 2,
+          "files_changed": 5,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 13
+        },
+        {
+          "date": "2026-04-13",
+          "duration_seconds": 1359,
+          "commits_made": 3,
+          "files_changed": 18,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 8
+        },
+        {
+          "date": "2026-04-15",
+          "duration_seconds": 948,
+          "commits_made": 3,
+          "files_changed": 14,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 0
+        },
+        {
+          "date": "2026-04-16",
+          "duration_seconds": 744,
+          "commits_made": 3,
+          "files_changed": 12,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 0
+        },
+        {
+          "date": "2026-04-17",
+          "duration_seconds": 847,
+          "commits_made": 1,
+          "files_changed": 6,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 10
+        },
+        {
+          "date": "2026-04-18",
+          "duration_seconds": 675,
+          "commits_made": 2,
+          "files_changed": 7,
+          "kb_files_updated": 0,
+          "exit_code": 0,
+          "adopt_items_available": 9
+        }
+      ],
+      "summary": {
+        "duration": {
+          "n": 13,
+          "mean": 839.23,
+          "median": 837,
+          "std": 185.71,
+          "min": 607,
+          "max": 1359,
+          "iqr": 137,
+          "ci95_lower": 738.28,
+          "ci95_upper": 940.18
+        },
+        "commits": {
+          "n": 13,
+          "mean": 2.08,
+          "median": 2,
+          "std": 0.64,
+          "min": 1,
+          "max": 3,
+          "iqr": 0,
+          "ci95_lower": 1.73,
+          "ci95_upper": 2.43
+        },
+        "files_changed": {
+          "n": 13,
+          "mean": 10.31,
+          "median": 9,
+          "std": 5.84,
+          "min": 3,
+          "max": 24,
+          "iqr": 6,
+          "ci95_lower": 7.13,
+          "ci95_upper": 13.48
+        }
+      }
+    }
+  },
+  "pipeline_analysis": {
+    "common_dates": 11,
+    "serial_compute_mean_s": 3060.91,
+    "cron_wall_clock_s": 10800,
+    "utilization_pct": 28.3,
+    "parallel_ceiling_mean_s": 2087.55,
+    "parallel_speedup": 1.47
+  }
+}
