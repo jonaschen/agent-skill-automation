@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-18 (evening)
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 (evening) -- Computer Use: No Change; Still Research Preview; No GA Announcement
+- **What**: No new Computer Use announcements. Still research preview on API. Cowork GA (April 9) includes CU for Pro/Max. No GA timeline for API access. Not in Managed Agents.
+- **Significance**: No action items. Directive says mention only if GA announced — not announced.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 
 ### 2026-04-18 -- Computer Use Stabilization Day 2 Post-Opus 4.7: 2576px + 1:1 Coordinates Confirmed; XBOW 98.5% Visual Acuity; No New Developments
 - **What**: No new Computer Use announcements since April 16. **Post-Opus 4.7 status confirmed**: (1) **Opus 4.7 vision benchmark: 98.5% XBOW visual acuity** (vs 54.5% for Opus 4.6) — near-perfect pixel-level perception. (2) **2576px long-edge with 1:1 coordinate mapping** is the Opus 4.7 default for `computer_20251124` — confirmed stable after 2 days. No coordinate scale-factor conversion needed. (3) **3.75 megapixel** maximum resolution (2576px long edge), up from 1.15MP/1568px on prior models. (4) **Image localization**: natural-image bounding-box localization and detection improved on Opus 4.7 — better at pointing, measuring, counting tasks. (5) **Zoom action** (`enable_zoom: true`) unchanged, available on all `computer_20251124` models. (6) **Computer Use remains research preview** on the API (`computer-use-2025-11-24` beta header required). Pro/Max users have access via Cowork. Not available in Managed Agents. (7) **ZDR-eligible** — Computer Use (client-side tool) does not retain screenshots/actions. (8) **Haiku 3 retires tomorrow (April 19)** — does not affect Computer Use (runs on Opus 4.6+).

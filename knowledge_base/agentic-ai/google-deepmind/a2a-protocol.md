@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-18 evening
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
@@ -22,6 +22,8 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 evening -- A2A day 38: no change. 210 open issues, 22 PRs, zero v1.1 activity. I/O 31d.
 
 ### 2026-04-18 -- A2A Stabilization Day 37; v1.0.0 Extends Longest-Ever Stable Window; No I/O v1.1 Leaks; I/O 31 Days
 - **What**: A2A protocol remains in deep stabilization: (1) **No new A2A releases** since v1.0.0 (Mar 12, 2026) — verified against github.com/a2aproject/A2A/releases. Now **37 days post-v1.0.0**, extending the longest continuous stable window in the project's history by another day. All 5 language SDKs (Python, JavaScript/TypeScript, Java, Go, .NET) remain at same versions. (2) **No spec changes** at a2a-protocol.org/latest/specification/. (3) **No pre-I/O leaks** — no draft PRs, issues, or blog posts referencing A2A v1.1 features have been detected. The I/O session list (posted Apr 14) does not contain a dedicated A2A session, though agent-related tracks under AI/Cloud are expected. (4) **Ecosystem status** — 150+ organizations, 22K+ GitHub stars, 5 SDKs, triple hyperscaler integration (Azure AI Foundry, AWS Bedrock AgentCore, Google Cloud). TSC governance (8 orgs: Google, AWS, Microsoft, IBM, Cisco, Salesforce, SAP, ServiceNow) remains stable. Enterprise production use continues in supply chain, finance, insurance, and IT ops. (5) **A2A v1.0 capabilities holding**: Signed Agent Cards (cryptographic agent identity), multi-tenancy (SaaS per-tenant agents), JSON-RPC + gRPC dual binding, version negotiation (v0.3→v1.0 backward compatible). (6) **Google I/O 2026 (May 19-20)** now 31 days away. Pre-I/O window ~14d.

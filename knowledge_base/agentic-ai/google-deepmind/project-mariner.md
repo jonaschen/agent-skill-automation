@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-18 evening
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,8 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 evening -- Mariner day 14: no change. Enterprise API still "coming to the Gemini API" with no date. Computer Use live in Gemini 3 Pro/Flash API. I/O 31d.
 
 ### 2026-04-18 -- Mariner Quiet Phase Day 13; "Teach and Repeat" Persistent Memory Confirmed; No I/O Mariner Track; I/O 31 Days
 - **What**: Project Mariner remains in post-reorganization quiet phase (day 13): (1) **No new Mariner-specific announcements** in past 24 hours. Consumer product at labs.google.com/mariner/ remains available for AI Ultra subscribers ($249.99/mo). (2) **"Teach and Repeat" persistent cross-session memory** — confirmed as a 2026 feature addition. Unlike early LLMs that forgot instructions between sessions, Mariner now features persistent memory that allows learned workflows to be repeated across sessions. This is a significant capability upgrade for enterprise use: users can teach Mariner a multi-step task once and have it execute the same workflow in future sessions without re-instruction. (3) **Cloud-VM multi-task infrastructure** — the background VM architecture enabling up to 10 simultaneous tasks remains the product's headline capability. No changes to this infrastructure in the past 24 hours. (4) **I/O 2026 sessions list** — confirmed no Mariner-branded session title. Mariner capabilities expected under "Gemini Agent" umbrella or general AI/Chrome tracks at the keynote. (5) **Enterprise API** (originally Q1 2026 roadmap) — remains overdue with no public confirmation. Q1 ended Mar 31, now 18 days late. Status: either slipped to Q2 or absorbed into I/O 2026 "Gemini Agent" relaunch. (6) **Computer Use in Gemini API** — `gemini-3-pro-preview` and `gemini-3-flash-preview` now support the `computer_use` tool, which shares underlying technology with Mariner's browser control capabilities. This brings Mariner-class UI automation into the developer API. (7) **Google I/O 2026 (May 19-20)** now 31 days away.

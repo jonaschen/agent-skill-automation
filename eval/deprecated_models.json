@@ -4,7 +4,7 @@
   "models": [
     {
       "model_id": "claude-3-haiku-20240307",
-      "retirement_date": "2026-04-19",
+      "retirement_date": "2026-04-20",
       "replacement": "claude-haiku-4-5-20251001",
       "source": "analysis-2026-04-08"
     },

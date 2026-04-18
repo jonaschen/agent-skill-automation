@@ -1,12 +1,12 @@
-# Workflow State Management: Four-Way Convergence Pattern
+# Workflow State Management: Five-Way Convergence Pattern
 
-**Date**: 2026-04-11 (updated 2026-04-13)
-**Source**: Discussion 2026-04-11 ADOPT #5 + Discussion 2026-04-12 ADOPT #7 (Managed Agents session pattern)
+**Date**: 2026-04-11 (updated 2026-04-18)
+**Source**: Discussion 2026-04-11 ADOPT #5 + Discussion 2026-04-12 ADOPT #7 (Managed Agents session pattern) + Analysis 2026-04-18 §1.2 (ADK Session Rewind)
 **Status**: Design reference for Phase 5.3.2
 
 ## Pattern
 
-Four independent agent/workflow frameworks have converged on the same approach to durable workflow state management: deterministic replay with step-level visibility. The convergence validates this as the canonical architecture for task-level state tracking in multi-agent systems.
+Five independent agent/workflow frameworks have converged on the same approach to durable workflow state management: deterministic replay with step-level visibility. The convergence validates this as the canonical architecture for task-level state tracking in multi-agent systems.
 
 ## Implementations
 
@@ -34,17 +34,25 @@ Four independent agent/workflow frameworks have converged on the same approach t
 - **Visibility**: Event log provides structured `TASK_START`/`TASK_COMPLETE`/`ERROR` events. The harness (brain) is separated from execution (hands) — the brain reads events to decide what to do next, then invokes agents via `execute(name, input) → string`.
 - **Key insight**: The harness itself is stateless and crash-safe. All state lives in the append-only log. Resume is trivial: read the log, find incomplete tasks, continue from there. No deterministic replay needed — events are facts, not replayed computations.
 
+### 5. Google ADK v1.31.0 — Session Rewind (Checkpoint-and-Undo)
+
+- **Mechanism**: ADK v1.31.0 (Apr 17) introduced Session Rewind — the ability to undo agent actions by rewinding to a checkpoint before a previous invocation. The session context (including what was tried and failed) is preserved, so the agent doesn't repeat the same mistake on retry.
+- **Visibility**: Invocation-level checkpoints. The orchestrator can inspect what the agent did at each checkpoint and decide whether to rewind.
+- **Key insight**: Unlike the four patterns above (which are about *resuming after crash*), Session Rewind is about *intentional undo during active execution*. This is a different dimension of state management: not crash recovery, but optimization strategy recovery. When an agent takes a wrong optimization step, the orchestrator can rewind rather than restart from scratch — preserving the session's accumulated understanding of failure patterns.
+- **Pipeline relevance**: Our `autoresearch-optimizer` runs 4 parallel branches (A/B/C/D) per iteration. If all 4 fail, it starts fresh — losing the in-session understanding of why they failed. Session Rewind would allow rewinding to the pre-branch checkpoint and trying a fundamentally different strategy while retaining failure context. Requires Agent SDK migration (Phase 5.3.3) to access session-level APIs.
+
 ## Convergence Summary
 
-| Aspect | ADK | WDK | Managed Agents | Our Pipeline |
-|--------|-----|-----|----------------|-------------|
-| State storage | Event log (DB) | Step log (JSON/Postgres/Redis) | Append-only event log | JSON file |
-| Resume strategy | Lazy scan + dedup | Deterministic replay | Event log retrieval | State check + skip |
-| Step granularity | Per-tool-call | Per `'use step'` | Per-task (brain-hands) | Per pipeline phase |
-| Visualization | Web UI (graph) | Dashboard (list) | Event log query | CLI (JSON) |
-| Idempotency | Automatic (dedup) | Automatic (replay) | Event-sourced (facts) | Manual (state check) |
-| Crash safety | Yes (persistent log) | Yes (persistent store) | Yes (append-only log) | No (in-memory JSON) |
-| Harness statefulness | Stateful (graph in memory) | Stateful (replay requires re-execution) | Stateless (reads log on start) | Stateful (JSON in process) |
+| Aspect | ADK (Resume) | WDK | Managed Agents | Our Pipeline | ADK (Rewind) |
+|--------|-------------|-----|----------------|-------------|-------------|
+| State storage | Event log (DB) | Step log (JSON/Postgres/Redis) | Append-only event log | JSON file | Session checkpoints |
+| Resume strategy | Lazy scan + dedup | Deterministic replay | Event log retrieval | State check + skip | Checkpoint rewind |
+| Step granularity | Per-tool-call | Per `'use step'` | Per-task (brain-hands) | Per pipeline phase | Per-invocation |
+| Visualization | Web UI (graph) | Dashboard (list) | Event log query | CLI (JSON) | Checkpoint diff |
+| Idempotency | Automatic (dedup) | Automatic (replay) | Event-sourced (facts) | Manual (state check) | Undo + retry |
+| Crash safety | Yes (persistent log) | Yes (persistent store) | Yes (append-only log) | No (in-memory JSON) | Yes (session persisted) |
+| Harness statefulness | Stateful (graph in memory) | Stateful (replay requires re-execution) | Stateless (reads log on start) | Stateful (JSON in process) | Stateful (session context preserved across rewind) |
+| **Use case** | Crash recovery | Crash recovery | Crash recovery | Crash recovery | Active optimization recovery |
 
 ## Implications for Phase 5.3.2
 
