@@ -6,11 +6,11 @@ import argparse
 def beta_pdf(x, a, b):
     if x < 0 or x > 1:
         return 0
-    # gamma(a)*gamma(b)/gamma(a+b) is the Beta function B(a,b)
-    # For small integers, math.gamma is fine.
+    # Use log-gamma to prevent overflow: B(a,b) = exp(lgamma(a) + lgamma(b) - lgamma(a+b))
     try:
-        return (x**(a-1) * (1-x)**(b-1)) / (math.gamma(a) * math.gamma(b) / math.gamma(a+b))
-    except (OverflowError, ZeroDivisionError):
+        log_beta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a+b)
+        return math.exp((a-1) * math.log(x) + (b-1) * math.log(1-x) - log_beta)
+    except (OverflowError, ZeroDivisionError, ValueError):
         return 0
 
 def beta_cdf(x, a, b):
@@ -21,13 +21,19 @@ def beta_cdf(x, a, b):
     n_steps = 1000
     step = x / n_steps
     integral = 0
+    # Prior log-beta calculation for normalization
+    log_beta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a+b)
+    
     for i in range(n_steps):
         x_i = (i + 0.5) * step
-        integral += (x_i**(a-1) * (1-x_i)**(b-1))
+        # Calculate pdf(x_i) via log space
+        try:
+            val = math.exp((a-1) * math.log(x_i) + (b-1) * math.log(1-x_i) - log_beta)
+            integral += val
+        except (OverflowError, ValueError):
+            continue
     
-    # Normalize by B(a,b)
-    beta_val = (math.gamma(a) * math.gamma(b)) / math.gamma(a+b)
-    return (integral * step) / beta_val
+    return integral * step
 
 def find_percentile(p, a, b):
     low, high = 0.0, 1.0

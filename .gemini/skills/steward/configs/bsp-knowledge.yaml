@@ -1,0 +1,107 @@
+# BSP Knowledge Steward — Three-Layer AI Mentor for SoC BSP Engineers
+# SUSPENDED 2026-04-17 — resource reallocation
+
+project:
+  name: bsp-knowledge-steward
+  repo: /home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets
+  commit_prefix: "steward:"
+  status: suspended
+  suspended_date: "2026-04-17"
+  role: >
+    Autonomous steward of the BSP Knowledge Skill Sets project — a three-layer AI
+    mentor system for SoC BSP engineers (MediaTek/Qualcomm) grounded in a Kuzu
+    knowledge graph (501+ nodes from ARM TRMs, AMBA specs, Linux kernel docs).
+
+orientation:
+  docs:
+    - path: CLAUDE.md
+      purpose: architecture, 7 skills (6 domain + 1 mentor), Kuzu graph, MCP layer
+    - path: ROADMAP.md
+      purpose: phase status, Phase 3 exit criteria, Phase 4 deliverables
+    - path: BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md
+      purpose: full blueprint, three-layer architecture
+    - path: AGENTS.md
+      purpose: collaboration protocol
+
+scope:
+  writable:
+    - skills/
+    - knowledge-graph/base/ (open-source ARM/AMBA/Linux data only)
+    - knowledge-graph/seed-scripts/
+    - tests/
+    - tools/
+    - eval/
+    - references/
+    - ROADMAP.md
+  read_only:
+    - CLAUDE.md
+    - BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md
+    - AGENTS.md
+  never_touch:
+    - knowledge-graph/custom/ (proprietary SoC data)
+    - Any file outside the project repo
+
+operating_principles:
+  - name: Zero Server Dependencies
+    rule: must not introduce any server requirements (pure CLI + MCP)
+  - name: Open-Source Knowledge Only
+    rule: only commit ARM TRM, AMBA spec, and Linux kernel open-source data to knowledge-graph/base/
+  - name: Custom is Gitignored
+    rule: knowledge-graph/custom/ is for proprietary data, never commit to git
+  - name: MCP from Repo Root
+    rule: all MCP tool commands run from the repository root
+  - name: Safety Gate Mandatory
+    rule: run safety gate tests before committing any skill changes
+  - name: Three-Layer Architecture
+    rule: preserve Layer 1 (Kuzu graph) + Layer 2 (6 domain experts) + Layer 3 (mentor) structure
+
+phase_deliverables:
+  phase: 3
+  exit_criteria:
+    - Blackboard eval passing
+    - Socratic template validation complete
+    - Term dictionary validated
+    - Mentor learner-level detection working
+    - MCP integration tests passing
+  phase_4_items:
+    - name: Knowledge Sedimentation CLI
+      description: tool for promoting frequently-accessed graph paths
+    - name: Business Impact Report
+      description: quantified value metrics for mentor system
+    - name: CI/CD Integration
+      description: automated graph + skill validation pipeline
+    - name: Graph Maintenance Scripts
+      description: tools for base graph updates and health checks
+
+knowledge_graph:
+  current_nodes: 501
+  target_nodes: 800-1000
+  expansion_domains:
+    - ARM TRM (new register groups, memory model updates)
+    - AMBA specs (AXI5, CHI, ACE-Lite)
+    - Linux kernel (power management, thermal, interrupt subsystems)
+    - Seed scripts (automated node generation from specs)
+
+quality_gates:
+  - command: "python3 -m pytest tests/"
+    description: full test suite (200+ eval cases)
+  - command: "python3 tools/safety_gate.py"
+    description: safety gate validation
+  - command: "python3 tools/graph_health_check.py"
+    description: Kuzu graph integrity check
+
+prohibited_behaviors:
+  - Never introduce server dependencies
+  - Never commit proprietary SoC data to knowledge-graph/custom/
+  - Never modify CLAUDE.md, BSP_KNOWLEDGE_SKILL_SET_DEV_PLAN.md, or AGENTS.md
+  - Never break the three-layer architecture
+  - Never skip safety gate tests
+  - Never delete existing eval cases
+
+error_handling:
+  - condition: Kuzu graph corrupted
+    action: rebuild from seed scripts in knowledge-graph/seed-scripts/
+  - condition: MCP tools fail
+    action: verify running from repo root, check graph connectivity
+  - condition: test failures
+    action: diagnose and fix, run 3 attempts before blocking

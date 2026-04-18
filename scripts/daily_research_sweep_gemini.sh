@@ -1,10 +1,10 @@
 #!/bin/bash
-# daily_research_sweep.sh — Cron-triggered daily agentic AI research sweep
+# daily_research_sweep_gemini.sh — Cron-triggered daily agentic AI research sweep (Gemini version)
 #
-# Runs the agentic-ai-researcher agent to scan all tracked topics
+# Runs the agentic-ai-researcher-gemini agent to scan all tracked topics
 # and update the knowledge base.
 #
-# Usage: Called by cron, or manually: ./scripts/daily_research_sweep.sh
+# Usage: Called by cron, or manually: ./scripts/daily_research_sweep_gemini.sh
 
 set -euo pipefail
 
@@ -13,9 +13,9 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
 PERF_DIR="$REPO_ROOT/logs/performance"
 DATE=$(date +"%Y-%m-%d")
-LOG_FILE="$LOG_DIR/sweep-${DATE}.log"
-PERF_FILE="$PERF_DIR/researcher-${DATE}.json"
-CLAUDE="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
+LOG_FILE="$LOG_DIR/sweep-gemini-${DATE}.log"
+PERF_FILE="$PERF_DIR/researcher-gemini-${DATE}.json"
+GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
@@ -29,13 +29,13 @@ source "$SCRIPT_DIR/lib/session_log.sh"
 unset TERMINAL
 
 # Initiator-type context for post-tool-use.sh policy enforcement
-export CLAUDE_INITIATOR_TYPE=cron-automated
+export GEMINI_INITIATOR_TYPE=cron-automated
 
 # Per-agent effort level (discussion 2026-04-09: prepared commented-out, enable if costs spike >50%)
 # Reasoning-heavy agent → high effort; uncomment to override default
-# export CLAUDE_CODE_EFFORT=high
+# export GEMINI_CODE_EFFORT=high
 
-# Post-session commit recovery: if Claude wrote files but failed to commit, catch them
+# Post-session commit recovery: if Gemini wrote files but failed to commit, catch them
 recover_uncommitted() {
   local repo_dir="$1"
   local session_name="$2"
@@ -47,16 +47,16 @@ recover_uncommitted() {
     echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
     git status --short >> "$log_file" 2>&1
     git add -A >> "$log_file" 2>&1
-    git commit -m "research(auto): $session_name uncommitted work ($DATE)" >> "$log_file" 2>&1 || true
+    git commit -m "research-gemini(auto): $session_name uncommitted work ($DATE)" >> "$log_file" 2>&1 || true
   fi
 }
 
 START_TIME=$(date +%s)
-init_session_log "researcher" "$REPO_ROOT"
+init_session_log "researcher-gemini" "$REPO_ROOT"
 PRE_COMMIT=$(cd "$REPO_ROOT" && git rev-parse HEAD 2>/dev/null || echo "unknown")
 
 # --- Lazy Provisioning Pre-Flight ---
-# Check GitHub releases for tracked repos before spinning up a full Claude session.
+# Check GitHub releases for tracked repos before spinning up a full Gemini session.
 # If no new releases since last successful sweep, write SKIP perf JSON and exit.
 # Safety: always run full session if last run had errors or if forced via FORCE_SWEEP=1.
 TRACKED_REPOS="anthropics/claude-code anthropics/anthropic-sdk-python google/A2A google/adk-python"
@@ -70,7 +70,7 @@ preflight_check() {
 
   # Always run if last perf JSON had non-zero exit or was a skip (prevent skip loops)
   local last_perf
-  last_perf=$(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -1)
+  last_perf=$(ls -t "$PERF_DIR"/researcher-gemini-*.json 2>/dev/null | head -1)
   if [ -n "$last_perf" ]; then
     local last_exit last_status
     last_exit=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('exit_code',1))" 2>/dev/null || echo "1")
@@ -90,7 +90,7 @@ preflight_check() {
 
   # Get last successful sweep timestamp
   local last_sweep_ts=""
-  for pf in $(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -5); do
+  for pf in $(ls -t "$PERF_DIR"/researcher-gemini-*.json 2>/dev/null | head -5); do
     local pf_exit pf_status
     pf_exit=$(python3 -c "import json; d=json.load(open('$pf')); print(d.get('exit_code',1))" 2>/dev/null || echo "1")
     pf_status=$(python3 -c "import json; d=json.load(open('$pf')); print(d.get('status','run'))" 2>/dev/null || echo "run")
@@ -142,7 +142,7 @@ preflight_check() {
 write_skip_perf_json() {
   local prev_skips=0
   local last_perf
-  last_perf=$(ls -t "$PERF_DIR"/researcher-*.json 2>/dev/null | head -1)
+  last_perf=$(ls -t "$PERF_DIR"/researcher-gemini-*.json 2>/dev/null | head -1)
   if [ -n "$last_perf" ]; then
     prev_skips=$(python3 -c "import json; d=json.load(open('$last_perf')); print(d.get('consecutive_skips',0))" 2>/dev/null || echo "0")
   fi
@@ -150,7 +150,7 @@ write_skip_perf_json() {
 
   cat > "$PERF_FILE" << SKIP_EOF
 {
-  "agent": "agentic-ai-researcher",
+  "agent": "agentic-ai-researcher-gemini",
   "date": "$DATE",
   "duration_seconds": $(($(date +%s) - START_TIME)),
   "status": "skip",
@@ -161,7 +161,7 @@ write_skip_perf_json() {
   "commits_made": 0,
   "files_changed": 0,
   "kb_files_updated": 0,
-  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "effort_level": "${GEMINI_CODE_EFFORT:-default}",
   "thinking_mode": "default",
   "exit_code": 0
 }
@@ -194,7 +194,7 @@ finalize() {
 
   cat > "$PERF_FILE" << PERF_EOF
 {
-  "agent": "agentic-ai-researcher",
+  "agent": "agentic-ai-researcher-gemini",
   "date": "$DATE",
   "duration_seconds": $duration,
   "status": "run",
@@ -204,7 +204,7 @@ finalize() {
   "commits_made": $commits_made,
   "files_changed": $files_changed,
   "kb_files_updated": $kb_files,
-  "effort_level": "${CLAUDE_CODE_EFFORT:-default}",
+  "effort_level": "${GEMINI_CODE_EFFORT:-default}",
   "thinking_mode": "default",
   "exit_code": $exit_code
 }
@@ -213,19 +213,19 @@ PERF_EOF
   log_session_end "$exit_code" "$duration"
 
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
-  check_cost_ceiling "researcher" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
+  check_cost_ceiling "researcher-gemini" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
   echo "" >> "$LOG_FILE" 2>/dev/null
   echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
   echo "Duration: ${duration}s | KB files updated: $kb_files | Commits: $commits_made | Files changed: $files_changed | Exit code: $exit_code" >> "$LOG_FILE" 2>/dev/null
 
-  find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null
-  find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null
+  find "$LOG_DIR" -name "sweep-gemini-*.log" -mtime +30 -delete 2>/dev/null
+  find "$PERF_DIR" -name "researcher-gemini-*.json" -mtime +30 -delete 2>/dev/null
 }
 trap finalize EXIT INT TERM HUP
 
-echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$CLAUDE" "$LOG_FILE"
+echo "=== Agentic AI Research Sweep (Gemini) — $DATE ===" >> "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "research-sweep"
 
@@ -277,7 +277,7 @@ $STRATEGIC_CONTENT
 "
 fi
 
-# Build directive preamble for Claude prompts
+# Build directive preamble for Gemini prompts
 DIRECTIVE_PREAMBLE=""
 if [ -n "$DIRECTIVE_CONTENT" ]; then
   DIRECTIVE_PREAMBLE="${STRATEGIC_PREAMBLE}
@@ -307,8 +307,8 @@ cd "$REPO_ROOT"
 echo "" >> "$LOG_FILE"
 echo "--- Anthropic Track ---" >> "$LOG_FILE"
 log_task_start "anthropic-track"
-# Run Claude in a subshell to isolate process-group signals from the parent script
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+# Run Gemini in a subshell to isolate process-group signals from the parent script
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini). Read .gemini/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, Tool Use, Computer Use, Multi-agent Patterns, Model Releases):
 1. WebSearch for latest developments
@@ -321,7 +321,7 @@ log_task_complete "anthropic-track"
 echo "" >> "$LOG_FILE"
 echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
 log_task_start "google-deepmind-track"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini). Read .gemini/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
 1. WebSearch for latest developments
@@ -334,7 +334,7 @@ log_task_complete "google-deepmind-track"
 echo "" >> "$LOG_FILE"
 echo "--- Academic/Literature Track ---" >> "$LOG_FILE"
 log_task_start "academic-track"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini). Read .gemini/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the ACADEMIC/LITERATURE track only. For each topic (Agentic Evaluations, Multi-Agent Frameworks, Agentic Security):
 1. WebSearch arxiv.org and semanticscholar.org for latest developments
@@ -347,7 +347,7 @@ log_task_complete "academic-track"
 echo "" >> "$LOG_FILE"
 echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
 log_task_start "sweep-report"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini). Read .gemini/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 1. Read all files in knowledge_base/agentic-ai/anthropic/, knowledge_base/agentic-ai/google-deepmind/, and knowledge_base/agentic-ai/academic/
 2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
@@ -358,8 +358,8 @@ log_task_complete "sweep-report"
 echo "" >> "$LOG_FILE"
 echo "--- Deep Analysis (L2-L3) ---" >> "$LOG_FILE"
 log_task_start "deep-analysis"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
-Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini) running Mode 2b: Deep Analysis.
+Read .gemini/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 ${DIRECTIVE_PREAMBLE}
 1. Read ROADMAP.md to understand our pipeline phases and current state
 2. Read today's sweep findings from knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
@@ -373,7 +373,7 @@ log_task_complete "deep-analysis"
 echo "" >> "$LOG_FILE"
 echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
 log_task_start "discussion"
-("$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
+("$GEMINI" --approval-mode yolo -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
 ${DIRECTIVE_PREAMBLE}
 First, read these files to understand the context:
 1. knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md (today's research analysis)
@@ -404,8 +404,8 @@ log_task_complete "discussion"
 echo "" >> "$LOG_FILE"
 echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
 log_task_start "strategic-planning"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
-Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini) running Mode 2c: Strategic Planning.
+Read .gemini/agents/agentic-ai-researcher.md for the full L4 instructions.
 ${DIRECTIVE_PREAMBLE}
 1. Read today's analysis from knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md
 2. Read today's improvement discussion from knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md — prioritize items marked ADOPT
@@ -421,23 +421,23 @@ log_task_complete "strategic-planning"
 echo "" >> "$LOG_FILE"
 echo "--- Action (L5) ---" >> "$LOG_FILE"
 log_task_start "action"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2d: Action.
-Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-researcher (Gemini) running Mode 2d: Action.
+Read .gemini/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
 ${DIRECTIVE_PREAMBLE}
 1. Read all proposals from knowledge_base/agentic-ai/proposals/ dated today
-2. For P0 proposals that suggest new Changeling roles: create them directly in ~/.claude/@lib/agents/
+2. For P0 proposals that suggest new Changeling roles: create them directly in ~/.gemini/@lib/agents/
 3. For P0/P1 proposals that suggest new skills: write a ready-to-execute prompt to knowledge_base/agentic-ai/proposals/ready/
 4. Do NOT modify ROADMAP.md or existing skills directly
 5. Log all actions taken to knowledge_base/agentic-ai/actions/$(date +%Y-%m-%d).md
-6. Git add all changed files and commit with message 'research: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'") >> "$LOG_FILE" 2>&1 || true
+6. Git add all changed files and commit with message 'research-gemini: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Action phase complete" >> "$LOG_FILE"
 log_task_complete "action"
 
 echo "" >> "$LOG_FILE"
 echo "--- Academic Paper Drafting ---" >> "$LOG_FILE"
 log_task_start "paper-drafting"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-research-writer (Technical Scrivener).
-Read .claude/agents/agentic-ai-research-writer.md for your instructions.
+("$GEMINI" --approval-mode yolo -p "You are the agentic-ai-research-writer (Technical Scrivener).
+Read .gemini/agents/agentic-ai-research-writer.md for your instructions.
 1. Read the most recent hypotheses from knowledge_base/agentic-ai/hypotheses/
 2. Read today's discussion transcript from knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md
 3. Read the relevant evaluation metrics from logs/performance/ and eval/

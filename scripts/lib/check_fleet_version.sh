@@ -16,6 +16,9 @@ check_fleet_version() {
   local lib_dir
   lib_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   local min_version_file="$lib_dir/fleet_min_version.txt"
+  if [[ "$claude_bin" == *"gemini"* ]]; then
+    min_version_file="$lib_dir/gemini_min_version.txt"
+  fi
 
   # Read minimum version
   local min_version
