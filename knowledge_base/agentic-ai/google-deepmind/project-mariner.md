@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-18 night
+**Last updated**: 2026-04-19
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,8 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-19 -- Mariner day 16: no change. Enterprise API 20d late. I/O 30d.
 
 ### 2026-04-18 night -- Mariner day 15: no change. Enterprise API 19d late. Cloud-VM multi-task (10 simultaneous) holds. I/O 31d.
 

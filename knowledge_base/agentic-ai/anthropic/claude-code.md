@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-18 (afternoon)
+**Last updated**: 2026-04-19
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases

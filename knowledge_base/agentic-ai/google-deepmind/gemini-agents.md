@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-18 night
+**Last updated**: 2026-04-19
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -32,6 +32,11 @@
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-19 -- Gemini CLI day 2 at v0.38.2; nightly pipeline day 5 paused; Gemini CLI NOT installed on this machine (S3 blocker confirmed); I/O 30d
+- **What**: (1) Gemini CLI stable at v0.38.2 (Apr 17). No new releases Apr 18-19. (2) **Nightly pipeline day 5 paused** — last nightly was v0.40.0-nightly.20260415 (Apr 15). No nightlies Apr 16-19. Longest nightly pause since daily cadence began Apr 9. (3) **S3 gating check: Gemini CLI NOT INSTALLED** — `which gemini` returns NOT_FOUND. Transpiler prototype (D7) remains blocked on infrastructure. (4) Gemini API changelog silent since Apr 15 (TTS). (5) I/O 30 days.
+- **Significance**: The **Gemini CLI not-installed finding** resolves the P1 directive gating check — S3 transpiler work is blocked on infrastructure, not research. The nightly pipeline pause extending to day 5 likely reflects pre-I/O freeze rather than infrastructure issues (stable releases continued through Apr 17).
+- **Source**: https://github.com/google-gemini/gemini-cli/releases
 
 ### 2026-04-18 night -- Gemini CLI v0.38.2 Holds; Gemini API Day 3+ Silent; Nightly Pipeline Day 3 Paused; Gemini 750M+ MAU; I/O 31 Days; Aluminium OS Expected
 - **What**: No changes since evening sweep. (1) **Gemini CLI v0.38.2** (Apr 17) remains latest stable. No new nightly builds (day 3 pause). (2) **Gemini API** silent since Apr 15 (TTS). (3) **Gemini 750M+ monthly active users** confirmed (Q4 2025 number, latest available). (4) **Gemini 3.1 Pro** rolled out globally through Gemini app for Pro/Ultra subscribers — enhanced reasoning for complex coding/data analysis. (5) **I/O 2026 expectations consolidation**: Gemini 4, Veo 4 (30-sec video), AI glasses (<50g), **"Aluminium OS"** (unified ChromeOS/Android platform, previously leaked, expected public debut). Engadget I/O preview explicitly names Project Astra as expected reveal. (6) **Deprecation countdowns**: robotics model 12d, Flash 2.0 44d, 2.5 series 181d. (7) **I/O 31d**, pre-I/O ~14d.

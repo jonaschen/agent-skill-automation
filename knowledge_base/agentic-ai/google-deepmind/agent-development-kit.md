@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-18 night
+**Last updated**: 2026-04-19
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -19,6 +19,8 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-19 -- ADK v1.31.0 day 2: no change. No v1.32.0 or v2.0.0a4. Next release expected ~Apr 27-May 1. I/O 30d.
 
 ### 2026-04-18 night -- ADK v1.31.0 Day 1 Holds; v1.31.0 Details Confirmed (Live UI Redesign, Events/Trace View, Graph View, Computer Use View); No v1.32.0; I/O 31 Days
 - **What**: ADK Python v1.31.0 (Apr 17) day 1 stable. GitHub releases page confirms additional v1.31.0 features beyond those previously captured: (1) **Live UI Redesign** — completely redesigned real-time chat/testing interface with improved responsiveness. (2) **Events and Trace View** — replaced the execution log with structured tracing (spans, events), enabling better debugging of multi-agent workflows. (3) **Graph View** — visual canvas for mapping agent architectures and node relationships, complementing the v2.0.0a3 workflow graph visualization. (4) **Named Sessions** — organize and name debug sessions for easier session management. (5) **Firestore support** — added as service backend alongside existing BigQuery and Parameter Manager integrations. (6) **"google-adk" user agent** added to Parameter Manager and Secret Manager clients for better request attribution. No v1.31.1, v1.32.0, or v2.0.0a4 released. v2.0.0a3 (Apr 9) remains newest 2.0 pre-release. ADK 7M+ PyPI downloads confirmed. I/O 31d.

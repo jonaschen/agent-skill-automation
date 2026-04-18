@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-18 (afternoon)
+**Last updated**: 2026-04-19
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 18, 2026, Python is at v0.1.63 and TypeScript is at v0.2.114. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-19 — Session Storage Alpha: TS-Only, Python SDK Has No Equivalent; Community Feature Request #97 Active
+- **What**: Verification sweep confirms Session Storage Alpha remains **TypeScript-only** (v0.2.113+). Python SDK v0.1.63 has no Session Storage functionality — no `sessionStore`, `InMemorySessionStore`, or `importSessionToStore` in its changelog or API surface. Community feature request **#97** ("Customizable Session Storage Backend for Cloud/Kubernetes Deployments," filed Dec 2025, 20 👍, 14 ❤️) requests cloud-native storage backends (PostgreSQL, S3, Redis) with a `SessionStorageProvider` interface. No Anthropic team response documented. Issue marked as duplicate of #167 (Session save/export) on Mar 28, 2026, but remains open. Current workaround: users manually sync `.claude/projects/{cwd}/{sessionId}.jsonl` to databases.
+- **Significance**: Session Storage Alpha is **not actionable for our Python-based pipeline** until it lands in the Python SDK. The TS SDK is advancing ~4x faster than Python (v0.2.114 vs v0.1.63 — 22 vs 5 minor versions in the Apr 13-18 window). If Phase 5 requires Session Storage, TypeScript may be the forced migration target. Community demand (issue #97) validates the use case but shows no official roadmap commitment. **Closing this tracking item per directive**: feature is TS-only, not actionable until Python SDK or Phase 5 SDK decision. Will re-open if Python SDK adds `sessionStore`.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/issues/97
 
 ### 2026-04-18 (afternoon-2) — Agent SDK TypeScript v0.2.113 + v0.2.114: Session Storage Alpha, OTEL Trace Propagation, Native Binary
 - **What**: The TypeScript SDK advanced from v0.2.92 to **v0.2.113** (Apr 17, 19:34 UTC) and **v0.2.114** (Apr 18, 01:33 UTC). Major v0.2.113 features: **(1) Session Storage Alpha** — new `sessionStore` option in `ClaudeAgentOptions` for mirroring session transcripts to external storage. New types: `SessionStore` (interface), `SessionKey`, `SessionStoreEntry`, `InMemorySessionStore` (reference implementation), `importSessionToStore()` (migration helper). Enables queryable externalization of agent session data. **(2) OTEL Trace Context Propagation** — distributed tracing support for TypeScript SDK sessions, connecting SDK callers to CLI child process spans. **(3) Native Binary Integration** — SDK now spawns a per-platform native Claude Code binary via optional dependency instead of bundled JavaScript (mirrors CLI v2.1.113 architecture). **(4) Session Management** — `deleteSession()` for removing sessions from disk or `SessionStore`; `title` option on `query()` to set session titles and skip auto-generation. **(5) Error Handling** — `SDKMirrorErrorMessage` (`subtype: 'mirror_error'`) for batch append failures in Session Storage. v0.2.114: maintenance release at CLI v2.1.114 parity (agent teams crash fix).

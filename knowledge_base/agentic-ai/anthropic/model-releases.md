@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-18 (afternoon)
+**Last updated**: 2026-04-19
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-19 -- Pre-Retirement Verification: Haiku 3 Confirmed Retiring April 20; Official Deprecation Page Re-Verified; Shadow Eval Still NOT Run (5th Cycle)
+- **What**: **Haiku 3 pre-retirement verification** (directive P0): Official model deprecation page (platform.claude.com) re-verified — `claude-3-haiku-20240307` status is "Deprecated" with retirement date **April 20, 2026**. The model is still callable as of April 19. Replacement: `claude-haiku-4-5-20251001`. Our `deprecated_models.json` entry has the correct date (2026-04-20). Third-party migration guides active (Claude Lab, DEV Community). **No new model releases** since Opus 4.7 (Apr 16). **Opus 4.7 token burn**: #49562 still OPEN, no new Anthropic staff response. **Shadow eval**: Still NOT run — zero Opus 4.7 entries in experiment_log.json. P0 blocker now in 5th directive cycle without execution. **Deprecation timeline**: Haiku 3 retires tomorrow (Apr 20), Sonnet 4 + Opus 4 retire June 15 (57 days).
+- **Significance**: Haiku 3 retirement tomorrow is a non-event for our pipeline — our guard has been in place since April 12 and no pipeline component uses Haiku 3. The shadow eval non-execution is the persistent concern. The factory-steward has now had 3+ cycles to run it and hasn't — the L12 inversion (gate-blocker displaced by newsier ADOPT items) continues.
+- **Source**: https://platform.claude.com/docs/en/about-claude/model-deprecations
 
 ### 2026-04-18 (afternoon) -- Opus 4.7 Token Burn Rate: Issue #49562 Still Open, No Anthropic Response; Shadow Eval Not Yet Run
 - **What**: **Opus 4.7 token burn rate status**: GitHub issue #49562 ("New version burns through all tokens in minutes") remains OPEN with no Anthropic staff response. Auto-closure scheduled in ~3 days if marked as duplicate. Three related duplicate issues: #49356 (v2.1.111 consumes 1.7-2x more context tokens than v2.1.110), #49541 (silent model switch to Opus 4.7 mid-session caused ~4x quota burn), #41771 (Opus 1M no longer available). The token burn is attributed to: (a) Opus 4.7 tokenizer producing 1.0-1.35x more tokens for same content, (b) default effort raised to `high` (from `medium`), (c) `xhigh` default in Claude Code consuming more output tokens. Anthropic's guidance: "measure the real difference on your own traffic rather than assuming a flat multiplier." **Shadow eval status**: NOT run yet. The `eval/experiment_log.json` contains no Opus 4.7 entries. The factory steward's 3 AM run completed a breaking change audit (CLEAN — no deprecated API patterns in scripts/eval/.claude/), programmatic tool calling security analysis, and 1M context beta sunset audit, but did NOT execute the shadow eval itself. The shadow eval (`python3 eval/run_eval_async.py --model claude-opus-4-7 .claude/agents/meta-agent-factory.md`) remains pending for the next factory steward cycle (4 PM today or 3 AM tomorrow). **OTEL pilot**: Also NOT run by factory steward. The 3 AM session focused on P0 audit + security analysis items.
