@@ -1,1 +1,1 @@
-../../../core/skills/agentic-ai-researcher/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/agentic-ai-researcher/SKILL.md

@@ -1,1 +1,1 @@
-../../../core/skills/react-perf-profiler/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/react-perf-profiler/SKILL.md

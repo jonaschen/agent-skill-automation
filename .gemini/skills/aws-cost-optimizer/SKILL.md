@@ -1,1 +1,1 @@
-../../../core/skills/aws-cost-optimizer/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/aws-cost-optimizer/SKILL.md

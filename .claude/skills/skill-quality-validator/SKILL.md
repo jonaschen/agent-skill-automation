@@ -1,1 +1,1 @@
-../../../core/skills/skill-quality-validator/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/skill-quality-validator/SKILL.md

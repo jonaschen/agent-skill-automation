@@ -1,1 +1,1 @@
-../../../core/skills/steward/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/steward/SKILL.md

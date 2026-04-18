@@ -1,1 +1,1 @@
-../../../core/skills/helm-chart-validator/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/helm-chart-validator/SKILL.md

@@ -1,1 +1,1 @@
-../../../core/skills/changeling-router/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/changeling-router/SKILL.md

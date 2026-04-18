@@ -1,1 +1,1 @@
-../../../core/skills/aosp-integration-expert/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/aosp-integration-expert/SKILL.md

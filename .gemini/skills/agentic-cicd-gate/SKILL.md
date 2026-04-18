@@ -1,1 +1,1 @@
-../../../core/skills/agentic-cicd-gate/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/agentic-cicd-gate/SKILL.md

@@ -1,1 +1,1 @@
-../../../core/skills/meta-agent-factory/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/meta-agent-factory/SKILL.md

@@ -1,1 +1,1 @@
-../../../core/skills/cis-compliance-auditor/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/cis-compliance-auditor/SKILL.md

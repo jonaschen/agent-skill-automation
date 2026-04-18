@@ -1,1 +1,1 @@
-../../../core/skills/hokkaido-tour-guide/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/hokkaido-tour-guide/SKILL.md

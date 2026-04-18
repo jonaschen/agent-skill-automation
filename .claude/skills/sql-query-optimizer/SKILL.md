@@ -1,1 +1,1 @@
-../../../core/skills/sql-query-optimizer/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/sql-query-optimizer/SKILL.md

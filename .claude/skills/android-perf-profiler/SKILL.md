@@ -1,1 +1,1 @@
-../../../core/skills/android-perf-profiler/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/android-perf-profiler/SKILL.md

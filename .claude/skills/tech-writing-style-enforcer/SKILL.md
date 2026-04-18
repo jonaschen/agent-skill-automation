@@ -1,1 +1,1 @@
-../../../core/skills/tech-writing-style-enforcer/SKILL.md
+/home/jonas/claude-home/agent-skill-automation/core/skills/tech-writing-style-enforcer/SKILL.md
