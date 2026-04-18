@@ -45,6 +45,7 @@ title: All Agents Reference
 | Agent | Role | Model |
 |-------|------|-------|
 | `qa-log-reviewer` | Reads and analyzes log files for errors and anomalies | Read-only |
+| `coverage-analyst` | Analyzes test coverage reports and identifies gaps | Read-only |
 | `precommit-lint-executor` | Runs linting/formatting on staged files before commit | Sonnet 4.6 |
 | `typescript-perf-reviewer` | Reviews TypeScript code for performance bottlenecks | Read-only |
 

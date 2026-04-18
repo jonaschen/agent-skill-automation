@@ -355,10 +355,11 @@ Three persistent research priorities shape the pipeline's research direction acr
 #### 5.3.2a OTEL Tracing Requirements (2026-04-18)
 - [ ] Add `claude-agent-sdk[otel]` as Phase 5 dependency. Initial collector: stdout JSON format (`OTEL_EXPORTER_OTLP_ENDPOINT=stdout`). Jaeger/Tempo deferred to Phase 5.1+. OTEL-native (not vendor-specific) to support both Agent SDK traces and future ADK OTEL integration — P1 (architecture decision, implementation in Phase 5)
 
-#### 5.3.3 CLI to Agent SDK Migration
-- [ ] Migrate fleet execution from `claude -p` CLI invocations to Agent SDK programmatic calls. Enables: OTEL tracing, subagent transcript inspection, session checkpointing. Migration order: factory-steward first (most tested), then researcher, then remaining agents. Preserve existing perf JSON output format for backward compatibility with `agent_review.sh` — P1 (prerequisite for OTEL, implementation in Phase 5)
-
-#### 5.3 `scrum-team-orchestrator` agent + A2A bus
+#### 5.3.4 Gemini CLI Integration & Platform Generalization
+- [ ] Define shared SKILL.md schema extension for Gemini CLI tool mapping
+- [ ] Implement Gemini CLI adapter for `closed_loop.sh` and `run_eval_async.py`
+- [ ] Port core agent fleet to Gemini-compatible format (retaining Claude parity)
+- [ ] Target: Zero-code-change agent portability between Claude Code and Gemini CLI — P1
 
 > **Security requirement (2026-04-12)**: Credential isolation for Phase 5 multi-agent execution. When Phase 5 tests generated skills in sandboxes, those sandboxes must NOT inherit parent agent credentials. Reference architecture: Managed Agents' two patterns — (1) resource-bundled auth (initialize resources during setup, sandbox operates without direct credential access), (2) vault-based MCP proxy (OAuth tokens in secure vaults, accessed only via MCP proxy servers). Design document: `knowledge_base/agentic-ai/evaluations/credential-isolation-design.md`. Full implementation required for Phase 7 multi-tenant AaaS.
 

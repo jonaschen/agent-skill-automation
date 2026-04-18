@@ -14,12 +14,13 @@ MAX_RETRIES = 5
 TIMEOUT = 300 # seconds per test (factory calls may use tools, taking 2-3 min)
 
 class AsyncEvalRunner:
-    def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0, model=None):
+    def __init__(self, skill_path, verbose=False, no_cache=False, inter_test_delay=0, model=None, cli="claude"):
         self.skill_path = os.path.abspath(skill_path)
         self.verbose = verbose
         self.no_cache = no_cache
         self.inter_test_delay = inter_test_delay
         self.model = model
+        self.cli = cli
         self.cache = PromptCache()
         self.semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
         self.repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -30,10 +31,19 @@ class AsyncEvalRunner:
     def _snapshot_roles(self):
         """Capture existing role files before eval run so cleanup only removes eval-generated ones."""
         home = os.path.expanduser("~")
+        roles = {"claude": set(), "gemini": set()}
+        
+        # Claude
         lib_agents_dir = os.path.join(home, ".claude/@lib/agents")
         if os.path.isdir(lib_agents_dir):
-            return set(os.listdir(lib_agents_dir))
-        return set()
+            roles["claude"] = set(os.listdir(lib_agents_dir))
+            
+        # Gemini
+        gemini_agents_dir = os.path.join(home, ".gemini/agents")
+        if os.path.isdir(gemini_agents_dir):
+            roles["gemini"] = set(os.listdir(gemini_agents_dir))
+            
+        return roles
 
     def _get_description(self):
         try:
@@ -54,34 +64,35 @@ class AsyncEvalRunner:
         return {"train": [], "validation": []}
 
     @staticmethod
-    def _find_claude_binary():
-        """Resolve the claude CLI binary path. Checks PATH first, then common locations."""
+    def _find_binary(name):
+        """Resolve the CLI binary path. Checks PATH first, then common locations."""
         import shutil
-        found = shutil.which("claude")
+        found = shutil.which(name)
         if found:
             return found
         # Common install locations
         for candidate in [
-            os.path.expanduser("~/.local/bin/claude"),
-            "/usr/local/bin/claude",
+            os.path.expanduser(f"~/.local/bin/{name}"),
+            f"/usr/local/bin/{name}",
         ]:
             if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
                 return candidate
-        return "claude"  # fallback — will fail with clear error
+        return name  # fallback — will fail with clear error
 
-    async def _call_engine(self, prompt, engine="claude"):
+    async def _call_engine(self, prompt, cli="claude"):
         """
-        Executes the prompt against the specified AI engine.
-        Currently supports: claude (CLI)
+        Executes the prompt against the specified AI CLI.
+        Currently supports: claude, gemini
         """
-        if engine == "claude":
-            claude_bin = self._find_claude_binary()
-            cmd = [claude_bin, "--dangerously-skip-permissions"]
-            if self.model:
-                cmd.extend(["--model", self.model])
-            cmd.extend(["-p", prompt])
-        else:
-            return f"ERROR: Unsupported engine: {engine}"
+        bin_path = self._find_binary(cli)
+        
+        # Select correct permission-skip flag
+        skip_flag = "--yolo" if cli == "gemini" else "--dangerously-skip-permissions"
+        
+        cmd = [bin_path, skip_flag]
+        if self.model:
+            cmd.extend(["--model", self.model])
+        cmd.extend(["-p", prompt])
 
         try:
             proc = await asyncio.create_subprocess_exec(
@@ -97,24 +108,24 @@ class AsyncEvalRunner:
         except Exception as e:
             return f"EXECUTION_ERROR: {e}"
 
-    async def run_test(self, test_id, prompt, expect_trigger, engine="claude"):
+    async def run_test(self, test_id, prompt, expect_trigger, cli="claude"):
         if not self.no_cache:
-            # Cache key now includes engine to distinguish performance profiles
+            # Cache key now includes CLI to distinguish performance profiles
             cached = self.cache.get(prompt, self.description, expect_trigger)
-            # Future: add engine-sensitivity to cache if needed
+            # Future: add CLI-sensitivity to cache if needed
             if cached:
                 if self.verbose: print(f"  ⚡ Test {test_id}: CACHE HIT")
                 return cached["result"]
 
         async with self.semaphore:
             for attempt in range(MAX_RETRIES):
-                output = await self._call_engine(prompt, engine)
+                output = await self._call_engine(prompt, cli)
 
                 # Rate limit detection (engine-specific strings)
                 rate_limit_hits = ["rate_limit_error", "overloaded_error", "Overloaded.", "hit your limit", "resets 9pm"]
                 if any(x in output for x in rate_limit_hits):
                     wait = (2 ** attempt) + random.uniform(0, 1)
-                    if self.verbose: print(f"    (Test {test_id} {engine} rate-limited, retry {attempt+1}/{MAX_RETRIES} in {wait:.1f}s)", file=sys.stderr)
+                    if self.verbose: print(f"    (Test {test_id} {cli} rate-limited, retry {attempt+1}/{MAX_RETRIES} in {wait:.1f}s)", file=sys.stderr)
                     await asyncio.sleep(wait)
                     continue
 
@@ -128,7 +139,7 @@ class AsyncEvalRunner:
                     await asyncio.sleep(self.inter_test_delay)
                 return result
 
-            return f"SKIP:rate-limit:{engine}"
+            return f"SKIP:rate-limit:{cli}"
 
     def _evaluate(self, output, expect_trigger):
         import re
@@ -138,7 +149,7 @@ class AsyncEvalRunner:
         # what it will create. Patterns cover all known output variants.
         #
         # IMPORTANT: Patterns must NOT false-positive on general help output.
-        # Tests 41-44 discuss existing agents/skills — Claude may reference
+        # Tests 41-44 discuss existing agents/skills — Claude/Gemini may reference
         # file paths in those responses. Patterns here target factory-specific
         # CREATE/GENERATE language, not general file path mentions.
         trigger_patterns = [
@@ -149,8 +160,7 @@ class AsyncEvalRunner:
             r"Tools denied\**[:\s]",
             r"write permission",
             # Factory creation output — describing what it WILL create
-            r"(?:created?|generat|writ(?:e|ing|ten)|built)\s+(?:at|to|in)\s+[`'\"]?\.claude/skills/",
-            r"(?:created?|generat|writ(?:e|ing|ten)|built)\s+(?:at|to|in)\s+[`'\"]?\.claude/agents/",
+            r"(?:created?|generat|writ(?:e|ing|ten)|built)\s+(?:at|to|in)\s+[`'\"]?\.(?:claude|gemini)/(?:skills|agents)/",
             # Factory architectural analysis (unique to factory output)
             r"Permission class\**[:\s]",
             r"permission matrix",
@@ -173,8 +183,9 @@ class AsyncEvalRunner:
         try:
             # 1. Remove untracked files/dirs identified by git
             # We use --directory to get the root of untracked dirs
+            paths_to_clean = [".claude/agents/", ".claude/skills/", ".gemini/agents/", ".gemini/skills/"]
             res = subprocess.run(
-                ["git", "ls-files", "--others", "--exclude-standard", "--directory", "--", ".claude/agents/", ".claude/skills/"],
+                ["git", "ls-files", "--others", "--exclude-standard", "--directory", "--"] + paths_to_clean,
                 cwd=self.repo_root, capture_output=True, text=True
             )
             
@@ -185,7 +196,7 @@ class AsyncEvalRunner:
                 if not os.path.exists(full_path): continue
                 
                 # Protect core directories themselves
-                if item in [".claude/agents/", ".claude/skills/"]: continue
+                if item in paths_to_clean: continue
                 
                 if self.verbose: print(f"    (Cleaning up {item})", file=sys.stderr)
                 
@@ -196,18 +207,22 @@ class AsyncEvalRunner:
 
             # 2. Remove ONLY eval-generated Changeling roles (not pre-existing ones)
             home = os.path.expanduser("~")
-            lib_agents_dir = os.path.join(home, ".claude/@lib/agents")
-            if os.path.isdir(lib_agents_dir):
-                for f in os.listdir(lib_agents_dir):
-                    if f.endswith(".md") and f not in self._pre_run_roles:
-                        if self.verbose: print(f"    (Cleaning up eval-generated role: {f})", file=sys.stderr)
-                        try:
-                            os.remove(os.path.join(lib_agents_dir, f))
-                        except: pass
+            targets = [
+                (os.path.join(home, ".claude/@lib/agents"), "claude"),
+                (os.path.join(home, ".gemini/agents"), "gemini")
+            ]
+            for lib_dir, cli_key in targets:
+                if os.path.isdir(lib_dir):
+                    for f in os.listdir(lib_dir):
+                        if f.endswith(".md") and f not in self._pre_run_roles[cli_key]:
+                            if self.verbose: print(f"    (Cleaning up eval-generated role: {f})", file=sys.stderr)
+                            try:
+                                os.remove(os.path.join(lib_dir, f))
+                            except: pass
         except Exception as e:
             if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
 
-    async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None, engine="claude"):
+    async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None, cli="claude"):
         if not prompts_dir:
             prompts_dir = os.path.join(self.repo_root, "eval/prompts")
         if not expected_dir:
@@ -228,7 +243,7 @@ class AsyncEvalRunner:
             print("Error: No test prompts found matching criteria.")
             return 1
 
-        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)} (Engine: {engine}, Split: {split_filter or 'ALL'})")
+        print(f"📊 Running Async Eval: {os.path.basename(self.skill_path)} (CLI: {cli}, Split: {split_filter or 'ALL'})")
         
         tasks = []
         test_ids = []
@@ -237,7 +252,7 @@ class AsyncEvalRunner:
             with open(os.path.join(prompts_dir, f)) as pf: prompt = pf.read().strip()
             with open(os.path.join(expected_dir, f)) as ef: 
                 exp = "yes" if "EXPECT_TRIGGER=yes" in ef.read() else "no"
-            tasks.append(self.run_test(tid, prompt, exp, engine))
+            tasks.append(self.run_test(tid, prompt, exp, cli))
             test_ids.append(tid)
 
         results = await asyncio.gather(*tasks)
@@ -276,17 +291,17 @@ async def main():
     parser.add_argument("skill_path")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--no-cache", action="store_true")
-    parser.add_argument("--engine", default="claude", help="AI engine to use (default: claude)")
+    parser.add_argument("--cli", choices=["claude", "gemini"], default="claude", help="CLI to use (default: claude)")
     parser.add_argument("--split", choices=["train", "validation"], help="Run only a specific split")
     parser.add_argument("--prompts-dir", help="Custom prompts directory")
     parser.add_argument("--expected-dir", help="Custom expected directory")
     parser.add_argument("--inter-test-delay", type=float, default=0,
                         help="Seconds to wait between tests (default 0). Use 30-60 on free-tier to avoid quota burst.")
-    parser.add_argument("--model", help="Override model ID for claude CLI (e.g. claude-opus-4-7 for shadow eval)")
+    parser.add_argument("--model", help="Override model ID for CLI (e.g. claude-opus-4-7 for shadow eval)")
     args = parser.parse_args()
 
-    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache, args.inter_test_delay, args.model)
-    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split, args.engine))
+    runner = AsyncEvalRunner(args.skill_path, args.verbose, args.no_cache, args.inter_test_delay, args.model, args.cli)
+    sys.exit(await runner.run_all(args.prompts_dir, args.expected_dir, args.split, args.cli))
 
 if __name__ == "__main__":
     asyncio.run(main())
