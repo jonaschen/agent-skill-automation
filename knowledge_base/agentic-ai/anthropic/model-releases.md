@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-18 (evening)
+**Last updated**: 2026-04-18 (afternoon)
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 (afternoon) -- Opus 4.7 Token Burn Rate: Issue #49562 Still Open, No Anthropic Response; Shadow Eval Not Yet Run
+- **What**: **Opus 4.7 token burn rate status**: GitHub issue #49562 ("New version burns through all tokens in minutes") remains OPEN with no Anthropic staff response. Auto-closure scheduled in ~3 days if marked as duplicate. Three related duplicate issues: #49356 (v2.1.111 consumes 1.7-2x more context tokens than v2.1.110), #49541 (silent model switch to Opus 4.7 mid-session caused ~4x quota burn), #41771 (Opus 1M no longer available). The token burn is attributed to: (a) Opus 4.7 tokenizer producing 1.0-1.35x more tokens for same content, (b) default effort raised to `high` (from `medium`), (c) `xhigh` default in Claude Code consuming more output tokens. Anthropic's guidance: "measure the real difference on your own traffic rather than assuming a flat multiplier." **Shadow eval status**: NOT run yet. The `eval/experiment_log.json` contains no Opus 4.7 entries. The factory steward's 3 AM run completed a breaking change audit (CLEAN — no deprecated API patterns in scripts/eval/.claude/), programmatic tool calling security analysis, and 1M context beta sunset audit, but did NOT execute the shadow eval itself. The shadow eval (`python3 eval/run_eval_async.py --model claude-opus-4-7 .claude/agents/meta-agent-factory.md`) remains pending for the next factory steward cycle (4 PM today or 3 AM tomorrow). **OTEL pilot**: Also NOT run by factory steward. The 3 AM session focused on P0 audit + security analysis items.
+- **Significance**: (1) The shadow eval is the critical blocker for fleet migration to Opus 4.7. Go/no-go criteria (from night discussion ADOPT A2): posterior mean within 5% of 4.6 baseline (0.829), CI overlap with [0.702, 0.927], no 400 errors. Until the shadow eval runs, we cannot proceed with fleet rollout. (2) The token burn reports remain unresolved — Anthropic may address this in a future release or may consider it expected behavior given the documented tokenizer and effort changes. (3) The factory steward prioritized correctly (P0 breaking change audit first) but the ADOPT backlog is growing.
+- **Source**: https://github.com/anthropics/claude-code/issues/49562, https://allthings.how/claude-opus-4-7-token-usage-what-to-know-before-you-upgrade/
 
 ### 2026-04-18 (night) -- CORRECTION: Haiku 3 Retires April 20 (Not April 19); Opus 4.7 Bug Landscape Unchanged
 - **What**: **DATE CORRECTION**: Official [model deprecations table](https://platform.claude.com/docs/en/about-claude/model-deprecations) shows `claude-3-haiku-20240307` retirement date as **April 20, 2026** (not April 19 as previously tracked). The Feb 19 release notes announcement said "April 19" but the table — which is the maintained authoritative source — says April 20. Likely explanation: model disabled at midnight UTC April 20 (= end of day April 19 US time). `deprecated_models.json` updated from `2026-04-19` to `2026-04-20`. No new Opus 4.7 bug reports since evening sweep. No new Claude Code releases (v2.1.114 remains latest). Token burn rate issue (#49562) still without Anthropic response.

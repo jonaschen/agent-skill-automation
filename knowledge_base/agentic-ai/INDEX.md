@@ -1,31 +1,39 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-18 night (consolidated verification sweep — fourth of the day)
+**Last sweep**: 2026-04-18 afternoon-2 (ninth sweep — pre-weekend)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-18 evening |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-18 evening |
+| Claude Code | anthropic/claude-code.md | 2026-04-18 afternoon |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-18 afternoon-2 |
 | Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-18 evening |
 | Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-18 evening |
 | Computer Use | anthropic/computer-use.md | 2026-04-18 evening |
 | Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-18 evening |
-| Model Releases | anthropic/model-releases.md | 2026-04-18 night |
+| Model Releases | anthropic/model-releases.md | 2026-04-18 afternoon |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-18 evening |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-18 evening |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-18 evening |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-18 evening |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-18 evening |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-18 evening |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-18 evening |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-18 night |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-18 night |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-18 night |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-18 night |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-18 night |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-18 night |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-18 night |
+
+Note: 2026-04-18 afternoon-2 (ninth sweep, pre-weekend): **NEW: Agent SDK TypeScript v0.2.113/v0.2.114** (Apr 17-18) — major update missed by afternoon sweep. **Session Storage Alpha**: `sessionStore` option mirrors session transcripts to external storage; `InMemorySessionStore` reference impl; `importSessionToStore()` for migration. **OTEL trace context propagation** in TS SDK. Native binary spawning (mirrors CLI v2.1.113). `deleteSession()`, session `title` option. **TS SDK advancing faster than Python** (v0.2.114 vs v0.1.63). **Shadow eval still NOT run** — P0 blocker persists. **Opus 4.7 cost**: Finout confirms 35% real increase ($300→$405/mo coding). Issue #49562 still OPEN, no staff response. **Google side**: no changes, all frozen. **Weekend cadence begins**. Action items: **shadow eval P0** (next factory cycle), **track TS SDK Session Storage maturity (P2, new)**.
+
+Note: 2026-04-18 end-of-day consolidated (eighth sweep, pre-weekend): **No new releases since night sweep** across either vendor: CC v2.1.114, SDK v0.1.63, Gemini CLI v0.38.2, ADK v1.31.0. **Shadow eval still NOT run** — experiment_log.json has zero Opus 4.7 entries; P0 blocker persists. **OTEL pilot NOT run**. **Opus 4.7 true cost quantified**: Finout analysis confirms 35% real-cost increase on coding workloads ($300→$405/mo), autonomous SWE agents $3K→$4K/mo; tokenizer overhead + effort uplift compounds. Anthropic position (The Register): "should not increase costs." Issue #49562 auto-closing as dup in ~1d, no staff response. **Haiku 3 retires Apr 20** (~2d), guard verified. **Factory steward** 3 AM run: 675s, 2 commits, 7 files, 9 ADOPT available — did NOT run shadow eval or OTEL pilot. **All frozen topics stable**: A2A day 39, Vertex day 60+, Mariner day 15, Astra day 15, Gemma day 18. **Nightly pipeline day 4 paused** (Gemini CLI). **I/O 31d**, pre-I/O ~14d. **Weekend cadence starts tomorrow** — one sweep per cycle, focus on Haiku 3 verification Apr 20 morning + shadow eval monitoring. Action items: **shadow eval P0 blocker** (pending factory cycle), **OTEL env vars P1** (pending factory cycle), **`--max-budget-usd` P1** (pending factory cycle).
+
+Note: 2026-04-18 night Google/DeepMind sweep: **S3 SKILL.md format comparison COMPLETE** — first concrete S3 research output written to `experiments/skill-format-comparison.md`. Claude Code and Gemini CLI independently converged on identical core SKILL.md pattern (YAML frontmatter + Markdown body, same required fields, same discovery model). Transpiler approach feasible — gap is "adapt existing formats" not "invent something new." Main gaps: tool permissions (Claude-specific frontmatter), runtime params (Gemini-specific: temperature, max_turns, timeout_mins), tool name mapping (Read↔read_file, Bash↔shell). **ADK v1.31.0 additional features**: Live UI Redesign, Events/Trace View (structured tracing), Graph View (visual agent architecture canvas), named sessions, Firestore support. **Frozen topics**: A2A day 39, Vertex day 60+, Mariner day 15 (Enterprise API 19d late), Astra day 15 (Engadget names as I/O reveal), Gemma day 18 (EAGLE3 WIP day 12). **Nightly pipeline day 3 paused**. **I/O 31d**, pre-I/O ~14d. **"Aluminium OS"** (ChromeOS/Android unification) expected at I/O — new tracking point. **Deprecations**: robotics 12d, Flash 2.0 44d, 2.5 series 181d. Action items: **build SKILL.md transpiler + tool mapping as Phase 4/5 experiment (P1, from S3 comparison)**.
+
+Note: 2026-04-18 afternoon Anthropic sweep: **No new Claude Code releases** (v2.1.114 latest). **Agent SDK v0.1.62** (Apr 17) — top-level `skills` option for `ClaudeAgentOptions` (`"all"`, named list, or `[]`); **v0.1.63** (Apr 18) — bundles CLI v2.1.114. **Claude Design launched** (Apr 17) — Anthropic Labs visual design product powered by Opus 4.7; creates prototypes, slides, 3D/shader; reads codebases + design files for design systems; handoff bundles for Claude Code; research preview on paid plans. **Shadow eval NOT run yet** — experiment_log.json has no Opus 4.7 entries; factory steward 3 AM completed breaking change audit (CLEAN), programmatic tool calling security, 1M audit, but did not execute shadow eval. **OTEL pilot NOT run**. **Opus 4.7 token burn** #49562 still OPEN, no Anthropic response, auto-closure ~3d. **Haiku 3** retires Apr 20 (guard in place). **MCP, Tool Use, Computer Use, Multi-Agent Patterns**: no changes since night sweep. Action items: **shadow eval is P0 blocker** (pending next factory cycle), **SDK `skills` option noted for Phase 5 migration (P2)**.
 
 Note: 2026-04-18 night consolidated sweep: **CORRECTION: Haiku 3 retires April 20, not April 19** — official [model deprecations table](https://platform.claude.com/docs/en/about-claude/model-deprecations) updated; Feb 19 announcement said Apr 19 but authoritative table says Apr 20. `deprecated_models.json` corrected. **No new releases since evening sweep**: Claude Code v2.1.114, Gemini CLI v0.38.2, ADK v1.31.0. **All directive P0/P1 items confirmed resolved**: Opus 4.7 `claude -p` safe (no specific bugs), 1M beta sunset clean (fleet on GA 4.6+), Task Budgets API-only (use `--max-budget-usd`), OTEL works via env vars (days to implement), Routines cannot replace cron (1h min, 5/day Pro). **Frozen topics stable**: A2A day 38, Vertex day 59+, Mariner day 14, Astra day 14, Gemma day 17. **I/O 31d**, pre-I/O ~14d. Action items: **update to v2.1.113+ (P0)**, **add OTEL env vars (P1)**, **add `--max-budget-usd` (P1)**, **Haiku 3 retirement verification Apr 20 (P0)**.
 
@@ -88,6 +96,9 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-18 | sweeps/2026-04-18.md | End-of-day consolidated (eighth sweep): No new releases across either vendor. Shadow eval NOT run (P0 blocker). Opus 4.7 true cost: 35% increase confirmed by Finout (tokenizer + effort). OTEL pilot NOT run. Haiku 3 retires Apr 20 (~2d). Factory steward 3AM: 675s, 2 commits but skipped shadow eval/OTEL. All frozen topics stable. Weekend cadence begins. |
+| 2026-04-18 | sweeps/2026-04-18-night-google.md | Google/DeepMind night sweep: S3 SKILL.md format comparison COMPLETE (first S3 deliverable). Claude Code/Gemini CLI format convergence confirmed — transpiler feasible. ADK v1.31.0 additional features (Live UI, Events/Trace View, Graph View). All frozen topics stable: A2A day 39, Vertex day 60+, Mariner day 15, Astra day 15, Gemma day 18. I/O 31 days. "Aluminium OS" new tracking point. |
+| 2026-04-18 | sweeps/2026-04-18-afternoon.md | Anthropic afternoon sweep: No new CC releases (v2.1.114 latest). Agent SDK v0.1.62 (top-level `skills` option) + v0.1.63 (CLI v2.1.114 bundle). Claude Design launched (visual design, Opus 4.7, handoff bundles). Shadow eval NOT run yet (P0 blocker). OTEL pilot NOT run. Token burn #49562 still open. Haiku 3 retires Apr 20. All other topics stable. |
 | 2026-04-18 | sweeps/2026-04-18-evening.md | Anthropic evening sweep: v2.1.113 (native binary spawn, 5 security fixes, Opus 4.7 Bedrock fix) + v2.1.114 (agent teams crash). Opus 4.7 bug landscape mapped (5 categories, no `claude -p` bugs). All directive P1 items resolved: Task Budgets API-only, OTEL works via env vars, 1M beta clean. Routines: min 1h, 5/day Pro. Five-pattern taxonomy confirmed. Haiku 3 retires Apr 20. |
 | 2026-04-18 | sweeps/2026-04-18-night.md | Night consolidated sweep: CORRECTION Haiku 3 retires April 20 (not 19) per official deprecation table. No new releases since evening (CC v2.1.114, Gemini CLI v0.38.2, ADK v1.31.0). All directive P0/P1 items confirmed resolved. Opus 4.7 `claude -p` safe. 1M beta sunset clean. deprecated_models.json corrected. Frozen topics stable across both vendors. I/O 31 days. |
 | 2026-04-18 | sweeps/2026-04-18-evening-google.md | Google/DeepMind evening sweep: CORRECTION Gemini CLI v0.38.2 shipped Apr 17 (not "Day 3 quiet"). Android XR April update: 5 features (auto-spatialization, real hand tracking, session resume, app pinning, Enterprise XR). vLLM Blackwell benchmarks: 26B MoE optimal (3.6x concurrent throughput). I/O "Agent-first workflows" session confirmed May 19. Frozen: A2A day 38, Vertex day 59+, Mariner day 14, ADK v1.31.0 day 1. EAGLE3 WIP day 11. I/O 31 days. |

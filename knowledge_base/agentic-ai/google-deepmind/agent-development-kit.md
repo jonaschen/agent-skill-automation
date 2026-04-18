@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-18 evening
+**Last updated**: 2026-04-18 night
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -19,6 +19,11 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 night -- ADK v1.31.0 Day 1 Holds; v1.31.0 Details Confirmed (Live UI Redesign, Events/Trace View, Graph View, Computer Use View); No v1.32.0; I/O 31 Days
+- **What**: ADK Python v1.31.0 (Apr 17) day 1 stable. GitHub releases page confirms additional v1.31.0 features beyond those previously captured: (1) **Live UI Redesign** — completely redesigned real-time chat/testing interface with improved responsiveness. (2) **Events and Trace View** — replaced the execution log with structured tracing (spans, events), enabling better debugging of multi-agent workflows. (3) **Graph View** — visual canvas for mapping agent architectures and node relationships, complementing the v2.0.0a3 workflow graph visualization. (4) **Named Sessions** — organize and name debug sessions for easier session management. (5) **Firestore support** — added as service backend alongside existing BigQuery and Parameter Manager integrations. (6) **"google-adk" user agent** added to Parameter Manager and Secret Manager clients for better request attribution. No v1.31.1, v1.32.0, or v2.0.0a4 released. v2.0.0a3 (Apr 9) remains newest 2.0 pre-release. ADK 7M+ PyPI downloads confirmed. I/O 31d.
+- **Significance**: The **Events/Trace View** and **Graph View** in v1.31.0 are significant new observations — they indicate ADK is building toward production-grade observability (tracing) and visual orchestration (graph canvas) in the v1.x stable line, not just the v2.0 alpha track. This suggests v2.0 GA at I/O may incorporate these as core capabilities. The **Live UI Redesign** aligns with the "Computer Use View" already captured — comprehensive UX overhaul for v1.31.0. No action items.
+- **Source**: https://github.com/google/adk-python/releases
 
 ### 2026-04-18 evening -- ADK v1.31.0 Holds (Day 1); No v1.32.0 or v2.0.0-alpha.4; I/O "Agent-First Workflows" Session Confirmed; I/O 31 Days
 - **What**: ADK Python remains at v1.31.0 (Apr 17), day 1 post-release: (1) **No new ADK releases** — verified against github.com/google/adk-python/releases and pypi.org/project/google-adk/. v1.31.0 remains latest stable; v2.0.0a3 (Apr 9) remains latest pre-release. (2) **I/O session "Agent-first workflows from prompt to production"** confirmed for May 19 at 3:30 PM PT — this is the most likely venue for ADK v2.0 beta/GA announcement. (3) **ADK documentation** at adk.dev/release-notes/ updated through v1.31.0. The "Live UI" overhaul and "Computer Use View" for task visualization are notable v1.31.0 features beyond the Session Rewind / Service Registry / Sandbox Executor already captured. (4) **Next release (v1.32.0)** expected ~Apr 27-May 1 based on the accelerated 4-day cadence (v1.30.0 Apr 13 → v1.31.0 Apr 17). (5) **Google I/O 2026 (May 19-20)** now 31 days away.

@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-18 evening
+**Last updated**: 2026-04-18 night
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,8 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 night -- AI Applications day 60+: no change. Agent Builder release notes last entry Feb 18 confirmed. Agent Designer (low-code visual) and Agent Garden (prebuilt library) documented but no new releases. ADK 7M+ downloads. I/O 31d.
 
 ### 2026-04-18 evening -- AI Applications day 59+: no change. Agent Builder release notes last entry Feb 18. GenAI last entry Apr 15. HIPAA workload support on Agent Engine confirmed. I/O 31d.
 

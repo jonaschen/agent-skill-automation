@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-18 evening
+**Last updated**: 2026-04-18 night
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,8 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 night -- Astra day 15: no change. Engadget I/O preview explicitly names Astra as expected reveal. Android XR monocular glasses confirmed 2026. I/O 31d.
 
 ### 2026-04-18 evening -- Astra Day 14; Android XR April Update Ships 5 Features (Auto-Spatialization, Real Hand Tracking, Session Resume); Android Enterprise XR; I/O 31 Days
 - **What**: Project Astra remains in quiet integration phase (day 14): (1) **No new Astra-specific announcements**. (2) **Android XR April 2026 update** (rolled out Apr 7) — 5 new features for Galaxy XR headset, the primary Astra hardware platform: (a) **Auto-Spatialization** (Labs) — converts any 2D app, game, website, image, or video into a 3D experience with one button. Adds depth to YouTube videos, 2D games, and Chrome web pages. (b) **App Pinning** — anchor apps directly to physical walls; they persist in position. (c) **Real Hand Tracking** — see physical hands via passthrough cameras interacting with virtual content in home space mode (replaces white outlines). (d) **Session Resume** — headset automatically restores previous session including app placement and layouts on startup. (e) **100+ XR-optimized apps** — doubled since Galaxy XR launch (Real VR Fishing, Trombone Champ, PSG Immersion). (3) **Android Enterprise XR** — now supported, enabling organizations to deploy XR solutions for immersive training and collaboration at scale. First enterprise deployment surface for Astra-powered devices. (4) **Hand tracking + eye tracking + accessibility improvements** included in the update. (5) **I/O "Adaptive Everywhere" Day 2 track** — Android 17's cross-form-factor approach (phones, cars, living rooms, immersive environments) using Jetpack Compose as the unified UI engine across foldables, desktops, cars, TVs, and XR. (6) **Engadget I/O preview** reconfirms: Project Astra expected as I/O reveal topic, Android XR hardware "likely." (7) **Google I/O 2026 (May 19-20)** now 31 days away. Pre-I/O window ~14d.

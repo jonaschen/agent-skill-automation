@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-18 evening
+**Last updated**: 2026-04-18 night
 **Sources**:
 - https://github.com/vllm-project/vllm/issues/38893
 - https://deepmind.google/models/gemma/
@@ -25,6 +25,8 @@
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-18 night -- Gemma 4 day 18: no change. No new variants. EAGLE3 WIP day 12. Apache 2.0 license. 400M+ downloads. I/O 31d.
 
 ### 2026-04-18 evening -- Gemma 4 Day 17; vLLM Blackwell Benchmarks Confirm 26B MoE as Optimal Agent Variant; vLLM v0.19 Complete Support; EAGLE3 Still WIP; I/O 31 Days
 - **What**: Gemma 4 post-launch day 17: (1) **No new Gemma 4 model variants**. (2) **vLLM v0.19.0 complete Gemma 4 support** — all 4 variants (E2B, E4B, 26B MoE, 31B Dense) supported natively. Handles MoE routing, multimodal inputs, reasoning traces, and tool-use. Day-0 TPU, AMD GPU, and Intel XPU support. 445 commits from 213 contributors in v0.19. (3) **New benchmark data** — RTX PRO 6000 Blackwell (96GB VRAM) comparison by Allen Kuo: **Time to First Token**: vLLM 3.2x faster (E4B: 58ms vs Ollama 184ms), **Concurrent throughput**: vLLM 3.6x advantage at 4 parallel requests via continuous batching, **Single-request decode**: Ollama 1.4-2.6x faster (Q4_K_M quantized), **VRAM**: Ollama 29-83 GiB vs vLLM ~90 GiB (BF16). **Optimal variant**: 26B MoE — "26B-class intelligence at near-4B speed" (181 tok/s Ollama, 131 tok/s vLLM single-request). (4) **vLLM EAGLE3 integration** (#38893) — still WIP at day 11. GPU-accelerated NGram speculative decoding shipped in v0.18.0, but EAGLE3 framework-native support remains pending. (5) **vLLM compatibility note**: Gemma 4 requires vLLM >= 0.19 + transformers >= 5.5.0, but vLLM 0.19 pins transformers <= 4.57.6 — users must upgrade transformers separately. (6) **NVIDIA NVFP4 quantization** — nvidia/Gemma-4-31B-IT-NVFP4 available on HuggingFace for reduced-precision Blackwell deployment. (7) **Google I/O 2026 (May 19-20)** now 31 days away.
