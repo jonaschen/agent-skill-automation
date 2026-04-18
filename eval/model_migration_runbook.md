@@ -52,6 +52,33 @@ python3 eval/bayesian_eval.py --split validation
 | Positive tests (1-22) pass rate | | | |
 | Negative tests (23-54) pass rate | | | |
 
+## Quantitative Go/No-Go Gates (2026-04-18)
+
+These gates apply to any model migration shadow eval, not just Opus 4.7. They are the formal acceptance criteria — no subjective "looks good enough" judgments.
+
+### GO (all must pass)
+
+| Gate | Metric | Threshold | Rationale |
+|------|--------|-----------|-----------|
+| G1 | Bayesian CI overlap | New model CI overlaps with baseline CI [0.702, 0.927] | Statistical indistinguishability at our sample size (N=39). Primary gate. |
+| G2 | Model-returned errors | Zero 400 errors from model (rate-limit retries excluded) | Any 400 indicates an undiscovered breaking change. |
+| G3 | Eval duration | Total duration within 2x baseline | Allows for tokenizer inflation + first-run effects. |
+
+### NO-GO (any triggers hold)
+
+| Gate | Metric | Threshold | Action |
+|------|--------|-----------|--------|
+| NG1 | Posterior mean | Drops below 0.75 | Significant quality regression — do not proceed. |
+| NG2 | 400 errors | Any model-returned 400 (not rate-limit) | Undiscovered breaking change — fix and re-run. |
+| NG3 | Duration | Exceeds 2x baseline | Extreme token inflation — investigate before proceeding. |
+
+### Post-Migration Monitoring (if GO)
+
+- **Days 1-4**: factory-steward only. Compare duration:commit ratio with 4.6 baseline.
+- **Days 5-8**: Add researcher. Monitor for delegation pattern changes.
+- **Days 9+**: Remaining agents. Full fleet on new model.
+- **Rollback trigger**: Any agent shows >2x duration increase OR >30% delegation drop.
+
 ## Step 3: Decision Matrix
 
 | Outcome | Action |
