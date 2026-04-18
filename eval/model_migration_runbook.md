@@ -79,6 +79,43 @@ These gates apply to any model migration shadow eval, not just Opus 4.7. They ar
 - **Days 9+**: Remaining agents. Full fleet on new model.
 - **Rollback trigger**: Any agent shows >2x duration increase OR >30% delegation drop.
 
+## Shadow Eval Results Checklist
+
+Fill in this checklist when the shadow eval completes. This is the single source of truth for the migration GO/NO-GO decision.
+
+**Migration target**: __________________ (e.g., claude-opus-4-7)
+**Eval date**: __________________
+**Evaluator**: __________________
+
+### Raw Results
+
+| Metric | Value |
+|--------|-------|
+| Training posterior mean | ______ |
+| Training CI | [______, ______] |
+| Pass count / Total | ______ / ______ |
+| Eval duration (seconds) | ______ |
+| Model-returned 400 errors | ______ |
+
+### Go/No-Go Gate Assessment
+
+| Gate | Criterion | Result | PASS/FAIL |
+|------|-----------|--------|-----------|
+| G1 — CI overlap | New CI overlaps baseline [0.702, 0.927] | ______ | ______ |
+| G2 — No 400 errors | Zero model-returned 400s (rate-limit retries excluded) | ______ | ______ |
+| G3 — Duration | Total duration ≤ 2x baseline | ______ | ______ |
+
+### Verdict
+
+- [ ] **GO** — All gates pass. Proceed to graduated rollout (Days 1-4: factory-steward only).
+- [ ] **NO-GO** — One or more gates failed. Action: ______________________________
+
+### Notes
+
+_______________________________________________________________________
+
+---
+
 ## Step 3: Decision Matrix
 
 | Outcome | Action |

@@ -40,6 +40,13 @@ export CLAUDE_INITIATOR_TYPE=cron-automated
 # Reasoning-heavy agent → high effort; uncomment to override default
 # export CLAUDE_CODE_EFFORT=high
 
+# === Gate-First Session Contract (A1 from 2026-04-19 discussion) ===
+# Structural fix for L12 urgency bias: if a model migration is pending and the
+# shadow eval hasn't been run, prepend it to the session prompt so the LLM
+# cannot deprioritize it. Uses experiment_log.json as state — no flag files.
+# Set to empty string when no migration is pending.
+PENDING_MIGRATION_MODEL="claude-opus-4-7"
+
 # Post-session commit recovery: if Claude wrote files but failed to commit, catch them
 recover_uncommitted() {
   local repo_dir="$1"
@@ -117,10 +124,43 @@ log_session_start "main"
 check_fleet_version "$CLAUDE" "$LOG_FILE"
 
 echo "" >> "$LOG_FILE"
+
+# Gate-first: check if shadow eval needs to run before ADOPT items
+SHADOW_EVAL_PREAMBLE=""
+if [ -n "$PENDING_MIGRATION_MODEL" ]; then
+  shadow_eval_done=$(cd "$REPO_ROOT" && python3 -c "
+import json
+try:
+    data = json.load(open('eval/experiment_log.json'))
+    exps = data.get('experiments', data) if isinstance(data, dict) else data
+    print('yes' if any('$PENDING_MIGRATION_MODEL' in json.dumps(e) for e in exps) else 'no')
+except:
+    print('no')
+" 2>/dev/null || echo "no")
+
+  if [ "$shadow_eval_done" = "no" ]; then
+    echo "[GATE-FIRST] Shadow eval for $PENDING_MIGRATION_MODEL NOT in experiment_log.json — prepending to session" >> "$LOG_FILE"
+    log_event "GATE_FIRST" "{\"model\":\"$PENDING_MIGRATION_MODEL\",\"action\":\"prepend_shadow_eval\"}"
+    SHADOW_EVAL_PREAMBLE="GATE-FIRST PRIORITY (L12 structural fix — execute BEFORE any other work):
+Run the shadow eval for model migration. Steps:
+1. Run: python3 eval/run_eval_async.py --model $PENDING_MIGRATION_MODEL --split train --inter-test-delay 15 .claude/agents/meta-agent-factory.md
+2. Capture the posterior mean, CI bounds, pass count, and total from stdout.
+3. Append a new entry to eval/experiment_log.json under 'experiments' with fields: model, posterior_mean, ci_lower, ci_upper, branch ('shadow-eval-$PENDING_MIGRATION_MODEL'), timestamp, and outcome.
+4. Compare against go/no-go criteria in eval/model_migration_runbook.md (CI overlap with baseline [0.702, 0.927], zero 400 errors, duration within 2x).
+5. Log PASS/FAIL verdict.
+If the eval FAILS to run (API error, timeout), log the failure and proceed to ADOPT items below — do NOT block the entire session on a failed eval.
+After the shadow eval completes (or fails), continue with the regular session:
+
+"
+  else
+    echo "[GATE-FIRST] Shadow eval for $PENDING_MIGRATION_MODEL found — gate satisfied" >> "$LOG_FILE"
+  fi
+fi
+
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
 log_task_start "adopt-items"
 # Run Claude in a subshell to isolate process-group signals from the parent script
-(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "${SHADOW_EVAL_PREAMBLE}You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
