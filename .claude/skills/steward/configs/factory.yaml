@@ -21,6 +21,9 @@ orientation:
     - path: AGENT_SKILL_AUTOMATION_DEV_PLAN.md
       purpose: full blueprint v2.0 (Phases 1-7)
   extra_reads:
+    - path: knowledge_base/agentic-ai/strategic-priorities.md
+      purpose: owner's persistent strategic research priorities
+      action: read for ADOPT prioritization context — prefer items advancing strategic priorities (S1/S2/S3)
     - path: knowledge_base/agentic-ai/directives/
       purpose: latest research-lead directive for ADOPT prioritization
       action: read most recent .md file

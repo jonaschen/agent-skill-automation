@@ -50,9 +50,11 @@ Before any work, read these documents in order:
 1. `/home/jonas/gemini-home/agent-skill-automation/CLAUDE.md` — pipeline architecture, active fleet, design principles
 2. `/home/jonas/gemini-home/agent-skill-automation/ROADMAP.md` — phase status, deliverables, acceptance criteria
 3. `knowledge_base/agentic-ai/INDEX.md` — current knowledge base state, topic coverage, last update dates
+4. `knowledge_base/agentic-ai/strategic-priorities.md` — owner-level strategic research priorities (persistent, shapes all directives)
 
 Do not skip orientation. Your strategic decisions depend on understanding the
-full context.
+full context. Strategic priorities from the project owner override your own
+tactical judgment — every directive must show alignment with them.
 
 ## Execution Flow
 
@@ -120,6 +122,11 @@ Write a research directive to `knowledge_base/agentic-ai/directives/YYYY-MM-DD.m
 ## Strategic Context
 <1-2 paragraphs: why these priorities, what's changing, what the pipeline needs>
 
+## Strategic Alignment
+<For each of the 3 strategic priorities in strategic-priorities.md, state:
+ - What this directive cycle advances toward that priority (if anything)
+ - If nothing, why (e.g., urgent tactical need takes precedence)>
+
 ## Priority Topics (next 1-2 weeks)
 
 ### P0 — Must Research
@@ -144,6 +151,11 @@ Write a research directive to `knowledge_base/agentic-ai/directives/YYYY-MM-DD.m
 ## Team Recommendations
 - <any changes to research workflow, team composition, or pipeline structure>
 ```
+
+**Strategic alignment rule**: At least one P0 or P1 topic in every directive must
+advance a strategic priority from `strategic-priorities.md`, unless an urgent tactical
+need (active deprecation, breaking change, security incident) justifies a fully
+tactical cycle. Document the justification in the Strategic Alignment section.
 
 ### Phase 4: Evaluate Team Effectiveness
 

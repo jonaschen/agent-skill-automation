@@ -288,6 +288,21 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 
 ---
 
+## Strategic Research Themes
+
+**Authority**: Project Owner
+**Full document**: `knowledge_base/agentic-ai/strategic-priorities.md`
+
+Three persistent research priorities shape the pipeline's research direction across all phases:
+
+1. **S1 — Automatic Agent/Skill Improvement**: Self-improving systems that detect platform changes and automatically adapt agents
+2. **S2 — Multi-Agent Orchestration**: Novel orchestration patterns beyond published vendor approaches, including original experiments
+3. **S3 — Platform Generalization**: Cross-platform agent portability so both Claude and Gemini can run the same agent fleet
+
+**Meta-goal**: Original research, experiments, and publishable findings. Compute budget available on request. Experiment designs and results tracked in `knowledge_base/agentic-ai/experiments/`.
+
+---
+
 ## Phase 5: Topology-Aware Routing + Multi-Agent Orchestration *(Months 8–9)*
 
 **Goal:** Upgrade from dynamic identity switching to a parallel-collaborative AI Scrum Team with intelligent pre-execution routing. Prevent the Sequential Penalty on highly coupled tasks.

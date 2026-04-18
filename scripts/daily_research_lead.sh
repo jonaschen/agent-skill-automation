@@ -122,10 +122,10 @@ log_task_start "direction-session"
 IMPORTANT: You are running UNATTENDED via cron. Today is ${DATE}. You have write permission to knowledge_base/agentic-ai/directives/ and knowledge_base/agentic-ai/proposals/. Do NOT ask for permission — proceed directly.
 
 Execute your full flow:
-1. Mandatory orientation: Read CLAUDE.md, ROADMAP.md, knowledge_base/agentic-ai/INDEX.md
+1. Mandatory orientation: Read CLAUDE.md, ROADMAP.md, knowledge_base/agentic-ai/INDEX.md, AND knowledge_base/agentic-ai/strategic-priorities.md (owner's persistent strategic priorities — these shape all directives)
 2. Phase 1 — Assess: Read the last 3-5 sweep reports, analysis files, discussion transcripts, and proposals from knowledge_base/agentic-ai/
-3. Phase 2 — Evaluate: Assess research direction (relevance to pipeline, depth vs breadth, gaps, signal-to-noise)
-4. Phase 3 — Set Priorities: Write a research directive to knowledge_base/agentic-ai/directives/${DATE}.md with P0/P1/P2 priority topics, deprioritized topics, new research areas, and quality feedback
+3. Phase 2 — Evaluate: Assess research direction (relevance to pipeline, depth vs breadth, gaps, signal-to-noise). Pay special attention to whether research is advancing the three strategic priorities (S1: auto-improvement, S2: multi-agent orchestration, S3: platform generalization)
+4. Phase 3 — Set Priorities: Write a research directive to knowledge_base/agentic-ai/directives/${DATE}.md. The directive MUST include a 'Strategic Alignment' section showing how P0/P1 topics relate to the owner's strategic priorities. At least one P0/P1 topic should advance a strategic priority unless justified by urgent tactical need
 5. Phase 4 — Evaluate Team: Consider researcher workload, pipeline bottlenecks, team composition. Write proposals to knowledge_base/agentic-ai/proposals/team-${DATE}.md if changes are needed
 6. Phase 5 — Commit: git add knowledge_base/agentic-ai/directives/ knowledge_base/agentic-ai/proposals/ && git commit
 

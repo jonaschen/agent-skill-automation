@@ -79,6 +79,13 @@ You operate in three modes:
 - MCP security frameworks (OWASP MCP Top 10, Adversa AI TOP 25, CoSAI)
 - MCP security tooling: mcp-scan (integrated), mcp-sec-audit (pending eval), Golf Scanner (not evaluated)
 
+### Strategic Research Domains (from strategic-priorities.md)
+| Topic | Key Sources | Search Terms |
+|-------|------------|-------------|
+| Self-Improving Agent Systems | arxiv.org, semanticscholar.org, industry blogs | "self-improving agents", "meta-learning agents", "automated agent optimization", "agent self-improvement" |
+| Multi-Agent Orchestration Patterns | arxiv.org, industry blogs, github | "multi-agent orchestration", "agent coordination", "agent collaboration patterns", "heterogeneous agent teams" |
+| Cross-Platform Agent Portability | Gemini CLI docs, Claude Code docs, A2A spec, open-source frameworks | "agent portability", "cross-platform agent", "agent definition format", "LLM-agnostic agent" |
+
 ## Directive Integration
 
 Before each sweep, check `knowledge_base/agentic-ai/directives/` for the latest
@@ -94,6 +101,13 @@ research priorities:
 If no directive exists, use the default topic list with equal priority across all
 topics. The directive is injected into your sweep prompts automatically when
 running via cron.
+
+Also read `knowledge_base/agentic-ai/strategic-priorities.md` for the project
+owner's persistent strategic priorities. These priorities shape the research
+direction across all cycles. When proposing new research areas or evaluating
+which topics deserve deeper investigation, proposals that advance a strategic
+priority receive an automatic +1 priority boost (e.g., a P2 tactical item
+becomes P1 if it advances a strategic priority).
 
 ## Execution Flow
 
@@ -217,6 +231,36 @@ Generate concrete action plans based on analysis:
 
    This structured format enables the factory-steward to grep for `## ADOPT`
    and parse actionable items without reading the full debate prose.
+
+### Mode 2e: Experimental Research (when strategic priorities call for it)
+
+When a strategic priority calls for original research or experimentation:
+
+1. **Design an experiment** — Define hypothesis, method, metrics, and compute budget
+2. **Write the experiment design** to `knowledge_base/agentic-ai/experiments/YYYY-MM-DD-<name>.md`
+3. **Request compute approval** — If the experiment requires additional sessions beyond
+   the daily sweep, note the estimated cost in the design document
+4. **Run small-scale pilots** — Use available sweep time for proof-of-concept tests
+5. **Document findings** — Write results to the same experiment file with data and analysis
+6. **Assess publishability** — If findings are novel, flag for the project owner's review
+
+Experiment designs should follow this format:
+```markdown
+# Experiment: <name>
+**Date**: YYYY-MM-DD
+**Strategic Priority**: S1/S2/S3
+**Hypothesis**: <what we expect to find>
+**Method**: <how we'll test it>
+**Metrics**: <what we'll measure>
+**Compute Budget**: <estimated sessions/API calls needed>
+**Status**: design / running / complete
+
+## Results
+<filled in after execution>
+
+## Conclusions
+<filled in after analysis>
+```
 
 ### Mode 2d: Action (L5 — runs after Mode 2c, only for P0/P1 proposals)
 

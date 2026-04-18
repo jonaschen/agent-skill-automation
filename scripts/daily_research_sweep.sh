@@ -246,6 +246,14 @@ log_task_complete "preflight-check" "new-releases-found"
 # Recover any uncommitted changes from a previous crashed session
 recover_uncommitted "$REPO_ROOT" "researcher-previous" "$LOG_FILE"
 
+# --- Read Owner Strategic Priorities (persistent, shapes all cycles) ---
+STRATEGIC_CONTENT=""
+STRATEGIC_FILE="$REPO_ROOT/knowledge_base/agentic-ai/strategic-priorities.md"
+if [ -f "$STRATEGIC_FILE" ]; then
+  STRATEGIC_CONTENT=$(cat "$STRATEGIC_FILE" 2>/dev/null)
+  echo "[$(date)] Loaded strategic priorities from $STRATEGIC_FILE" >> "$LOG_FILE"
+fi
+
 # --- Read Research-Lead Directive ---
 # Find the most recent directive file (from today or recent days)
 DIRECTIVE_CONTENT=""
@@ -259,10 +267,20 @@ for d in $(ls -t "$REPO_ROOT/knowledge_base/agentic-ai/directives/"*.md 2>/dev/n
   fi
 done
 
+# Build strategic priorities preamble
+STRATEGIC_PREAMBLE=""
+if [ -n "$STRATEGIC_CONTENT" ]; then
+  STRATEGIC_PREAMBLE="
+OWNER STRATEGIC PRIORITIES (persistent — these shape all research cycles):
+$STRATEGIC_CONTENT
+---
+"
+fi
+
 # Build directive preamble for Claude prompts
 DIRECTIVE_PREAMBLE=""
 if [ -n "$DIRECTIVE_CONTENT" ]; then
-  DIRECTIVE_PREAMBLE="
+  DIRECTIVE_PREAMBLE="${STRATEGIC_PREAMBLE}
 RESEARCH DIRECTIVE (from research-lead, $DIRECTIVE_DATE):
 The following directive sets your priorities for this sweep. Adjust your research depth accordingly:
 - P0 topics: increase depth — 3-4 searches, fetch top 5 results
@@ -270,6 +288,7 @@ The following directive sets your priorities for this sweep. Adjust your researc
 - P2/Watch-only: quick check — 1 search, note only major announcements
 - Deprioritized: skip unless you find a breaking change
 - New Research Areas: add alongside existing topics
+- Strategic priority alignment: proposals advancing S1/S2/S3 get +1 priority boost
 
 ---
 $DIRECTIVE_CONTENT
@@ -278,6 +297,7 @@ $DIRECTIVE_CONTENT
 Now proceed with your research task:
 "
 else
+  DIRECTIVE_PREAMBLE="${STRATEGIC_PREAMBLE}"
   echo "[$(date)] No research directive found — using default priorities" >> "$LOG_FILE"
 fi
 

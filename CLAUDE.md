@@ -60,6 +60,14 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `agentic-ai-researcher` | L1–L5 research sweep: Anthropic + Google developments, sweep reports, proposals | Opus 4.6 |
 | `agentic-ai-research-lead` | Strategic director: reviews output, writes priority directives | Opus 4.6 |
 
+### Strategic Research Priorities
+
+Owner-level priorities that shape all research cycles (full doc: `knowledge_base/agentic-ai/strategic-priorities.md`):
+
+- **S1**: Automatic agent/skill improvement — self-improving systems
+- **S2**: Multi-agent orchestration — novel patterns, experiments
+- **S3**: Platform generalization — cross-platform portability (Claude + Gemini)
+
 ### Steward Skill (parameterized via YAML configs)
 
 One `steward` skill (`.claude/skills/steward/SKILL.md`) + per-project configs in `.claude/skills/steward/configs/`:
