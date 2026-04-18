@@ -18,8 +18,11 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
 PERF_DIR="$REPO_ROOT/logs/performance"
 DATE=$(date +"%Y-%m-%d")
+HOUR=$(date +%H)
+SESSION_SUFFIX=""
+if [ "$HOUR" -ge 12 ]; then SESSION_SUFFIX="-afternoon"; fi
 LOG_FILE="$LOG_DIR/research-lead-${DATE}.log"
-PERF_FILE="$PERF_DIR/research-lead-${DATE}.json"
+PERF_FILE="$PERF_DIR/research-lead-${DATE}${SESSION_SUFFIX}.json"
 CLAUDE="/home/jonas/.nvm/versions/node/v24.14.0/bin/claude"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"

@@ -56,25 +56,30 @@ print_agent_section() {
     for i in $(seq 0 $((DAYS - 1))); do
         local CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
         local PERF_FILE="$PERF_DIR/${PERF_PREFIX}-${CHECK_DATE}.json"
+        local PERF_FILE_PM="$PERF_DIR/${PERF_PREFIX}-${CHECK_DATE}-afternoon.json"
         local CHECK_LOG="$LOG_DIR/${LOG_PREFIX}-${CHECK_DATE}.log"
 
-        if [ -f "$PERF_FILE" ]; then
-            RUN_COUNT=$((RUN_COUNT + 1))
-            if [ -z "$LATEST_DATE" ]; then
-                LATEST_DATE="$CHECK_DATE"
+        # Check both morning and afternoon perf files
+        for pf in "$PERF_FILE" "$PERF_FILE_PM"; do
+            if [ -f "$pf" ]; then
+                RUN_COUNT=$((RUN_COUNT + 1))
+                if [ -z "$LATEST_DATE" ]; then
+                    LATEST_DATE="$CHECK_DATE"
+                fi
+
+                local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "0")
+                local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "1")
+
+                TOTAL_DURATION=$((TOTAL_DURATION + DURATION))
+                LATEST_DURATION=$DURATION
+
+                if [ "$EXIT_CODE" -eq 0 ]; then
+                    SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+                fi
             fi
+        done
 
-            # Parse JSON (stdlib-only, no jq dependency)
-            local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "0")
-            local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "1")
-
-            TOTAL_DURATION=$((TOTAL_DURATION + DURATION))
-            LATEST_DURATION=$DURATION
-
-            if [ "$EXIT_CODE" -eq 0 ]; then
-                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
-            fi
-        elif [ -f "$CHECK_LOG" ]; then
+        if [ ! -f "$PERF_FILE" ] && [ ! -f "$PERF_FILE_PM" ] && [ -f "$CHECK_LOG" ]; then
             # Log exists but no perf JSON — script ran but crashed before writing metrics
             LOG_ONLY_COUNT=$((LOG_ONLY_COUNT + 1))
             if [ -z "$LATEST_DATE" ]; then
@@ -140,7 +145,11 @@ print_agent_section() {
     echo "  Last run:     $LATEST_DATE ($((LATEST_DURATION / 60))m $((LATEST_DURATION % 60))s)"
 
     # Show effort level if tracked
-    local LATEST_PERF="$PERF_DIR/${PERF_PREFIX}-${LATEST_DATE}.json"
+    # Find the latest perf file for this date (prefer afternoon if exists)
+    local LATEST_PERF="$PERF_DIR/${PERF_PREFIX}-${LATEST_DATE}-afternoon.json"
+    if [ ! -f "$LATEST_PERF" ]; then
+        LATEST_PERF="$PERF_DIR/${PERF_PREFIX}-${LATEST_DATE}.json"
+    fi
     if [ -f "$LATEST_PERF" ]; then
         local EFFORT=$(grep -oP '"effort_level"\s*:\s*"\K[^"]+' "$LATEST_PERF" 2>/dev/null || echo "")
         if [ -n "$EFFORT" ]; then
@@ -153,12 +162,16 @@ print_agent_section() {
     local TREND_DATES=()
     for i in $(seq 0 $((DAYS - 1))); do
         local TREND_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-        local TREND_FILE="$PERF_DIR/${PERF_PREFIX}-${TREND_DATE}.json"
-        if [ -f "$TREND_FILE" ]; then
-            local TREND_DUR=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$TREND_FILE" 2>/dev/null || echo "0")
-            TREND_DURATIONS+=("$TREND_DUR")
-            TREND_DATES+=("$TREND_DATE")
-        fi
+        # Check afternoon first (most recent), then morning
+        for TREND_SUFFIX in "-afternoon" ""; do
+            local TREND_FILE="$PERF_DIR/${PERF_PREFIX}-${TREND_DATE}${TREND_SUFFIX}.json"
+            if [ -f "$TREND_FILE" ]; then
+                local TREND_DUR=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$TREND_FILE" 2>/dev/null || echo "0")
+                TREND_DURATIONS+=("$TREND_DUR")
+                TREND_DATES+=("$TREND_DATE")
+            fi
+            [ "${#TREND_DURATIONS[@]}" -ge 3 ] && break
+        done
         [ "${#TREND_DURATIONS[@]}" -ge 3 ] && break
     done
     if [ "${#TREND_DURATIONS[@]}" -ge 2 ]; then
@@ -310,9 +323,16 @@ PERF_PREFIXES=("factory" "ltc" "researcher" "android-sw" "arm-mrs" "bsp-knowledg
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
     for j in 0 1 2 3 4 5 6; do
+        local found_perf=0
         if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}-${CHECK_DATE}.json" ]; then
             TOTAL_RUNS=$((TOTAL_RUNS + 1))
-        elif [ -f "$LOG_DIR/${LOG_PREFIXES[$j]}-${CHECK_DATE}.log" ]; then
+            found_perf=1
+        fi
+        if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}-${CHECK_DATE}-afternoon.json" ]; then
+            TOTAL_RUNS=$((TOTAL_RUNS + 1))
+            found_perf=1
+        fi
+        if [ "$found_perf" -eq 0 ] && [ -f "$LOG_DIR/${LOG_PREFIXES[$j]}-${CHECK_DATE}.log" ]; then
             TOTAL_LOG_ONLY=$((TOTAL_LOG_ONLY + 1))
         fi
     done

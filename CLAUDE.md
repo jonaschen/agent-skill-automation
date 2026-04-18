@@ -135,7 +135,7 @@ The Claude research pipeline runs **two cycles daily** (night + afternoon), each
 |------|-------|--------|-------------|
 | 2:00 PM | `agentic-ai-researcher` | `scripts/daily_research_sweep.sh` | L1–L5 research sweep |
 | 3:00 PM | `agentic-ai-research-lead` | `scripts/daily_research_lead.sh` | Reviews researcher output, writes priority directive |
-| 4:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items |
+| 6:00 PM | `factory-steward` | `scripts/daily_factory_steward.sh` | Implements ADOPT items |
 
 **Independent Projects** (once daily each)
 
