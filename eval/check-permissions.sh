@@ -91,9 +91,15 @@ LOWER_DESC=$(echo "$DESCRIPTION" | tr '[:upper:]' '[:lower:]')
 # Check if review/validation agent (read-only assessment role)
 # Agents with Task tool are orchestration-class, not pure reviewers — they delegate
 # and produce outputs (e.g., project-reviewer writes steering notes via Task delegation).
+# Allowlist: review agents that write output artifacts (reviews, reports) but never
+# modify what they review. These legitimately need Write for their output directory.
+REVIEW_WRITE_ALLOWLIST="peer-reviewer"
+
 if echo "$LOWER_NAME" | grep -qE '(validat|review|audit|quality|check|inspect|analyz)'; then
   if echo "$TOOLS" | grep -qiE '^Task$'; then
     IS_REVIEW_AGENT=0  # Has Task → orchestration agent, not read-only reviewer
+  elif echo "$REVIEW_WRITE_ALLOWLIST" | grep -qw "$LOWER_NAME"; then
+    IS_REVIEW_AGENT=0  # Allowlisted: writes output artifacts, not inputs
   else
     IS_REVIEW_AGENT=1
   fi

@@ -2,9 +2,9 @@
 # agent_review.sh — Review dashboard for all daily agents
 #
 # Summarizes recent performance of active agents:
-#   1. agentic-ai-researcher (2am + 10am daily)
-#   2. agentic-ai-research-lead (3am + 11am daily)
-#   3. factory-steward (4am + 12pm daily)
+#   1. agentic-ai-researcher (1am + 2pm daily)
+#   2. agentic-ai-research-lead (2am + 3pm daily)
+#   3. factory-steward (3am + 6pm daily)
 #   4. ltc-steward (8am daily)
 # Also shows historical data for suspended agents if present.
 #
@@ -241,9 +241,9 @@ print_agent_section() {
 }
 
 # Print each agent section — active agents first
-print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "2am + 10am"
-print_agent_section "research-lead" "Research Lead" "research-lead" "research-lead" "3am + 11am"
-print_agent_section "factory" "Factory Steward" "factory" "factory" "4am + 12pm"
+print_agent_section "researcher" "Agentic AI Researcher" "sweep" "researcher" "1am + 2pm"
+print_agent_section "research-lead" "Research Lead" "research-lead" "research-lead" "2am + 3pm"
+print_agent_section "factory" "Factory Steward" "factory" "factory" "3am + 6pm"
 print_agent_section "ltc" "LTC Steward" "ltc" "ltc" "8:00 AM"
 # Suspended agents — will show "No runs found" if no recent data
 print_agent_section "android-sw" "Android-SW Steward (suspended)" "android-sw" "android-sw" "suspended"
