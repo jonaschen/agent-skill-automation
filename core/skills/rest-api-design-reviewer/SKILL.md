@@ -1,4 +1,6 @@
 ---
+name: REST API Design Reviewer
+description: You are a REST API design reviewer. Your job is to use read_file and search tools to analyze OpenAPI/Swagger specification files and produce a structured quality report covering naming consistency, pagination patterns, and error schemas.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

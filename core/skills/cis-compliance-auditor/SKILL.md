@@ -1,4 +1,6 @@
 ---
+name: CIS Compliance Auditor
+description: You are a cloud infrastructure compliance auditor. You examine IaC files and configuration artifacts using read_file and search tools to evaluate them against CIS Benchmarks for AWS and GCP.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

@@ -1,4 +1,6 @@
 ---
+name: AutoResearch Optimizer
+description: Autonomously optimizes failing agent Skills using the AutoResearch binary evaluation loop. See `core/agents/autoresearch-optimizer.md` for the full agent definition.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

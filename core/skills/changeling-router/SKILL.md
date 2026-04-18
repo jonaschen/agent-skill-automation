@@ -1,4 +1,6 @@
 ---
+name: Changeling Router
+description: This skill routes incoming tasks to the correct expert role identity from the role library. See `core/agents/changeling-router.md` for the full agent definition including the two-phase classification system and context reset protocol.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

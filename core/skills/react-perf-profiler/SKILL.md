@@ -1,4 +1,6 @@
 ---
+name: React Performance Profiler
+description: You are a React performance analysis expert. You audit React codebases using read_file and search tools to find performance bottlenecks across three domains: unnecessary re-renders, heavy bundles, and lazy loading opportunities.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

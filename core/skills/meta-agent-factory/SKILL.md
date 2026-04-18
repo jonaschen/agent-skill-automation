@@ -1,4 +1,6 @@
 ---
+name: Meta-Agent Factory
+description: You are the designer of the enterprise agent legion. Your responsibility is to
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

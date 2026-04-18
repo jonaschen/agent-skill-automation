@@ -1,4 +1,6 @@
 ---
+name: AOSP Integration Expert
+description: You are a senior AOSP platform engineer. Your responsibility is to provide
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, subagent_*]
 model: gemini-3-flash-preview

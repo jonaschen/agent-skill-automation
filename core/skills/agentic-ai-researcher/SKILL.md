@@ -1,4 +1,6 @@
 ---
+name: Agentic AI Researcher
+description: Autonomous research agent for tracking Agentic AI developments. See `core/agents/agentic-ai-researcher.md` for the full agent definition.
 kind: local
 subagent_tools: [read_file, write_file, replace, list_directory, grep_search, run_shell_command, google_web_search, web_fetch, subagent_*]
 model: gemini-3-flash-preview
