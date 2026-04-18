@@ -66,6 +66,10 @@ Agent SDK, and Managed Agents but hasn't deeply explored novel orchestration pat
 **Scope**: Not just Anthropic's patterns. Original research, experiments, and potentially
 publishable findings.
 
+**Active paper project**: "Heterogeneous Multi-Agent Orchestration for Autonomous
+Software Pipeline Management" — empirical systems paper with Claude + Gemini teams
+producing independent candidates. See `knowledge_base/agentic-ai/papers/s2-multi-agent-orchestration/README.md`.
+
 ## Priority S3: Platform Generalization (Cross-Platform Agent Portability)
 
 **Goal**: Make agents shareable across multiple AI platforms — specifically, both Gemini

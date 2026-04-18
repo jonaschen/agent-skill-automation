@@ -60,6 +60,14 @@ Seven-phase pipeline for autonomously designing, validating, optimizing, and dep
 | `agentic-ai-researcher` | L1–L5 research sweep: Anthropic + Google developments, sweep reports, proposals | Opus 4.6 |
 | `agentic-ai-research-lead` | Strategic director: reviews output, writes priority directives | Opus 4.6 |
 
+### Paper Agents
+
+| Agent | Role | Model |
+|-------|------|-------|
+| `paper-synthesizer` | Academic paper writing from KB + experiments + literature | Opus 4.6 |
+| `experiment-designer` | Hypothesis-driven experiment design and statistical analysis | Opus 4.6 |
+| `peer-reviewer` | Cross-team academic peer review of paper candidates | Sonnet 4.6 |
+
 ### Strategic Research Priorities
 
 Owner-level priorities that shape all research cycles (full doc: `knowledge_base/agentic-ai/strategic-priorities.md`):
@@ -126,6 +134,12 @@ The research pipeline runs **two cycles daily**, each a three-agent chain: resea
 | 8:00 AM | `ltc-steward` | `scripts/daily_ltc_steward.sh` | Phase work on long-term-care-expert project |
 | 7:00 PM | `kings-hand-steward` | `scripts/daily_kings_hand_steward.sh` | Maintain The King's Hand project |
 
+**On-Demand**
+
+| Agent | Script | What It Does |
+|-------|--------|-------------|
+| `paper-pipeline` | `scripts/paper_pipeline.sh [phase]` | Experiment analysis + paper writing (Phase 1: independent, Phase 2: + peer review) |
+
 ### Research Direction Loop
 
 ```
@@ -135,7 +149,7 @@ researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → res
 
 ### Performance Tracking
 
-- **JSON records**: `logs/performance/{factory,researcher,research-lead,ltc}-YYYY-MM-DD.json`
+- **JSON records**: `logs/performance/{factory,researcher,research-lead,ltc,paper}-YYYY-MM-DD.json`
 - **Metrics tracked**: duration, exit code, commits made, files changed, test counts (agent-specific)
 - **30-day retention**: auto-cleaned by each script
 - **Review dashboard**: `./scripts/agent_review.sh [days]` — summarizes all agents' recent performance
@@ -147,6 +161,8 @@ researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → res
 ./scripts/daily_research_lead.sh        # Run research lead now
 ./scripts/daily_factory_steward.sh      # Run factory steward now
 ./scripts/daily_ltc_steward.sh          # Run LTC steward now
+./scripts/paper_pipeline.sh            # Run paper pipeline (Phase 1)
+./scripts/paper_pipeline.sh 2          # Run paper pipeline (Phase 2: + peer review)
 ./scripts/agent_review.sh              # Review last 7 days
 ./scripts/agent_review.sh 30           # Monthly review
 ```
@@ -159,6 +175,7 @@ researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → res
 | Research Lead | `logs/research-lead-YYYY-MM-DD.log` | `logs/performance/research-lead-YYYY-MM-DD.json` |
 | Factory | `logs/factory-YYYY-MM-DD.log` | `logs/performance/factory-YYYY-MM-DD.json` |
 | LTC | `logs/ltc-YYYY-MM-DD.log` | `logs/performance/ltc-YYYY-MM-DD.json` |
+| Paper Pipeline | `logs/paper-YYYY-MM-DD.log` | `logs/performance/paper-YYYY-MM-DD.json` |
 
 ---
 
