@@ -309,6 +309,63 @@ else
 fi
 echo ""
 
+# Model Migration Status
+echo -e "${BOLD}--- Model Migration Status ---${RESET}"
+echo ""
+
+MIGRATION_MODEL=""
+# Read pending migration model from factory steward script
+if [ -f "$SCRIPT_DIR/daily_factory_steward.sh" ]; then
+    MIGRATION_MODEL=$(grep -oP 'PENDING_MIGRATION_MODEL="\K[^"]+' "$SCRIPT_DIR/daily_factory_steward.sh" 2>/dev/null || echo "")
+fi
+
+if [ -z "$MIGRATION_MODEL" ]; then
+    echo -e "  Status:  ${GREEN}No pending migration${RESET}"
+else
+    # Check experiment_log.json for shadow eval results
+    EXPERIMENT_LOG="$REPO_ROOT/eval/experiment_log.json"
+    SHADOW_RESULT=""
+    if [ -f "$EXPERIMENT_LOG" ]; then
+        SHADOW_RESULT=$(python3 -c "
+import json, sys
+try:
+    data = json.load(open('$EXPERIMENT_LOG'))
+    exps = data.get('experiments', data) if isinstance(data, dict) else data
+    matches = [e for e in exps if '$MIGRATION_MODEL' in json.dumps(e)]
+    if matches:
+        m = matches[-1]
+        print('FOUND|%.3f|%.3f|%.3f|%s' % (m.get('posterior_mean',0), m.get('ci_lower',0), m.get('ci_upper',0), m.get('outcome','unknown')))
+    else:
+        print('NONE')
+except:
+    print('ERROR')
+" 2>/dev/null || echo "ERROR")
+    fi
+
+    echo "  Current model:  Opus 4.6 (claude-opus-4-6)"
+    echo "  Migration target: $MIGRATION_MODEL"
+
+    if [ "$SHADOW_RESULT" = "NONE" ] || [ "$SHADOW_RESULT" = "ERROR" ]; then
+        # Count days since migration was first configured
+        MIGRATION_SINCE=$(grep -oP 'PENDING_MIGRATION_MODEL' "$SCRIPT_DIR/daily_factory_steward.sh" 2>/dev/null | head -1)
+        echo -e "  Shadow eval:    ${RED}NOT RUN${RESET}"
+        echo -e "  Action:         ${YELLOW}Run manually: python3 eval/run_eval_async.py --model $MIGRATION_MODEL --split train --inter-test-delay 15 .claude/agents/meta-agent-factory.md${RESET}"
+    else
+        IFS='|' read -r STATUS MEAN CI_L CI_U OUTCOME <<< "$SHADOW_RESULT"
+        echo "  Shadow eval:    posterior_mean=$MEAN CI=[$CI_L, $CI_U] outcome=$OUTCOME"
+        # Check go/no-go: CI overlap with baseline [0.702, 0.927]
+        OVERLAP="yes"
+        if (( $(echo "$CI_U < 0.702" | bc -l 2>/dev/null || echo 0) )); then OVERLAP="no"; fi
+        if (( $(echo "$CI_L > 0.927" | bc -l 2>/dev/null || echo 0) )); then OVERLAP="no"; fi
+        if [ "$OVERLAP" = "yes" ]; then
+            echo -e "  Go/No-Go G1:    ${GREEN}PASS${RESET} (CI overlaps baseline [0.702, 0.927])"
+        else
+            echo -e "  Go/No-Go G1:    ${RED}FAIL${RESET} (CI does NOT overlap baseline [0.702, 0.927])"
+        fi
+    fi
+fi
+echo ""
+
 # Summary table
 echo -e "${BOLD}--- Weekly Summary ---${RESET}"
 echo ""

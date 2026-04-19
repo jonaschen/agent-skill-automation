@@ -127,7 +127,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Phase Work ---" >> "$LOG_FILE"
 log_task_start "phase-work"
 PHASE_WORK_START=$(date +%s)
-(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'ltc' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/ltc.yaml for project-specific configuration.
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the steward agent for the 'ltc' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/ltc.yaml for project-specific configuration.
 
 Execute a stewardship session:
 1. Orient: Read ALL mandatory documents (CLAUDE.md, ROADMAP.md, LONGTERM_CARE_EXPERT_DEV_PLAN.md, DIGITAL_SURROGATE_AGILE_POC.md, HANA_CHARACTER_SPEC.md, SAYO_PREFERENCE_SYSTEM.md, .claude/steering-notes.md if it exists)
@@ -157,7 +157,7 @@ if [ "$PHASE_WORK_DURATION" -lt 60 ]; then
   exit 0
 fi
 log_task_start "research"
-(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'ltc' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/ltc.yaml for project-specific configuration.
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the steward agent for the 'ltc' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/ltc.yaml for project-specific configuration.
 
 Run a research and quality session:
 1. Orient: Read ROADMAP.md and CLAUDE.md

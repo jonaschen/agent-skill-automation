@@ -111,6 +111,12 @@ The Claude research pipeline runs **two cycles daily** (night + afternoon), each
 
 ### Schedule (Asia/Taipei)
 
+**Pre-Night Eval** (runs before night cycle — no Claude session needed)
+
+| Time | Agent | Script | What It Does |
+|------|-------|--------|-------------|
+| 11:30 PM | `shadow-eval` | `scripts/daily_shadow_eval.sh` | Model migration shadow eval (fires only when migration pending; direct Python, no Claude session) |
+
 **Claude Night Cycle** (primary — catches Asia-afternoon + Europe releases)
 
 | Time | Agent | Script | What It Does |
@@ -172,6 +178,7 @@ researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → res
 ./scripts/daily_research_lead.sh        # Run research lead now
 ./scripts/daily_factory_steward.sh      # Run factory steward now
 ./scripts/daily_ltc_steward.sh          # Run LTC steward now
+./scripts/daily_shadow_eval.sh         # Run shadow eval now (only fires if migration pending)
 ./scripts/paper_pipeline.sh            # Run paper pipeline (Phase 1)
 ./scripts/paper_pipeline.sh 2          # Run paper pipeline (Phase 2: + peer review)
 ./scripts/agent_review.sh              # Review last 7 days
@@ -186,6 +193,7 @@ researcher (L1-L5) → knowledge_base/ → research-lead → directives/ → res
 | Research Lead | `logs/research-lead-YYYY-MM-DD.log` | `logs/performance/research-lead-YYYY-MM-DD.json` |
 | Factory | `logs/factory-YYYY-MM-DD.log` | `logs/performance/factory-YYYY-MM-DD.json` |
 | LTC | `logs/ltc-YYYY-MM-DD.log` | `logs/performance/ltc-YYYY-MM-DD.json` |
+| Shadow Eval | `logs/shadow-eval-YYYY-MM-DD.log` | `logs/performance/shadow-eval-YYYY-MM-DD.json` |
 | Paper Pipeline | `logs/paper-YYYY-MM-DD.log` | `logs/performance/paper-YYYY-MM-DD.json` |
 
 ---

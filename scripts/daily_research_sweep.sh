@@ -311,7 +311,7 @@ echo "" >> "$LOG_FILE"
 echo "--- Anthropic Track ---" >> "$LOG_FILE"
 log_task_start "anthropic-track"
 # Run Claude in a subshell to isolate process-group signals from the parent script
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, Tool Use, Computer Use, Multi-agent Patterns, Model Releases):
 1. WebSearch for latest developments
@@ -324,7 +324,7 @@ log_task_complete "anthropic-track"
 echo "" >> "$LOG_FILE"
 echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
 log_task_start "google-deepmind-track"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
 1. WebSearch for latest developments
@@ -337,7 +337,7 @@ log_task_complete "google-deepmind-track"
 echo "" >> "$LOG_FILE"
 echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
 log_task_start "sweep-report"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 1. Read all files in knowledge_base/agentic-ai/anthropic/ and knowledge_base/agentic-ai/google-deepmind/
 2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
@@ -348,7 +348,7 @@ log_task_complete "sweep-report"
 echo "" >> "$LOG_FILE"
 echo "--- Deep Analysis (L2-L3) ---" >> "$LOG_FILE"
 log_task_start "deep-analysis"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
 Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 ${DIRECTIVE_PREAMBLE}
 1. Read ROADMAP.md to understand our pipeline phases and current state
@@ -363,7 +363,7 @@ log_task_complete "deep-analysis"
 echo "" >> "$LOG_FILE"
 echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
 log_task_start "discussion"
-("$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
 ${DIRECTIVE_PREAMBLE}
 First, read these files to understand the context:
 1. knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md (today's research analysis)
@@ -394,7 +394,7 @@ log_task_complete "discussion"
 echo "" >> "$LOG_FILE"
 echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
 log_task_start "strategic-planning"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
 Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
 ${DIRECTIVE_PREAMBLE}
 1. Read today's analysis from knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md
@@ -411,7 +411,7 @@ log_task_complete "strategic-planning"
 echo "" >> "$LOG_FILE"
 echo "--- Action (L5) ---" >> "$LOG_FILE"
 log_task_start "action"
-("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2d: Action.
+("$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the agentic-ai-researcher running Mode 2d: Action.
 Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
 ${DIRECTIVE_PREAMBLE}
 1. Read all proposals from knowledge_base/agentic-ai/proposals/ dated today

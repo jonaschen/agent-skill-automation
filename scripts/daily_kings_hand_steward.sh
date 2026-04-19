@@ -104,7 +104,7 @@ log_session_start "steward"
 echo "" >> "$LOG_FILE"
 echo "--- Stewardship Session ---" >> "$LOG_FILE"
 log_task_start "steward-session"
-(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'kings-hand' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/kings-hand.yaml for project-specific configuration.
+(cd "$TARGET_REPO" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions --max-budget-usd 10.00 -p "You are the steward agent for the 'kings-hand' project. Read $REPO_ROOT/.claude/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.claude/skills/steward/configs/kings-hand.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. Today is ${DATE}. Do NOT ask for permission — proceed directly.
 
