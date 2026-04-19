@@ -100,8 +100,7 @@ class AsyncEvalRunner:
     async def run_test(self, test_id, prompt, expect_trigger, engine="claude"):
         if not self.no_cache:
             # Cache key now includes engine to distinguish performance profiles
-            cached = self.cache.get(prompt, self.description, expect_trigger)
-            # Future: add engine-sensitivity to cache if needed
+            cached = self.cache.get(prompt, self.description, expect_trigger, self.model)
             if cached:
                 if self.verbose: print(f"  ⚡ Test {test_id}: CACHE HIT")
                 return cached["result"]
@@ -120,7 +119,7 @@ class AsyncEvalRunner:
 
                 result = self._evaluate(output, expect_trigger)
                 if not self.no_cache:
-                    self.cache.set(prompt, self.description, expect_trigger, result)
+                    self.cache.set(prompt, self.description, expect_trigger, result, self.model)
 
                 self._cleanup()
                 if self.inter_test_delay > 0:

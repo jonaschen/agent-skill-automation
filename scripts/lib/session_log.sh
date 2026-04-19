@@ -19,6 +19,7 @@ _SESSION_LOG_AGENT=""
 _SESSION_LOG_DIR=""
 _SESSION_LOG_FILE=""
 _SESSION_LOG_DATE=""
+_SESSION_LOG_TRACE_ID=""
 
 # Initialize session logging for an agent
 # Args: agent_name repo_root
@@ -28,6 +29,9 @@ init_session_log() {
   _SESSION_LOG_DIR="$repo_root/logs/sessions"
   _SESSION_LOG_DATE=$(date +"%Y-%m-%d")
   _SESSION_LOG_FILE="$_SESSION_LOG_DIR/${_SESSION_LOG_AGENT}-${_SESSION_LOG_DATE}.jsonl"
+  # Generate a trace_id for correlating events within a single session
+  # Format: agent-YYYYMMDD-HHMMSS-random (human-readable, unique per session)
+  _SESSION_LOG_TRACE_ID="${_SESSION_LOG_AGENT}-$(date +%Y%m%d-%H%M%S)-$(head -c 4 /dev/urandom | od -An -tx1 | tr -d ' ')"
   mkdir -p "$_SESSION_LOG_DIR"
 
   # 30-day retention
@@ -50,8 +54,8 @@ log_event() {
   fi
 
   # Build JSON line — use printf to avoid echo interpretation issues
-  printf '{"timestamp":"%s","agent":"%s","type":"%s","payload":%s}\n' \
-    "$timestamp" "$_SESSION_LOG_AGENT" "$event_type" "$payload" \
+  printf '{"timestamp":"%s","agent":"%s","trace_id":"%s","type":"%s","payload":%s}\n' \
+    "$timestamp" "$_SESSION_LOG_AGENT" "$_SESSION_LOG_TRACE_ID" "$event_type" "$payload" \
     >> "$_SESSION_LOG_FILE" 2>/dev/null || true
 }
 

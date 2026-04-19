@@ -160,10 +160,8 @@ Each pipeline agent encodes an assumption about what the model can't do. A new m
 
 - Never optimize against the validation set during migration
 - Always use `--inter-test-delay 15` to prevent quota burst during migration eval runs
-- The prompt cache (`eval/prompt_cache.py`) should be cleared before migration eval (descriptions unchanged, but model behavior differs):
-  ```bash
-  rm -f eval/.prompt_cache.json
-  ```
+- The prompt cache (`eval/prompt_cache.py`) includes model ID in the cache key — results from different models are stored separately and will not cross-contaminate. Use `--no-cache` if you need to force fresh evaluation regardless.
+- If a model behavior patch ships during graduated rollout, re-run the shadow eval and compare CIs before proceeding with the next rollout stage.
 
 ---
 

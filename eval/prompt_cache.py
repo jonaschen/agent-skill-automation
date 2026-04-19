@@ -29,33 +29,35 @@ class PromptCache:
     def _hash(self, text):
         return hashlib.sha256(text.encode()).hexdigest()
 
-    def get(self, prompt, description, expect_trigger):
+    def get(self, prompt, description, expect_trigger, model=None):
         p_hash = self._hash(prompt)
         d_hash = self._hash(description)
-        
+        m_suffix = f":{self._hash(model)}" if model else ""
+
         # 1. Try prompt-only cache (description-invariant)
         # Only used for successful negative controls (they stay PASS)
-        key_inv = f"inv:{p_hash}"
+        key_inv = f"inv:{p_hash}{m_suffix}"
         cached_inv = self.data.get(key_inv)
         if cached_inv and cached_inv["result"] == "PASS":
             return cached_inv
 
         # 2. Try description-sensitive cache
         # Used for all positive cases AND failing negative cases (to see if they flip to PASS)
-        key_sens = f"sens:{p_hash}:{d_hash}"
+        key_sens = f"sens:{p_hash}:{d_hash}{m_suffix}"
         return self.data.get(key_sens)
 
-    def set(self, prompt, description, expect_trigger, result):
+    def set(self, prompt, description, expect_trigger, result, model=None):
         p_hash = self._hash(prompt)
         d_hash = self._hash(description)
-        
+        m_suffix = f":{self._hash(model)}" if model else ""
+
         # Rule: Successful negative controls are stored description-invariantly
         if expect_trigger == "no" and result == "PASS":
-            key = f"inv:{p_hash}"
+            key = f"inv:{p_hash}{m_suffix}"
         else:
             # All positive cases and failing negative cases are description-sensitive
-            key = f"sens:{p_hash}:{d_hash}"
-            
+            key = f"sens:{p_hash}:{d_hash}{m_suffix}"
+
         self.data[key] = {
             "result": result,
             "timestamp": time.time()
