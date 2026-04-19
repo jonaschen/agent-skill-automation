@@ -26,6 +26,11 @@ Gemma is Google DeepMind's family of open-weight models built on the same resear
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 evening -- CORRECTION: vLLM EAGLE3 for Gemma 4 MERGED (PR #39450, Apr 10); Issue #38893 Closed Apr 17; No New Variants; I/O 30d
+- **What**: (1) **CORRECTION**: vLLM EAGLE3 speculative decoding for Gemma 4 has been **MERGED** — PR #39450 merged April 10, 2026, and issue #38893 closed April 17. The prior sweep's "EAGLE3 WIP day 13" was incorrect; the feature was already shipped. (2) **Key implementation details**: Gemma4Model now inherits from EagleModelMixin; both Gemma4ForCausalLM and Gemma4ForConditionalGeneration implement SupportsEagle3; "gemma4" added to speculative config validator's allowlist. (3) **Critical bug fix during development**: After hundreds of requests, the system crashed with an assertion error in SlidingWindowManager due to Gemma 4's hybrid attention (mixing full and sliding window layers with different block sizes). Fix implemented proper post-Eagle-pop alignment logic. (4) **Performance metrics**: Mean acceptance length **2.95 tokens**, 64.9% average draft acceptance rate, **38.45 tok/s** accepted throughput. (5) **Usage**: `vllm serve google/gemma-4-26B-A4B-it --tensor-parallel-size 2 --speculative-config '{"model": "RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3"...}'`. (6) No new Gemma 4 model variants. Day 17 post-launch. I/O 30d.
+- **Significance**: The **EAGLE3 merge is the most important Gemma 4 ecosystem development since launch** — it closes the inference speed gap between self-hosted and Google-internal serving. The 2.95 mean acceptance length and 38.45 tok/s throughput represent a meaningful speedup for production multi-agent workloads. The hybrid attention bug fix validates our earlier concern that Gemma 4's non-standard architecture required custom serving support. For Phase 6: self-hosted Gemma 4 31B/26B inference is now significantly faster via vLLM EAGLE3, narrowing the gap with Google AICore's proprietary MTP advantage.
+- **Source**: https://github.com/vllm-project/vllm/pull/39450, https://github.com/vllm-project/vllm/issues/38893
+
 ### 2026-04-19 -- Gemma 4 day 19: no change. No new variants. EAGLE3 WIP day 13. I/O 30d.
 
 ### 2026-04-18 night -- Gemma 4 day 18: no change. No new variants. EAGLE3 WIP day 12. Apache 2.0 license. 400M+ downloads. I/O 31d.

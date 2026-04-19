@@ -18,6 +18,8 @@ Project Mariner is a Google DeepMind research prototype for autonomous web brows
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 evening -- Mariner day 16: no change. Enterprise API 20d late. I/O 30d.
+
 ### 2026-04-19 -- Mariner day 16: no change. Enterprise API 20d late. I/O 30d.
 
 ### 2026-04-18 night -- Mariner day 15: no change. Enterprise API 19d late. Cloud-VM multi-task (10 simultaneous) holds. I/O 31d.

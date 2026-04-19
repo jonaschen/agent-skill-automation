@@ -22,6 +22,11 @@ The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic'
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 (evening) — No Changes: Python v0.1.63, TypeScript v0.2.114 Hold for 48+ Hours
+- **What**: Both SDKs unchanged since April 18. Python v0.1.63, TypeScript v0.2.114. No new releases on either GitHub releases page. Typical weekend quiet period.
+- **Significance**: Pipeline stable. No action needed.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/releases
+
 ### 2026-04-19 — Session Storage Alpha: TS-Only, Python SDK Has No Equivalent; Community Feature Request #97 Active
 - **What**: Verification sweep confirms Session Storage Alpha remains **TypeScript-only** (v0.2.113+). Python SDK v0.1.63 has no Session Storage functionality — no `sessionStore`, `InMemorySessionStore`, or `importSessionToStore` in its changelog or API surface. Community feature request **#97** ("Customizable Session Storage Backend for Cloud/Kubernetes Deployments," filed Dec 2025, 20 👍, 14 ❤️) requests cloud-native storage backends (PostgreSQL, S3, Redis) with a `SessionStorageProvider` interface. No Anthropic team response documented. Issue marked as duplicate of #167 (Session save/export) on Mar 28, 2026, but remains open. Current workaround: users manually sync `.claude/projects/{cwd}/{sessionId}.jsonl` to databases.
 - **Significance**: Session Storage Alpha is **not actionable for our Python-based pipeline** until it lands in the Python SDK. The TS SDK is advancing ~4x faster than Python (v0.2.114 vs v0.1.63 — 22 vs 5 minor versions in the Apr 13-18 window). If Phase 5 requires Session Storage, TypeScript may be the forced migration target. Community demand (issue #97) validates the use case but shows no official roadmap commitment. **Closing this tracking item per directive**: feature is TS-only, not actionable until Python SDK or Phase 5 SDK decision. Will re-open if Python SDK adds `sessionStore`.

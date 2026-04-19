@@ -1,32 +1,40 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-19 Saturday afternoon (twelfth sweep — weekend, Anthropic + Google/DeepMind)
-**Last analysis**: 2026-04-19 (Mode 2b L2-L3)
+**Last sweep**: 2026-04-19 Saturday night (fifteenth sweep — full consolidation)
+**Last analysis**: 2026-04-19 evening (Mode 2b L2-L3)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-19 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-19 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-19 afternoon |
+| Claude Code | anthropic/claude-code.md | 2026-04-19 evening |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-19 evening |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-19 evening-2 |
 | Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-18 evening |
 | Computer Use | anthropic/computer-use.md | 2026-04-18 evening |
 | Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-18 evening |
-| Model Releases | anthropic/model-releases.md | 2026-04-19 |
+| Model Releases | anthropic/model-releases.md | 2026-04-19 night |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-19 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-19 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-19 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-19 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-19 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-19 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-19 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-19 evening |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-19 evening |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-19 evening |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-19 evening |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-19 evening |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-19 evening |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-19 evening |
+
+Note: 2026-04-19 Saturday evening analysis (Mode 2b): **A1 gate-first session contract IMPLEMENTED** — structural L12 fix live in `daily_factory_steward.sh`, next factory session (3 AM) will test. Shadow eval structurally un-deferrable. **NEW CVE-2026-40933** (Flowise MCP STDIO RCE, Critical, 12K+ instances exposed, active exploitation confirmed) — extends STDIO CVE family to 11+. Bypass pattern: allowed binary + code-execution arguments. Relevant to `cmd_chain_monitor.sh` Phase 5 blocking mode. **Haiku 3 date discrepancy**: official table says Apr 20, third-party sources say Apr 19, model still callable evening Apr 19. **Opus 4.7 token burn**: no new Anthropic response beyond PM "sprinting on tuning." **No new releases from either vendor.** Action items: **verify shadow eval ran (tomorrow morning, P0)**, **Haiku 3 post-retirement check (P0)**, **monitor CVE-2026-40933 exploitation scope (P2)**.
+
+Note: 2026-04-19 Saturday night consolidated (fifteenth sweep): **Opus 4.7 token burn: FIRST Anthropic PM response** — team "sprinting on tuning" adaptive reasoning. Issue #49562 still OPEN. Community backlash growing ("Claude-lash"). **Haiku 3 retires TOMORROW (Apr 20)** — still callable, guard verified. **Shadow eval NOT run (6th directive cycle)** — zero Opus 4.7 entries in experiment_log.json. Escalate to Jonas if A1 not implemented. **EAGLE3 MERGED** (corrected in evening Google sweep) — PR #39450, 2.95 mean acceptance, 38.45 tok/s. **MCP STDIO steady state** — no new CVEs, Anthropic stance unchanged. **All frozen**: CC v2.1.114, SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2, ADK v1.31.0. **I/O 30d**. Action items: **Haiku 3 post-retirement verification Apr 20 morning (P0)**, **shadow eval status check (P0)**, **monitor Opus 4.7 adaptive reasoning patch (P2)**.
+
+Note: 2026-04-19 Saturday evening Google/DeepMind (fourteenth sweep): **CORRECTION: vLLM EAGLE3 for Gemma 4 MERGED** (PR #39450 merged Apr 10, issue #38893 closed Apr 17) — prior sweeps incorrectly listed as "WIP day 13." Mean acceptance length 2.95 tokens, 38.45 tok/s. Self-hosted Gemma 4 inference now significantly faster. **NEW: Google "Agent" multi-agent platform leak** (NPowerUser Apr 14) — multi-agent system for Gemini/Gemini Enterprise rivaling Claude Cowork, specialized role agents (research/coding/planning), deep Workspace integration. Expected I/O reveal. **All frozen**: CLI v0.38.2, ADK v1.31.0, A2A v1.0.0 day 40+, Vertex day 62+, Mariner day 16, Astra day 16, Gemma day 17. **Haiku 3 retires TOMORROW (Apr 20)** — confirmed on official deprecation page. **I/O 30d**. Action items: **Haiku 3 post-retirement verification Apr 20 morning (P0)**, **shadow eval status check (P0)**, **update Phase 6 serving recommendations for EAGLE3 (P2)**.
+
+Note: 2026-04-19 Saturday evening (thirteenth sweep, Anthropic only): **All frozen 48+ hours.** CC v2.1.114, SDK Py v0.1.63, TS v0.2.114. **Haiku 3 retires TOMORROW (Apr 20)** — final pre-retirement check: status "Deprecated" not yet "Retired," guard verified. **Shadow eval NOT run (6th directive cycle)** — zero Opus 4.7 entries in experiment_log.json. Longest-running unexecuted P0 — escalate to Jonas if A1 not implemented. **MCP STDIO steady state**: no new CVEs, Anthropic stance unchanged. Noted historical CVE-2025-49596 (MCP Inspector RCE, CVSS 9.4, patched Jun 2025). **Opus 4.7 token burn**: #49562 unchanged, growing media coverage (Finout 35% real increase). **deprecated_models.json data quality**: 4 stale entries from analysis-2026-04-08 with incorrect dates for already-retired models. Action items: **Haiku 3 post-retirement verification Apr 20 morning (P0)**, **shadow eval status check (P0)**.
 
 Note: 2026-04-19 Saturday afternoon (twelfth sweep, weekend): **No changes across either vendor since morning.** CC v2.1.114, SDK Py v0.1.63, TS v0.2.114. **Haiku 3 retirement re-verified: April 20 (tomorrow)** — official deprecation page confirms status "Deprecated" not yet "Retired." Our guard correct. **Shadow eval NOT run (5th directive cycle)** — zero Opus 4.7 entries in experiment_log.json. **MCP STDIO vulnerability coverage expanded**: Infosecurity Magazine, SecurityWeek report **150M total downloads** affected (up from 200K instances). Cross-SDK (Python, TypeScript, Java, Rust). New vulnerablemcp.info security database launched. CVE-2026-39313 added. **Gemini CLI still NOT installed** — S3 transpiler blocked. **Google all frozen**: same as morning. **I/O 30d**. Action items: **shadow eval P0** (factory-steward), **Haiku 3 verification Apr 20 morning**.
 
@@ -103,6 +111,8 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-19 | sweeps/2026-04-19-night.md | Saturday night consolidation: Opus 4.7 token burn FIRST Anthropic PM response ("sprinting on tuning" adaptive reasoning). Haiku 3 retires tomorrow. Shadow eval NOT run (6th cycle). EAGLE3 merged (corrected). MCP STDIO steady state. All frozen: CC v2.1.114, SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2, ADK v1.31.0. I/O 30d. |
+| 2026-04-19 | sweeps/2026-04-19-evening-google.md | Saturday evening Google/DeepMind sweep: CORRECTION — vLLM EAGLE3 for Gemma 4 MERGED (PR #39450, Apr 10). Google "Agent" multi-agent platform leak (Apr 14). All frozen: CLI v0.38.2, ADK v1.31.0, A2A day 40+, Vertex day 62+. Haiku 3 retires tomorrow. I/O 30d. |
 | 2026-04-19 | sweeps/2026-04-19.md | Saturday full sweep + afternoon update: No new releases across either vendor. Shadow eval NOT run (P0, 5 cycles). MCP STDIO vulnerability scope upgraded: 150M downloads, cross-SDK, vulnerablemcp.info database launched. Haiku 3 retirement re-verified for Apr 20 (tomorrow). **S3: Gemini CLI NOT INSTALLED**. Google all frozen: CLI v0.38.2, ADK v1.31.0, A2A day 40, Vertex day 62+, Mariner day 16, Astra day 16, Gemma day 19. I/O 30d. |
 | 2026-04-18 | sweeps/2026-04-18.md | End-of-day consolidated (eighth sweep): No new releases across either vendor. Shadow eval NOT run (P0 blocker). Opus 4.7 true cost: 35% increase confirmed by Finout (tokenizer + effort). OTEL pilot NOT run. Haiku 3 retires Apr 20 (~2d). Factory steward 3AM: 675s, 2 commits but skipped shadow eval/OTEL. All frozen topics stable. Weekend cadence begins. |
 | 2026-04-18 | sweeps/2026-04-18-night-google.md | Google/DeepMind night sweep: S3 SKILL.md format comparison COMPLETE (first S3 deliverable). Claude Code/Gemini CLI format convergence confirmed — transpiler feasible. ADK v1.31.0 additional features (Live UI, Events/Trace View, Graph View). All frozen topics stable: A2A day 39, Vertex day 60+, Mariner day 15, Astra day 15, Gemma day 18. I/O 31 days. "Aluminium OS" new tracking point. |

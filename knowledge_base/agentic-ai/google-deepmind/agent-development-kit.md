@@ -20,6 +20,8 @@ Google's Agent Development Kit (ADK) is an open-source, code-first framework for
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 evening -- ADK v1.31.0 day 2: confirmed no newer releases on GitHub/PyPI. No v1.32.0 or v2.0.0a4. Next release expected ~Apr 27-May 1. I/O 30d.
+
 ### 2026-04-19 -- ADK v1.31.0 day 2: no change. No v1.32.0 or v2.0.0a4. Next release expected ~Apr 27-May 1. I/O 30d.
 
 ### 2026-04-18 night -- ADK v1.31.0 Day 1 Holds; v1.31.0 Details Confirmed (Live UI Redesign, Events/Trace View, Graph View, Computer Use View); No v1.32.0; I/O 31 Days

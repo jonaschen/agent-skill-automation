@@ -23,6 +23,8 @@ Agent2Agent (A2A) is an open protocol created by Google for enabling secure comm
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 evening -- A2A day 40: no change. v1.0.0 confirmed on GitHub releases (no newer tags). Zero v1.1 activity. I/O 30d.
+
 ### 2026-04-19 -- A2A day 40: no change. v1.0.0 holds. 23.3K stars (up from 22K), 211 issues, 23 PRs. Zero v1.1 activity. I/O 30d.
 
 ### 2026-04-18 night -- A2A day 39: no change. v1.0 confirmed at a2a-protocol.org — zero v1.1 mentions. No I/O v1.1 leaks. I/O 31d.

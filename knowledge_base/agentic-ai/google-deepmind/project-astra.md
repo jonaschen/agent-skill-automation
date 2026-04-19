@@ -19,6 +19,8 @@ Project Astra is Google DeepMind's research prototype toward building a universa
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-19 evening -- Astra day 16: no change. I/O 30d. Pre-I/O window ~13d.
+
 ### 2026-04-19 -- Astra day 16: no change. I/O 30d. Pre-I/O window ~13d.
 
 ### 2026-04-18 night -- Astra day 15: no change. Engadget I/O preview explicitly names Astra as expected reveal. Android XR monocular glasses confirmed 2026. I/O 31d.
