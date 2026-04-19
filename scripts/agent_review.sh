@@ -323,7 +323,7 @@ PERF_PREFIXES=("factory" "ltc" "researcher" "android-sw" "arm-mrs" "bsp-knowledg
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
     for j in 0 1 2 3 4 5 6; do
-        local found_perf=0
+        found_perf=0
         if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}-${CHECK_DATE}.json" ]; then
             TOTAL_RUNS=$((TOTAL_RUNS + 1))
             found_perf=1
