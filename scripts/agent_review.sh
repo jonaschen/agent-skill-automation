@@ -63,15 +63,15 @@ print_agent_section() {
         for pf in "$PERF_FILE" "$PERF_FILE_PM"; do
             if [ -f "$pf" ]; then
                 RUN_COUNT=$((RUN_COUNT + 1))
-                if [ -z "$LATEST_DATE" ]; then
-                    LATEST_DATE="$CHECK_DATE"
-                fi
-
                 local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "0")
                 local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "1")
 
+                if [ -z "$LATEST_DATE" ] || [ "$LATEST_DATE" = "$CHECK_DATE" ]; then
+                    LATEST_DATE="$CHECK_DATE"
+                    LATEST_DURATION=$DURATION
+                fi
+
                 TOTAL_DURATION=$((TOTAL_DURATION + DURATION))
-                LATEST_DURATION=$DURATION
 
                 if [ "$EXIT_CODE" -eq 0 ]; then
                     SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
