@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources**:
 - https://github.com/vllm-project/vllm/issues/38893
 - https://deepmind.google/models/gemma/
@@ -25,6 +25,11 @@
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 -- Gemma 4 day 18: EAGLE3 available (merged, confirmed). No new variants. 400M+ downloads. Apache 2.0. I/O 29d.
+- **What**: (1) **EAGLE3 status confirmed**: vLLM issue #38893 closed Apr 17, completed by PR #39450 (merged Apr 10). Red Hat AI speculator model (`RedHatAI/gemma-4-31B-it-speculator.eagle3`) available on HuggingFace, supported on vllm-main. Thoughtworks also published EAGLE3 draft head. Reasoning support coming soon. (2) **No new Gemma 4 model variants**. Day 18 post-launch. (3) **400M+ downloads** total across Gemma family. 100K+ community variants. (4) **Apache 2.0 license**. (5) **Gemini Nano 4** (Gemma 4-based) confirmed: 4x faster than previous Gemini Nano, 60% less battery, Agent Skills runs multi-step agentic workflows entirely on-device. Expected Android 17 API reveal at I/O. (6) **AI Edge Gallery** — live on Play Store + App Store for fully offline Gemma 4 E2B/E4B deployment. (7) **I/O 29d**. Per directive: EAGLE3 is now "available" — stop tracking as active development.
+- **Significance**: EAGLE3 is fully available and confirmed from multiple independent sources (issue closed, Red Hat model published, usage examples documented). Per directive guidance, this entry stops tracking EAGLE3 as a development — future references will note "EAGLE3 available" only if new benchmarks emerge. Gemini Nano 4 (on-device Gemma 4) with Agent Skills represents the first production on-device agentic runtime, relevant for Phase 6 edge-AI designs.
+- **Source**: https://github.com/vllm-project/vllm/issues/38893, https://huggingface.co/RedHatAI/gemma-4-31B-it-speculator.eagle3, https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
 
 ### 2026-04-19 evening -- CORRECTION: vLLM EAGLE3 for Gemma 4 MERGED (PR #39450, Apr 10); Issue #38893 Closed Apr 17; No New Variants; I/O 30d
 - **What**: (1) **CORRECTION**: vLLM EAGLE3 speculative decoding for Gemma 4 has been **MERGED** — PR #39450 merged April 10, 2026, and issue #38893 closed April 17. The prior sweep's "EAGLE3 WIP day 13" was incorrect; the feature was already shipped. (2) **Key implementation details**: Gemma4Model now inherits from EagleModelMixin; both Gemma4ForCausalLM and Gemma4ForConditionalGeneration implement SupportsEagle3; "gemma4" added to speculative config validator's allowlist. (3) **Critical bug fix during development**: After hundreds of requests, the system crashed with an assertion error in SlidingWindowManager due to Gemma 4's hybrid attention (mixing full and sliding window layers with different block sizes). Fix implemented proper post-Eagle-pop alignment logic. (4) **Performance metrics**: Mean acceptance length **2.95 tokens**, 64.9% average draft acceptance rate, **38.45 tok/s** accepted throughput. (5) **Usage**: `vllm serve google/gemma-4-26B-A4B-it --tensor-parallel-size 2 --speculative-config '{"model": "RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3"...}'`. (6) No new Gemma 4 model variants. Day 17 post-launch. I/O 30d.

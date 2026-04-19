@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,11 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 -- Mariner day 17+: no change. Enterprise API 21d late. Available US AI Ultra subscribers. Cloud-VM multi-task (10 simultaneous). I/O 29d.
+- **What**: (1) **No new Mariner-specific announcements**. Consumer product at labs.google.com/mariner/ remains available for US AI Ultra subscribers ($249.99/mo). (2) **Capabilities confirmed**: 83.5% WebVoyager success rate, "Observe-Plan-Act" loop, up to 10 simultaneous tasks via cloud VMs, "Teach and Repeat" persistent cross-session memory. (3) **Enterprise API** — originally Q1 2026 target, now 21 days late. Likely absorbed into I/O "Gemini Agent" relaunch. (4) **Computer Use** available in Gemini API via `gemini-3-pro-preview` and `gemini-3-flash-preview` — developer-accessible Mariner-class browser automation. (5) **DeepMind absorption confirmed** — Mariner team integrated into core DeepMind to "prioritize defending Chrome's dominance." (6) **No I/O Mariner-branded session** — capabilities expected under "Gemini Agent" umbrella. (7) **I/O 29d**.
+- **Significance**: Day 17+ of quiet phase. The DeepMind absorption and absent I/O track continue to confirm the "Gemini Agent" umbrella relaunch thesis. The 83.5% WebVoyager benchmark and 10-task concurrency via cloud VMs represent a mature product ready for enterprise positioning at I/O. No action items.
+- **Source**: https://deepmind.google/models/project-mariner/, https://www.programming-helper.com/tech/google-project-mariner-ai-browser-agent-2026-autonomous-web-navigation, https://www.reactionarytimes.com/googles-strategic-pivot-deepmind-absorbs-project-mariner-to-win-the-ai-agent-war/
 
 ### 2026-04-19 evening -- Mariner day 16: no change. Enterprise API 20d late. I/O 30d.
 

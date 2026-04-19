@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-18 (evening)
+**Last updated**: 2026-04-20
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -19,6 +19,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 — No Changes: Multi-Agent Patterns Stable; Weekend Quiet
+- **What**: No new multi-agent pattern announcements or Claude Code agent teams changes. v2.1.114 remains current. No new Anthropic engineering blog posts on multi-agent patterns.
+- **Significance**: Stable. S2 paper project continues with existing pattern taxonomy.
+- **Source**: https://code.claude.com/docs/en/agent-teams
 
 ### 2026-04-18 (evening) -- Multi-Agent: v2.1.114 Fixes Agent Teams Crash; Routines Capabilities Detailed; Five-Pattern Taxonomy Confirmed
 - **What**: (1) **v2.1.114 fix**: crash in permission dialog when agent teams teammate requested tool permission — critical for production agent teams usage. (2) **Routines capabilities detailed** (research preview): A routine bundles prompt + repo + connectors (Slack, Google Drive), with three trigger types: Scheduled (hourly/daily/weekly, min 1h interval), API (HTTP POST with bearer token), GitHub (PR/release events). Each execution is a full Claude Code session. Limits: Pro 5/day, Max 15/day, Team/Enterprise 25/day. GitHub triggers have per-routine and per-account hourly caps. Claude can only push to `claude/` prefixed branches. Runs on Anthropic's cloud infrastructure. (3) **Five-pattern taxonomy** confirmed from Anthropic's 2026 Agentic Coding Trends Report: Generator+Verifier, Orchestrator+Sub-Agents, Agent Team, Message Bus, Shared State. This extends the four-pattern taxonomy from the April docs.

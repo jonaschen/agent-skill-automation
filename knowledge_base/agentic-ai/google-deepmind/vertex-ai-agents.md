@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 -- AI Applications day 63+: no change. Agent Builder release notes confirmed last entry Feb 18 (61 days). Vertex GenAI last entry Apr 15 (5 days). I/O 29d.
+- **What**: (1) **Agent Builder release notes** — confirmed no entries after February 18, 2026 (Code Execution GA). Now **61+ consecutive days** without Agent Builder-specific releases. (2) **Vertex AI GenAI** — last entry Apr 15 (Gemini 3.1 Flash TTS). 5 days quiet. (3) **Agent Designer** (low-code visual) and **Memory Bank** (dynamic long-term memories from conversations) confirmed in Preview. **Private VPC deployment** and **CMEK encryption** available. **IAM agent identity** for managed access. (4) **Agent Garden** supports tag filtering. (5) **HIPAA workload support** confirmed on Agent Engine. (6) **New ADK features routing through ADK pipeline** (not Agent Builder release notes) — AgentEngineSandboxCodeExecutor, Session Rewind, Service Registry all ship via ADK v1.31.0 but target Agent Engine. (7) **I/O 29d**. 61-day freeze + completed rebrand + ADK v2.0 expected = comprehensive I/O relaunch near-certain.
+- **Significance**: Day 63+ of the deepest-ever Agent Builder freeze. The pattern of routing new Agent Engine capabilities through ADK releases (rather than Agent Builder release notes) continues. This confirms the freeze is intentional product-management coordination for an I/O relaunch, not a development pause. Enterprise features (Private VPC, CMEK, IAM identity, HIPAA) indicate Agent Engine is being hardened for enterprise GA at I/O. No action items.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
 
 ### 2026-04-19 evening -- AI Applications day 62+: no change. Agent Builder release notes confirmed last entry Feb 18. I/O 30d.
 

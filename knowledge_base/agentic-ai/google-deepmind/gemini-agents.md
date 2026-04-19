@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -32,6 +32,11 @@
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 -- All frozen. CLI v0.38.2 day 3. Nightly pipeline day 6+ paused. Gemini API day 5 silent. NEW: Multi-Agent A2A+ADK production pattern published. I/O 29d.
+- **What**: (1) **Gemini CLI v0.38.2** (Apr 17) holds. No new releases Apr 18-20. Nightly pipeline day 6+ paused (last nightly v0.40.0-nightly.20260415, Apr 15). Longest nightly pause since daily cadence began Apr 9. (2) **Gemini API** day 5 silent since Apr 15 (TTS). Confirmed: no entries after Apr 15 in changelog. (3) **NEW: Multi-Agent A2A+ADK+Cloud Run production pattern** (April 2026 Medium article by xbill/Google Cloud Community) — detailed architecture for distributed multi-agent system using ADK agents as microservices on Cloud Run, communicating via A2A protocol with RemoteA2aAgent, Agent Cards for discovery, and Gemini CLI for development acceleration. Implements sequential pipeline (Researcher→Judge→Content Builder→Course Creator), feedback loops, and orchestration patterns. Production-ready with authenticated A2A clients, SSE streaming, Docker multi-stage builds. (4) **"Gemini Agent" product feature confirmed** — multi-step autonomous agent using Gemini 3's advanced reasoning and tool calling. Uses Gmail, Calendar, Deep Research, Canvas, and live web browsing. Available in Gemini app. (5) **I/O 29d**. Pre-I/O window ~12d.
+- **Significance**: The **Multi-Agent A2A+ADK article** is the most notable new signal — it provides the first detailed production architecture reference for building distributed multi-agent systems with Google's stack (ADK + A2A + Cloud Run + Gemini CLI). The sequential pipeline + feedback loop + orchestration patterns map directly to our Phase 5 topology designs and S2 multi-agent research. The "Gemini Agent" product feature (multi-step autonomous) confirms Google is shipping agentic capabilities to consumers, not just developer tools. All release tracks remain frozen — deepest combined freeze across CLI, API, ADK, and Agent Builder in this sweep cycle.
+- **Source**: https://medium.com/google-cloud/multi-agent-a2a-with-the-agent-development-kit-adk-cloud-run-and-gemini-cli-52f8be838ad6, https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog, https://blog.mean.ceo/google-gemini-news-April-2026/
 
 ### 2026-04-19 evening -- All frozen. CLI v0.38.2 day 2. Nightly pipeline day 5 paused. Gemini API day 4 silent. Google "Agent" multi-agent platform leaked (Apr 14). I/O 30d.
 - **What**: (1) **Gemini CLI v0.38.2** (Apr 17) holds. No new releases. Nightly pipeline day 5 paused. (2) **Gemini API** day 4 silent since Apr 15 (TTS). (3) **NEW: Google "Agent" multi-agent platform leak** (NPowerUser, Apr 14) — Google reportedly developing a multi-agent AI system called "Agent" for Gemini and Gemini Enterprise, rivaling Anthropic Claude Cowork. Multiple AI agents work together on complex tasks, each specializing in roles (research, coding, planning). Deep integration with Google ecosystem (Docs, Gmail, Cloud). Autonomous task execution, not just assistance. Expected I/O reveal. (4) **Haiku 3 retires TOMORROW (April 20)** — confirmed on official deprecation page, status still "Deprecated", retirement date confirmed April 20. (5) I/O 30d.

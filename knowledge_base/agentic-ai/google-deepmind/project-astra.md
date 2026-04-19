@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 -- Astra day 17+: no change. Research prototype with limited testers. Engadget names as I/O reveal. Android XR monocular glasses 2026. I/O 29d.
+- **What**: (1) **No new Astra-specific announcements**. Remains research prototype with limited trusted testers. (2) **Capabilities confirmed**: real-time multimodal processing (video, audio, text) with near-zero latency. Uses Search, Gmail, Calendar, Maps, and device interface control. Cross-device memory (phone ↔ glasses). Trusted tester program includes accessibility partnership with Aira. (3) **I/O 29d** — Engadget I/O preview explicitly names Astra as expected reveal. Day 2 "Adaptive Everywhere" XR track confirmed. (4) **Android XR hardware timeline**: Samsung Galaxy Glasses Aug 2026 ($600-$900), Google monocular glasses 2026, audio-only glasses 2026. Galaxy XR headset receiving monthly updates (5 features in April update). (5) **Android Enterprise XR** now supported — first enterprise Astra deployment surface. (6) **Pre-I/O window ~12d**.
+- **Significance**: Day 17+ of quiet phase. All signals continue pointing to dedicated I/O stage time for Astra (Engadget naming, Day 2 XR track, hardware confirmations). The enterprise XR support opens a new deployment path. No new developments since evening sweep. No action items.
+- **Source**: https://deepmind.google/models/project-astra/, https://www.engadget.com/ai/what-to-expect-from-google-io-2026-200252914.html
 
 ### 2026-04-19 evening -- Astra day 16: no change. I/O 30d. Pre-I/O window ~13d.
 

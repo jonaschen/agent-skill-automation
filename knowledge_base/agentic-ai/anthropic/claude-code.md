@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-19
+**Last updated**: 2026-04-20
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -26,6 +26,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.114 (April 18, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 — v2.1.114 Holds (72+ Hours); Claude Design Details Confirmed; No New Releases
+- **What**: Claude Code **v2.1.114** remains the latest release. No v2.1.115 or newer on GitHub releases, npm, or changelog as of April 20. Weekend quiet continues — 72+ hours since last release. **Claude Design additional details** (from official Anthropic page): (1) Export formats: Canva, PDF, PPTX, standalone HTML. (2) Claude Code handoff confirmed: "Claude packages everything into a handoff bundle that you can pass to Claude Code with a single instruction." (3) Powered by Opus 4.7 with enhanced vision (2,576px long edge, ~3.75MP). (4) Available for Pro, Max, Team, Enterprise. (5) Anthropic positions it as competitive with Figma for AI-native design workflows — VentureBeat headline: "challenges Figma." (6) Brilliant (early user): complex pages needed 20+ prompts in competitors, only 2 in Claude Design.
+- **Significance**: Pipeline stable. Claude Design's handoff-to-Claude-Code integration is notable for future Phase 7 — if AaaS includes design-to-code automation, the bridge already exists. Export to standalone HTML means generated designs are portable and testable. Weekend release cadence normal — typical for Anthropic to batch changes for Monday-Friday releases.
+- **Source**: https://releasebot.io/updates/anthropic/claude-code, https://www.anthropic.com/news/claude-design-anthropic-labs, https://techcrunch.com/2026/04/17/anthropic-launches-claude-design-a-new-product-for-creating-quick-visuals/, https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma/
 
 ### 2026-04-19 (evening) — No Changes: v2.1.114 Holds for 48+ Hours
 - **What**: Claude Code **v2.1.114** remains the latest release (Apr 18). No v2.1.115 or newer on GitHub releases or changelog. 48+ hours with no new release — typical weekend quiet period.

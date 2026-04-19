@@ -1,34 +1,40 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-19 Saturday night (fifteenth sweep — full consolidation)
-**Last analysis**: 2026-04-19 evening (Mode 2b L2-L3)
+**Last sweep**: 2026-04-20 Sunday (eighteenth sweep — consolidated afternoon)
+**Last analysis**: 2026-04-20 (Mode 2b L2-L3)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-19 evening |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-19 evening |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-19 evening-2 |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-18 evening |
-| Computer Use | anthropic/computer-use.md | 2026-04-18 evening |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-18 evening |
-| Model Releases | anthropic/model-releases.md | 2026-04-19 night |
+| Claude Code | anthropic/claude-code.md | 2026-04-20 |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-20 |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-20 |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-20 |
+| Computer Use | anthropic/computer-use.md | 2026-04-20 |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-20 |
+| Model Releases | anthropic/model-releases.md | 2026-04-20 |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-19 evening |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-19 evening |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-19 evening |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-19 evening |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-19 evening |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-19 evening |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-19 evening |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-20 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-20 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-20 |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-20 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-20 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-20 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-20 |
+
+Note: 2026-04-20 Sunday consolidated (eighteenth sweep): **All frozen across both vendors** — deepest combined weekend freeze. CC v2.1.114 (72h+), SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2 (day 3), ADK v1.31.0 (day 3), A2A v1.0.0 (day 39+), Gemini API (day 5), Agent Builder (day 61+). **Haiku 3 retirement day — guard PASS, still "Deprecated"**: official page hasn't flipped to "Retired" yet. 3-layer guard validated end-to-end. Non-event. **Shadow eval ROOT CAUSE CONFIRMED: time budget** — eval launched Apr 19 (commit e99b434), can't complete: 88-min eval vs 44-min session. Not LLM behavior. Cache bug fixed. Escalate to Jonas: manual run or dedicated cron. **MCP STDIO confirmed systemic**: 10+ CVEs, 150M+ downloads, Anthropic declined fix. No new CVEs. **Opus 4.7 #49562 OPEN**: zero staff responses, 4 related issues (#49810, #50295, #50471, #50617). No patch. **No new I/O leaks** (29d). **S1 structurally working but time-budget-blocked. S2 steady. S3 infrastructure-blocked.** Action items: **manual shadow eval (P0, Jonas)**, **monitor Opus 4.7 patch (P1)**, **pre-I/O window from May 2 (P2)**.
 
 Note: 2026-04-19 Saturday evening analysis (Mode 2b): **A1 gate-first session contract IMPLEMENTED** — structural L12 fix live in `daily_factory_steward.sh`, next factory session (3 AM) will test. Shadow eval structurally un-deferrable. **NEW CVE-2026-40933** (Flowise MCP STDIO RCE, Critical, 12K+ instances exposed, active exploitation confirmed) — extends STDIO CVE family to 11+. Bypass pattern: allowed binary + code-execution arguments. Relevant to `cmd_chain_monitor.sh` Phase 5 blocking mode. **Haiku 3 date discrepancy**: official table says Apr 20, third-party sources say Apr 19, model still callable evening Apr 19. **Opus 4.7 token burn**: no new Anthropic response beyond PM "sprinting on tuning." **No new releases from either vendor.** Action items: **verify shadow eval ran (tomorrow morning, P0)**, **Haiku 3 post-retirement check (P0)**, **monitor CVE-2026-40933 exploitation scope (P2)**.
+
+Note: 2026-04-20 Sunday Google/DeepMind (seventeenth sweep): **All frozen** — deepest combined freeze: CLI v0.38.2 day 3, ADK v1.31.0 day 3, A2A v1.0.0 day 39+, Gemini API day 5 silent, Agent Builder day 61+ silent. **NEW: Production A2A+ADK multi-agent architecture** — Google Cloud Community article documents distributed ADK agents on Cloud Run with A2A inter-agent communication (RemoteA2aAgent, Agent Cards), sequential pipeline + feedback loop + orchestration patterns. First detailed production reference. **EAGLE3 confirmed available** — issue closed Apr 17, Red Hat/Thoughtworks speculators published, vLLM main support. Stop tracking as development. **"Gemini Agent" product confirmed** — multi-step autonomous agent in Gemini app (reasoning, tool calling, Gmail/Calendar/web browsing). **Vertex AI enterprise hardening**: Private VPC, CMEK, IAM identity, HIPAA. **Gemini Nano 4 Agent Skills** — on-device agentic workflows. **I/O 29d**. Action items: **cite A2A+ADK article in S2 paper (P2)**, **monitor pre-I/O window from May 2 (P2)**.
+
+Note: 2026-04-20 Sunday (sixteenth sweep, Anthropic only): **Haiku 3 retirement day — guard PASS** (3-layer check clean, zero references in operational code). **Shadow eval ROOT CAUSE IDENTIFIED**: A1 gate-first contract works at both shell AND LLM levels — eval was launched Apr 19 afternoon (commit e99b434). But experiment_log.json still zero opus-4-7 entries because **eval can't complete within factory session's 44-min budget** (~88 min needed for T=39). This is a time budget constraint, not prioritization failure. Cache model-blindness bug fixed. **Escalate to Jonas: manual run or dedicated cron slot.** **MCP STDIO SYSTEMIC**: OX Security "Mother of All AI Supply Chains" — 10+ CVEs (9 critical), 150M+ downloads, 200K instances. Four exploitation families including allowlist bypass via `npx -c`. Anthropic: "expected behavior," declined protocol patch. Our `cmd_chain_monitor.sh` vulnerable to family #2. **Opus 4.7 no patch** — PM "sprinting on tuning" (Apr 19), no follow-up. #49562 open. **All frozen**: CC v2.1.114, SDK Py v0.1.63, TS v0.2.114. **I/O 29d**. Action items: **manual shadow eval (P0, Jonas)**, **Phase 5 argument-pattern validation (P1)**.
 
 Note: 2026-04-19 Saturday night consolidated (fifteenth sweep): **Opus 4.7 token burn: FIRST Anthropic PM response** — team "sprinting on tuning" adaptive reasoning. Issue #49562 still OPEN. Community backlash growing ("Claude-lash"). **Haiku 3 retires TOMORROW (Apr 20)** — still callable, guard verified. **Shadow eval NOT run (6th directive cycle)** — zero Opus 4.7 entries in experiment_log.json. Escalate to Jonas if A1 not implemented. **EAGLE3 MERGED** (corrected in evening Google sweep) — PR #39450, 2.95 mean acceptance, 38.45 tok/s. **MCP STDIO steady state** — no new CVEs, Anthropic stance unchanged. **All frozen**: CC v2.1.114, SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2, ADK v1.31.0. **I/O 30d**. Action items: **Haiku 3 post-retirement verification Apr 20 morning (P0)**, **shadow eval status check (P0)**, **monitor Opus 4.7 adaptive reasoning patch (P2)**.
 
@@ -94,6 +100,7 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-20 | analysis/2026-04-20.md | L2-L3 deep analysis: Shadow eval time budget root cause (88 min eval vs 44 min session — scheduling constraint, not LLM behavior; S1 meta-optimization loop architecturally complete). MCP STDIO systemic class vulnerability: 10+ CVEs, four exploitation families mapped to pipeline exposure, `cmd_chain_monitor.sh` vulnerable to family #2 (argument-blind allowlist bypass). Haiku 3 guard validated (first automated retirement). Production ADK+A2A+Cloud Run architecture → 3 Phase 5 design inputs (Agent Cards for fleet registry, sequential→feedback loop pattern, Docker-per-agent isolation). IBM A2A documentation → S3 enterprise adoption signal. Opus 4.7 no patch (4 cross-refs, PM "sprinting"). Deepest combined vendor freeze analysis (pre-I/O accumulation). S1 architecturally complete but time-budget-blocked. S2 steady + new comparison data. S3 infrastructure-blocked. |
 | 2026-04-18 | analysis/2026-04-18-night.md | Night consolidation: All directive P0/P1 items resolved. Strategic alignment: OTEL tracing unblocks S1 automated behavioral analysis (HIGH), five-pattern taxonomy + ADK Session Rewind advance S2 (MEDIUM), ecosystem convergence supports S3 feasibility (LOW). 5 open questions resolved (Haiku 3 date CORRECTED to Apr 20, Task Budgets API-only, OTEL works via env vars, 1M beta clean, P0 audit CLEAN). Factory-steward handoff: 3 ADOPT items ready (v2.1.113 update, `--max-budget-usd`, OTEL env vars). 6 threats assessed (tokenizer cost MEDIUM, native binary LOW, Haiku 3 LOW). 10 consolidated priority actions. |
 | 2026-04-18 | analysis/2026-04-18-evening.md | Evening analysis: Opus 4.7 bug landscape (5 categories, token burn 2-2.7x compound), OTEL architecture (CLI-native, 6 env vars, days not months), Task Budgets CLI gap (API-only, use `--max-budget-usd`), 1M sunset non-issue, v2.1.113 native binary risk, Routines vs cron comparison |
 | 2026-04-18 | analysis/2026-04-18.md | L2-L3 deep analysis: Opus 4.7 breaking changes migration assessment (sampling params/thinking budgets/tokenizer — P0 audit + shadow eval gate), ADK v1.31.0 Session Rewind as Phase 4/5 optimizer checkpoint pattern (P1), Agent SDK OTEL tracing as Phase 5 observability foundation (P1), Task Budgets for steward cost control (P1), Opus 4.7 "fewer subagents" delegation regression risk (P2), MCP 10K+ ecosystem security posture (P2), 5 cross-pollination opportunities (Session Rewind→optimizer, OTEL→Phase 5, Task Budgets→cost ceiling, sandbox convergence, 4-pattern taxonomy→TCI router), 4 threats assessed, Haiku 3 final-day verification, I/O 31-day strategic posture, 12 priority actions |
@@ -111,6 +118,9 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-20 | sweeps/2026-04-20.md | Sunday consolidated: All frozen both vendors (deepest combined freeze). Haiku 3 retirement day — guard PASS, still "Deprecated" on official page. Shadow eval root cause: time budget (88 min eval vs 44 min session), not LLM behavior. MCP STDIO systemic (10+ CVEs, Anthropic declined fix). Opus 4.7 #49562 OPEN, zero staff responses. No new releases. I/O 29d. |
+| 2026-04-20 | sweeps/2026-04-20-google.md | Sunday Google/DeepMind sweep: All frozen (CLI day 3, ADK day 3, A2A day 39+, API day 5, Agent Builder day 61+). NEW: Production A2A+ADK multi-agent architecture (Cloud Run microservices, RemoteA2aAgent, Agent Cards). EAGLE3 confirmed available. "Gemini Agent" product confirmed. Vertex AI enterprise hardening (VPC, CMEK, IAM, HIPAA). Gemini Nano 4 Agent Skills. I/O 29d. |
+| 2026-04-20 | sweeps/2026-04-20-anthropic.md | Sunday Anthropic sweep: Haiku 3 retirement day — guard PASS (3-layer clean). Shadow eval root cause: 44-min session can't complete 88-min eval. MCP STDIO systemic: 10+ CVEs, Anthropic "expected behavior." Opus 4.7 no patch. All frozen: CC v2.1.114, SDK Py v0.1.63. Claude Design details confirmed. I/O 29d. |
 | 2026-04-19 | sweeps/2026-04-19-night.md | Saturday night consolidation: Opus 4.7 token burn FIRST Anthropic PM response ("sprinting on tuning" adaptive reasoning). Haiku 3 retires tomorrow. Shadow eval NOT run (6th cycle). EAGLE3 merged (corrected). MCP STDIO steady state. All frozen: CC v2.1.114, SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2, ADK v1.31.0. I/O 30d. |
 | 2026-04-19 | sweeps/2026-04-19-evening-google.md | Saturday evening Google/DeepMind sweep: CORRECTION — vLLM EAGLE3 for Gemma 4 MERGED (PR #39450, Apr 10). Google "Agent" multi-agent platform leak (Apr 14). All frozen: CLI v0.38.2, ADK v1.31.0, A2A day 40+, Vertex day 62+. Haiku 3 retires tomorrow. I/O 30d. |
 | 2026-04-19 | sweeps/2026-04-19.md | Saturday full sweep + afternoon update: No new releases across either vendor. Shadow eval NOT run (P0, 5 cycles). MCP STDIO vulnerability scope upgraded: 150M downloads, cross-SDK, vulnerablemcp.info database launched. Haiku 3 retirement re-verified for Apr 20 (tomorrow). **S3: Gemini CLI NOT INSTALLED**. Google all frozen: CLI v0.38.2, ADK v1.31.0, A2A day 40, Vertex day 62+, Mariner day 16, Astra day 16, Gemma day 19. I/O 30d. |
@@ -148,6 +158,7 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-20 | discussions/2026-04-20.md | Sunday debate (3 topics): Shadow eval time budget (ADOPT manual run P0 + dedicated cron P1), MCP STDIO argument validation for Phase 5 (noted, no immediate code), Haiku 3 guard validated. 2 ADOPT (manual eval run P0, dedicated cron P1), 3 DEFER (STDIO→HTTP migration, stale deprecated_models.json cleanup, Claude Design integration), 2 REJECT (TCI dispatch, more gate-first prompt engineering) |
 | 2026-04-18 | discussions/2026-04-18-night.md | Night consolidation (3 rounds): 10 ADOPT items total across day (P0: v2.1.113 update, shadow eval go/no-go criteria; P1: --max-budget-usd, permissions.deny, OTEL env vars, OTEL pilot; P2: Gemini CLI comparison, cost control docs, delegation monitoring), 6 DEFER (OTEL analyzer, Task Budgets, cross-platform experiment, OTEL collector, TCI 5-pattern, Session Rewind), 2 REJECT (cron→Routines, 5-topology dispatch) |
 | 2026-04-18 | discussions/2026-04-18-evening.md | Evening debate (1 round): 3 ADOPT (OTEL env vars P1, --max-budget-usd P1, v2.1.113 update P0), 3 DEFER (OTEL collector, Task Budgets SDK, 5-pattern TCI), 1 REJECT (Routines replacement) |
 | 2026-04-09 | discussions/2026-04-09.md | Innovator/Engineer debate (3 rounds): 7 ADOPT items (per-agent effort config P1, deprecated models verify P0, A2A deferral P1, 3-target deployment P1, permission cache design P2, effort tracking in perf JSONs P1, steward cross-project deprecation check P1), 3 DEFER (Managed Agents adapter, cross-platform format diff, estimated_tokens), 0 REJECT |
