@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -26,6 +26,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.114 (April 18, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — v2.1.114 Freeze Extends Into Monday (~120h); No v2.1.115; Unprecedented Weekday Freeze
+- **What**: Claude Code v2.1.114 remains the latest release. No v2.1.115 or higher has shipped. The freeze now extends ~120+ hours (since Apr 17), making this the longest v2.1.x release gap observed. Monday is typically a high-release day — the continued freeze into a weekday is unprecedented in the v2.1.x era.
+- **Significance**: The 96h+ freeze predicted on Sunday has now extended further. This is unusual for a Monday. May indicate a larger release being staged, or internal focus on Opus 4.7 stabilization.
+- **Source**: https://github.com/anthropics/claude-code/releases (verified Apr 21 — v2.1.114 still latest)
 
 ### 2026-04-20 (night) — v2.1.114 Freeze Confirmed End of Day; No v2.1.115; Monday Unfreeze Expected
 - **What**: Night verification confirms v2.1.114 remains latest on GitHub releases and npm. No v2.1.115 published Sunday. Freeze now **~100 hours** (since Apr 18 01:34 UTC). This is the longest gap in the entire v2.1.x series. Monday is the most likely unfreeze day — 96h+ weekend freeze is unusual but not unprecedented (Easter 2026 had a similar pattern).

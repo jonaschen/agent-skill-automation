@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,11 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — Tool Use Stable; Strict Schema Adherence and Programmatic Tool Calling GA Confirmed
+- **What**: No new tool use API changes. Programmatic tool calling and web search tool confirmed GA (no beta header required since Feb 17). Strict schema adherence for tool calls available (constrained decoding validates tool names and argument types). Advisor Tool remains in public beta (`advisor-tool-2026-03-01` header). No new announcements.
+- **Significance**: Steady state. One sentence per directive.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling (verified Apr 21)
 
 ### 2026-04-20 (night) — Tool Use Stable; No Changes Sunday Night
 - **What**: No tool use changes. Advisor tool beta, web search + programmatic tool calling GA, Task Budgets API-only. All stable.

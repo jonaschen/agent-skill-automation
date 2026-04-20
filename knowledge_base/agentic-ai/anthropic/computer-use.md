@@ -1,6 +1,6 @@
 # Computer Use
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
 - https://siliconangle.com/2026/03/23/anthropics-claude-gets-computer-use-capabilities-preview/
@@ -14,6 +14,11 @@
 Computer Use is a beta feature that enables Claude to interact with desktop environments by taking screenshots, interpreting what is on screen, and controlling mouse/keyboard inputs. It operates as a screenshot-action loop: Claude sees the screen, decides what to click or type, executes the action, takes another screenshot, and repeats. As of March 2026, Anthropic announced Mac desktop control for Pro/Max subscribers, and a "Zoom Action" feature was added for inspecting small UI elements at high resolution.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — Computer Use Still Research Preview; No GA Announcement; Q4 2026 Expected
+- **What**: Computer Use remains in research preview (beta). No GA announcement. Windows expansion (via Cowork/CC Desktop) holds. GA expected Q4 2026 per industry estimates. Opus 4.7 CU: 2576-px long-edge with 1:1 coordinate mapping.
+- **Significance**: No change. Not mentioned further per directive.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview (verified Apr 21 — no CU GA entry)
 
 ### 2026-04-20 (night) — Computer Use: No Change; Still Research Preview; Windows Expansion Holds
 - **What**: No change Sunday night. Windows expansion via Cowork/CC Desktop. Still research preview on API. No GA announcement.

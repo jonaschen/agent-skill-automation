@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
@@ -22,6 +22,11 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — A2A v1.0.0 Day 40; 1-Year Anniversary Coverage; 150+ Orgs Confirmed; AP2 60+ Orgs
+- **What**: A2A v1.0.0 (Mar 12) day 40 stable. No v1.1.0. One-year anniversary (Apr 9) PR coverage confirms: 150+ organizations, 22K+ GitHub stars, 5 production-ready SDK languages (Python, JS, Java, Go, .NET), production deployments in Azure AI Foundry + Amazon Bedrock AgentCore + Google Cloud. AP2 (Agent Payments Protocol) at 60+ financial services organizations. Signed Agent Cards, multi-tenancy, and gRPC bindings are the v1.0 differentiators vs v0.3. I/O 28d.
+- **Significance**: The 5-SDK coverage and triple-hyperscaler production deployment confirms A2A as the de facto agent interop standard. AP2 at 60+ orgs is a new data point — payments integration is moving faster than expected. No version change.
+- **Source**: https://stellagent.ai/insights/a2a-protocol-google-agent-to-agent, https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html, https://github.com/a2aproject/A2A/releases
 
 ### 2026-04-20 (night) — A2A Day 39+: No Change; v1.0.0 Holds; Night Confirmation
 - **What**: Night verification: no new A2A releases or activity. v1.0.0 day 39+ stable. Zero v1.1 signals. I/O 29d.

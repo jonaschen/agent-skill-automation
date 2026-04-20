@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -28,6 +28,11 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — CLI v0.38.2 Day 4; API Day 6 Silent; Freeze Continues Into Monday
+- **What**: Monday check: CLI v0.38.2 (Apr 17) confirmed latest on GitHub. No new stable or nightly releases. Gemini API day 6 silent (last entry Apr 15). Nightly pipeline day 6+ paused. The expected Monday unfreeze has NOT occurred as of this sweep. Deepest combined freeze extends.
+- **Significance**: Freeze extending into Monday is notable — breaks the pattern of weekday release resumption. Either pre-I/O freeze is deeper than expected or team is accumulating a larger v0.39.0 stable cut. I/O 28d.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog
 
 ### 2026-04-20 (night) — CLI v0.38.2 Day 3 End of Day; API Day 5 Silent; No Changes; Monday Unfreeze Expected
 - **What**: Night verification confirms CLI v0.38.2 (Apr 17) remains latest on GitHub. No new stable or nightly releases Sunday. Gemini API day 5 silent (last entry Apr 15). Monday weekday cadence resumption expected.

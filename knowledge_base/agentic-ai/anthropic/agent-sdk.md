@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 18, 2026, Python is at v0.1.63 and TypeScript is at v0.2.114. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — SDK Freeze Extends Into Monday; Python v0.1.63, TypeScript v0.2.114 Still Latest
+- **What**: No new Agent SDK releases. Python remains at v0.1.63 (Apr 18, bundles CLI v2.1.114), TypeScript at v0.2.114 (Apr 18, CLI v2.1.114 parity). Both SDKs last released simultaneously on Apr 18 — now 3 days without updates.
+- **Significance**: SDK tracks CLI closely (SDK Py v0.1.63 bundles CLI v2.1.114). Until a new CLI version ships, no SDK update is expected. The freeze is consistent with the broader Claude Code freeze.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/releases (verified Apr 21)
 
 ### 2026-04-20 (night) — SDK Freeze Confirmed End of Day; Py v0.1.63, TS v0.2.114 Unchanged
 - **What**: Night verification confirms no new SDK releases Sunday. Python v0.1.63 (Apr 18), TypeScript v0.2.114 (Apr 18) remain latest. Freeze now ~100 hours. Monday unfreeze expected.

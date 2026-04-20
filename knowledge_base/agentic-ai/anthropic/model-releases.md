@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — Haiku 3 Past Retirement Date But STILL "Deprecated" on Official Page; Opus 4.7 #49562 Unchanged; 1M Beta Sunset 9d
+- **What**: Claude Haiku 3 (`claude-3-haiku-20240307`) retirement date was April 20. As of April 21, the official model deprecations page STILL shows status "Deprecated" — not yet flipped to "Retired." However, third-party sources report API requests to the model return errors post-April 19. The official page update appears delayed. Opus 4.7 issue #49562 remains OPEN with only 2 community comments and zero Anthropic staff responses. No new model releases. 1M context beta for Sonnet 4.5/Sonnet 4 sunsets April 30 (9 days) — migration path is to Sonnet 4.6 or Opus 4.6 which have 1M GA.
+- **Significance**: Haiku 3 guard PASS validated — the model is functionally retired even if the page label lags. Opus 4.7 token burn issue remains unaddressed by Anthropic engineering publicly. PM's "sprinting on tuning" comment (Apr 19) has had no follow-up.
+- **Source**: https://platform.claude.com/docs/en/about-claude/model-deprecations (verified Apr 21 — still shows "Deprecated"), https://github.com/anthropics/claude-code/issues/49562 (verified Apr 21 — OPEN, 2 comments)
 
 ### 2026-04-20 (night) — Haiku 3 Retirement Day Ends STILL "Deprecated"; Opus 4.7 Token Increase ~37.4% Confirmed Multi-Source; Shadow Eval Still Pending
 - **What**: **Haiku 3 retirement**: night verification confirms official deprecation page STILL lists `claude-3-haiku-20240307` as "Deprecated" despite retirement date being today (April 20, 2026). Status has NOT flipped to "Retired." Guard PASS — non-event operationally. **Opus 4.7 token increase quantified**: multiple independent sources (Finout, TechPlanet, Tom's Guide) confirm ~37.4% average request token increase vs Opus 4.6. Adaptive thinking is the ONLY supported mode on Opus 4.7 — `budget_tokens` no longer accepted. #49562 OPEN, zero staff responses. PM "sprinting on tuning" (Apr 19) with no follow-up. **Shadow eval**: zero `claude-opus-4-7` entries in `experiment_log.json`. P0 for Jonas. **1M beta sunset**: 10 days (April 30). Fleet on GA models.

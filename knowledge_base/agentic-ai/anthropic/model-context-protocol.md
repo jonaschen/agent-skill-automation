@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -23,6 +23,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — MCP Steady State; No New Releases or CVEs; Ecosystem at 10K+ Servers, 97M+ Monthly Downloads
+- **What**: No new MCP spec updates, CVEs, or governance changes. MCP v2.1 with Server Cards remains current. Ecosystem at 10K+ active public servers and 97M+ monthly SDK downloads. Enterprise WG work (audit trails, SSO, gateway, config portability) proceeding as extensions, not core spec changes. Triggers & Events WG (Clare Liguori, AWS) active but no new public output.
+- **Significance**: Steady state. One sentence per directive.
+- **Source**: https://blog.modelcontextprotocol.io/, https://modelcontextprotocol.io/development/roadmap (verified Apr 21)
 
 ### 2026-04-20 (night) — MCP STDIO Steady State Confirmed; No New CVEs; Night Verification Clean
 - **What**: Night verification confirms no new MCP CVEs, spec changes, or Anthropic stance changes. STDIO landscape remains at 10+ CVEs, 150M+ downloads, 4 exploitation families. CheckPoint hooks CVEs (CVE-2025-59536, CVE-2026-21852) remain distinct class. RockCyberMusings weekly wrapup (Apr 10-16) covers the same OX Security STDIO advisory — no new information.

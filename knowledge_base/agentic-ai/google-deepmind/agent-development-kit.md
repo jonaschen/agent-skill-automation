@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -19,6 +19,11 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — ADK v1.31.0 Day 4; No v1.32.0; Freeze Continues; v2.0.0a3 Workflow Orchestration Noted
+- **What**: ADK v1.31.0 (Apr 17) day 4 stable. No v1.32.0 or v2.0.0a4 on GitHub. v2.0.0a3 (Apr 9) remains latest pre-release — key feature: Workflow(BaseNode) graph orchestration with lazy scan deduplication, partial resume for nested workflows, state/artifact delta bundling. Docs site now at adk.dev (301 from google.github.io/adk-docs). Next release v1.32.0 expected ~Apr 27-May 1. I/O 28d.
+- **Significance**: Freeze extending into Monday matches Gemini CLI pattern — deeper pre-I/O freeze than prior cycles. The v2.0.0a3 Workflow Orchestration feature is the strongest signal for what ADK v2.0 GA at I/O will look like: graph-based workflow runtime with crash-safe resume.
+- **Source**: https://github.com/google/adk-python/releases
 
 ### 2026-04-20 (night) — ADK v1.31.0 Day 3 End of Day; No v1.32.0; Night Confirmation
 - **What**: Night verification: ADK v1.31.0 (Apr 17) confirmed latest on GitHub + PyPI. No v1.32.0 or v2.0.0a4. Next release expected ~Apr 27-May 1. I/O 29d.

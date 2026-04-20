@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -19,6 +19,11 @@
 Anthropic has developed multi-agent orchestration patterns both in Claude Code (agent teams/swarm mode) and the Claude Agent SDK (subagents). The core architecture follows a lead-agent/specialist pattern where an orchestrator decomposes problems, delegates to specialized agents working in parallel with isolated context windows, and synthesizes results. As of March 2026, multi-agent orchestration is no longer experimental -- it shipped as a first-class Claude Code feature on February 6, 2026 alongside Opus 4.6.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — Multi-Agent Patterns Stable; Agent Teams and Managed Agents Holding; No New Patterns
+- **What**: No new multi-agent pattern announcements. Five patterns (Teams, Subagents, Three-Agent Harness, Orchestrator-Worker, Message Bus + Shared State) remain the current taxonomy. Managed Agents still in public beta (`managed-agents-2026-04-01`). Agent Teams stable. No new engineering blog posts on orchestration.
+- **Significance**: Steady state. One sentence per directive.
+- **Source**: https://code.claude.com/docs/en/agent-teams, https://www.anthropic.com/engineering/multi-agent-research-system (verified Apr 21)
 
 ### 2026-04-20 (night) — Multi-Agent Patterns: No Change Sunday Night; All Stable
 - **What**: No change. Managed Agents architecture, five patterns, agent teams all stable. No new engineering posts.

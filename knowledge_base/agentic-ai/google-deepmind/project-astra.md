@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-20
+**Last updated**: 2026-04-21
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 — Astra: No Change; Still Research Prototype on Waitlist; I/O 28d
+- **What**: No new Astra announcements. Still a research prototype accessible via waitlist. Confirmed: built on Gemini 2.5 Pro, processes video/audio/text with near-zero latency, powers Gemini Live features (live video, screen sharing) for Advanced/AI Premium subscribers on Android. No public launch date. I/O reveal expected.
+- **Significance**: One sentence: Astra unchanged, I/O reveal expected.
+- **Source**: https://deepmind.google/models/project-astra/
 
 ### 2026-04-20 (night) — Astra Day 17+: No Change; Night Confirmation
 - **What**: Night verification: no new Astra announcements. I/O reveal expected. No change.
