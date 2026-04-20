@@ -18,6 +18,16 @@ Project Mariner is a Google DeepMind research prototype for autonomous web brows
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — Mariner Day 17+: No Change; Night Confirmation
+- **What**: Night verification: no new Mariner announcements. Enterprise API 21d late. "Gemini Agent" umbrella thesis holds. I/O 29d.
+- **Significance**: Pure confirmation.
+- **Source**: https://deepmind.google/models/project-mariner/
+
+### 2026-04-20 evening -- Mariner day 17+: no change. Enterprise API 21d late. I/O 29d.
+- **What**: No change from morning sweep. No new Mariner announcements. Quiet phase continues.
+- **Significance**: Pure confirmation. No change.
+- **Source**: https://deepmind.google/models/project-mariner/
+
 ### 2026-04-20 -- Mariner day 17+: no change. Enterprise API 21d late. Available US AI Ultra subscribers. Cloud-VM multi-task (10 simultaneous). I/O 29d.
 - **What**: (1) **No new Mariner-specific announcements**. Consumer product at labs.google.com/mariner/ remains available for US AI Ultra subscribers ($249.99/mo). (2) **Capabilities confirmed**: 83.5% WebVoyager success rate, "Observe-Plan-Act" loop, up to 10 simultaneous tasks via cloud VMs, "Teach and Repeat" persistent cross-session memory. (3) **Enterprise API** — originally Q1 2026 target, now 21 days late. Likely absorbed into I/O "Gemini Agent" relaunch. (4) **Computer Use** available in Gemini API via `gemini-3-pro-preview` and `gemini-3-flash-preview` — developer-accessible Mariner-class browser automation. (5) **DeepMind absorption confirmed** — Mariner team integrated into core DeepMind to "prioritize defending Chrome's dominance." (6) **No I/O Mariner-branded session** — capabilities expected under "Gemini Agent" umbrella. (7) **I/O 29d**.
 - **Significance**: Day 17+ of quiet phase. The DeepMind absorption and absent I/O track continue to confirm the "Gemini Agent" umbrella relaunch thesis. The 83.5% WebVoyager benchmark and 10-task concurrency via cloud VMs represent a mature product ready for enterprise positioning at I/O. No action items.

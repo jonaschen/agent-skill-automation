@@ -20,10 +20,17 @@ Anthropic has developed multi-agent orchestration patterns both in Claude Code (
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — Multi-Agent Patterns: No Change Sunday Night; All Stable
+- **What**: No change. Managed Agents architecture, five patterns, agent teams all stable. No new engineering posts.
+- **Significance**: No change from evening.
+- **Source**: https://www.anthropic.com/engineering/managed-agents
+
+### 2026-04-20 (evening) — Managed Agents Architecture Detail: Decoupled Brain Pattern; Five Patterns Confirmed Stable
+- **What**: **Managed Agents scaling architecture** detailed in Anthropic engineering blog: "Decoupling the brain from infrastructure" — session orchestration layer separates agent logic from compute/storage. $0.08/session hour + standard token pricing. Five coordination patterns confirmed: sequential, operator, split-and-merge, agent teams, headless. **Agent teams documentation** stable. v2.1.114 agent teams crash fix holds. **No new multi-agent engineering posts or pattern updates Monday.** Managed Agents remains public beta (`managed-agents-2026-04-01` header).
+- **Significance**: The "decoupled brain" architecture is relevant to S2 paper — it documents Anthropic's production approach to separating agent orchestration from compute scheduling, which parallels our cron-based pipeline architecture. The $0.08/session hour pricing confirms Managed Agents is viable for long-running tasks but our cron approach remains more cost-effective for our specific use case (no per-hour surcharge). S2 paper should cite this architecture pattern.
+- **Source**: https://www.anthropic.com/engineering/managed-agents, https://www.mindstudio.ai/blog/what-is-anthropic-managed-agents
+
 ### 2026-04-20 — No Changes: Multi-Agent Patterns Stable; Weekend Quiet
-- **What**: No new multi-agent pattern announcements or Claude Code agent teams changes. v2.1.114 remains current. No new Anthropic engineering blog posts on multi-agent patterns.
-- **Significance**: Stable. S2 paper project continues with existing pattern taxonomy.
-- **Source**: https://code.claude.com/docs/en/agent-teams
 
 ### 2026-04-18 (evening) -- Multi-Agent: v2.1.114 Fixes Agent Teams Crash; Routines Capabilities Detailed; Five-Pattern Taxonomy Confirmed
 - **What**: (1) **v2.1.114 fix**: crash in permission dialog when agent teams teammate requested tool permission — critical for production agent teams usage. (2) **Routines capabilities detailed** (research preview): A routine bundles prompt + repo + connectors (Slack, Google Drive), with three trigger types: Scheduled (hourly/daily/weekly, min 1h interval), API (HTTP POST with bearer token), GitHub (PR/release events). Each execution is a full Claude Code session. Limits: Pro 5/day, Max 15/day, Team/Enterprise 25/day. GitHub triggers have per-routine and per-account hourly caps. Claude can only push to `claude/` prefixed branches. Runs on Anthropic's cloud infrastructure. (3) **Five-pattern taxonomy** confirmed from Anthropic's 2026 Agentic Coding Trends Report: Generator+Verifier, Orchestrator+Sub-Agents, Agent Team, Message Bus, Shared State. This extends the four-pattern taxonomy from the April docs.

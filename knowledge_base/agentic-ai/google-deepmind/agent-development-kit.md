@@ -20,6 +20,16 @@ Google's Agent Development Kit (ADK) is an open-source, code-first framework for
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — ADK v1.31.0 Day 3 End of Day; No v1.32.0; Night Confirmation
+- **What**: Night verification: ADK v1.31.0 (Apr 17) confirmed latest on GitHub + PyPI. No v1.32.0 or v2.0.0a4. Next release expected ~Apr 27-May 1. I/O 29d.
+- **Significance**: Pure confirmation.
+- **Source**: https://github.com/google/adk-python/releases, https://pypi.org/project/google-adk/
+
+### 2026-04-20 evening -- ADK v1.31.0 day 3: confirmed latest on GitHub + PyPI. No v1.32.0 or v2.0.0a4. I/O 29d.
+- **What**: Evening verification: (1) **ADK Python v1.31.0** (Apr 17) confirmed latest on GitHub releases page. No newer releases published Sunday. v2.0.0a3 (Apr 9) remains latest pre-release. (2) **Next release (v1.32.0)** expected ~Apr 27-May 1 based on bi-weekly cadence. (3) **No new I/O-specific ADK leaks** across event-driven queries. I/O session "Agent-first workflows" (May 19 3:30pm PT) remains strongest ADK v2.0 signal.
+- **Significance**: Pure confirmation. No change from morning sweep.
+- **Source**: https://github.com/google/adk-python/releases
+
 ### 2026-04-20 -- ADK v1.31.0 day 3: no change. No v1.32.0 or v2.0.0a4. NEW: Production ADK multi-agent architecture documented. I/O 29d.
 - **What**: (1) **ADK Python v1.31.0** (Apr 17) day 3 stable. No new releases on GitHub or PyPI. v2.0.0a3 (Apr 9) remains latest pre-release. (2) **NEW: Production ADK multi-agent architecture** — Google Cloud Community article documents full distributed ADK deployment pattern: individual agents as FastAPI microservices on Cloud Run, inter-agent communication via A2A (RemoteA2aAgent), sequential pipeline + feedback loop + orchestration patterns, Docker multi-stage builds, pytest validation suites, Makefile-driven deployment. Gemini CLI used for development acceleration with adk-cheatsheet/adk-deploy-guide/adk-dev-guide skills. (3) **ADK documentation** at adk.dev/release-notes/ confirmed through v1.31.0. (4) **Next release (v1.32.0)** expected ~Apr 27-May 1 based on bi-weekly cadence. (5) **I/O "Agent-first workflows from prompt to production"** session (May 19, 3:30 PM PT) remains the likely ADK v2.0 reveal venue. (6) **I/O 29d**.
 - **Significance**: The production architecture article is the first detailed reference implementation showing ADK agents deployed as Cloud Run microservices with A2A inter-agent communication. Key patterns: Agent Cards for service discovery, environment-aware authentication, SSE streaming for frontend, session state persistence across agent handoffs. This validates the ADK+A2A stack for production multi-agent systems and provides a direct comparison point for our Phase 5 topology designs. The ADK development skills (cheatsheet, deploy guide) in Gemini CLI demonstrate Google's "AI writing AI agents" developer experience.

@@ -27,11 +27,23 @@
 - https://www.searchenginejournal.com/why-new-google-agent-may-be-a-pivot-related-to-openclaw-trend/570764/
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
+## Key Developments (reverse chronological)
+
+### 2026-04-20 (night) — CLI v0.38.2 Day 3 End of Day; API Day 5 Silent; No Changes; Monday Unfreeze Expected
+- **What**: Night verification confirms CLI v0.38.2 (Apr 17) remains latest on GitHub. No new stable or nightly releases Sunday. Gemini API day 5 silent (last entry Apr 15). Monday weekday cadence resumption expected.
+- **Significance**: Pure confirmation. No change from evening sweep.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog
+
 ## Overview
 
 Gemini is Google's flagship multimodal model family, with Gemini 3 (released November 2025) representing the latest generation optimized for agentic workflows. The Gemini API supports advanced function calling, tool use, structured output, and multi-step reasoning -- making it a primary foundation for building AI agents in the Google ecosystem. Models range from lightweight Flash variants to the full Pro model, all accessible via the Gemini API and Vertex AI.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-20 evening -- All frozen. CLI v0.38.2 day 3 confirmed on GitHub. Gemini API day 5 silent confirmed on changelog. No Sunday releases. I/O 29d.
+- **What**: Evening verification: (1) **Gemini CLI v0.38.2** (Apr 17) confirmed latest on GitHub releases page. No v0.38.3 or v0.39.1 published Sunday. (2) **Gemini API** changelog page confirmed — last entry Apr 15 (3.1 Flash TTS). No new entries. (3) **No new I/O leaks** — "My Living AI" article (Apr 13) referencing "Gemini 4 + Veo 4 I/O" is speculative clickbait, not a confirmed leak. (4) **Monday is the likely unfreeze day** — 3+ day freeze on Google side unusual outside holidays.
+- **Significance**: Pure confirmation sweep. No new signals. Monday weekday cadence resumption expected.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog
 
 ### 2026-04-20 -- All frozen. CLI v0.38.2 day 3. Nightly pipeline day 6+ paused. Gemini API day 5 silent. NEW: Multi-Agent A2A+ADK production pattern published. I/O 29d.
 - **What**: (1) **Gemini CLI v0.38.2** (Apr 17) holds. No new releases Apr 18-20. Nightly pipeline day 6+ paused (last nightly v0.40.0-nightly.20260415, Apr 15). Longest nightly pause since daily cadence began Apr 9. (2) **Gemini API** day 5 silent since Apr 15 (TTS). Confirmed: no entries after Apr 15 in changelog. (3) **NEW: Multi-Agent A2A+ADK+Cloud Run production pattern** (April 2026 Medium article by xbill/Google Cloud Community) — detailed architecture for distributed multi-agent system using ADK agents as microservices on Cloud Run, communicating via A2A protocol with RemoteA2aAgent, Agent Cards for discovery, and Gemini CLI for development acceleration. Implements sequential pipeline (Researcher→Judge→Content Builder→Course Creator), feedback loops, and orchestration patterns. Production-ready with authenticated A2A clients, SSE streaming, Docker multi-stage builds. (4) **"Gemini Agent" product feature confirmed** — multi-step autonomous agent using Gemini 3's advanced reasoning and tool calling. Uses Gmail, Calendar, Deep Research, Canvas, and live web browsing. Available in Gemini app. (5) **I/O 29d**. Pre-I/O window ~12d.

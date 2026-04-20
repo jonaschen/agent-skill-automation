@@ -26,6 +26,16 @@ Gemma is Google DeepMind's family of open-weight models built on the same resear
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — Gemma 4 Day 18: No Change; Night Confirmation
+- **What**: Night verification: Gemma 4 day 18. No new variants. 400M+ downloads. EAGLE3 available. No change.
+- **Significance**: Pure confirmation.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/
+
+### 2026-04-20 evening -- Gemma 4 day 18: no change. EAGLE3 available (stop tracking). No new variants. Gemini 4 prediction market noted. I/O 29d.
+- **What**: No change from morning sweep. (1) **EAGLE3 available** — per directive, tracking as development stopped. (2) **Lines.com prediction market** on "Will Google Release Gemini 4.0 by June 30, 2026?" exists — signals market awareness of I/O timeline. Not actionable. (3) No new Gemma 4 variants or announcements.
+- **Significance**: Pure confirmation. No change.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/
+
 ### 2026-04-20 -- Gemma 4 day 18: EAGLE3 available (merged, confirmed). No new variants. 400M+ downloads. Apache 2.0. I/O 29d.
 - **What**: (1) **EAGLE3 status confirmed**: vLLM issue #38893 closed Apr 17, completed by PR #39450 (merged Apr 10). Red Hat AI speculator model (`RedHatAI/gemma-4-31B-it-speculator.eagle3`) available on HuggingFace, supported on vllm-main. Thoughtworks also published EAGLE3 draft head. Reasoning support coming soon. (2) **No new Gemma 4 model variants**. Day 18 post-launch. (3) **400M+ downloads** total across Gemma family. 100K+ community variants. (4) **Apache 2.0 license**. (5) **Gemini Nano 4** (Gemma 4-based) confirmed: 4x faster than previous Gemini Nano, 60% less battery, Agent Skills runs multi-step agentic workflows entirely on-device. Expected Android 17 API reveal at I/O. (6) **AI Edge Gallery** — live on Play Store + App Store for fully offline Gemma 4 E2B/E4B deployment. (7) **I/O 29d**. Per directive: EAGLE3 is now "available" — stop tracking as active development.
 - **Significance**: EAGLE3 is fully available and confirmed from multiple independent sources (issue closed, Red Hat model published, usage examples documented). Per directive guidance, this entry stops tracking EAGLE3 as a development — future references will note "EAGLE3 available" only if new benchmarks emerge. Gemini Nano 4 (on-device Gemma 4) with Agent Skills represents the first production on-device agentic runtime, relevant for Phase 6 edge-AI designs.

@@ -16,10 +16,17 @@ Claude's tool use system allows the model to invoke external functions by return
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — Tool Use Stable; No Changes Sunday Night
+- **What**: No tool use changes. Advisor tool beta, web search + programmatic tool calling GA, Task Budgets API-only. All stable.
+- **Significance**: No change from evening.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview
+
+### 2026-04-20 (evening) — Tool Use Stable; Advisor Tool Confirmed Beta; Freeze Continues
+- **What**: No tool use API changes since Opus 4.7 launch (April 16). **Advisor tool** remains in beta (`advisor-tool-2026-03-01` header) — pairs fast executor model with high-intelligence advisor for strategic guidance mid-generation. **Web search + programmatic tool calling** fully GA (no beta header). **Code execution free with web search/fetch** (since Feb 17). Task Budgets remain API-only. No new beta features announced Monday.
+- **Significance**: Stable. The advisor tool is potentially relevant for our pipeline — a Haiku executor with Opus advisor could reduce costs for routine steward tasks while maintaining quality for critical decisions. Not actionable until advisor tool reaches GA.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview, https://releasebot.io/updates/anthropic
+
 ### 2026-04-20 — No Changes: Tool Use API Stable; No New Features or Deprecations
-- **What**: No tool use or function calling changes since Opus 4.7 launch. Task Budgets remain API-only (no CLI integration). No new beta features announced.
-- **Significance**: Stable. No action needed.
-- **Source**: https://releasebot.io/updates/anthropic
 
 ### 2026-04-18 (evening) -- Task Budgets: CLI Availability Confirmed NOT Available; API-Only Feature; `--max-budget-usd` Is the CLI Alternative
 - **What**: **Task Budgets CLI availability investigation** (directive P1 item): (1) **Task Budgets are NOT available on Claude Code or Cowork surfaces** — explicitly stated in official docs: "Task budgets are not supported on Claude Code or Cowork surfaces at launch. Use task budgets directly via the Messages API on Claude Opus 4.7." (2) **CLI flags checked**: `claude -p` supports `--max-budget-usd` (dollar spending cap) and `--max-turns` (iteration limit), but no `--budget` or `--task-budget` flag. The CLI reference confirms no task budget flag exists. (3) **API-only**: Task Budgets require the `task-budgets-2026-03-13` beta header on the Messages API directly. Configuration via `output_config.task_budget: {type: "tokens", total: N}`. Minimum 20K tokens. (4) **Advisory, not enforced**: Task budgets are a soft hint; `max_tokens` remains the hard per-request cap. The model self-moderates against a server-side countdown. (5) **Interaction with `claude -p`**: Since `claude -p` wraps the Messages API, task budgets could theoretically be injected via `--betas task-budgets-2026-03-13` + `CLAUDE_CODE_EXTRA_BODY` with the `output_config.task_budget` field. But this is unsupported and may conflict with Claude Code's internal API management. (6) **`--max-budget-usd`** is the intended CLI-level cost control: `claude -p --max-budget-usd 5.00 "query"` sets a hard dollar ceiling. Combined with `--max-turns`, this provides practical cost/iteration bounds for steward sessions.

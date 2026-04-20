@@ -22,6 +22,16 @@ The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic'
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — SDK Freeze Confirmed End of Day; Py v0.1.63, TS v0.2.114 Unchanged
+- **What**: Night verification confirms no new SDK releases Sunday. Python v0.1.63 (Apr 18), TypeScript v0.2.114 (Apr 18) remain latest. Freeze now ~100 hours. Monday unfreeze expected.
+- **Significance**: Pure confirmation. No change from evening.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/releases
+
+### 2026-04-20 (evening) — SDK Freeze Extends 96h+ Into Monday; Key v0.1.62/v0.2.113 Features Confirmed
+- **What**: Agent SDK versions unchanged: Python v0.1.63, TypeScript v0.2.114. Freeze now **96+ hours** into Monday. **Key features confirmed from April 17 releases**: (1) **Python v0.1.62**: top-level `skills` option on `ClaudeAgentOptions` — accepts `"all"`, named list, or `[]` to suppress. (2) **Python v0.1.60**: subagent transcript helpers (`list_subagents()`, `get_subagent_messages()`), distributed tracing, cascading session deletion. (3) **TypeScript v0.2.113**: native Claude Code binary spawning via platform-specific optional deps, `sessionStore` option (alpha) for mirroring transcripts to external storage, `deleteSession()` function, OpenTelemetry trace context propagation, `title` option for sessions. (4) **Python v0.1.57**: cross-user prompt caching, auto permission mode, thinking configuration fixes. No new Managed Agents announcements.
+- **Significance**: The `skills` option (v0.1.62) is operationally significant — it enables SDK-based agents to selectively load Skills, which would be relevant if we migrate steward sessions from `claude -p` to Agent SDK. The `sessionStore` alpha in TS is an early signal of persistent session infrastructure. No immediate action for our pipeline.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases, https://github.com/anthropics/claude-agent-sdk-typescript/releases
+
 ### 2026-04-20 — No Changes: Python v0.1.63, TypeScript v0.2.114; Weekend Freeze Continues
 - **What**: Agent SDK versions unchanged. Python v0.1.63, TypeScript v0.2.114. No new releases on GitHub or npm. Weekend quiet period — 72+ hours since last release. No new Managed Agents announcements.
 - **Significance**: No action needed. Stable.

@@ -15,10 +15,17 @@ Computer Use is a beta feature that enables Claude to interact with desktop envi
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-20 — No Change: Still Research Preview; No GA Announcement
-- **What**: No Computer Use announcements. Still research preview for API. Cowork includes CU for Pro/Max. No GA timeline.
-- **Significance**: Per directive: mention only if GA announced. Not announced.
+### 2026-04-20 (night) — Computer Use: No Change; Still Research Preview; Windows Expansion Holds
+- **What**: No change Sunday night. Windows expansion via Cowork/CC Desktop. Still research preview on API. No GA announcement.
+- **Significance**: No change. Per directive: mention only if GA announced.
 - **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
+
+### 2026-04-20 (evening) — Computer Use Expanded to Windows; Still Research Preview
+- **What**: Computer Use now available on **Windows** through Claude Cowork and Claude Code Desktop (previously macOS only). Still research preview on the API (`computer-use-2025-11-24` beta header). No GA announcement. Opus 4.7 vision improvements (98.5% XBOW, 2576px, 1:1 coordinates) apply to CU on all platforms.
+- **Significance**: Windows expansion is a consumer feature, not API. Per directive: mention only if GA announced — not announced. No pipeline impact.
+- **Source**: https://www.scoophike.com/technology/anthropic-claude-computer-use-windows/, https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool
+
+### 2026-04-20 — No Change: Still Research Preview; No GA Announcement
 
 ### 2026-04-18 (evening) -- Computer Use: No Change; Still Research Preview; No GA Announcement
 - **What**: No new Computer Use announcements. Still research preview on API. Cowork GA (April 9) includes CU for Pro/Max. No GA timeline for API access. Not in Managed Agents.

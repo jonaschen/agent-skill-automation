@@ -23,6 +23,16 @@ Agent2Agent (A2A) is an open protocol created by Google for enabling secure comm
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-20 (night) — A2A Day 39+: No Change; v1.0.0 Holds; Night Confirmation
+- **What**: Night verification: no new A2A releases or activity. v1.0.0 day 39+ stable. Zero v1.1 signals. I/O 29d.
+- **Significance**: Pure confirmation.
+- **Source**: https://github.com/a2aproject/A2A
+
+### 2026-04-20 evening -- A2A day 39+: no change. v1.0.0 holds. Zero v1.1 or I/O-specific leaks. Stellagent enterprise adoption analysis published. I/O 29d.
+- **What**: Evening verification: (1) **No new A2A releases or activity**. v1.0.0 holds. (2) **Stellagent analysis article** documents A2A growth to 150+ organizations with production deployments at Azure AI Foundry and AWS Bedrock AgentCore. Confirms enterprise credibility. (3) **No A2A v1.1 leaks** from I/O-specific queries. Zero pre-I/O A2A v1.1 signal across all 5 I/O event-driven searches.
+- **Significance**: No change from morning sweep. Stellagent article confirms adoption narrative but adds no new technical details.
+- **Source**: https://stellagent.ai/insights/a2a-protocol-google-agent-to-agent, https://github.com/a2aproject/A2A
+
 ### 2026-04-20 -- A2A day 39+: no change. v1.0.0 holds. 23.3K stars. Zero v1.1 activity. NEW: Production A2A multi-agent pattern published. I/O 29d.
 - **What**: (1) **No new A2A releases** since v1.0.0 (Mar 12). 23.3K GitHub stars. 556 commits. Zero v1.1 pre-I/O leaks. (2) **NEW: Production A2A multi-agent architecture** documented in Google Cloud Community article — RemoteA2aAgent enables service-to-service communication via A2A, Agent Cards for discovery (agent-card.json), authenticated clients with Cloud Metadata Service (production) and gcloud CLI (development). Demonstrates A2A as the inter-agent bus in a distributed ADK+Cloud Run deployment. (3) **IBM documentation** on A2A published ("What Is Agent2Agent Protocol?") — signals enterprise adoption and cross-vendor documentation maturity. (4) **No A2A v1.1 search results** for I/O 2026 specifically. The protocol is described as the cross-industry horizontal bus with "essentially no alternative" as of April 2026. (5) **I/O 29d**. Pre-I/O window ~12d.
 - **Significance**: The production A2A article validates that A2A v1.0 is being actively used in distributed multi-agent deployments on Cloud Run. IBM's documentation signals A2A has reached the "enterprise vendor documentation" maturity level. The continued absence of v1.1 leaks 29 days before I/O suggests either (a) v1.1 reserved for keynote, or (b) v1.0 deemed sufficient for this cycle with I/O messaging focused on adoption stories. No action items.
