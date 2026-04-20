@@ -1,0 +1,272 @@
+{
+  "_comment": "Machine-readable fleet manifest. A2A Agent Card field names used where applicable. Pipeline extensions prefixed with underscore. Generated 2026-04-21.",
+  "_schema_version": "1.0.0",
+  "_a2a_agent_card_version": "1.0",
+  "agents": [
+    {
+      "name": "meta-agent-factory",
+      "description": "Designs and generates new Claude Agent Skill, Sub-agent, or Changeling role definition files from natural language requirements.",
+      "version": "1.0.0",
+      "skills": ["skill-generation", "agent-config", "mcp-config", "changeling-roles"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Glob", "Grep", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_phase": 1,
+      "_definition": ".claude/agents/meta-agent-factory.md"
+    },
+    {
+      "name": "skill-quality-validator",
+      "description": "Audits technical quality and trigger accuracy of SKILL.md files using binary eval loop with Bayesian scoring.",
+      "version": "1.0.0",
+      "skills": ["skill-validation", "trigger-accuracy", "permission-audit"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Bash", "Grep"],
+      "_status": "active",
+      "_permission_class": "review-validation",
+      "_phase": 2,
+      "_definition": ".claude/agents/skill-quality-validator.md"
+    },
+    {
+      "name": "autoresearch-optimizer",
+      "description": "Evolves and optimizes SKILL.md instruction sets to maximize trigger accuracy via iterative Bayesian evaluation.",
+      "version": "1.0.0",
+      "skills": ["description-optimization", "parallel-branch-search", "bayesian-commit"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Bash", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_phase": 3,
+      "_definition": ".claude/agents/autoresearch-optimizer.md"
+    },
+    {
+      "name": "agentic-cicd-gate",
+      "description": "Enforces quality and security gates for Skill deployment with change impact analysis and autonomous rollback.",
+      "version": "1.0.0",
+      "skills": ["deployment-gating", "flaky-detection", "rollback"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Bash", "Grep", "Glob"],
+      "_status": "active",
+      "_permission_class": "review-validation",
+      "_phase": 2,
+      "_definition": ".claude/agents/agentic-cicd-gate.md"
+    },
+    {
+      "name": "changeling-router",
+      "description": "Dynamically switches between expert role identities from the Changeling role library based on task routing.",
+      "version": "1.0.0",
+      "skills": ["role-switching", "task-identification", "context-reset"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Glob", "Grep", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_phase": 4,
+      "_definition": ".claude/agents/changeling-router.md"
+    },
+    {
+      "name": "agentic-ai-researcher",
+      "description": "Autonomous deep research agent tracking latest Agentic AI from Anthropic and Google/DeepMind.",
+      "version": "1.0.0",
+      "skills": ["research-sweep", "kb-update", "deprecation-tracking", "vendor-monitoring"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_cron_schedule": "1:00,14:00 Asia/Taipei",
+      "_definition": ".claude/agents/agentic-ai-researcher.md"
+    },
+    {
+      "name": "agentic-ai-research-lead",
+      "description": "Strategic research director setting priorities, reviewing output, and managing the research team.",
+      "version": "1.0.0",
+      "skills": ["directive-writing", "priority-setting", "team-management", "quality-review"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_cron_schedule": "2:00,15:00 Asia/Taipei",
+      "_definition": ".claude/agents/agentic-ai-research-lead.md"
+    },
+    {
+      "name": "paper-synthesizer",
+      "description": "Academic paper writing agent synthesizing KB contents, experiments, and literature into publication-quality papers.",
+      "version": "1.0.0",
+      "skills": ["paper-writing", "literature-synthesis", "academic-formatting"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_definition": ".claude/agents/paper-synthesizer.md"
+    },
+    {
+      "name": "experiment-designer",
+      "description": "Designs hypothesis-driven experiments and performs statistical analysis of operational data for research papers.",
+      "version": "1.0.0",
+      "skills": ["experiment-design", "statistical-analysis", "data-extraction"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_definition": ".claude/agents/experiment-designer.md"
+    },
+    {
+      "name": "peer-reviewer",
+      "description": "Academic peer review agent evaluating paper drafts for novelty, rigor, clarity, and completeness.",
+      "version": "1.0.0",
+      "skills": ["peer-review", "quality-assessment", "structured-feedback"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Write", "Glob", "Grep"],
+      "_status": "active",
+      "_permission_class": "review-validation",
+      "_definition": ".claude/agents/peer-reviewer.md"
+    },
+    {
+      "name": "topology-aware-router",
+      "description": "Routes multi-step tasks to parallel multi-agent team (Track A) or single flagship agent (Track B) based on TCI.",
+      "version": "1.0.0",
+      "skills": ["tci-computation", "topology-routing", "track-selection"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Write", "Bash", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_phase": 5,
+      "_definition": ".claude/agents/topology-aware-router.md"
+    },
+    {
+      "name": "sprint-orchestrator",
+      "description": "Scrum Master coordinating agile ceremonies, sprint progress, blocker triage, and cross-agent task delegation.",
+      "version": "1.0.0",
+      "skills": ["sprint-planning", "standup-summaries", "blocker-triage", "velocity-analysis"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Glob", "Grep", "Bash", "Task"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_definition": ".claude/agents/sprint-orchestrator.md"
+    },
+    {
+      "name": "precommit-lint-executor",
+      "description": "Runs linting and formatting fixes on git staged files before commit across multiple languages.",
+      "version": "1.0.0",
+      "skills": ["lint-fix", "format-fix", "staged-file-processing"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Glob", "Grep", "Bash", "Write", "Edit"],
+      "_status": "active",
+      "_permission_class": "orchestration",
+      "_definition": ".claude/agents/precommit-lint-executor.md"
+    },
+    {
+      "name": "qa-log-reviewer",
+      "description": "QA agent reading and analyzing log files to identify errors, failures, anomalies, and test result patterns.",
+      "version": "1.0.0",
+      "skills": ["log-analysis", "error-detection", "pattern-identification"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Glob", "Grep"],
+      "_status": "active",
+      "_permission_class": "review-validation",
+      "_definition": ".claude/agents/qa-log-reviewer.md"
+    },
+    {
+      "name": "typescript-perf-reviewer",
+      "description": "Reviews TypeScript code for performance bottlenecks, inefficient patterns, and optimization opportunities.",
+      "version": "1.0.0",
+      "skills": ["perf-audit", "bundle-analysis", "render-optimization"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-sonnet-4-6",
+      "_tools": ["Read", "Glob", "Grep", "Bash"],
+      "_status": "active",
+      "_permission_class": "review-validation",
+      "_definition": ".claude/agents/typescript-perf-reviewer.md"
+    },
+    {
+      "name": "project-reviewer",
+      "description": "[SUSPENDED 2026-04-17] Autonomous tech lead reviewer auditing steward agent work for correctness and alignment.",
+      "version": "1.0.0",
+      "skills": ["work-audit", "progress-assessment", "steering-notes"],
+      "provider": {"organization": "agent-skill-automation"},
+      "_model": "claude-opus-4-6",
+      "_tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Task"],
+      "_status": "suspended",
+      "_suspended_date": "2026-04-17",
+      "_permission_class": "orchestration",
+      "_definition": ".claude/agents/project-reviewer.md"
+    }
+  ],
+  "_steward_configs": [
+    {
+      "name": "factory-steward",
+      "config": ".claude/skills/steward/configs/factory.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "active",
+      "_cron_schedule": "3:00,18:00 Asia/Taipei",
+      "_target_repo": "agent-skill-automation"
+    },
+    {
+      "name": "ltc-steward",
+      "config": ".claude/skills/steward/configs/ltc.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "active",
+      "_cron_schedule": "8:00 Asia/Taipei",
+      "_target_repo": "long-term-care-expert"
+    },
+    {
+      "name": "kings-hand-steward",
+      "config": ".claude/skills/steward/configs/kings-hand.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "active",
+      "_cron_schedule": "19:00 Asia/Taipei",
+      "_target_repo": "The-King-s-Hand"
+    },
+    {
+      "name": "android-sw-steward",
+      "config": ".claude/skills/steward/configs/android-sw.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "suspended",
+      "_suspended_date": "2026-04-17"
+    },
+    {
+      "name": "arm-mrs-steward",
+      "config": ".claude/skills/steward/configs/arm-mrs.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "suspended",
+      "_suspended_date": "2026-04-17"
+    },
+    {
+      "name": "bsp-knowledge-steward",
+      "config": ".claude/skills/steward/configs/bsp-knowledge.yaml",
+      "_model": "claude-opus-4-6",
+      "_status": "suspended",
+      "_suspended_date": "2026-04-17"
+    }
+  ],
+  "_fleet_summary": {
+    "total_agents": 16,
+    "active": 15,
+    "suspended": 1,
+    "total_stewards": 6,
+    "active_stewards": 3,
+    "suspended_stewards": 3,
+    "models": {
+      "claude-opus-4-6": 8,
+      "claude-sonnet-4-6": 8
+    },
+    "permission_classes": {
+      "orchestration": 10,
+      "review-validation": 6
+    },
+    "generated": "2026-04-21T18:00:00+08:00"
+  }
+}
