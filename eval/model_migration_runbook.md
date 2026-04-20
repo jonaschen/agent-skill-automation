@@ -74,6 +74,9 @@ These gates apply to any model migration shadow eval, not just Opus 4.7. They ar
 
 ### Post-Migration Monitoring (if GO)
 
+**G4 — Cost Observational Gate (graduated rollout)**:
+Monitor actual session cost delta during Day 1 rollout (factory-steward only). Compare perf JSON durations and token consumption between Opus 4.6 and 4.7 sessions. If daily cost increase > 50%, pause rollout and adjust dollar ceiling before expanding to additional agents.
+
 - **Days 1-4**: factory-steward only. Compare duration:commit ratio with 4.6 baseline.
 - **Days 5-8**: Add researcher. Monitor for delegation pattern changes.
 - **Days 9+**: Remaining agents. Full fleet on new model.

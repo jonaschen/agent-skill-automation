@@ -109,23 +109,42 @@ if [ "$shadow_eval_done" = "yes" ]; then
   exit 0
 fi
 
+# Pre-flight: validate experiment log integrity before we read/write it
+if ! python3 "$REPO_ROOT/eval/validate_experiment_log.py" "$EXPERIMENT_LOG" 2>> "$LOG_FILE"; then
+  echo "[FAIL] experiment_log.json is malformed — refusing to proceed" >> "$LOG_FILE"
+  EVAL_STATUS="log-validation-failed"
+  log_event "ERROR" "{\"reason\":\"experiment_log_validation_failed\"}"
+  exit 1
+fi
+
 echo "[RUN] Starting shadow eval for $PENDING_MIGRATION_MODEL" >> "$LOG_FILE"
 log_event "SHADOW_EVAL_START" "{\"model\":\"$PENDING_MIGRATION_MODEL\"}"
 EVAL_STATUS="running"
 
-# Run the eval
+# Run the eval with timeout safety net (5400s = 90 min)
+# Prevents overlap with 1:00 AM researcher session if eval runs long
+EVAL_TIMEOUT=5400
 cd "$REPO_ROOT"
-EVAL_OUTPUT=$(python3 eval/run_eval_async.py \
+EVAL_OUTPUT=$(timeout "$EVAL_TIMEOUT" python3 eval/run_eval_async.py \
   --model "$PENDING_MIGRATION_MODEL" \
   --split train \
   --inter-test-delay "$INTER_TEST_DELAY" \
-  "$SKILL_PATH" 2>&1) || {
-  echo "[FAIL] Eval runner exited with error" >> "$LOG_FILE"
+  "$SKILL_PATH" 2>&1)
+EVAL_EXIT=$?
+
+if [ "$EVAL_EXIT" -eq 124 ]; then
+  echo "[TIMEOUT] Eval exceeded ${EVAL_TIMEOUT}s limit" >> "$LOG_FILE"
+  echo "$EVAL_OUTPUT" >> "$LOG_FILE"
+  EVAL_STATUS="timeout"
+  log_event "SHADOW_EVAL_TIMEOUT" "{\"model\":\"$PENDING_MIGRATION_MODEL\",\"timeout_seconds\":$EVAL_TIMEOUT}"
+  exit 1
+elif [ "$EVAL_EXIT" -ne 0 ]; then
+  echo "[FAIL] Eval runner exited with error (code $EVAL_EXIT)" >> "$LOG_FILE"
   echo "$EVAL_OUTPUT" >> "$LOG_FILE"
   EVAL_STATUS="eval-failed"
-  log_event "SHADOW_EVAL_FAIL" "{\"model\":\"$PENDING_MIGRATION_MODEL\",\"reason\":\"eval_runner_error\"}"
+  log_event "SHADOW_EVAL_FAIL" "{\"model\":\"$PENDING_MIGRATION_MODEL\",\"reason\":\"eval_runner_error\",\"exit_code\":$EVAL_EXIT}"
   exit 1
-}
+fi
 
 echo "$EVAL_OUTPUT" >> "$LOG_FILE"
 
