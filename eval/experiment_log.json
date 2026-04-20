@@ -5,8 +5,8 @@
       "iteration": 0,
       "timestamp": "2026-03-28T16:00:00Z",
       "branch": "baseline",
-      "pass_rate": 0.50,
-      "posterior_mean": 0.50,
+      "pass_rate": 0.5,
+      "posterior_mean": 0.5,
       "ci_lower": 0.358,
       "ci_upper": 0.642,
       "change_description": "Confirmed baseline from G7 Run 2.",
@@ -20,7 +20,7 @@
       "pass_rate": 0.457,
       "posterior_mean": 0.457,
       "ci_lower": 0.317,
-      "ci_upper": 0.600,
+      "ci_upper": 0.6,
       "change_description": "Simplified and made trigger more aggressive.",
       "git_commit": "REVERTED",
       "outcome": "revert"
@@ -32,7 +32,7 @@
       "pass_rate": 0.457,
       "posterior_mean": 0.457,
       "ci_lower": 0.317,
-      "ci_upper": 0.600,
+      "ci_upper": 0.6,
       "change_description": "Strengthened NEW vs EXISTING distinction.",
       "git_commit": "REVERTED",
       "outcome": "revert"
@@ -46,7 +46,7 @@
       "ci_lower": 0.818,
       "ci_upper": 0.983,
       "train_posterior": 0.921,
-      "val_posterior": 0.800,
+      "val_posterior": 0.8,
       "change_description": "G8 Iter 1: Added 'I need a Skill for X', 'workflow automation', 'create an X expert' triggers. Strengthened exclusions for fix/debug/analyze existing.",
       "git_commit": "25d0f9c",
       "outcome": "commit"
@@ -58,9 +58,9 @@
       "pass_rate": 0.895,
       "posterior_mean": 0.895,
       "ci_lower": 0.781,
-      "ci_upper": 0.970,
+      "ci_upper": 0.97,
       "train_posterior": 0.895,
-      "val_posterior": 0.900,
+      "val_posterior": 0.9,
       "change_description": "G8 Iter 2: Added ROUTING RULE (create/build intent always routes here even when domain agents exist), EXCLUSION RULE (existing Skill modification routes elsewhere), explicit Changeling/AOSP domain disambiguation. V pushed from 0.800 to 0.900.",
       "git_commit": "8dae856",
       "outcome": "commit"
@@ -74,10 +74,24 @@
       "ci_lower": 0.502,
       "ci_upper": 0.798,
       "train_posterior": 0.658,
-      "val_posterior": 0.600,
-      "change_description": "G8 Iter 3 baseline: No description change. Regression from 0.895→0.658 caused by adding 6 new agents (stewards, factory, reviewer) since G8 Iter 2. Positive tests (CREATE prompts) now route to competing agents. All negatives still pass. Structural routing competition issue, not description quality.",
+      "val_posterior": 0.6,
+      "change_description": "G8 Iter 3 baseline: No description change. Regression from 0.895\u21920.658 caused by adding 6 new agents (stewards, factory, reviewer) since G8 Iter 2. Positive tests (CREATE prompts) now route to competing agents. All negatives still pass. Structural routing competition issue, not description quality.",
       "git_commit": "baseline-measurement",
       "outcome": "regression-detected"
+    },
+    {
+      "iteration": 6,
+      "timestamp": "2026-04-20T10:35:27Z",
+      "branch": "shadow-eval-claude-opus-4-7",
+      "model": "claude-opus-4-7",
+      "pass_rate": 0.683,
+      "posterior_mean": 0.683,
+      "ci_lower": 0.535,
+      "ci_upper": 0.814,
+      "passes": 27,
+      "total": 39,
+      "change_description": "Shadow eval: claude-opus-4-7 on training set (T=39). NO-GO verdict: NG1 triggered (mean 0.683 < 0.75 threshold). G1 PASS (CI overlap), G2 PASS (zero 400s), G3 PASS (duration ok).",
+      "outcome": "no-go"
     }
   ]
 }
