@@ -50,6 +50,7 @@ print_agent_section() {
     local TOTAL_DURATION=0
     local SUCCESS_COUNT=0
     local LATEST_DATE=""
+    local LATEST_PERF_DATE=""
     local LATEST_DURATION=0
     local LOG_ONLY_COUNT=0
 
@@ -66,8 +67,8 @@ print_agent_section() {
                 local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "0")
                 local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$pf" 2>/dev/null || echo "1")
 
-                if [ -z "$LATEST_DATE" ] || [ "$LATEST_DATE" = "$CHECK_DATE" ]; then
-                    LATEST_DATE="$CHECK_DATE"
+                if [ -z "$LATEST_PERF_DATE" ] || [ "$LATEST_PERF_DATE" = "$CHECK_DATE" ]; then
+                    LATEST_PERF_DATE="$CHECK_DATE"
                     LATEST_DURATION=$DURATION
                 fi
 
@@ -87,6 +88,11 @@ print_agent_section() {
             fi
         fi
     done
+
+    # Prefer perf-based date; fall back to log-only date
+    if [ -n "$LATEST_PERF_DATE" ]; then
+        LATEST_DATE="$LATEST_PERF_DATE"
+    fi
 
     if [ "$RUN_COUNT" -eq 0 ] && [ "$LOG_ONLY_COUNT" -eq 0 ]; then
         echo -e "  ${YELLOW}No runs found in the last ${DAYS} days${RESET}"
