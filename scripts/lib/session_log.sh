@@ -20,6 +20,10 @@ _SESSION_LOG_DIR=""
 _SESSION_LOG_FILE=""
 _SESSION_LOG_DATE=""
 
+# Ensure Node.js v24 is in PATH for Gemini/Claude (required for regex 'v' flag)
+# This is critical for cron environments where the default PATH is minimal.
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
+
 # Initialize session logging for an agent
 # Args: agent_name repo_root
 init_session_log() {
