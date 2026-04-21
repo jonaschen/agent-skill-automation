@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -26,6 +26,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.112 (April 16, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Claude Code v2.1 Ships Opus 4.7 Support and /less-permission-prompts
+- **What**: v2.1 adds full support for Opus 4.7, a new `/effort` slider, and the **`/less-permission-prompts`** skill for allowlist optimization.
+- **Significance**: Significant productivity boost for autonomous stewards by reducing interactive interruptions. startup is parallelized for faster terminal launch.
+- **Source**: [anthropic.com/claude-code-changelog](https://www.anthropic.com/claude-code-changelog)
 
 ### 2026-04-18 -- Claude Code v2.1.112: Opus 4.7 Auto Mode Fix; Routines Research Preview Deepened; v2.1.111 Stabilization Day 2
 - **What**: **v2.1.112** (April 16 evening) — single critical fix: resolved "claude-opus-4-7 is temporarily unavailable" error affecting auto mode on the new Opus 4.7 model. **v2.1.111 feature review (day 2)**: (1) **Opus 4.7 xhigh effort** confirmed stable — the interactive `/effort` slider with arrow-key navigation and Enter confirmation works across CLI and agent sessions; `xhigh` sits between `high` and `max`, falls back to `high` on non-4.7 models. (2) **`/ultrareview`** runs cloud-based parallel multi-agent code review — Pro/Max users get 3 free ultrareviews. (3) **`/less-permission-prompts`** scans transcripts for common read-only Bash/MCP calls and proposes additions to `.claude/settings.json` allowlist — significant steward-agent productivity win by reducing interactive permission prompts. (4) **Auto mode** no longer requires `--enable-auto-mode` flag. (5) **Plan files** now named after prompt text (e.g., `fix-auth-race-snug-otter.md`). (6) **`/skills` menu** now sortable by estimated token count (press `t`). (7) **Read-only bash commands** with glob patterns and `cd <project-dir> &&` no longer trigger permission prompts. (8) **Windows PowerShell tool** progressively rolling out (`CLAUDE_CODE_USE_POWERSHELL_TOOL` env var). **Bug fixes in v2.1.111**: terminal display tearing in iTerm2+tmux, `@` file suggestions re-scanning in non-git dirs, LSP diagnostics after edits, `/resume` tab-completion, `/context` grid rendering, `/clear` dropping session names, non-existent `commit` skill call, 429 rate-limit errors on Bedrock/Vertex/Foundry. **Routines** (April 14 research preview): saved cloud automations combining a prompt + repo + connectors, with three trigger types: **Scheduled** (hourly/daily/weekly), **API** (HTTP POST to per-routine endpoint with bearer token), **GitHub** (PR/release events). Run limits by plan: Pro 5/day, Max 15/day, Team/Enterprise 25/day. Minimum interval: 1 hour.

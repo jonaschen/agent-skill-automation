@@ -1,30 +1,21 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
-- https://github.com/vllm-project/vllm/issues/38893
-- https://deepmind.google/models/gemma/
-- https://deepmind.google/models/gemma/gemma-3/
-- https://developers.googleblog.com/en/introducing-gemma-3n/
-- https://blog.google/technology/developers/gemma-3/
+- https://blog.google/technology/developers/gemma-4/
 - https://ai.google.dev/gemma/docs/releases
-- https://www.infoq.com/news/2026/01/functiongemma-edge-function-call/
-- https://ai.google.dev/gemma/docs/functiongemma
-- https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/
-- https://developers.googleblog.com/bring-state-of-the-art-agentic-skills-to-the-edge-with-gemma-4/
-- https://9to5google.com/2026/04/02/google-gemma-4/
-- https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
-- https://deepmind.google/models/gemma/gemma-4/
-- https://developer.nvidia.com/blog/bringing-ai-closer-to-the-edge-and-on-device-with-gemma-4/
-- https://www.interconnects.ai/p/gemma-4-and-what-makes-an-open-model
-- https://android-developers.googleblog.com/2026/04/AI-Core-Developer-Preview.html
-- https://unsloth.ai/docs/models/gemma-4/train
+- https://huggingface.co/models?search=gemma-4
 
 ## Overview
 
-Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
+Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (released April 2026) is the latest generation, purpose-built for **advanced reasoning and agentic workflows**. It features a 256K context window, native multimodal capabilities, and an Apache 2.0 license. The family includes the **31B Dense** model, which ranks as a top-tier open model on global leaderboards.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Gemma 4 Ecosystem Expansion: 31B Dense #3 on Arena AI; Native "Thinking Mode" GA; Android Studio Agent Mode
+- **What**: Gemma 4 has rapidly gained traction in the open-source community since its early April launch: (1) **Benchmark Performance** — The **Gemma 4 31B Dense** model ranked #3 on the global Arena AI leaderboard for open models, outperforming many significantly larger models in reasoning and logic. (2) **Native "Thinking Mode"** — Google confirmed the GA of a built-in reasoning mode that allows the model to "think" step-by-step before answering, improving performance on complex planning tasks. (3) **Android Studio Agent Mode** — Gemma 4 now powers a local-first "Agent Mode" in Android Studio, enabling offline AI-assisted refactoring and bug fixing. (4) **Apache 2.0 License** — Confirmed for the entire Gemma 4 family, ensuring maximum flexibility for commercial use. (5) **Native Tool Use** — Built-in support for function-calling and structured JSON output.
+- **Significance**: Gemma 4 31B Dense provides frontier-level reasoning in a size that fits on consumer GPUs, making it the ideal "Reasoner" model for local-first agentic systems. The integration into Android Studio validates the "local agent" use case for developer productivity.
+- **Source**: https://blog.google/technology/developers/gemma-4/, https://android-developers.googleblog.com/2026/04/gemma-4-new-standard-for-local-agentic-intelligence.html
 
 ### 2026-04-18 -- Gemma 4 Day 16: AI Edge Gallery Live on Play Store + App Store; ADK v1.31.0 Sandbox Code Execution; No New Variants; I/O 31 Days
 - **What**: Gemma 4 post-launch day 16 (since Apr 2): (1) **No new Gemma 4 model variants** from Google. Rumored 100B+ MoE still unreleased — remains I/O candidate. (2) **Google AI Edge Gallery** — confirmed live on both Play Store and App Store since April 9, running Gemma 4 E2B and E4B models fully offline. Supports Android 12+ and iOS 17+. Agent Skills feature enables multi-step, autonomous agentic workflows entirely on-device. No cloud connection required; data never leaves device unless user opts into Gemini text enhancement. (3) **ADK v1.31.0** (Apr 17) — indirectly relevant: the new AgentEngineSandboxCodeExecutor provides cloud-sandboxed code execution for ADK agents, which can use Gemma 4 as their model backend (since v1.30.0 added native Gemma 4 support). Session Rewind enables undo-able agent actions. (4) **vLLM EAGLE3 integration** (#38893) — still WIP since Apr 7. No status change at day 11. Community speculative decoding support for Gemma 4 remains pending. (5) **Fine-tuning ecosystem stable**: HuggingFace Transformers 5.5.0 stable, Unsloth production-ready (3 universal bugs fixed in early April), TRL v1.0 for alignment. All QLoRA blockers resolved. (6) **Gemma 4 as Gemini Nano foundation** — confirmed: code targeting Gemma 4 today will automatically work on Gemini Nano 4 devices later this year. Gemini Nano 4 Fast delivers 3x speed over previous generation. AICore Developer Preview available. (7) **Arena rankings**: 31B model ranked #3 open model, 26B (MoE) ranked #6 on Arena AI text leaderboard. (8) **Google I/O 2026 (May 19-20)** now 31 days away. I/O expectations: Gemini Nano 3 API surface for Android 17, possible 100B+ MoE variant.

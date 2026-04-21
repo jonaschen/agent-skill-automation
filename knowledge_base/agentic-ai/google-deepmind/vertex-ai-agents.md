@@ -1,24 +1,21 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
-- https://docs.cloud.google.com/agent-builder/overview
-- https://docs.cloud.google.com/agent-builder/release-notes
-- https://cloud.google.com/products/agent-builder
-- https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder
-- https://docs.cloud.google.com/agent-builder/agent-engine/overview
-- https://cloud.google.com/blog/products/ai-machine-learning/vertex-ai-memory-bank-in-public-preview
-- https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
-- https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes
-- https://cloudfresh.com/en/blog/google-agentspace-evolves-into-gemini-enterprise/
-- https://docs.cloud.google.com/gemini/enterprise/docs/release-notes
-- https://docs.cloud.google.com/gemini/enterprise/docs/agent-designer
+- https://cloud.google.com/vertex-ai/docs/agents
+- https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-next-26-agentic-ai-announcements
+- https://cloud.google.com/vertex-ai/docs/agent-builder/gke-sandbox
 
 ## Overview
 
-Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
+Vertex AI Agent Builder (rebranding to **AI Applications**) is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution (via GKE Agent Sandbox) are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Vertex AI "AI Applications" Relaunch: Memory Bank & GKE Agent Sandbox GA; Generative UI (A2UI); I/O 27 Days
+- **What**: Google Cloud finalized the rebranding of Agent Builder to **AI Applications** at Google Cloud Next '26 (Apr 21-23): (1) **Memory Bank GA** — Provides managed short-term session memory and long-term episodic memory for agents. (2) **GKE Agent Sandbox GA** — Secure, multi-tenant environment on GKE for executing AI-generated code, isolated from core infrastructure. (3) **Generative UI (A2UI)** — New capability for agents to dynamically generate UI components (forms, charts) based on conversation context. (4) **Model Context Protocol (MCP) Native Support** — Vertex AI agents can now connect to third-party data sources using standardized MCP servers. (5) **AP2 Integration** — Native support for the Agent Payments Protocol for autonomous financial transactions.
+- **Significance**: The GA of Memory Bank and GKE Agent Sandbox provides the missing "enterprise-grade" features for production agents: persistent memory and secure execution. Generative UI shifts the agent experience from pure chat to interactive apps. The move to "AI Applications" framing signals Google's intent to treat agents as the new standard for software applications.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-next-26-agentic-ai-announcements
 
 ### 2026-04-18 -- AI Applications Day 59 Silence (Record Extends); ADK v1.31.0 Adds AgentEngine Sandbox Executor; Vertex AI GenAI 3 Days Quiet; I/O 31 Days
 - **What**: Vertex AI Agent Builder (AI Applications) freeze deepens: (1) **Agent Builder release notes** — still no entries after February 18, 2026 (Code Execution GA), verified against docs.cloud.google.com/agent-builder/release-notes. Now **59 consecutive days without Agent Builder-specific releases**. Record extends daily. URL path still shows old `/agent-builder/` despite AI Applications rebrand in console/docs/marketing. (2) **Vertex AI GenAI release notes** — no new entries since Apr 15 (Gemini 3.1 Flash TTS). 3 days quiet. Most recent entries: Apr 15 (TTS), Apr 14 (robotics model), Apr 6 (RAG Metadata), Apr 3 (Gemma 4 + RAG Serverless), Apr 2 (Veo 3.1 Lite). (3) **ADK v1.31.0** (Apr 17) — the new `AgentEngineSandboxCodeExecutor` directly leverages Vertex AI Agent Engine's Code Execution Sandbox API, adding a Google-managed, isolated code execution option for ADK agents deployed on Agent Engine. Session Rewind and Service Registry also available for Agent Engine deployments. (4) **No pricing or quota changes** detected on Agent Engine. (5) **Google I/O 2026 (May 19-20)** now 31 days away. 59-day freeze + AI Applications rebrand + ADK v2.0 beta expected = comprehensive platform relaunch at I/O near-certain.

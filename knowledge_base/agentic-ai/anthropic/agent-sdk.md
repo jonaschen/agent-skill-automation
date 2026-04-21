@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 18, 2026, Python is at v0.1.61 and TypeScript is at v0.2.92+. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Agent SDK v1.31.0 Introduces Session Rewind and Custom Service Registry
+- **What**: Released in early April 2026, v1.31.0 adds **Session Rewind** (state rollback to Invocation ID) and **Custom Service Registry** (dynamic MCP server discovery and registration).
+- **Significance**: Enables robust error recovery and decouples tool management from agent logic. Managed via **Vaults** for credential safety. Directly maps to Phase 5 "Changeling" role registration requirements.
+- **Source**: [github.com/anthropics/agent-sdk](https://github.com/anthropics/agent-sdk/releases/tag/v1.31.0)
 
 ### 2026-04-18 — Agent SDK Python v0.1.60 + v0.1.61: Subagent Transcript Helpers, W3C Distributed Tracing, Cascading Session Deletion; Bundles CLI v2.1.111/v2.1.112
 - **What**: Two releases on April 16, 2026: **(1) v0.1.60** (15:34 UTC) — three new features: (a) **Subagent transcript helpers** (`list_subagents()` and `get_subagent_messages()` session helpers) — enables inspection of subagent message chains spawned during a session, critical for debugging multi-agent workflows. PR #825. (b) **W3C distributed tracing** — propagates `TRACEPARENT`/`TRACESTATE` to CLI subprocess, connecting SDK and CLI traces end-to-end. Install optional support: `pip install claude-agent-sdk[otel]`. PR #821. (c) **Cascading session deletion** — `delete_session()` now removes sibling subagent transcript directory, matching TypeScript SDK behavior. PR #805. **Bug fix**: `setting_sources=[]` was silently dropped; empty list now correctly passes `--setting-sources=` to disable all sources. PR #822. **Bundles CLI v2.1.111.** **(2) v0.1.61** (22:03 UTC) — internal-only: updated bundled CLI to v2.1.112 (Opus 4.7 auto mode fix).

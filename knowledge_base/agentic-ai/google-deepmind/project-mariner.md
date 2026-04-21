@@ -1,22 +1,21 @@
 # Project Mariner
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://deepmind.google/models/project-mariner/
-- https://deepmind.google/technologies/project-mariner/
-- https://techcrunch.com/2024/12/11/google-unveils-project-mariner-ai-agents-to-use-the-web-for-you/
-- https://techcrunch.com/2025/05/20/google-rolls-out-project-mariner-its-web-browsing-ai-agent/
-- https://www.allaboutai.com/ai-agents/project-mariner/
-- https://www.reactionarytimes.com/googles-strategic-pivot-deepmind-absorbs-project-mariner-to-win-the-ai-agent-war/
-- https://www.programming-helper.com/tech/google-project-mariner-ai-browser-agent-2026-autonomous-web-navigation
-- https://labs.google.com/mariner/
-- https://blog.google/technology/google-deepmind/gemini-computer-use-model/
+- https://blog.google/technology/ai/google-deepmind-google-agent-crawler/
+- https://www.searchengineland.com/google-agent-user-agent-472674
 
 ## Overview
 
-Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
+Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. In 2026, Mariner was strategically folded into the **Gemini Agent** product umbrella, with its core technology powering cloud-hosted Chrome VMs and the **Google-Agent** crawler.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Mariner Integrated into "Gemini Agent"; Google-Agent Crawler Formalized; Parallel Tasking for AI Ultra; I/O 27 Days
+- **What**: Project Mariner has completed its transition from research prototype to integrated product feature: (1) **Gemini Agent Integration** — Mariner's computer use and browser automation capabilities are now a core part of the **Gemini Agent** strategy. (2) **Google-Agent Crawler** — Formalized as a user-triggered fetcher for agent tasks (e.g., job searching, shopping). It only visits sites when a user specifically directs an agent to perform a task. (3) **Parallel Tasking** — AI Ultra subscribers ($249.99/mo) can now run up to **10 parallel browsing tasks** simultaneously via Mariner-derived technology in cloud-hosted Chrome VMs. (4) **Chrome "Auto Browse"** — A persistent side panel in Chrome now uses Mariner's reasoning for form-filling and research across multiple tabs.
+- **Significance**: The formalization of the `Google-Agent` user-agent is a milestone in web standards, distinguishing agent-initiated traffic from search crawlers. The shift to parallel cloud-hosted VMs signals that agentic browsing is becoming a high-scale infrastructure service, not just a local automation tool.
+- **Source**: https://blog.google/technology/ai/google-deepmind-google-agent-crawler/, https://www.searchengineland.com/google-agent-user-agent-472674
 
 ### 2026-04-18 -- Mariner Quiet Phase Day 13; "Teach and Repeat" Persistent Memory Confirmed; No I/O Mariner Track; I/O 31 Days
 - **What**: Project Mariner remains in post-reorganization quiet phase (day 13): (1) **No new Mariner-specific announcements** in past 24 hours. Consumer product at labs.google.com/mariner/ remains available for AI Ultra subscribers ($249.99/mo). (2) **"Teach and Repeat" persistent cross-session memory** — confirmed as a 2026 feature addition. Unlike early LLMs that forgot instructions between sessions, Mariner now features persistent memory that allows learned workflows to be repeated across sessions. This is a significant capability upgrade for enterprise use: users can teach Mariner a multi-step task once and have it execute the same workflow in future sessions without re-instruction. (3) **Cloud-VM multi-task infrastructure** — the background VM architecture enabling up to 10 simultaneous tasks remains the product's headline capability. No changes to this infrastructure in the past 24 hours. (4) **I/O 2026 sessions list** — confirmed no Mariner-branded session title. Mariner capabilities expected under "Gemini Agent" umbrella or general AI/Chrome tracks at the keynote. (5) **Enterprise API** (originally Q1 2026 roadmap) — remains overdue with no public confirmation. Q1 ended Mar 31, now 18 days late. Status: either slipped to Q2 or absorbed into I/O 2026 "Gemini Agent" relaunch. (6) **Computer Use in Gemini API** — `gemini-3-pro-preview` and `gemini-3-flash-preview` now support the `computer_use` tool, which shares underlying technology with Mariner's browser control capabilities. This brings Mariner-class UI automation into the developer API. (7) **Google I/O 2026 (May 19-20)** now 31 days away.

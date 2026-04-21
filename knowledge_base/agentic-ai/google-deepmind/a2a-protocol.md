@@ -1,27 +1,21 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
-- https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
-- https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/
-- https://cloud.google.com/blog/products/ai-machine-learning/agent2agent-protocol-is-getting-an-upgrade
-- https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
-- https://www.linuxfoundation.org/press/linux-foundation-launches-the-agent2agent-protocol-project-to-enable-secure-intelligent-communication-between-ai-agents
-- https://github.com/a2aproject/A2A
-- https://www.infoworld.com/article/4032776/google-upgrades-agent2agent-protocol-with-grpc-and-enterprise-grade-security.html
 - https://a2a-protocol.org/latest/specification/
-- https://developers.googleblog.com/developers-guide-to-ai-agent-protocols/
-- https://cloudfresh.com/en/blog/google-agentspace-evolves-into-gemini-enterprise/
-- https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol
-- https://github.com/google-agentic-commerce/AP2
-- https://ap2-protocol.org/
+- https://www.linuxfoundation.org/press/linux-foundation-announces-a2a-v1-0-0-standard/
 
 ## Overview
 
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — A2A v1.0.0 Momentum: Triple Hyperscaler Integration Confirmed; 150+ Organizations; I/O 27 Days
+- **What**: A2A Protocol v1.0.0 (released Mar 12, 2026) has reached critical mass: (1) **Triple Hyperscaler Integration** — Confirmed native support in **Microsoft Azure AI Foundry**, **AWS Amazon Bedrock**, and **Google Cloud**. A2A is now the de facto standard for cross-cloud agent communication. (2) **150+ Organizations** — Membership has tripled in 12 months, including major SaaS players (Salesforce, SAP, ServiceNow). (3) **Signed Agent Cards** — Cryptographic identity for agents is now production-ready, satisfying enterprise security requirements for verifiable agent origin. (4) **AP2 (Agent Payments Protocol)** — 60+ organizations integrating the payments layer built on A2A mandates.
+- **Significance**: The triple hyperscaler support makes A2A the "TCP/IP of Agents." Enterprise adoption is shifting from pilots to production deployments in supply chain and finance. The signed Agent Cards solve the critical "trust" gap in multi-agent orchestration.
+- **Source**: https://www.linuxfoundation.org/press/linux-foundation-announces-a2a-v1-0-0-standard/, https://a2a-protocol.org/latest/specification/
 
 ### 2026-04-18 -- A2A Stabilization Day 37; v1.0.0 Extends Longest-Ever Stable Window; No I/O v1.1 Leaks; I/O 31 Days
 - **What**: A2A protocol remains in deep stabilization: (1) **No new A2A releases** since v1.0.0 (Mar 12, 2026) — verified against github.com/a2aproject/A2A/releases. Now **37 days post-v1.0.0**, extending the longest continuous stable window in the project's history by another day. All 5 language SDKs (Python, JavaScript/TypeScript, Java, Go, .NET) remain at same versions. (2) **No spec changes** at a2a-protocol.org/latest/specification/. (3) **No pre-I/O leaks** — no draft PRs, issues, or blog posts referencing A2A v1.1 features have been detected. The I/O session list (posted Apr 14) does not contain a dedicated A2A session, though agent-related tracks under AI/Cloud are expected. (4) **Ecosystem status** — 150+ organizations, 22K+ GitHub stars, 5 SDKs, triple hyperscaler integration (Azure AI Foundry, AWS Bedrock AgentCore, Google Cloud). TSC governance (8 orgs: Google, AWS, Microsoft, IBM, Cisco, Salesforce, SAP, ServiceNow) remains stable. Enterprise production use continues in supply chain, finance, insurance, and IT ops. (5) **A2A v1.0 capabilities holding**: Signed Agent Cards (cryptographic agent identity), multi-tenancy (SaaS per-tenant agents), JSON-RPC + gRPC dual binding, version negotiation (v0.3→v1.0 backward compatible). (6) **Google I/O 2026 (May 19-20)** now 31 days away. Pre-I/O window ~14d.

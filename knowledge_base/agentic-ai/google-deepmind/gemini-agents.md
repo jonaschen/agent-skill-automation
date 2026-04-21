@@ -1,15 +1,12 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources (latest first)**:
-- https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
-- https://releasebot.io/updates/google/gemini-cli
+- https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-tts/
 - https://github.com/google-gemini/gemini-cli/releases
-- https://blog.google/innovation-and-ai/technology/developers-tools/gemini-api-tooling-updates/
-- https://www.marktechpost.com/2026/04/07/how-to-combine-google-search-google-maps-and-custom-functions-in-a-single-gemini-api-call-with-context-circulation-parallel-tool-ids-and-multi-step-agentic-chains/
-- https://developers.googleblog.com/new-gemini-api-updates-for-gemini-3/
-- https://ai.google.dev/gemini-api/docs/function-calling
+- https://blog.google/technology/ai/google-deepmind-deep-research/
+- https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
 - https://developers.googleblog.com/building-agents-google-gemini-open-source-frameworks/
 - https://blog.google/innovation-and-ai/technology/developers-tools/build-with-gemini-3-1-flash-live/
@@ -33,7 +30,12 @@ Gemini is Google's flagship multimodal model family, with Gemini 3 (released Nov
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-18 -- Gemini CLI Day 3 Quiet (v0.38.1 Holds); Gemini API Silent Since Apr 15; Nightly Pipeline Paused; Free Tier Pro Removal Confirmed; Computer Use in 3 Pro/Flash; I/O 31 Days
+### 2026-04-22 — Deep Research Agents Released; Gemini 3.1 Pro/Flash TTS GA; Gemini CLI v0.39.0-nightly.20260421delta
+- **What**: Google DeepMind and the Gemini CLI team released significant updates: (1) **Deep Research Agents** (`deep-research-preview-04-2026` and `deep-research-max`) launched Apr 21, 2026. These autonomous agents use extended test-time compute for iterative web/data searching and professional report generation. (2) **Gemini 3.1 Pro/Flash TTS GA** — Expressive text-to-speech with 200+ audio tags and native multi-speaker dialogue now generally available in Gemini API and Vertex AI. (3) **Gemini CLI v0.39.0-nightly.20260421** — The "delta" after the 3-day pause: introduces **Context Compression Service** (first-class context management), **Background Memory Service** for passive skill extraction, and `/memory inbox` for reviewing extracted skills. (4) **Computer Use** now in Gemini 3 Pro/Flash models, matching competitive parity with Opus 4.7. (5) **Free Tier Restriction** — Pro models removed from free tier; Flash remains free with billing caps.
+- **Significance**: The release of Deep Research Agents marks a shift toward "test-time compute" as a primary scaling law for agents. Gemini CLI's context compression and passive skill extraction represent major architectural advances in agentic CLI tools, automating context and skill management. Computer Use in 3.1 Pro/Flash unblocks complex UI automation tasks for mainstream Google models.
+- **Source**: https://blog.google/technology/ai/google-deepmind-deep-research/, https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog
+
+### 2026-04-18 — Gemini CLI Day 3 Quiet (v0.38.1 Holds); Gemini API Silent Since Apr 15; Nightly Pipeline Paused; Free Tier Pro Removal Confirmed; Computer Use in 3 Pro/Flash; I/O 31 Days
 - **What**: Gemini CLI and Gemini API remain in pre-I/O quiet phase: (1) **No new Gemini CLI releases** since v0.38.1 stable (Apr 15) and v0.40.0-nightly.20260415 (Apr 15) — verified against github.com/google-gemini/gemini-cli/releases. Day 3 of no releases following the Apr 13-15 six-release burst. No nightly builds for Apr 16, 17, or 18, which is unusual — the nightly cadence had been daily since Apr 9. This suggests the team may have paused the nightly pipeline for stabilization or is accumulating a larger change set for a v0.39.0 stable cut. (2) **Gemini API changelog** — still silent since Apr 15 (Gemini 3.1 Flash TTS). No entries for Apr 16-18. 3 days quiet, consistent with pre-I/O freeze. (3) **Gemini API free tier restructured** (Apr 1) — Pro series models (including 3.1 Pro) removed from free tier, now paid-only ($19.99/mo AI Pro or $249.99/mo Ultra). Free tier restricted to Flash models only. Mandatory monthly spending caps introduced at billing account level. (4) **Computer Use tool** — now available in `gemini-3-pro-preview` and `gemini-3-flash-preview` models via the Gemini API `computer_use` tool. Supports autonomous clicking, form-filling, scrolling, and UI navigation. Available in both AI Studio and Vertex AI. This brings Gemini 3 to parity with the specialized 2.5 Computer Use model. (5) **Gemini 3.1 Flash-Lite Preview** (launched Mar 3) — $0.25/$1.50 per MTok input/output, 45% faster generation than 2.5 Flash, 2.5x faster TTFT, matches 2.5 Flash quality. Remains in preview. (6) **Model deprecations update**: `gemini-robotics-er-1.5-preview` retires Apr 30 (12d). Gemini 2.0 Flash + 2.0 Flash-Lite retire June 1, 2026 (44d). Gemini 2.5 Pro/Flash/Flash-Lite retire October 16, 2026 (181d). (7) **Google I/O 2026 (May 19-20)** now 31 days away. Gemini 4 anticipated but unconfirmed. Engadget, Sportskeeda, 91mobiles all list Gemini 4 as expected reveal.
 - **Significance**: The **nightly pipeline pause** (3 consecutive days without nightlies after daily cadence) is the most notable new signal — it either indicates build system maintenance or a deliberate freeze to accumulate changes for v0.39.0 stable (which would be the next major release). The **API free tier restructuring** is significant for cost planning: any pipeline or agent work using Gemini Pro models now requires paid API keys. Flash models remain free-tier. The **Computer Use in Gemini 3 Pro/Flash** is a competitive parity milestone — Google's mainstream API models now support computer use alongside Anthropic's Opus 4.7 and Claude Computer Use. For our pipeline: no immediate action items. Robotics model deprecation (Apr 30, 12d) does not affect our agents. Continue monitoring for nightly pipeline resumption, v0.39.0 stable cut, and Gemini 4 pre-I/O leaks starting ~May 2.
 - **Source**: https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog, https://help.apiyi.com/en/google-gemini-api-free-tier-changes-april-2026-guide-en.html, https://www.engadget.com/ai/what-to-expect-from-google-io-2026-200252914.html

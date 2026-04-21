@@ -1,24 +1,22 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
-- https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
-- https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
-- https://developers.googleblog.com/adk-go-10-arrives/
-- https://developers.googleblog.com/introducing-agent-development-kit-for-typescript-build-ai-agents-with-the-power-of-a-code-first-approach/
-- https://github.com/google/adk-python
-- https://adk.dev/ (formerly google.github.io/adk-docs, redirected)
-- https://developers.googleblog.com/building-agents-with-the-adk-and-the-new-interactions-api/
-- https://developers.googleblog.com/announcing-adk-for-java-100-building-the-future-of-ai-agents-in-java/
-- https://adk.dev/release-notes/
 - https://github.com/google/adk-python/releases
-- https://developers.googleblog.com/developers-guide-to-ai-agent-protocols/
+- https://pypi.org/project/google-adk/
+- https://adk.dev/release-notes/
+- https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 
 ## Overview
 
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — ADK Python v1.31.1 Released; Session Rewind & Sandbox Code Executor GA; I/O 27 Days
+- **What**: ADK Python v1.31.1 (released Apr 20, 2026) promotes several experimental features to GA: (1) **Session Rewind** — Enables "undo" and retry of agent invocations in multi-step workflows, addressing context pollution from bad tool calls. (2) **AgentEngineSandboxCodeExecutor** — Securely executes agent-generated code in a managed Vertex AI sandbox, providing an enterprise-grade alternative to local execution. (3) **Custom Service Registry** — Standardizes registration of backend service implementations (auth, logging, storage) for FastAPI-deployed agents, enabling plugin-style modularity. (4) **v2.0.0-alpha.4** — Adds **lazy scan deduplication** for graph workflows, preventing re-execution of completed nodes during resumes.
+- **Significance**: Session Rewind and Sandbox Code Execution are critical for production reliability and security. The Service Registry advances the "agent-as-a-service" architecture by decoupling business logic from infrastructure implementations. Graph workflow improvements in v2.0 alpha signal a shift toward deterministic, durable agent orchestration.
+- **Source**: https://github.com/google/adk-python/releases, https://adk.dev/release-notes/
 
 ### 2026-04-18 -- ADK Python v1.31.0 Released (Apr 17): Service Registry, Session Rewind, AgentEngine Sandbox Code Executor; I/O 31 Days
 - **What**: ADK Python v1.31.0 released April 17, 2026, breaking the 4-day stabilization period after v1.30.0: (1) **Custom Service Registry** — new service registry pattern enabling generic registration of custom service implementations for FastAPI servers. This allows ADK agents deployed via FastAPI to register and swap backend service implementations (e.g., custom session stores, logging backends, auth providers) without modifying agent code. Enables plugin-style architecture for enterprise deployments. (2) **Session Rewind** — new capability to rewind a session to before a previous invocation, allowing users to go back and retry operations. This is a debugging and UX feature: if an agent takes a wrong action in a multi-step workflow, the user (or orchestrator) can "undo" the last invocation and retry with different parameters. Critical for agentic workflows where a single bad tool call can derail a multi-step plan. (3) **AgentEngineSandboxCodeExecutor** — new `AgentEngineSandboxCodeExecutor` class that supports executing agent-generated code using the Vertex AI Code Execution Sandbox API. This enables ADK agents to safely run arbitrary code in a managed, isolated sandbox provided by Vertex AI Agent Engine, rather than using the local BashTool or Container-based code execution. Significant for enterprise security: code execution is fully sandboxed in Google's infrastructure. (4) **Bug fixes** — corrected console URL paths after agent engine deployment, resolved BigQuery plugin complications, added Firestore capability support, added live session IDs in LlmResponse for better session tracking. (5) **v2.0.0a3** remains the newest 2.0 pre-release (Apr 9), no a4 yet. (6) **Google I/O 2026 (May 19-20)** now 31 days away.

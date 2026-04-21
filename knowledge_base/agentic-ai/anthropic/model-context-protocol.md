@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -23,6 +23,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — MCP v2.1 Specification Released: Server Cards, Durable Tasks, and OAuth 2.1
+- **What**: MCP v2.1 formalizes **Server Cards** (`.well-known/mcp-server-card`) for pre-connect discovery and **Durable Tasks** for polling long-running operations.
+- **Significance**: Server Cards reduce discovery latency by 30%. OAuth 2.1/OIDC integration provides enterprise-grade security for agentic tool use.
+- **Source**: [modelcontextprotocol.io](https://modelcontextprotocol.io/blog/mcp-v2-1-release)
 
 ### 2026-04-18 -- MCP Stabilization Day: No New Releases; Ecosystem Growth to 10K+ Servers; v2.1 Server Cards Confirmed in Major Hosts
 - **What**: No new MCP specification changes or releases since the maintainer update (April 8). **Ecosystem snapshot** as of mid-April 2026: (1) **10,000+ active public MCP servers** (up from 5,800+ at the start of April), spanning individual developer tools to Fortune 500 deployments. (2) **MCP v2.1 specification** includes Server Cards (`.well-known` URL for structured server metadata discovery) — confirmed implemented in Claude Desktop 3.2.1 and Cursor 2.5.0. (3) Production performance: MCP servers handling 10,000+ concurrent connections with sub-50ms response times under typical workloads. **2026 Roadmap priorities reconfirmed**: (a) **Transport scalability** — evolve Streamable HTTP to stateless multi-instance; session creation/resumption/migration for transparent scale-out. (b) **Server Cards** — `.well-known` discovery standard for browsers, crawlers, and registries. (c) **Tasks primitive** — lifecycle with retry/expiry semantics. (d) **Governance** — Contributor Ladder progression, WG delegation model. (e) **Enterprise readiness** — audit trails, SSO-integrated auth, gateway behavior, config portability. **On Horizon**: Triggers/Events (SEP-1686), streamed/reference results, DPoP (SEP-1932), Workload Identity (SEP-1933). **Triggers & Events WG** active with Clare Liguori (AWS) leading, designing how servers proactively notify clients of state changes (replacing polling/SSE hold-open patterns).

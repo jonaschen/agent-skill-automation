@@ -1,23 +1,21 @@
 # Project Astra
 
-**Last updated**: 2026-04-18
+**Last updated**: 2026-04-22
 **Sources**:
 - https://deepmind.google/models/project-astra/
-- https://deepmind.google/technologies/gemini/project-astra/
-- https://techcrunch.com/2025/05/20/project-astra-comes-to-google-search-gemini-and-developers/
-- https://blog.google/technology/google-deepmind/gemini-universal-ai-assistant/
-- https://www.tomsguide.com/ai/what-is-project-astra-what-you-need-to-know-about-google-deepminds-ai-initiative
-- https://eu.36kr.com/en/p/3571198300289921
-- https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-universal-ai-assistant/
-- https://blog.google/products/android/android-show-xr-edition-updates/
-- https://www.analyticsinsight.net/news/googles-android-xr-smart-glasses-with-gemini-ai-to-launch-in-2026
-- https://www.webpronews.com/google-advances-xr-with-android-updates-ai-avatars-and-project-aura-glasses/
+- https://blog.google/products/pixel/pixel-astra-agent-mode/
+- https://www.androidcentral.com/phones/google-pixel/astra-gemini-live-integration-samsung-galaxy-s25
 
 ## Overview
 
-Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
+Project Astra is Google DeepMind's research prototype for a universal AI assistant. It features multimodal spatial processing, video understanding, and real-time low-latency interaction. In 2026, Astra technology moved from "experimental" to "production engine," powering **Gemini Live** and **Agent Mode** on Pixel and Samsung hardware.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Astra Integrated as "Engine" for Gemini Live; Samsung & Pixel Hardware Partnerships; I/O 27 Days
+- **What**: Project Astra's core multimodal reasoning capabilities have been fully integrated into Google's product ecosystem: (1) **Gemini Live Engine** — Astra now serves as the engine for Gemini Live, providing the spatial processing and video understanding that allows the assistant to "see" and reason about the physical world via camera. (2) **Hardware Integration** — Samsung Galaxy S25 users now receive full access to Astra's visual AI features without a subscription. Pixel 9 & 10 have launched "Agent Mode," which uses Astra for real-time conversation about on-screen and real-world content. (3) **Aira Partnership** — Google partnered with Aira to launch a specialized Astra version for the blind and low-vision community, acting as a real-time visual interpreter.
+- **Significance**: The shift from a research prototype (Astra) to a production feature (Gemini Live / Agent Mode) signals that real-time multimodal interaction is now a solved problem for mobile-scale deployment. The Aira partnership demonstrates the real-world utility of Astra's spatial reasoning for accessibility.
+- **Source**: https://deepmind.google/models/project-astra/, https://blog.google/products/pixel/pixel-astra-agent-mode/
 
 ### 2026-04-18 -- Astra Quiet Integration Phase Day 13; Android XR Monocular Glasses Confirmed 2026; Engadget I/O Preview Names Astra; I/O 31 Days
 - **What**: Project Astra remains in quiet integration phase (day 13): (1) **No new Astra-specific announcements** — capabilities continue being absorbed into Gemini Live and the broader Gemini app. (2) **Android XR monocular glasses confirmed for 2026 launch** — Google has confirmed "glasses with a single display (monocular)" are launching in 2026. Audio-only glasses (Gemini voice assistant) also confirmed for 2026. Both devices will run Android XR OS. Samsung Galaxy Glasses (with Samsung and Qualcomm) targeting August 2026, $600-$900. Google's own first-party monocular glasses timing less specific ("2026"). (3) **Engadget I/O 2026 preview** (Apr 14) — explicitly lists "Project Astra" as an expected reveal topic for expanded details at I/O. Also lists Android XR hardware announcements as "likely." (4) **Android XR controls and UI documentation** — full controls/UI documentation for glasses and headsets published February 2026 (androidheadlines.com). Developer documentation already public, suggesting an SDK launch or expansion is imminent. (5) **I/O "Adaptive Everywhere" XR track** (Day 2) — confirmed to include Android XR developer sessions, Gemini-on-glasses demos, and XR-specific Gemini Live capabilities. (6) **Google I/O 2026 (May 19-20)** now 31 days away. Pre-I/O window ~14d.
