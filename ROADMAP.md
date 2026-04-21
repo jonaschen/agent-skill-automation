@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-22: Phase 4 core complete. Opus 4.7 Shadow Eval (Step 1) triggered BLOCK: 0.63 trigger accuracy vs 0.829 baseline (regression confirmed 2026-04-22). Phase 3 L10 re-baseline task opened. Haiku 3 retired (Apr 19) — verified clean. Gemini researcher recovered from "observability blackout"; daily Gemini scripts hardened with recover_uncommitted fix. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 8d (Apr 30), Google I/O 27d (May 19-20). Phase 5 OTEL tracing and CLI-to-SDK migration adopted as design requirements.**
+**Status as of 2026-04-22: Phase 4 core complete. Opus 4.7 Shadow Eval (Step 1) triggered BLOCK: 0.63 trigger accuracy vs 0.829 baseline. Meta-agent-factory description refined (2026-04-22) to address Opus 4.7 literal style regression. LTC-Gemini enabled in crontab (9am daily) to complete vendor parity. Agent review dashboard (scripts/agent_review.sh) updated for dual-vendor fleet tracking. Gemini researcher recovered from "observability blackout"; daily Gemini scripts hardened with recover_uncommitted fix. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 8d (Apr 30), Google I/O 27d (May 19-20). Phase 5 OTEL tracing and CLI-to-SDK migration adopted as design requirements.**
 
 ---
 

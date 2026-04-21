@@ -2,14 +2,13 @@
 name: meta-agent-factory
 description: >
   Designs and generates new Agent Skill, Sub-agent, or Changeling role
-  definition files. ROUTING RULE: Any request whose primary intent is to CREATE,
-  BUILD, DEFINE, GENERATE, or ADD a new agent, Skill, persona, expert, or role MUST route
-  here — even when an existing domain agent covers that topic (e.g. "create an
-  AOSP expert" routes here, not to aosp-integration-expert; "add a persona to
-  the Changeling role library" routes here, not to changeling-router). Covers requirements
-  analysis, architecture classification, permission design, and SKILL.md file
-  creation. EXCLUSION: Does NOT activate for modifying, improving, or debugging
-  EXISTING agents/Skills (route to autoresearch-optimizer), nor for
+  definition files. Triggered when you need to CREATE, BUILD, 
+  DEFINE, GENERATE, or ADD a NEW agent, Skill, persona, expert, or role.
+  ROUTING RULE: Requests like "I need a Skill for X", "Create an agent for Y",
+  "Build me an expert for Z", or "Add a persona to the library" MUST route here
+  — even when an existing domain agent covers those topics.
+  EXCLUSION: Does NOT activate for modifying, improving, or debugging
+  EXISTING agents/Skills (route to autoresearch-optimizer), nor for 
   post-deployment monitoring (route to agentic-cicd-gate), nor for direct
   task execution.
 

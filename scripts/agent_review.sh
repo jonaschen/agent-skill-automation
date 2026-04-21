@@ -342,11 +342,14 @@ if [ -d "$SESSION_DIR" ]; then
     done
 fi
 
-echo "  Total agent runs: $TOTAL_RUNS with metrics + $TOTAL_LOG_ONLY log-only (across all 7 agents, last $DAYS days)"
+echo "  Total agent runs: $TOTAL_RUNS with metrics + $TOTAL_LOG_ONLY log-only (across all active agents, last $DAYS days)"
 if [ "$TOTAL_SESSIONS" -gt 0 ]; then
     echo "  Total sessions:   $TOTAL_SESSIONS (from session logs — includes multi-run agents)"
 fi
-echo "  Expected runs:    ~$((DAYS * 7)) (varies — LTC runs 5x wkday, 3x weekend)"
+# Calculate expected runs: 4 Claude agents + 4 Gemini agents = 8 active
+# Researcher (2x), Research Lead (2x), Factory (2x), LTC (1x) = 7 runs per vendor per day
+# Total = 14 runs per day
+echo "  Expected runs:    ~$((DAYS * 14)) (7 Claude + 7 Gemini per day; varies on weekends)"
 echo ""
 
 # Check git activity in target repos
