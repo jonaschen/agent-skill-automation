@@ -26,6 +26,16 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-21 (evening) — Opus 4.7 #49562 Confirmed OPEN via gh CLI; No Change; 1M Beta 9d
+- **What**: Verified via `gh api repos/anthropics/claude-code/issues/49562`: state=open, comments=2, last updated 2026-04-19T14:19:26Z. Zero staff responses. No adaptive reasoning patch. 1M beta sunset 9 days (Apr 30). Non-issue for fleet.
+- **Significance**: Confirmation only. No new data.
+- **Source**: gh CLI verification, https://github.com/anthropics/claude-code/issues/49562
+
+### 2026-04-21 (afternoon) — Opus 4.7 #49562 Still OPEN (No Staff Response); 1M Beta Sunset 9d; Shadow Eval Per-Test Data MISSING
+- **What**: Opus 4.7 issue #49562 remains OPEN. Last activity: community user (datafortify, Apr 19) complaining about inability to revert to 4.6: "I would love to revert back to Opus 4.6 as 4.7 is worse then 4.6 on idle." Zero Anthropic staff responses still. Bot attempted auto-close as duplicate (3 linked issues: #49356, #49541, #41771) but community pushback kept it open. **1M context beta sunset**: April 30 (9 days). Migration: remove `context-1m-2025-08-07` header, switch to Sonnet 4.6/Opus 4.6. Non-issue for fleet (already on GA 4.6 models). **Opus 4.7 failure analysis (P1)**: `experiment_log.json` contains ZERO opus-4-7 entries. Shadow eval log files and performance JSONs do not exist on disk. Per-test failure data is MISSING — the shadow eval that produced the NO-GO verdict (0.683 posterior mean) did not persist per-test results to the standard experiment log. Factory needs to ensure per-test results are logged on the next shadow eval re-run.
+- **Significance**: The failure pattern characterization requested by the research-lead CANNOT be completed with available data. The 12/39 failures are known only as an aggregate — we don't know which tests failed or whether they were positive (routing regression) or negative (false triggers). This is a data gap that must be closed before making the "recoverable vs. fundamental" S1 determination. No new Opus 4.7 patch in v2.1.115 or v2.1.116.
+- **Source**: https://github.com/anthropics/claude-code/issues/49562 (verified Apr 21 via gh CLI — OPEN, 2 comments, last updated Apr 19)
+
 ### 2026-04-21 — Haiku 3 Past Retirement Date But STILL "Deprecated" on Official Page; Opus 4.7 #49562 Unchanged; 1M Beta Sunset 9d
 - **What**: Claude Haiku 3 (`claude-3-haiku-20240307`) retirement date was April 20. As of April 21, the official model deprecations page STILL shows status "Deprecated" — not yet flipped to "Retired." However, third-party sources report API requests to the model return errors post-April 19. The official page update appears delayed. Opus 4.7 issue #49562 remains OPEN with only 2 community comments and zero Anthropic staff responses. No new model releases. 1M context beta for Sonnet 4.5/Sonnet 4 sunsets April 30 (9 days) — migration path is to Sonnet 4.6 or Opus 4.6 which have 1M GA.
 - **Significance**: Haiku 3 guard PASS validated — the model is functionally retired even if the page label lags. Opus 4.7 token burn issue remains unaddressed by Anthropic engineering publicly. PM's "sprinting on tuning" comment (Apr 19) has had no follow-up.

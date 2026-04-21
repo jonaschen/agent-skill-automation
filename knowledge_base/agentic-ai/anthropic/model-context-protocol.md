@@ -24,6 +24,15 @@ The Model Context Protocol (MCP) is an open protocol created by Anthropic that e
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-21 (evening) — MCP Steady State; No Change Since Afternoon
+- **What**: No new CVEs. No new Anthropic response. STDIO media coverage amplifying. Steady state.
+- **Source**: Verified evening — no new security advisories
+
+### 2026-04-21 (afternoon) — MCP Steady State; New TechTalks Article Amplifies STDIO Vulnerability Coverage; No New CVEs
+- **What**: BDTechTalks published "Anthropic's MCP vulnerability: When 'expected behavior' becomes a supply chain nightmare" (Apr 20). This amplifies existing coverage of the STDIO vulnerability family — same issues tracked since Apr 16. Framing: "security researchers have uncovered a massive architectural flaw... exposing millions of AI applications to remote takeovers." No new CVEs. No new Anthropic response. Governance: Den Delimarsky elevated to Lead Maintainer (Apr 8 announcement, already tracked). AWS, Google, Cloudflare all doubled down on MCP adoption.
+- **Significance**: Media pressure increasing but Anthropic stance unchanged ("expected behavior"). No new technical information. One-sentence status: media coverage amplifying, no new CVEs or patches.
+- **Source**: https://bdtechtalks.com/2026/04/20/anthropic-mcp-vulnerability/, https://blog.modelcontextprotocol.io/posts/2026-04-08-maintainer-update/
+
 ### 2026-04-21 — MCP Steady State; No New Releases or CVEs; Ecosystem at 10K+ Servers, 97M+ Monthly Downloads
 - **What**: No new MCP spec updates, CVEs, or governance changes. MCP v2.1 with Server Cards remains current. Ecosystem at 10K+ active public servers and 97M+ monthly SDK downloads. Enterprise WG work (audit trails, SSO, gateway, config portability) proceeding as extensions, not core spec changes. Triggers & Events WG (Clare Liguori, AWS) active but no new public output.
 - **Significance**: Steady state. One sentence per directive.

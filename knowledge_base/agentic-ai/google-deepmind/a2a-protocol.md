@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-21 (afternoon)
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
@@ -22,6 +22,16 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — A2A v1.0.0 Day 40; Confirmed Stable; No Change
+- **What**: A2A v1.0.0 (Mar 12) day 40. No v1.1.0. ADK broke freeze (v1.31.1) but A2A remains stable. I/O 28d.
+- **Significance**: One sentence: A2A unchanged.
+- **Source**: https://github.com/a2aproject/A2A/releases (verified evening via gh CLI)
+
+### 2026-04-21 (afternoon) — A2A v1.0.0 Day 42; No Change; ADK Freeze Broke But A2A Still Stable
+- **What**: A2A v1.0.0 (Mar 12) day 42. No v1.1.0. No new GitHub activity. ADK broke freeze today (v1.31.1, **corrected from v1.32.0**) but A2A remains in longest stable window ever. No I/O pre-leaks for v1.1. I/O 28d.
+- **Significance**: One sentence: A2A unchanged, ADK selective unfreeze does not extend to protocol layer.
+- **Source**: https://github.com/a2aproject/A2A/releases
 
 ### 2026-04-21 — A2A v1.0.0 Day 40; 1-Year Anniversary Coverage; 150+ Orgs Confirmed; AP2 60+ Orgs
 - **What**: A2A v1.0.0 (Mar 12) day 40 stable. No v1.1.0. One-year anniversary (Apr 9) PR coverage confirms: 150+ organizations, 22K+ GitHub stars, 5 production-ready SDK languages (Python, JS, Java, Go, .NET), production deployments in Azure AI Foundry + Amazon Bedrock AgentCore + Google Cloud. AP2 (Agent Payments Protocol) at 60+ financial services organizations. Signed Agent Cards, multi-tenancy, and gRPC bindings are the v1.0 differentiators vs v0.3. I/O 28d.

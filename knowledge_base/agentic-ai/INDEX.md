@@ -1,32 +1,38 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-21 Monday afternoon (twenty-fourth sweep — consolidated)
-**Last analysis**: 2026-04-20 evening (Mode 2b L2-L3)
+**Last sweep**: 2026-04-21 Monday evening (twenty-seventh sweep — consolidated)
+**Last analysis**: 2026-04-21 afternoon (Mode 2b L2-L3)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-21 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-21 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-21 |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-21 |
-| Computer Use | anthropic/computer-use.md | 2026-04-21 |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-21 |
-| Model Releases | anthropic/model-releases.md | 2026-04-21 |
+| Claude Code | anthropic/claude-code.md | 2026-04-21 (evening) |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-21 (evening) |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-21 (evening) |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-21 (evening) |
+| Computer Use | anthropic/computer-use.md | 2026-04-21 (evening) |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-21 (evening) |
+| Model Releases | anthropic/model-releases.md | 2026-04-21 (evening) |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-21 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-21 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-21 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-21 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-21 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-21 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-21 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-21 (evening) |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-21 (evening) |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-21 (evening) |
+| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-21 (evening) |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-21 (evening) |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-21 (evening) |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-21 (evening) |
+
+Note: 2026-04-21 Monday evening consolidated (twenty-seventh sweep): **CORRECTION: ADK v1.32.0 DOES NOT EXIST.** Afternoon Google sweep incorrectly reported v1.32.0. Only **v1.31.1** shipped Apr 21 — verified via GitHub tags, PyPI, and gh CLI compare. RCE fix (nested YAML, commit e283ea0) is IN v1.31.1. **No new releases since afternoon** across either vendor: CC v2.1.116, SDK Py v0.1.64, ADK v1.31.1, CLI v0.38.2 day 4, A2A v1.0.0 day 40. **Opus 4.7 #49562 OPEN** (verified gh CLI: 2 comments, zero staff, last update Apr 19). **1M beta 9d** (non-issue). **MCP, Tool Use, CU, Multi-agent: steady.** **Mariner, Astra, Gemma: steady.** **I/O 28d** — speculative coverage accelerating, zero concrete leaks. Action items: **upgrade CC v2.1.116 (P1)**, **per-test shadow eval logging (P1)**, **monitor #49562 (P1)**, **ADK pin v1.31.1+ for Phase 5 eval (P2)**.
+
+Note: 2026-04-21 Monday afternoon Google/DeepMind (twenty-sixth sweep): **ADK FREEZE BROKEN — SELECTIVE.** ADK **v1.31.1** + **v1.32.0** both shipped Apr 21. v1.32.0: **critical RCE fix** (nested YAML configurations), Vertex SDK bump, disabled bound token for mcp_tool, web OAuth flow improvements. Two releases same day = urgent security patch (v1.31.1 hotfix + v1.32.0 planned). PyPI propagation in progress. **Gemini CLI STILL frozen** at v0.38.2 (day 4). **Gemini API day 6 silent** (last: Apr 15 Flash TTS). **A2A v1.0.0 day 42** — longest stable window ever, no v1.1 pre-leaks. **Vertex AI Agent Builder 62+ days** without releases (record). **Mariner, Astra, Gemma: steady state.** **I/O 28d** — speculative coverage accelerating (Gemini 4, Veo 4, Boston Dynamics), zero concrete product leaks. Pre-I/O window ~May 2 (11d). Action items: **pin ADK ≥v1.32.0 if evaluating for Phase 5 (P2)**, **monitor CLI unfreeze (P1)**, **monitor pre-I/O window (P2)**.
+
+Note: 2026-04-21 Monday afternoon (twenty-fifth sweep, Anthropic only): **FREEZE BROKEN.** CC **v2.1.116** (Apr 20) shipped after ~130h freeze. 67% `/resume` speedup on 40MB+ sessions, faster MCP startup, thinking progress indicators, security fix (sandbox rm/rmdir safety). **v2.1.115** (Apr 19, bridge). **Python Agent SDK v0.1.64** (Apr 20) — SessionStore with S3/Redis/Postgres reference adapters + conformance tests. **TS SDK v0.2.116** at parity. **Opus 4.7 #49562 STILL OPEN** — zero staff responses, no patch in v2.1.115/116, community frustration growing. **Shadow eval failure analysis: DATA GAP** — experiment_log.json has zero opus-4-7 entries, per-test results not logged. Cannot characterize 12/39 failure pattern (routing regression vs. false trigger vs. mixed). Factory must add per-test logging before next re-run. **1M beta sunset 9d** (Apr 30) — non-issue for fleet. **MCP**: new TechTalks article amplifies STDIO vuln coverage, no new CVEs. **Tool Use, Computer Use, Multi-agent: stable.** Action items: **upgrade CC to v2.1.116 (P1)**, **add per-test logging to shadow eval (P1, factory-steward)**, **monitor #49562 for Opus 4.7 patch (P1)**, **Haiku 3 page "Retired" flip (P2)**.
 
 Note: 2026-04-21 Monday afternoon consolidated (twenty-fourth sweep): **Both vendors STILL frozen into Monday afternoon — ~130h+ Anthropic, day 4-6 all Google tracks.** CC v2.1.114, SDK Py v0.1.63, TS v0.2.114, Gemini CLI v0.38.2, ADK v1.31.0, A2A v1.0.0 day 40+, Gemini API day 6 silent, Agent Builder day 64+. **Haiku 3 day 1 PAST retirement date, STILL "Deprecated"** on official deprecation page — model functionally retired but page update lagging. Our guard caught transition before page. **Opus 4.7 #49562 OPEN**, last updated Apr 19, 2 community comments, zero staff responses, no patch. **Shadow eval still pending** — zero opus-4-7 entries. **I/O 28d** — speculative coverage increasing (Gemini 4, Veo 4, Boston Dynamics + Gemini Robotics) but zero concrete ADK/A2A leaks. Pre-I/O window ~May 2. **All other topics steady state.** Monday unfreeze did NOT happen either side — may signal larger bundled release staging (Anthropic) and pre-I/O accumulation (Google). Action items: **manual shadow eval (P0, Jonas)**, **monitor evening for freeze break (P0)**, **Haiku 3 page update to "Retired" (P2)**.
 
@@ -128,6 +134,8 @@ Note: 2026-04-09 Full sweep: **Claude Managed Agents launched** (public beta, Ap
 
 | Date | File | Summary |
 |------|------|---------|
+| 2026-04-21 | sweeps/2026-04-21-evening.md | Monday evening consolidated: **CORRECTION: ADK v1.32.0 does not exist** — only v1.31.1 shipped (RCE fix included). No new releases since afternoon across either vendor. CC v2.1.116, SDK Py v0.1.64, ADK v1.31.1, CLI v0.38.2 day 4, A2A day 40. Opus 4.7 #49562 OPEN (verified). All stable topics confirmed. I/O 28d. |
+| 2026-04-21 | sweeps/2026-04-21-afternoon-google.md | Monday afternoon Google/DeepMind: ADK FREEZE BROKEN — v1.31.1 (**corrected: v1.32.0 does not exist**). CLI still frozen v0.38.2 day 4. A2A day 42. Vertex 62+ days. Mariner/Astra/Gemma steady. I/O 28d. |
 | 2026-04-21 | sweeps/2026-04-21.md | Monday afternoon consolidated: Both vendors STILL frozen (~130h+ Anthropic, day 4-6 all Google tracks). Haiku 3 day 1 past retirement, STILL "Deprecated" on official page. Opus 4.7 #49562 OPEN, zero staff. Shadow eval pending. I/O speculation increasing (Gemini 4, Veo 4, Boston Dynamics + Gemini Robotics) but zero concrete leaks. I/O 28d. |
 | 2026-04-21 | sweeps/2026-04-21-google.md | Monday Google/DeepMind: All frozen day 4-6. CLI v0.38.2, ADK v1.31.0, A2A day 40+, API day 6 silent, Agent Builder day 64+. A2A 1-year anniversary (150+ orgs, triple-hyperscaler). Gemma 4 edge benchmarks confirmed. Mariner absorbed into core DeepMind. No new releases. |
 | 2026-04-21 | sweeps/2026-04-21-anthropic.md | Monday Anthropic-only: Freeze extends ~120h+ into Monday — unprecedented weekday freeze. CC v2.1.114, SDK Py v0.1.63, TS v0.2.114 unchanged. Haiku 3 past retirement date, official page still "Deprecated." Opus 4.7 #49562 OPEN, zero staff. Shadow eval pending. 1M beta sunset 9d (non-issue for fleet). All topics steady state. |

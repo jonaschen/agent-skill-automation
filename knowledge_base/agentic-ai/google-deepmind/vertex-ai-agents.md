@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-21 (afternoon)
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,15 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — Agent Builder Day 62+; Confirmed Frozen; No Change
+- **What**: Agent Builder still frozen. ADK broke freeze (v1.31.1, **corrected from v1.32.0**). No Agent Builder activity. I/O 28d.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes
+
+### 2026-04-21 (afternoon) — Agent Builder Day 62+; No Releases; ADK Unfreeze Does Not Extend Here
+- **What**: Agent Builder last release Feb 18. No new release notes. ADK broke freeze today (v1.31.1, **corrected from v1.32.0**) but Agent Builder remains frozen. I/O 28d.
+- **Significance**: One sentence: Agent Builder freeze deepens, all new features routing through ADK instead.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes
 
 ### 2026-04-21 — Agent Builder Day 64+; No Releases; Freeze Confirmed
 - **What**: Agent Builder last release Feb 18 (Code Execution GA). Day 64 without releases. GenAI last entry Apr 15. Bidirectional streaming and Memory Bank tab are the latest capabilities (dates unclear from release notes). I/O relaunch near-certain. I/O 28d.

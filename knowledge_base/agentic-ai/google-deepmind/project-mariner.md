@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-21 (afternoon)
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,14 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — Mariner: No Change; Confirmed Steady State
+- **What**: No change since afternoon. Steady state. I/O 28d.
+
+### 2026-04-21 (afternoon) — Mariner: No Change; Steady State
+- **What**: No new Mariner announcements. DeepMind absorption, AI Ultra integration, and Teach & Repeat all confirmed from morning sweep. Enterprise API still not announced. I/O 28d.
+- **Significance**: One sentence: Mariner unchanged, all prior findings confirmed.
+- **Source**: https://deepmind.google/models/project-mariner/
 
 ### 2026-04-21 — Mariner: DeepMind Team Absorption Confirmed; AI Ultra Integration; I/O 28d
 - **What**: New coverage confirms: (1) Mariner team officially absorbed into core Google DeepMind under Demis Hassabis (strategic pivot to reduce barriers between advanced models and Chrome). (2) Mariner powers agentic features in Google Search AI Mode (restaurant booking, event tickets). (3) Available to AI Ultra subscribers ($249.99/mo). (4) "Teach & Repeat" workflow learning. (5) 83.5% WebVoyager benchmark. (6) Handles up to 10 concurrent tasks. (7) Observe-Plan-Act loop architecture. Enterprise API still not announced.

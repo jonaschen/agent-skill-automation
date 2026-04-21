@@ -15,6 +15,13 @@ Computer Use is a beta feature that enables Claude to interact with desktop envi
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-21 (evening) — Computer Use Still Beta; No Change
+- **What**: Still beta. No GA announcement.
+
+### 2026-04-21 (afternoon) — Computer Use Still Beta; No GA in v2.1.116; Stable
+- **What**: No computer use changes in v2.1.115 or v2.1.116. Still research preview/beta. Available via Cowork and CC Desktop for Pro/Max subscribers.
+- **Source**: https://code.claude.com/docs/en/changelog
+
 ### 2026-04-21 — Computer Use Still Research Preview; No GA Announcement; Q4 2026 Expected
 - **What**: Computer Use remains in research preview (beta). No GA announcement. Windows expansion (via Cowork/CC Desktop) holds. GA expected Q4 2026 per industry estimates. Opus 4.7 CU: 2576-px long-edge with 1:1 coordinate mapping.
 - **Significance**: No change. Not mentioned further per directive.

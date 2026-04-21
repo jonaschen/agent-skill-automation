@@ -23,9 +23,23 @@
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.114 (April 18, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.116 (April 20, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — v2.1.116 Confirmed Latest; No v2.1.117; Release Cadence Normalizing
+- **What**: Evening verification confirms v2.1.116 (Apr 20) remains latest on GitHub releases. No v2.1.117. Freeze broke after ~130h with two releases (v2.1.115 bridge + v2.1.116 major). Release cadence expected to resume normal pace.
+- **Significance**: Confirmation only. No new action items.
+- **Source**: https://github.com/anthropics/claude-code/releases (verified evening Apr 21)
+
+### 2026-04-21 (afternoon) — FREEZE BROKEN: v2.1.115 (Apr 19) + v2.1.116 (Apr 20) Shipped; Major Release With Performance + Security Fixes
+- **What**: The ~130h freeze broke late Sunday/Monday. **v2.1.115** shipped April 19 (bridge release). **v2.1.116** shipped April 20 with significant changes:
+  - **Performance**: `/resume` up to 67% faster on 40MB+ sessions; faster MCP startup (deferred `resources/templates/list` to first `@`-mention); smoother fullscreen scrolling with terminal scroll sensitivity config
+  - **UX**: Thinking spinner progress indicators ("still thinking", "thinking more", "almost done thinking"); `/config` search now matches option values; `/doctor` accessible during active responses; plugin dependency auto-install on `/reload-plugins`; Bash tool surfaces hints on `gh` rate-limit
+  - **Security**: Sandbox auto-allow no longer bypasses dangerous-path safety for `rm`/`rmdir` targeting `/`, `$HOME`, or critical system directories
+  - **Fixes**: Devanagari/Indic script column alignment; Ctrl+- undo in Kitty terminals; Cmd+Left/Right navigation; Ctrl+Z hang via wrapper processes (npx, bun run); modal dialogs overflowing at short terminal heights; `/branch` rejecting >50MB conversations; intermittent 400 error from cache control TTL ordering during parallel requests
+- **Significance**: The freeze break confirms Anthropic was staging a batched release, not experiencing a development pause. The 67% `/resume` speedup is operationally significant for our pipeline's large sessions. The security fix (rm/rmdir safety) is important for any agentic workflow. **No Opus 4.7 adaptive reasoning patch** in either release — #49562 remains unaddressed.
+- **Source**: https://github.com/anthropics/claude-code/releases (v2.1.116, Apr 20), https://code.claude.com/docs/en/changelog
 
 ### 2026-04-21 — v2.1.114 Freeze Extends Into Monday (~120h); No v2.1.115; Unprecedented Weekday Freeze
 - **What**: Claude Code v2.1.114 remains the latest release. No v2.1.115 or higher has shipped. The freeze now extends ~120+ hours (since Apr 17), making this the longest v2.1.x release gap observed. Monday is typically a high-release day — the continued freeze into a weekday is unprecedented in the v2.1.x era.

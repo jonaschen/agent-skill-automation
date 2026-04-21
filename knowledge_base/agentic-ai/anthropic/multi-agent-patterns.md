@@ -20,6 +20,13 @@ Anthropic has developed multi-agent orchestration patterns both in Claude Code (
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-21 (evening) — Multi-Agent Patterns Stable; No Change
+- **What**: Stable. Five-pattern taxonomy holds.
+
+### 2026-04-21 (afternoon) — Multi-Agent Patterns Stable; No New Patterns in v2.1.116
+- **What**: No multi-agent changes in v2.1.115/v2.1.116. v2.1.114 crash fix for Agent Teams teammate permission dialog was the last relevant change. Agent Teams, Managed Agents, Subagents, Three-Agent Harness all stable.
+- **Source**: https://code.claude.com/docs/en/changelog
+
 ### 2026-04-21 — Multi-Agent Patterns Stable; Agent Teams and Managed Agents Holding; No New Patterns
 - **What**: No new multi-agent pattern announcements. Five patterns (Teams, Subagents, Three-Agent Harness, Orchestrator-Worker, Message Bus + Shared State) remain the current taxonomy. Managed Agents still in public beta (`managed-agents-2026-04-01`). Agent Teams stable. No new engineering blog posts on orchestration.
 - **Significance**: Steady state. One sentence per directive.

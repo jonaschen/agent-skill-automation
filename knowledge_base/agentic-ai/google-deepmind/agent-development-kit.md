@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-21 (afternoon)
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -19,6 +19,15 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — **CORRECTION**: Only v1.31.1 Shipped; v1.32.0 Does NOT Exist; RCE Fix Is in v1.31.1
+- **What**: **Evening verification corrects afternoon report.** Only **v1.31.1** (Apr 21) shipped. There is NO v1.32.0 — no tag, no GitHub Release, no PyPI entry. Verified via: (1) `gh api repos/google/adk-python/tags` — top stable tag is v1.31.1; (2) PyPI history — latest is 1.31.1; (3) `gh api compare/v1.31.1...e283ea0` — RCE commit is "behind" v1.31.1 (i.e., included in it). The **critical RCE fix** (nested YAML configurations, commit e283ea0) is in v1.31.1, along with: Vertex SDK version bump (commit 21ebe29), disabled bound token for mcp_tool (commit d0afddd), web OAuth flow and trace view improvements (commit c3dafdb). v2.0.0a3 (Apr 9) still latest pre-release. Bi-weekly cadence: v1.30.0 (Apr 13) → v1.31.0 (Apr 17) → v1.31.1 (Apr 21). Next release (actual v1.32.0) expected ~Apr 27-May 1. I/O 28d.
+- **Significance**: **FREEZE BROKEN — single release, not double.** The RCE fix via nested YAML deserialization is the most significant security patch since the credential leakage fix in v1.30.0. The `mcp_tool` bound token disable and web OAuth improvements suggest ongoing security hardening. Pin to v1.31.1+ for Phase 5 ADK evaluation.
+- **Source**: https://github.com/google/adk-python/releases, https://pypi.org/project/google-adk/ (verified evening Apr 21 via gh CLI + PyPI)
+
+### 2026-04-21 (afternoon) — ~~ADK v1.31.1 + v1.32.0~~ **CORRECTED ABOVE**: Only v1.31.1 shipped. See evening entry for correction.
+- **Note**: This entry originally reported v1.32.0. Evening verification confirmed v1.32.0 does not exist. RCE fix is in v1.31.1.
+- **Source**: https://github.com/google/adk-python/releases, https://pypi.org/project/google-adk/
 
 ### 2026-04-21 — ADK v1.31.0 Day 4; No v1.32.0; Freeze Continues; v2.0.0a3 Workflow Orchestration Noted
 - **What**: ADK v1.31.0 (Apr 17) day 4 stable. No v1.32.0 or v2.0.0a4 on GitHub. v2.0.0a3 (Apr 9) remains latest pre-release — key feature: Workflow(BaseNode) graph orchestration with lazy scan deduplication, partial resume for nested workflows, state/artifact delta bundling. Docs site now at adk.dev (301 from google.github.io/adk-docs). Next release v1.32.0 expected ~Apr 27-May 1. I/O 28d.

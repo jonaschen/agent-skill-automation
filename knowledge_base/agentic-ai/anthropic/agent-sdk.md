@@ -18,9 +18,23 @@
 
 ## Overview
 
-The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 18, 2026, Python is at v0.1.63 and TypeScript is at v0.2.114. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, and skills.
+The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 20, 2026, Python is at v0.1.64 and TypeScript is at v0.2.116. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, skills, and SessionStore adapters.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — SDK Py v0.1.64, TS v0.2.116 Confirmed Latest; No New Releases
+- **What**: Evening verification: Python v0.1.64 (Apr 20) and TypeScript v0.2.116 (Apr 20) remain latest. No v0.1.65 or v0.2.117.
+- **Significance**: Confirmation only.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases (verified evening)
+
+### 2026-04-21 (afternoon) — FREEZE BROKEN: Python v0.1.64 + TypeScript v0.2.116 Shipped; SessionStore with S3/Redis/Postgres Adapters
+- **What**: Both SDKs updated on April 20, breaking the ~100h freeze:
+  - **Python v0.1.64** (Apr 20): Full `SessionStore` support with conformance tests. Three reference SessionStore adapters: **S3, Redis, Postgres**. Bundles CLI v2.1.116.
+  - **TypeScript v0.2.116** (Apr 20): Parity with CC v2.1.116.
+  - **TypeScript v0.2.115** (Apr 19): Parity with CC v2.1.115 (bridge).
+  - Key prior features now confirmed in production: `sessionStore` alpha (TS v0.2.113), native binary spawning (TS v0.2.113), top-level `skills` option (Py v0.1.62), subagent transcript helpers (Py v0.1.60), OpenTelemetry trace context propagation (TS v0.2.113).
+- **Significance**: **SessionStore with production adapters (S3, Redis, Postgres) is a major capability milestone.** This enables persistent agent session storage across infrastructure — no longer limited to local disk. For our pipeline: if we migrate steward sessions from `claude -p` to Agent SDK, SessionStore provides the persistence layer. The conformance test suite signals Anthropic considers this production-ready, not just alpha.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases (v0.1.64, Apr 20), https://github.com/anthropics/claude-agent-sdk-typescript/blob/main/CHANGELOG.md (v0.2.116)
 
 ### 2026-04-21 — SDK Freeze Extends Into Monday; Python v0.1.63, TypeScript v0.2.114 Still Latest
 - **What**: No new Agent SDK releases. Python remains at v0.1.63 (Apr 18, bundles CLI v2.1.114), TypeScript at v0.2.114 (Apr 18, CLI v2.1.114 parity). Both SDKs last released simultaneously on Apr 18 — now 3 days without updates.

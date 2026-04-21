@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-21 (afternoon)
 **Sources**:
 - https://github.com/vllm-project/vllm/issues/38893
 - https://deepmind.google/models/gemma/
@@ -25,6 +25,14 @@
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-21 (evening) — Gemma 4 Day 19: No Change; Confirmed Steady State
+- **What**: No change since afternoon. Day 19. Steady state. I/O 28d.
+
+### 2026-04-21 (afternoon) — Gemma 4 Day 19: No Change; Steady State
+- **What**: Gemma 4 (Apr 2) day 19. No new model variants. 400M+ total Gemma downloads. AI Edge Gallery on Play Store + App Store for offline deployment. Apache 2.0 license. EAGLE3 merged (PR #39450). ADK v1.31.1 shipped today (**corrected from v1.32.0**) — no Gemma-specific changes noted. I/O 28d.
+- **Significance**: One sentence: Gemma 4 steady state, no new variants expected before I/O.
+- **Source**: https://developers.googleblog.com/bring-state-of-the-art-agentic-skills-to-the-edge-with-gemma-4/
 
 ### 2026-04-21 — Gemma 4 Day 19: On-Device Benchmarks Confirmed; E2B <1.5GB RAM; 140+ Languages
 - **What**: Gemma 4 (Apr 2) day 19. New technical details from Google Developers Blog: (1) **E2B model runs on <1.5GB RAM** with 2-bit/4-bit quantization — enables deployment on Raspberry Pi 5, Arduino VENTUNO Q, and mobile devices. (2) **128K token context window** confirmed across family. (3) **140+ languages** supported. (4) **On-device benchmarks**: LiteRT-LM processes 4,000 input tokens + 2 skills in <3 seconds (GPU); Raspberry Pi 5 CPU: 133 prefill/7.6 decode tok/s; Qualcomm Dragonwing IQ8 NPU: 3,700 prefill/31 decode tok/s. (5) **Agent Skills framework** for autonomous workflows with knowledge augmentation via external skill integration. (6) Apache 2.0 license. No new model variants since launch.

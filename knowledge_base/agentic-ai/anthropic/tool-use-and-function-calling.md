@@ -16,6 +16,13 @@ Claude's tool use system allows the model to invoke external functions by return
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-21 (evening) — Tool Use Stable; No Change
+- **What**: Stable. No changes since afternoon.
+
+### 2026-04-21 (afternoon) — Tool Use Stable; No Changes in v2.1.115/v2.1.116
+- **What**: v2.1.116 changelog contains no tool use API changes. Bash tool now surfaces `gh` rate-limit hints (UX, not API change). Stable.
+- **Source**: https://code.claude.com/docs/en/changelog
+
 ### 2026-04-21 — Tool Use Stable; Strict Schema Adherence and Programmatic Tool Calling GA Confirmed
 - **What**: No new tool use API changes. Programmatic tool calling and web search tool confirmed GA (no beta header required since Feb 17). Strict schema adherence for tool calls available (constrained decoding validates tool names and argument types). Advisor Tool remains in public beta (`advisor-tool-2026-03-01` header). No new announcements.
 - **Significance**: Steady state. One sentence per directive.
