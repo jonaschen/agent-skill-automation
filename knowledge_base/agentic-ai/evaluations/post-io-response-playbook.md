@@ -21,6 +21,10 @@ predictions) since exact product names may differ from expectations.
 - [ ] All eval baselines current: `scripts/regression_test.sh --update-baseline`
 - [ ] ROADMAP Phase 4 status finalized — all tasks marked complete or explicitly deferred
 
+**Intelligence note (2026-04-22)**: Google Deep Research (Apr 21) shipped as API-only
+(Interactions API), not Agent Builder. I/O announcements may follow this API-first
+pattern. Monitor Gemini API changelog alongside Agent Builder release notes.
+
 ## I/O Day Actions (May 19-20)
 
 - [ ] Manual researcher trigger: `./scripts/daily_research_sweep.sh` after keynote

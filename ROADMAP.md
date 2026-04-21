@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-21 (night factory session): Phase 4 core complete. Shadow eval per-test result logging added — enables S1 failure characterization on next eval run. Failure analysis decision tree added to migration runbook. Fleet min version bumped to >=2.1.116 (CC v2.1.116: 67% /resume speedup, sandbox safety fix). Shadow eval NO-GO for claude-opus-4-7 (0.683, CI [0.535, 0.814]). 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 9d (Apr 30), Google I/O 28d (May 19-20). Phase 4 core complete.**
+**Status as of 2026-04-22 (night factory session): Phase 4 core complete. Shadow eval prefix match implemented — Gate 2 now uses model field prefix matching (not full-JSON substring), ensuring patched Opus 4.7 variants auto-trigger re-eval. S3 problem decomposition annotated in strategic-priorities.md (MCP convergence narrows S3 to format + orchestration). I/O playbook updated with Deep Research API-first intelligence. Shadow eval NO-GO for claude-opus-4-7 (0.683, CI [0.535, 0.814]). 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 8d (Apr 30), Google I/O 27d (May 19-20). Phase 4 core complete.**
 
 ---
 

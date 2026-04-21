@@ -93,13 +93,17 @@ if [ -z "$PENDING_MIGRATION_MODEL" ]; then
   exit 0
 fi
 
-# Gate 2: Has the eval already been run for this model?
+# Gate 2: Has the eval already been run for a model matching this prefix?
+# Uses prefix match on the 'model' field (not substring on full JSON).
+# This ensures claude-opus-4-7 matches claude-opus-4-7-20260425 etc.,
+# but won't false-match on unrelated fields containing the string.
 shadow_eval_done=$(cd "$REPO_ROOT" && python3 -c "
 import json
 try:
     data = json.load(open('$EXPERIMENT_LOG'))
     exps = data.get('experiments', data) if isinstance(data, dict) else data
-    print('yes' if any('$PENDING_MIGRATION_MODEL' in json.dumps(e) for e in exps) else 'no')
+    prefix = '$PENDING_MIGRATION_MODEL'
+    print('yes' if any(str(e.get('model', '')).startswith(prefix) for e in exps) else 'no')
 except:
     print('no')
 " 2>/dev/null || echo "no")

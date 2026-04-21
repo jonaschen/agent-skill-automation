@@ -93,6 +93,16 @@ live in `.claude/agents/`. There is zero Gemini integration.
 **Scope**: This is the most architecturally ambitious priority. Early work should be
 comparative analysis and feasibility studies, not implementation.
 
+> **S3 Problem Decomposition Update (2026-04-22)**: Tool portability is converging
+> on MCP independently of our effort — Google Deep Research (Apr 2026) natively
+> integrates MCP servers, making MCP the first multi-vendor tool protocol. S3 scope
+> narrows from three open problems to two: tool access is becoming vendor-neutral;
+> remaining gaps are **agent definition format** (SKILL.md vs Gemini Skills) and
+> **orchestration protocol** (SDK subagents vs ADK vs A2A). Future S3 research
+> emphasis shifts toward format comparison and orchestration interop. Tool
+> portability monitoring moves from "active research" to "track convergence"
+> (low-effort). Gemini CLI install still gates all S3 implementation work.
+
 ---
 
 ## Meta-Goal: Original Research & Experimentation
