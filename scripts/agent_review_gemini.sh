@@ -20,6 +20,9 @@ LOG_DIR="$REPO_ROOT/logs"
 PERF_DIR="$REPO_ROOT/logs/performance"
 DAYS=${1:-7}
 
+# Source shared libraries to ensure Node.js v24 is in PATH for Gemini CLI
+source "$SCRIPT_DIR/lib/session_log.sh"
+
 # Colors
 BOLD='\033[1m'
 GREEN='\033[0;32m'
