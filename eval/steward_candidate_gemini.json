@@ -1,0 +1,8 @@
+{
+  "passes": 178,
+  "total_non_skipped": 200,
+  "skipped": 0,
+  "posterior_mean": 0.8861,
+  "ci_lower": 0.839,
+  "ci_upper": 0.9261
+}
