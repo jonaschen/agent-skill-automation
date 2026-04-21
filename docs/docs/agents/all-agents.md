@@ -48,6 +48,7 @@ title: All Agents Reference
 | `coverage-analyst` | Analyzes test coverage reports and identifies gaps | Read-only |
 | `precommit-lint-executor` | Runs linting/formatting on staged files before commit | Sonnet 4.6 |
 | `typescript-perf-reviewer` | Reviews TypeScript code for performance bottlenecks | Read-only |
+| `python-code-reviewer` | Reviews Python code for quality, style (PEP 8), and idiomatic patterns | Read-only |
 
 ## Suspended Agents
 

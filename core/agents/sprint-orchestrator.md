@@ -40,6 +40,7 @@ Delegate specialized tasks to other agents via delegation to specialized sub-age
 - Log analysis → qa-log-reviewer
 - Coverage analysis → coverage-analyst
 - Performance investigation → typescript-perf-reviewer
+- Python code quality/style → python-code-reviewer
 - Deployment readiness → agentic-cicd-gate
 
 ## Execution Approach
