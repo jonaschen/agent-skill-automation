@@ -18,6 +18,8 @@ YESTERDAY=$(date -d "yesterday" +"%Y-%m-%d" 2>/dev/null || date -v-1d +"%Y-%m-%d
 LOG_FILE="$LOG_DIR/factory-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/factory-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
@@ -108,7 +110,7 @@ trap finalize EXIT INT TERM HUP
 echo "=== Gemini Factory Steward Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "main"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
@@ -127,7 +129,7 @@ Execute a factory improvement session:
 6. Update ROADMAP.md with completed work
 7. Commit: Stage all changed files and commit with message 'factory-gemini: implement ADOPT items from ${YESTERDAY} discussion'
 
-Focus on 1-2 high-impact improvements. Quality over quantity.") >> "$LOG_FILE" 2>&1 || true
+Focus on 1-2 high-impact improvements. Quality over quantity." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] ADOPT session complete" >> "$LOG_FILE"
 log_task_complete "adopt-items"
 
@@ -149,7 +151,7 @@ Run a performance review and tuning session:
 6. If eval infrastructure needs improvement (flaky tests, coverage gaps), make targeted fixes
 7. Commit: If you made any changes, stage and commit with message 'factory-gemini: tune agents based on performance review ($DATE)'
 
-Be conservative — only change agent scripts/definitions when there's clear evidence of a problem.") >> "$LOG_FILE" 2>&1 || true
+Be conservative — only change agent scripts/definitions when there's clear evidence of a problem." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Performance review session complete" >> "$LOG_FILE"
 log_task_complete "performance-review"
 

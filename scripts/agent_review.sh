@@ -45,7 +45,7 @@ print_agent_section() {
     echo -e "${CYAN}--- ${AGENT_LABEL} (${SCHEDULE}) ---${RESET}"
     echo ""
 
-    # Count runs in the period (check both perf JSON and log files)
+    # Count total runs in the period (check both perf JSON and log files)
     local RUN_COUNT=0
     local TOTAL_DURATION=0
     local SUCCESS_COUNT=0
@@ -55,32 +55,36 @@ print_agent_section() {
 
     for i in $(seq 0 $((DAYS - 1))); do
         local CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-        local PERF_FILE="$PERF_DIR/${PERF_PREFIX}-${CHECK_DATE}.json"
-        local CHECK_LOG="$LOG_DIR/${LOG_PREFIX}-${CHECK_DATE}.log"
+        
+        # Check for both standard and -gemini versions
+        for SUFFIX in "" "-gemini"; do
+            local PERF_FILE="$PERF_DIR/${PERF_PREFIX}${SUFFIX}-${CHECK_DATE}.json"
+            local CHECK_LOG="$LOG_DIR/${LOG_PREFIX}${SUFFIX}-${CHECK_DATE}.log"
 
-        if [ -f "$PERF_FILE" ]; then
-            RUN_COUNT=$((RUN_COUNT + 1))
-            if [ -z "$LATEST_DATE" ]; then
-                LATEST_DATE="$CHECK_DATE"
+            if [ -f "$PERF_FILE" ]; then
+                RUN_COUNT=$((RUN_COUNT + 1))
+                if [ -z "$LATEST_DATE" ] || [[ "$CHECK_DATE" > "$LATEST_DATE" ]]; then
+                    LATEST_DATE="$CHECK_DATE"
+                fi
+
+                # Parse JSON (stdlib-only, no jq dependency)
+                local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "0")
+                local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "1")
+
+                TOTAL_DURATION=$((TOTAL_DURATION + DURATION))
+                LATEST_DURATION=$DURATION
+
+                if [ "$EXIT_CODE" -eq 0 ]; then
+                    SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+                fi
+            elif [ -f "$CHECK_LOG" ]; then
+                # Log exists but no perf JSON — script ran but crashed before writing metrics
+                LOG_ONLY_COUNT=$((LOG_ONLY_COUNT + 1))
+                if [ -z "$LATEST_DATE" ] || [[ "$CHECK_DATE" > "$LATEST_DATE" ]]; then
+                    LATEST_DATE="$CHECK_DATE"
+                fi
             fi
-
-            # Parse JSON (stdlib-only, no jq dependency)
-            local DURATION=$(grep -oP '"duration_seconds"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "0")
-            local EXIT_CODE=$(grep -oP '"exit_code"\s*:\s*\K\d+' "$PERF_FILE" 2>/dev/null || echo "1")
-
-            TOTAL_DURATION=$((TOTAL_DURATION + DURATION))
-            LATEST_DURATION=$DURATION
-
-            if [ "$EXIT_CODE" -eq 0 ]; then
-                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
-            fi
-        elif [ -f "$CHECK_LOG" ]; then
-            # Log exists but no perf JSON — script ran but crashed before writing metrics
-            LOG_ONLY_COUNT=$((LOG_ONLY_COUNT + 1))
-            if [ -z "$LATEST_DATE" ]; then
-                LATEST_DATE="$CHECK_DATE"
-            fi
-        fi
+        done
     done
 
     if [ "$RUN_COUNT" -eq 0 ] && [ "$LOG_ONLY_COUNT" -eq 0 ]; then
@@ -125,11 +129,13 @@ print_agent_section() {
     local TOTAL_SESSIONS=0
     for i in $(seq 0 $((DAYS - 1))); do
         local SESS_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
-        local SESS_FILE="$SESSION_DIR/${PERF_PREFIX}-${SESS_DATE}.jsonl"
-        if [ -f "$SESS_FILE" ]; then
-            local DAY_SESSIONS=$(grep -c '"SESSION_START"' "$SESS_FILE" 2>/dev/null || echo "0")
-            TOTAL_SESSIONS=$((TOTAL_SESSIONS + DAY_SESSIONS))
-        fi
+        for SUFFIX in "" "-gemini"; do
+            local SESS_FILE="$SESSION_DIR/${PERF_PREFIX}${SUFFIX}-${SESS_DATE}.jsonl"
+            if [ -f "$SESS_FILE" ]; then
+                local DAY_SESSIONS=$(grep -c '"SESSION_START"' "$SESS_FILE" 2>/dev/null || echo "0")
+                TOTAL_SESSIONS=$((TOTAL_SESSIONS + DAY_SESSIONS))
+            fi
+        done
     done
     if [ "$TOTAL_SESSIONS" -gt "$RUN_COUNT" ]; then
         echo "  Sessions:     $TOTAL_SESSIONS total (across $RUN_COUNT days with data)"
@@ -310,11 +316,13 @@ PERF_PREFIXES=("factory" "ltc" "researcher" "android-sw" "arm-mrs" "bsp-knowledg
 for i in $(seq 0 $((DAYS - 1))); do
     CHECK_DATE=$(date -d "-${i} days" +"%Y-%m-%d" 2>/dev/null || date -v-${i}d +"%Y-%m-%d" 2>/dev/null)
     for j in 0 1 2 3 4 5 6; do
-        if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}-${CHECK_DATE}.json" ]; then
-            TOTAL_RUNS=$((TOTAL_RUNS + 1))
-        elif [ -f "$LOG_DIR/${LOG_PREFIXES[$j]}-${CHECK_DATE}.log" ]; then
-            TOTAL_LOG_ONLY=$((TOTAL_LOG_ONLY + 1))
-        fi
+        for SUFFIX in "" "-gemini"; do
+            if [ -f "$PERF_DIR/${PERF_PREFIXES[$j]}${SUFFIX}-${CHECK_DATE}.json" ]; then
+                TOTAL_RUNS=$((TOTAL_RUNS + 1))
+            elif [ -f "$LOG_DIR/${LOG_PREFIXES[$j]}${SUFFIX}-${CHECK_DATE}.log" ]; then
+                TOTAL_LOG_ONLY=$((TOTAL_LOG_ONLY + 1))
+            fi
+        done
     done
 done
 

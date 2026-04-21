@@ -16,6 +16,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/bsp-knowledge-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/bsp-knowledge-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 TARGET_REPO="/home/jonas/ai-bsp-agent/github/ai-bsp-knowledge-skill-sets"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
@@ -158,7 +160,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== BSP Knowledge Steward Session (Gemini) — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "steward"
 
@@ -187,7 +189,7 @@ Execute a stewardship session:
 7. Commit: Stage all changed files and commit with message 'steward-gemini: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
-At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true
+At the end, output a brief JSON summary: {\"phase\": \"...\", \"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Phase work session complete" >> "$LOG_FILE"
 log_task_complete "phase-work"
 
@@ -207,7 +209,7 @@ Run a research session:
 6. Rebuild the base graph if seed scripts were modified: python scripts/build_base_graph.py
 7. Commit: If you made any changes, stage and commit with message 'research-gemini: BSP knowledge updates ($DATE)'
 
-Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
+Output a brief summary of findings." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Research session complete" >> "$LOG_FILE"
 log_task_complete "research"
 

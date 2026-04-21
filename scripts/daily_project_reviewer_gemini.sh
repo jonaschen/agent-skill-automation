@@ -19,6 +19,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/reviewer-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/reviewer-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR" "$REPO_ROOT/knowledge_base/steward-reviews"
@@ -111,7 +113,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== Project Reviewer Session (Gemini) — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "review"
 
@@ -140,7 +142,7 @@ Then:
 
 If a steward didn't run today (no log file), note it as 'no run' and skip.
 
-Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review-gemini: steward work assessment ${DATE}'") >> "$LOG_FILE" 2>&1 || true
+Commit the review file: git add knowledge_base/steward-reviews/${DATE}.md && git commit -m 'review-gemini: steward work assessment ${DATE}'" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Review session complete" >> "$LOG_FILE"
 log_task_complete "steward-review"
 

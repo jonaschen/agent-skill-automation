@@ -63,6 +63,11 @@ check_cost_ceiling() {
 
   local ceiling
   ceiling=$(compute_duration_ceiling "$agent_name" "$perf_dir")
+  
+  # Ensure ceiling is a valid integer, fallback to default if empty or invalid
+  if ! [[ "$ceiling" =~ ^[0-9]+$ ]]; then
+    ceiling="$DEFAULT_CEILING_SECONDS"
+  fi
 
   if [ "$actual_duration" -gt "$ceiling" ]; then
     mkdir -p "$security_log_dir"

@@ -21,6 +21,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/research-lead-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/research-lead-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR" "$REPO_ROOT/knowledge_base/agentic-ai/directives"
@@ -108,7 +110,7 @@ trap finalize EXIT INT TERM HUP
 
 echo "=== Research Lead Session (Gemini) — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 log_session_start "direction"
 
 # Recover any uncommitted changes from a previous crashed session
@@ -131,7 +133,7 @@ Execute your full flow:
 
 Also: Read your own most recent prior directive from knowledge_base/agentic-ai/directives/ (if any). Compare it against the researcher's actual output to evaluate whether your previous direction was followed. Include this assessment in the directive's Research Quality Feedback section.
 
-Focus on actionable, specific direction. Every priority must have a 'why' and 'what specifically to look for'.") >> "$LOG_FILE" 2>&1 || true
+Focus on actionable, specific direction. Every priority must have a 'why' and 'what specifically to look for'." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Direction session complete" >> "$LOG_FILE"
 log_task_complete "direction-session"
 

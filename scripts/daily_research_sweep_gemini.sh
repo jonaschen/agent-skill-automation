@@ -16,6 +16,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/sweep-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/researcher-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
@@ -225,7 +227,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== Agentic AI Research Sweep (Gemini) — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "research-sweep"
 
@@ -314,7 +316,7 @@ Research the ANTHROPIC track only. For each topic (Claude Code, Agent SDK, MCP, 
 1. WebSearch for latest developments
 2. WebFetch the top 2 results
 3. Write or append findings to the correct file under knowledge_base/agentic-ai/anthropic/
-4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date.") >> "$LOG_FILE" 2>&1 || true
+4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Anthropic track complete" >> "$LOG_FILE"
 log_task_complete "anthropic-track"
 
@@ -327,7 +329,7 @@ Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Prot
 1. WebSearch for latest developments
 2. WebFetch the top 2 results
 3. Write or append findings to the correct file under knowledge_base/agentic-ai/google-deepmind/
-4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date.") >> "$LOG_FILE" 2>&1 || true
+4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Google/DeepMind track complete" >> "$LOG_FILE"
 log_task_complete "google-deepmind-track"
 
@@ -340,7 +342,7 @@ Research the ACADEMIC/LITERATURE track only. For each topic (Agentic Evaluations
 1. WebSearch arxiv.org and semanticscholar.org for latest developments
 2. WebFetch the top 2 results
 3. Write or append findings to the correct file under knowledge_base/agentic-ai/academic/
-4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date.") >> "$LOG_FILE" 2>&1 || true
+4. Follow the KB format from the agent definition. Always cite sources with URLs. Date every finding with today's date." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Academic track complete" >> "$LOG_FILE"
 log_task_complete "academic-track"
 
@@ -351,7 +353,7 @@ log_task_start "sweep-report"
 ${DIRECTIVE_PREAMBLE}
 1. Read all files in knowledge_base/agentic-ai/anthropic/, knowledge_base/agentic-ai/google-deepmind/, and knowledge_base/agentic-ai/academic/
 2. Write a sweep report to knowledge_base/agentic-ai/sweeps/$(date +%Y-%m-%d).md following the sweep report format in the agent definition
-3. Update knowledge_base/agentic-ai/INDEX.md with today's date for all updated topics") >> "$LOG_FILE" 2>&1 || true
+3. Update knowledge_base/agentic-ai/INDEX.md with today's date for all updated topics" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Sweep report complete" >> "$LOG_FILE"
 log_task_complete "sweep-report"
 
@@ -366,7 +368,7 @@ ${DIRECTIVE_PREAMBLE}
 3. Perform gap analysis: for each significant finding, assess impact on our pipeline
 4. Identify cross-pollination opportunities between Anthropic and Google approaches
 5. Flag any threats to our architecture (breaking changes, competing frameworks, security issues)
-6. Write analysis to knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md") >> "$LOG_FILE" 2>&1 || true
+6. Write analysis to knowledge_base/agentic-ai/analysis/$(date +%Y-%m-%d).md" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Deep analysis complete" >> "$LOG_FILE"
 log_task_complete "deep-analysis"
 
@@ -397,7 +399,7 @@ After all rounds, write a structured summary:
 
 Write the full discussion transcript and summary to knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md
 
-Format the file with clear round headers, speaker labels, and the final ADOPT/DEFER/REJECT table.") >> "$LOG_FILE" 2>&1 || true
+Format the file with clear round headers, speaker labels, and the final ADOPT/DEFER/REJECT table." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Discussion complete" >> "$LOG_FILE"
 log_task_complete "discussion"
 
@@ -414,7 +416,7 @@ ${DIRECTIVE_PREAMBLE}
 5. Incorporate ADOPT items from the discussion as P0/P1 proposals; DEFER items as P2/P3
 6. Write ROADMAP update recommendations to knowledge_base/agentic-ai/proposals/roadmap-updates-$(date +%Y-%m-%d).md
 7. Write any needed skill update suggestions to knowledge_base/agentic-ai/proposals/skill-updates-$(date +%Y-%m-%d).md
-8. Focus on actionable, specific proposals with clear priority (P0-P3)") >> "$LOG_FILE" 2>&1 || true
+8. Focus on actionable, specific proposals with clear priority (P0-P3)" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Strategic planning complete" >> "$LOG_FILE"
 log_task_complete "strategic-planning"
 
@@ -429,7 +431,7 @@ ${DIRECTIVE_PREAMBLE}
 3. For P0/P1 proposals that suggest new skills: write a ready-to-execute prompt to knowledge_base/agentic-ai/proposals/ready/
 4. Do NOT modify ROADMAP.md or existing skills directly
 5. Log all actions taken to knowledge_base/agentic-ai/actions/$(date +%Y-%m-%d).md
-6. Git add all changed files and commit with message 'research-gemini: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'") >> "$LOG_FILE" 2>&1 || true
+6. Git add all changed files and commit with message 'research-gemini: daily agentic AI sweep $(date +%Y-%m-%d) (L1-L5)'" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Action phase complete" >> "$LOG_FILE"
 log_task_complete "action"
 
@@ -442,7 +444,7 @@ Read .gemini/agents/agentic-ai-research-writer.md for your instructions.
 2. Read today's discussion transcript from knowledge_base/agentic-ai/discussions/$(date +%Y-%m-%d).md
 3. Read the relevant evaluation metrics from logs/performance/ and eval/
 4. Draft a formal academic paper synthesizing this data.
-5. Write the paper to knowledge_base/agentic-ai/papers/$(date +%Y-%m-%d)-research-report.md") >> "$LOG_FILE" 2>&1 || true
+5. Write the paper to knowledge_base/agentic-ai/papers/$(date +%Y-%m-%d)-research-report.md" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Academic Paper Drafting complete" >> "$LOG_FILE"
 log_task_complete "paper-drafting"
 

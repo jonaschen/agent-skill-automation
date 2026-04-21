@@ -18,6 +18,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/kings-hand-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/kings-hand-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
@@ -113,7 +115,7 @@ Execute a full stewardship session:
 2. Assess current project state (ROADMAP status, recent git log)
 3. Work on highest-priority incomplete task
 4. Validate changes (run tests)
-5. Commit with descriptive message") >> "$LOG_FILE" 2>&1 || true
+5. Commit with descriptive message" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Steward session complete" >> "$LOG_FILE"
 log_task_complete "steward-session"
 

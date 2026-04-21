@@ -16,6 +16,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/android-sw-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/android-sw-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 TARGET_REPO="/home/jonas/gemini-home/Android-Software"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
@@ -107,7 +109,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== Android-SW Steward Session (Gemini) — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "steward"
 
@@ -137,7 +139,7 @@ Execute a stewardship session:
 8. Commit: Stage all changed files and commit with message 'steward-gemini: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
-At the end, output a brief JSON summary: {\"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}") >> "$LOG_FILE" 2>&1 || true
+At the end, output a brief JSON summary: {\"deliverable\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"tests_passed\": true/false}" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Phase 4 session complete" >> "$LOG_FILE"
 log_task_complete "phase4-work"
 
@@ -156,7 +158,7 @@ Run a research session:
 5. Update dirty_pages.json if any skills need refresh
 6. Commit: If you made any changes, stage and commit with message 'research-gemini: AOSP updates ($DATE)'
 
-Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
+Output a brief summary of findings." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Research session complete" >> "$LOG_FILE"
 log_task_complete "research"
 

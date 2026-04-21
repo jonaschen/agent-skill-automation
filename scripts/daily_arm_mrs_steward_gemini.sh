@@ -16,6 +16,8 @@ DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/arm-mrs-gemini-${DATE}.log"
 PERF_FILE="$PERF_DIR/arm-mrs-gemini-${DATE}.json"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 TARGET_REPO="/home/jonas/arm-mrs-2025-03-aarchmrs"
 
 SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
@@ -134,7 +136,7 @@ PERF_EOF
 trap finalize EXIT INT TERM HUP
 
 echo "=== ARM MRS Steward Session (Gemini) — $DATE ===" >> "$LOG_FILE"
-check_fleet_version "$GEMINI" "$LOG_FILE"
+check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "Started: $(date)" >> "$LOG_FILE"
 log_session_start "steward"
 
@@ -165,7 +167,7 @@ Execute a stewardship session:
 8. Commit: Stage all changed files and commit with message 'steward-gemini: <summary of work> ($DATE)'
 
 Keep your work focused — aim to complete one deliverable or make substantial progress on one.
-At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}") >> "$LOG_FILE" 2>&1 || true
+At the end, output a brief JSON summary: {\"milestone\": \"...\", \"status\": \"...\", \"files_changed\": [...], \"eval_tests_passed\": true/false, \"eval_test_count\": N}" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Milestone session complete" >> "$LOG_FILE"
 log_task_complete "milestone-work"
 
@@ -194,7 +196,7 @@ Run a research session:
 6. Rebuild affected caches if data was added
 7. Commit: If you made any changes, stage and commit with message 'research-gemini: ARM architecture updates ($DATE)'
 
-Output a brief summary of findings.") >> "$LOG_FILE" 2>&1 || true
+Output a brief summary of findings." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Research session complete" >> "$LOG_FILE"
 log_task_complete "research"
 

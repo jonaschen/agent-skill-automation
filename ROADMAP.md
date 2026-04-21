@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-18: Phase 4 core complete. 2026-04-18 factory session: P0 Opus 4.7 breaking change audit CLEAN (no deprecated temperature/top_p/top_k/budget_tokens in operational code); P1 Programmatic Tool Calling security analysis (blocks code_execution_20260120 pilots — 4/5 security layers bypassed in container); P1 1M context beta sunset audit CLEAN (no beta headers in fleet, model_audit.sh monitors proactively). 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: Haiku 3 retirement 1d (Apr 19), 1M context beta sunset 12d (Apr 30), Google I/O 31d (May 19-20). Shadow eval on Opus 4.7 UNBLOCKED (audit prerequisite cleared). Remaining Phase 4 unchecked: mcp-sec-audit eval (P2), MCP security consolidation (P3) — both deferred. Phase 4 core complete.**
+**Status as of 2026-04-21: Phase 4 core complete. 2026-04-21 factory-gemini session: fixed Node.js version mismatch (v18->v24) in cron environment for all 10 Gemini daily scripts; added stdin redirection (< /dev/null) to prevent setRawMode EIO errors in non-interactive sessions; hardened cost_ceiling.sh with robust integer validation; updated agent_review.sh to support dual-vendor (Claude/Gemini) dashboarding. Agent success rate recovery in progress as fixes stabilize. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 9d (Apr 30), Google I/O 28d (May 19-20).**
 
 ---
 
@@ -651,14 +651,11 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 
 ## Immediate Next Actions
 
-1. ~~G7b~~ ✅ Baseline confirmed: T=0.895, V=0.600
-2. ~~G8 Iter 1~~ ✅ Description optimized: T=0.921, V=0.800. Exceeds deployment gate (T ≥ 0.90).
-3. ~~G8 Iter 2~~ ✅ V pushed to 0.900 (above 0.85 overfit threshold). T=0.895.
-4. ~~CRITICAL: Routing regression~~ ✅ Root cause identified as MEASUREMENT regression (L10), not routing regression. Eval trigger detection patterns updated to match factory's markdown-bold output format. Vocabulary deconfliction also applied. **Eval re-run in progress — expect T recovery to ≥ 0.85.**
-5. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
-6. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
-7. **Phase 4**: Changeling latency validation (≤ 2s role switching)
-8. **Phase 5 prep**: Build 50-task TCI benchmark dataset
-9. ~~P2: Implement optimizer state persistence~~ ✅ Completed 2026-04-06
-10. **P2**: Implement sprint contract manifest — factory outputs `manifest.json` for validator
-11. **P1**: Roll cost ceiling to remaining 5 steward scripts
+1. **Phase 4**: Monitor Gemini agent stability after Node v24 + non-interactive fixes (2026-04-21)
+2. **Phase 4**: Evaluate adding `daily_ltc_steward_gemini.sh` to crontab (currently only Claude version running)
+3. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
+4. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
+5. **Phase 4**: Changeling latency validation (≤ 2s role switching)
+6. **Phase 5 prep**: Build 50-task TCI benchmark dataset
+7. **P2**: Implement sprint contract manifest — factory outputs `manifest.json` for validator
+8. **P1**: Roll cost ceiling to remaining 5 steward scripts (already completed for Gemini)

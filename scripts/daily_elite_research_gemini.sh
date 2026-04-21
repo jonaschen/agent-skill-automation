@@ -17,6 +17,8 @@ LOG_DIR="$REPO_ROOT/logs"
 DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/elite-research-gemini-${DATE}.log"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
+# Ensure the correct Node version is used for gemini-cli and its dependencies
+export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
 mkdir -p "$LOG_DIR"
 
@@ -43,7 +45,7 @@ log_task_start "adversarial-synthesis"
    - Potential 'Regressive Evolution' risks in their proposals.
 
 3. Write a 'Cross-Vendor Synthesis Report' to knowledge_base/agentic-ai/analysis/${DATE}-joint-synthesis.md.
-   This report should combine the best ideas from both teams into a single, unified strategic priority.") >> "$LOG_FILE" 2>&1 || true
+   This report should combine the best ideas from both teams into a single, unified strategic priority." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 
 log_task_complete "adversarial-synthesis"
 
@@ -55,7 +57,7 @@ log_task_start "elite-hypothesis"
 Based on today's 'Joint Synthesis Report' (knowledge_base/agentic-ai/analysis/${DATE}-joint-synthesis.md), formulate ONE high-novelty Academic Hypothesis.
 
 This hypothesis must focus on solving a core bottleneck (e.g., the Freezer Effect or Urgency Bias).
-Write it to knowledge_base/agentic-ai/hypotheses/${DATE}-elite-hypothesis.md in formal scientific format.") >> "$LOG_FILE" 2>&1 || true
+Write it to knowledge_base/agentic-ai/hypotheses/${DATE}-elite-hypothesis.md in formal scientific format." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 
 log_task_complete "elite-hypothesis"
 
@@ -75,7 +77,7 @@ Generate the final daily Technical Report.
 3. Incorporate Bayesian evidence from logs/performance/ where applicable.
 4. Write the paper to knowledge_base/agentic-ai/papers/${DATE}-joint-technical-report.md.
 
-This is the document we will use to publish our progress.") >> "$LOG_FILE" 2>&1 || true
+This is the document we will use to publish our progress." < /dev/null) >> "$LOG_FILE" 2>&1 || true
 
 log_task_complete "joint-paper"
 
