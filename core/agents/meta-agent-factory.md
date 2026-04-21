@@ -14,11 +14,21 @@ description: >
   task execution.
 
 # Claude-specific
-tools: [Read, Write, Glob, Grep, Task]
+tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Task
 
 # Gemini-specific
 kind: local
-subagent_tools: [read_file, write_file, list_directory, grep_search, subagent_*]
+subagent_tools:
+  - read_file
+  - write_file
+  - list_directory
+  - grep_search
+  - subagent_*
 model: gemini-3-flash-preview
 temperature: 0.1
 ---

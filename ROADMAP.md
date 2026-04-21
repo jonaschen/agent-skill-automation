@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-21: Phase 4 core complete. 2026-04-21 factory-gemini session: fixed Node.js version mismatch (v18->v24) in cron environment for all 10 Gemini daily scripts; added stdin redirection (< /dev/null) to prevent setRawMode EIO errors in non-interactive sessions; hardened cost_ceiling.sh with robust integer validation; updated agent_review.sh to support dual-vendor (Claude/Gemini) dashboarding. Agent success rate recovery in progress as fixes stabilize. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 9d (Apr 30), Google I/O 28d (May 19-20).**
+**Status as of 2026-04-22: Phase 4 core complete. Opus 4.7 Shadow Eval (Step 1) triggered BLOCK: 0.63 trigger accuracy vs 0.829 baseline (regression confirmed 2026-04-22). Phase 3 L10 re-baseline task opened. Haiku 3 retired (Apr 19) — verified clean. Gemini researcher recovered from "observability blackout"; daily Gemini scripts hardened with recover_uncommitted fix. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 8d (Apr 30), Google I/O 27d (May 19-20). Phase 5 OTEL tracing and CLI-to-SDK migration adopted as design requirements.**
 
 ---
 
@@ -144,6 +144,7 @@ SKILL.md files from natural language requirements.
 - [x] `eval/experiment_log.json` schema defined
 - [x] Experiment trajectory viewer: `eval/show_experiments.sh` — prints log as a human-readable table *(G6)*
 - [ ] Convergence check: confirmed working after first live run
+- [ ] **L10 Re-baseline (Opus 4.7)**: Shadow eval triggered regression (0.63 vs 0.829). Open re-baseline task to adapt descriptions for 4.7 literal style — P0 (2026-04-22)
 
 #### 3.4 MDP / PPO layer *(advanced — start only after base loop is stable)*
 - [ ] Formalize experiment history as (state, action, reward) triples
@@ -354,6 +355,12 @@ Three persistent research priorities shape the pipeline's research direction acr
 
 #### 5.3.2a OTEL Tracing Requirements (2026-04-18)
 - [ ] Add `claude-agent-sdk[otel]` as Phase 5 dependency. Initial collector: stdout JSON format (`OTEL_EXPORTER_OTLP_ENDPOINT=stdout`). Jaeger/Tempo deferred to Phase 5.1+. OTEL-native (not vendor-specific) to support both Agent SDK traces and future ADK OTEL integration — P1 (architecture decision, implementation in Phase 5)
+
+#### 5.3.3 — CLI to Agent SDK Migration (2026-04-18)
+- [ ] Migrate fleet execution from `claude -p` CLI invocations to Agent SDK programmatic calls
+- [ ] Enables: OTEL tracing, subagent transcript inspection, session checkpointing
+- [ ] Migration order: factory-steward first (most tested), then researcher, then remaining agents
+- [ ] Preserve existing perf JSON output format for backward compatibility with `agent_review.sh` — P1
 
 #### 5.3.4 Gemini CLI Integration & Platform Generalization
 - [ ] Define shared SKILL.md schema extension for Gemini CLI tool mapping
@@ -619,13 +626,15 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 | Supply chain compromise of Python/npm dependencies used by eval tools or Claude Code | 4 | pip freeze + require-hashes (blocking); npm audit (warning); cmd_chain_monitor for runtime | New — mitigation implemented 2026-04-05 |
 | Fleet running outdated Claude Code (10+ versions behind) | 4 | `check_fleet_version.sh` warns; `fleet_min_version.txt` updated to >=2.1.111; human must upgrade; post-upgrade validation via `agent_review.sh` | ⚠️ P0 — upgrade pending |
 | Opus 4.7 silent routing regression across 10-agent fleet | 3-4 | Shadow-eval gate (`--model` flag) before rollout; graduated 4-day cascade (factory→factory+optimizer→remaining); CI-overlap required vs T=0.895 baseline | New — shadow-eval ready |
+| Opus 4.7 "fewer subagents" behavioral change degrades steward delegation | 4 | L13 explicit naming pattern; monitor duration:commit ratio during rollout; escalate if delegation drops >30% | New — monitoring during rollout |
 | Capybara/Mythos model release invalidates eval baselines and routing behavior | 3-4 | Model migration runbook (eval/model_migration_runbook.md); nightly researcher monitors for release | UPGRADED P2->P1 — runbook created 2026-04-05 |
 | Phase 7 billing assumes Stripe-only; 4 competing agent payment protocols may require multi-rail support | 7 | Task 7.7 evaluation; defer implementation until protocol war settles | New — monitoring |
 | MCP cost amplification via prolonged tool-calling chains (658x demonstrated) | 4 | MCP tool-call depth monitor in post-tool-use.sh (alert >15, block >25); per-run duration ceiling (5x 30-day avg); future: CI/CD gate MCP pattern rejection | New — P0, mitigated 2026-04-07 |
 | A2A v1.0→v1.1 migration risk | 5 | Defer Phase 5 implementation to post-I/O; evaluate v1.1 SDK before committing to integration pattern | New — deferred pending I/O |
 | Fleet Claude Code version skew | 4 | Fleet version check script (>=minimum); warn on mismatch in all daily scripts | New — mitigation implemented 2026-04-10 |
-| Opus 4.7 "fewer subagents" behavioral change degrades steward delegation | 4 | L13 explicit naming pattern; monitor duration:commit ratio during rollout; escalate if delegation drops >30% | New — monitoring during rollout |
 | Programmatic Tool Calling (`code_execution_20260120`) bypasses security envelope | 4-5 | Security analysis complete (4/5 hooks bypassed). Gate: `permissions.deny` blocks container use. Pilot blocked until container-output audit layer designed. See `evaluations/programmatic-tool-calling-security.md` | New — P1 analysis complete 2026-04-18 |
+| MCP ecosystem scale (10K+ servers) changes security posture | 4-5 | Static validation adequate for Phase 4; elevate mcp-sec-audit to Phase 5 planning period; dynamic discovery validation designed in Phase 5 | New — posture shift acknowledged |
+| Opus 4.7 "fewer subagents" behavioral change degrades steward delegation | 4 | L13 explicit naming pattern; monitor duration:commit ratio during rollout; escalate if delegation drops >30% | New — monitoring during rollout |
 
 ---
 

@@ -45,7 +45,7 @@ recover_uncommitted() {
   local log_file="$3"
   cd "$repo_dir" || return 0
   local dirty
-  dirty=$(git status --porcelain 2>/dev/null | grep -v '^??' | head -1 || true)
+  dirty=$(git status --porcelain 2>/dev/null | head -1 || true)
   if [ -n "$dirty" ]; then
     echo "[RECOVERY] $session_name left uncommitted changes — auto-committing" >> "$log_file"
     git status --short >> "$log_file" 2>&1

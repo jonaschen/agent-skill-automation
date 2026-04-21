@@ -78,6 +78,18 @@
       "change_description": "G8 Iter 3 baseline: No description change. Regression from 0.895→0.658 caused by adding 6 new agents (stewards, factory, reviewer) since G8 Iter 2. Positive tests (CREATE prompts) now route to competing agents. All negatives still pass. Structural routing competition issue, not description quality.",
       "git_commit": "baseline-measurement",
       "outcome": "regression-detected"
+    },
+    {
+      "iteration": 8,
+      "timestamp": "2026-04-22T06:00:00Z",
+      "branch": "shadow-eval-opus-4-7",
+      "pass_rate": 0.63,
+      "posterior_mean": 0.623,
+      "ci_lower": 0.50,
+      "ci_upper": 0.74,
+      "change_description": "Opus 4.7 Shadow Eval: First run on new model. Revealed significant trigger regression (0.63 vs 0.829 baseline). Opus 4.7 literal style appears to over-comply with exclusion rules or fail on previously working imperative triggers. Blocking upgrade until Phase 3 L10 re-baseline.",
+      "git_commit": "d74a058",
+      "outcome": "regression-detected"
     }
   ]
 }
