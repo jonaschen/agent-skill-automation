@@ -119,6 +119,64 @@ _______________________________________________________________________
 
 ---
 
+## Shadow Eval Failure Analysis (Per-Test Diagnostic)
+
+**Purpose**: When a shadow eval returns NO-GO, determine whether the failure is recoverable
+(description tuning) or fundamental (needs vendor patch). Requires per-test results in
+`experiment_log.json` (added 2026-04-21 via `--verbose` logging in `daily_shadow_eval.sh`).
+
+### Test Category Ranges
+
+| Category | Test IDs | Count | What It Measures |
+|----------|----------|-------|-----------------|
+| Positive | 1–22 | 22 | Correct triggering (should route to meta-agent-factory) |
+| Hallucination trap | 23–39 | 17 | False positive resistance (should NOT trigger) |
+| Near-miss / cross-domain | 40–59 | 20 | Disambiguation accuracy (should NOT trigger) |
+
+### Step 1: Compute Per-Category Failure Rate
+
+From the `per_test_results` array in the experiment log entry:
+
+```
+positive_failures    = count(FAIL in tests 1-22)  / 22
+hallucination_failures = count(FAIL in tests 23-39) / 17
+nearmiss_failures    = count(FAIL in tests 40-59)  / 20
+```
+
+**Use rates, not raw counts** — denominators differ across categories.
+
+### Step 2: Classify Failure Pattern
+
+| Pattern | Criterion | Interpretation |
+|---------|-----------|---------------|
+| **Concentrated-positive** | positive_failures > 0.30 AND hallucination + nearmiss < 0.10 | New model routes differently but doesn't false-trigger. Routing regression. |
+| **Concentrated-negative** | hallucination + nearmiss > 0.20 AND positive_failures < 0.10 | New model false-triggers on non-creation prompts. Behavior change. |
+| **Mixed** | Both categories have failures > 0.10 | Multiple regression vectors. |
+| **Sparse** | Total failures < 5 | Likely noise or edge cases. |
+
+### Step 3: S1 Action Mapping
+
+| Pattern | S1 Posture | Action |
+|---------|-----------|--------|
+| **Concentrated-positive** | Recoverable | Tune meta-agent-factory description for new model's routing. Run autoresearch-optimizer with `--model <new>`. Expected: 1-3 optimizer iterations. |
+| **Concentrated-negative** | Recoverable | Strengthen exclusion patterns in description. Add failing prompts to training set if novel. Run optimizer. |
+| **Mixed** | Likely blocked | Both routing and behavior changed. Wait for vendor patch or adaptive reasoning tuning. Re-evaluate after patch. |
+| **Sparse** | Likely noise | Re-run shadow eval to confirm. If reproducible, treat as concentrated per dominant category. |
+
+### Decision Tree Summary
+
+```
+per_test_results available?
+├─ NO → Wait. Cannot characterize. Default: "wait for patch" (safe).
+└─ YES → Compute per-category failure rates
+    ├─ Total failures < 5 → Re-run to confirm (may be noise)
+    ├─ Positive failures dominant → RECOVERABLE: tune description
+    ├─ Negative failures dominant → RECOVERABLE: strengthen exclusions
+    └─ Both categories failing → BLOCKED: wait for vendor patch
+```
+
+---
+
 ## Step 3: Decision Matrix
 
 | Outcome | Action |

@@ -123,9 +123,11 @@ EVAL_STATUS="running"
 
 # Run the eval with timeout safety net (5400s = 90 min)
 # Prevents overlap with 1:00 AM researcher session if eval runs long
+# --verbose enables per-test output (Test {id}: PASS/FAIL) for failure analysis
 EVAL_TIMEOUT=5400
 cd "$REPO_ROOT"
 EVAL_OUTPUT=$(timeout "$EVAL_TIMEOUT" python3 eval/run_eval_async.py \
+  --verbose \
   --model "$PENDING_MIGRATION_MODEL" \
   --split train \
   --inter-test-delay "$INTER_TEST_DELAY" \
@@ -148,9 +150,23 @@ fi
 
 echo "$EVAL_OUTPUT" >> "$LOG_FILE"
 
-# Parse results from eval output
-PASS_COUNT=$(echo "$EVAL_OUTPUT" | grep -oP 'PASS:\s*\K\d+' | tail -1 || echo "0")
-TOTAL_COUNT=$(echo "$EVAL_OUTPUT" | grep -oP 'TOTAL:\s*\K\d+' | tail -1 || echo "0")
+# Parse per-test results from --verbose output (format: "Test  N: PASS|FAIL:*")
+# and compute aggregate counts directly from parsed results.
+# This replaces the previous PASS:/TOTAL: grep which didn't match the actual output format.
+PER_TEST_JSON=$(python3 -c "
+import re, json, sys
+output = sys.stdin.read()
+results = []
+for m in re.finditer(r'Test\s+(\d+):\s+(PASS|FAIL\S*|SKIP\S*)', output):
+    results.append({'test_id': int(m.group(1)), 'result': m.group(2)})
+passes = sum(1 for r in results if r['result'] == 'PASS')
+fails = sum(1 for r in results if r['result'].startswith('FAIL'))
+total = passes + fails
+print(json.dumps({'per_test_results': results, 'passes': passes, 'total': total}))
+" <<< "$EVAL_OUTPUT" 2>/dev/null)
+
+PASS_COUNT=$(echo "$PER_TEST_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['passes'])" 2>/dev/null || echo "0")
+TOTAL_COUNT=$(echo "$PER_TEST_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['total'])" 2>/dev/null || echo "0")
 
 if [ "$TOTAL_COUNT" -eq 0 ]; then
   echo "[FAIL] Could not parse eval results (TOTAL=0)" >> "$LOG_FILE"
@@ -174,10 +190,31 @@ echo "" >> "$LOG_FILE"
 echo "Results: $PASS_COUNT/$TOTAL_COUNT PASS" >> "$LOG_FILE"
 echo "Posterior: mean=$POSTERIOR_MEAN CI=[$CI_LOWER, $CI_UPPER]" >> "$LOG_FILE"
 
-# Append to experiment_log.json
+# Log per-test breakdown for failure analysis (S1 critical path)
+echo "" >> "$LOG_FILE"
+echo "=== Per-Test Results ===" >> "$LOG_FILE"
+echo "$PER_TEST_JSON" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for r in data['per_test_results']:
+    print(f\"  Test {r['test_id']:2d}: {r['result']}\")
+failures = [r for r in data['per_test_results'] if r['result'].startswith('FAIL')]
+if failures:
+    print(f\"\\nFailed tests ({len(failures)}): {', '.join(str(r['test_id']) for r in failures)}\")
+    # Categorize by test range
+    pos = [r for r in failures if r['test_id'] <= 22]
+    neg_halluc = [r for r in failures if 23 <= r['test_id'] <= 39]
+    neg_nearmiss = [r for r in failures if r['test_id'] >= 40]
+    if pos: print(f\"  Positive (1-22) failures: {len(pos)} — routing regression\")
+    if neg_halluc: print(f\"  Hallucination (23-39) failures: {len(neg_halluc)} — false positives\")
+    if neg_nearmiss: print(f\"  Near-miss (40-59) failures: {len(neg_nearmiss)} — false positives\")
+" >> "$LOG_FILE" 2>&1
+
+# Append to experiment_log.json (now with per-test results for failure analysis)
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 python3 -c "
-import json
+import json, sys
+per_test_data = json.loads('''$PER_TEST_JSON''')
 data = json.load(open('$EXPERIMENT_LOG'))
 exps = data.get('experiments', [])
 exps.append({
@@ -191,6 +228,7 @@ exps.append({
     'ci_upper': $CI_UPPER,
     'passes': $PASS_COUNT,
     'total': $TOTAL_COUNT,
+    'per_test_results': per_test_data['per_test_results'],
     'change_description': 'Shadow eval: $PENDING_MIGRATION_MODEL on training set (T=$TOTAL_COUNT)',
     'outcome': 'shadow-eval'
 })
@@ -198,7 +236,7 @@ data['experiments'] = exps
 with open('$EXPERIMENT_LOG', 'w') as f:
     json.dump(data, f, indent=2)
     f.write('\n')
-print('Written to experiment_log.json')
+print('Written to experiment_log.json (with per-test results)')
 " >> "$LOG_FILE" 2>&1
 
 # Go/No-Go assessment
