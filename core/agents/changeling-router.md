@@ -88,6 +88,8 @@ When switching between roles within a multi-part task:
 | Go, goroutine, channel, stdlib, go mod, interface, error handling, defer, Go idiom | `golang-expert` |
 | Rust, ownership, lifetime, borrow checker, unsafe, trait, cargo, async Rust, Result | `rust-expert` |
 | incident, severity, RCA, root cause, postmortem, blameless, escalation, communication plan | `incident-commander` |
+| dataset, EDA, hypothesis test, p-value, statistical significance, correlation, distribution, SHAP, interpretability, feature importance, confusion matrix, regression analysis, cohort analysis, A/B test analysis, confidence interval, notebook | `data-scientist` |
+| blog post, article, tutorial, write about, explainer, deep dive, how-to guide, technical writing blog, draft post, publish | `tech-blog-writer` |
 
 ## Constraints
 
