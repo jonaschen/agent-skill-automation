@@ -6,7 +6,8 @@
       "model_id": "claude-3-haiku-20240307",
       "retirement_date": "2026-04-19",
       "replacement": "claude-haiku-4-5-20251001",
-      "source": "analysis-2026-04-08"
+      "source": "analysis-2026-04-08",
+      "verified_clean_post_retirement": "2026-04-19"
     },
     {
       "model_id": "claude-3.5-sonnet-20241022",

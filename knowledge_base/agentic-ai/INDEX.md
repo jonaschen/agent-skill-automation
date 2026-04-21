@@ -1,15 +1,15 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-22 (Google/DeepMind sweep — following Anthropic-only sweep earlier today)
+**Last sweep**: 2026-04-22 (Operational Recovery Sweep — Resolved 4-day commit blackout)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-18 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-18 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-18 |
+| Claude Code | anthropic/claude-code.md | 2026-04-22 |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-22 |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-22 |
 | Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-18 |
 | Computer Use | anthropic/computer-use.md | 2026-04-18 |
 | Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-18 |
@@ -43,11 +43,14 @@
 | Strategic Priorities | strategic-priorities.md | 2026-04-18 |
 | Original Publications | publications/ | 2026-04-18 |
 
+Note: 2026-04-22 Operational Recovery Sweep: **Resolved "Observability Blackout"**. Fixed `scripts/daily_research_sweep_gemini.sh` bug where untracked files were ignored during recovery. Committed 18 files from the stalled 2026-04-22 morning sweep. Verified Opus 4.7 Shadow Eval (0.63 regression), ADK v1.31.1 features, and Haiku 3 retirement audit (Clean). Integrated **ChatInject** security mitigation (P0 proposal) and **Session Rewind** spec (P1 proposal).
+
 Note: 2026-04-22 Academic Track sweep: **YC-Bench (arXiv:2604.01212)** launches long-horizon startup simulation; scratchpads confirmed as primary success driver. **Amazon Holistic Evaluation** formalizes 3-layer assessment (Model/Component/Output). **FD-MAGRPO (AAAI-26)** eliminates critic networks for stable multi-agent engineering optimization. **ChatInject (arXiv:2509.22830)** identifies chat template/role-token escalation vulnerability. **Meta AI "Agents Rule of Two"** establishes architectural safety heuristic (Trustworthy Inputs / Sensitive Data / State Change). Action items: **Audit Phase 5 orchestration for YC-Bench style scratchpad/memory persistence (P1)**. **Evaluate "Rule of Two" enforcement for all state-changing tools (P1)**. **Verify token-level sanitization for all tool outputs to prevent ChatInject-style role escalation (P0)**.
 
 Note: 2026-04-22 Google/DeepMind sweep: **Deep Research Agents GA** (`deep-research-preview-04-2026`) — autonomous agents with test-time compute. **Gemini 3.1 Pro/Flash TTS GA** (200+ audio tags, multi-speaker). **ADK Python v1.31.1** — **Session Rewind** (GA), **AgentEngineSandboxCodeExecutor** (GA), **Custom Service Registry** (GA). **A2A v1.0.0 Momentum** — triple hyperscaler integration (Azure/AWS/GCP), 150+ organizations. **Vertex AI "AI Applications" relaunch** — **Memory Bank GA** (episodic memory), **GKE Agent Sandbox GA** (isolated execution), **Generative UI (A2UI)**. **Mariner integrated into "Gemini Agent"** — `Google-Agent` crawler formalized, parallel tasking for AI Ultra. **Astra powers Gemini Live** — hardware Agent Mode on Pixel/Samsung. **Gemma 4 Ecosystem** — 31B Dense #3 on Arena AI, native "Thinking Mode" GA. **I/O 27d**. Action items: **Evaluate ADK v1.31.1 Session Rewind for Phase 4 closed-loop rollback (P1)**. **Integrate Memory Bank for Phase 5 orchestration (P1)**. **Verify Gemini 3.1 Pro/Flash Computer Use for UI automation tasks (P1)**.
 
 Note: 2026-04-22 Anthropic-only sweep: **Claude Opus 4.7 Shadow Eval reveals trigger regression (0.63 vs 0.829)**. **Agent SDK v1.31.0** ships Session Rewind and Custom Service Registry. **MCP v2.1 formalizes Server Cards and Durable Tasks**. **Claude Code v2.1** adds `/less-permission-prompts` allowlist optimizer. **Haiku 3 retirement (Apr 19) verified clean**.
+
 
 Note: 2026-04-18 Owner Directive: **Reaffirmed Strategic Priorities (S1-S3 + Meta-Goal)**. Focus on **Automatic Agent Improvement** (keeping pace with Anthropic/Google), **Multi-Agent Orchestration**, and **Platform Generalization** (Gemini/Claude parity). **Meta-Goal**: Move beyond following to original research, experiments, and **publishing papers**. **Resource Commitment**: Owner (Jonas) provides additional compute budget for research rounds as needed.
  **ADK Python v1.31.0 released** (Apr 17) — **Session Rewind** (undo agent actions), **AgentEngineSandboxCodeExecutor** (Vertex AI managed code sandbox), **Custom Service Registry** (plugin-style FastAPI deployment). Bi-weekly cadence holds (v1.30.0 Apr 13 → v1.31.0 Apr 17). **Gemini CLI day 3 quiet** — v0.38.1 stable holds; nightly pipeline paused (no nightlies for Apr 16-18, unusual after daily cadence since Apr 9). **Gemini API silent since Apr 15** (TTS). **API free tier restructured Apr 1** — Pro models paid-only ($19.99/mo+), Flash remains free. **Computer Use tool in gemini-3-pro/flash-preview** — parity with Anthropic CU. **A2A day 37 v1.0.0** — longest-ever stable window extends. No pre-I/O v1.1 leaks. **Vertex AI Agent Builder day 59 silence** — record extends; new Agent Engine features routing through ADK releases during freeze. **Mariner day 13** — "Teach and Repeat" persistent cross-session memory confirmed. Enterprise API 18d late (Q1 target missed). No I/O Mariner track → "Gemini Agent" umbrella rebrand likely. **Astra day 13** — Engadget I/O preview explicitly names Astra as expected reveal. Android XR monocular glasses confirmed for 2026. **Gemma 4 day 16** — AI Edge Gallery live on Play Store + App Store (E2B/E4B fully offline). vLLM EAGLE3 still WIP (day 11). No new variants. **Deprecations**: robotics model 12d, Gemini 2.0 Flash/Flash-Lite Jun 1, Gemini 2.5 series Oct 16. **I/O 31d**, pre-I/O ~14d. Action items: **Evaluate ADK v1.31.0 Session Rewind for Phase 4 closed-loop rollback (P1)**. **Monitor nightly pipeline resumption (P2)**. **Track Gemini 2.0 Flash deprecation Jun 1 for any pipeline references (P2)**.
