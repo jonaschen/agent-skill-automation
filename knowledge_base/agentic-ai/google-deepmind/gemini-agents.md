@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-21 (afternoon)
+**Last updated**: 2026-04-22
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -28,6 +28,20 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — **NEW: Deep Research Agent API (Apr 21)**; CLI v0.38.2 Day 5 Frozen; API Breaks Silence
+- **What**: **Gemini API shipped two Deep Research Agent models on Apr 21** — a significant release breaking the API's 6-day silence:
+  - `deep-research-preview-04-2026`: Optimized for speed/efficiency, streamable to client UIs
+  - `deep-research-max-preview-04-2026`: Maximum comprehensiveness for automated research
+  - **Key features**: Collaborative planning (user reviews/refines investigation strategy before execution), visualization (charts/graphs), **MCP server integration** (connect to remote MCP servers with auth headers + tool restrictions), File Search (ground research in uploaded documents)
+  - **Default tools**: Google Search, URL Context, Code Execution; plus MCP + File Search as add-ons
+  - **Pricing**: ~$1-3/task (standard, ~80 searches, ~250k input tokens), ~$3-7/task (max, ~160 searches, ~900k input tokens)
+  - **API**: Interactions API only, requires `background=true`, async polling or streaming, 60-minute max duration
+  - **Limitations**: No structured output, no custom Function Calling (MCP servers instead), public beta with potential schema changes
+  - **CLI**: v0.38.2 (Apr 17) day 5. No new stable or nightly releases. Nightly pipeline day 7+ paused. CLI freeze continues deepening.
+  - **I/O 27d**.
+- **Significance**: The Deep Research Agent is Google's first **autonomous agent-as-API-endpoint** with native MCP integration — a direct competitor to Anthropic's Managed Agents research mode. The MCP server integration feature is particularly notable: it means Google's research agents can call external tools via the same protocol we use for our pipeline. The collaborative planning feature mirrors the Three-Agent Harness planning phase pattern. The Interactions API (not standard generate) signals Google is building a distinct API surface for agentic workloads. CLI freeze extending to day 5 with nightly pipeline 7+ days paused is the deepest CLI freeze observed.
+- **Source**: https://ai.google.dev/gemini-api/docs/changelog (Apr 21 entry), https://ai.google.dev/gemini-api/docs/deep-research, https://github.com/google-gemini/gemini-cli/releases
 
 ### 2026-04-21 (evening) — CLI v0.38.2 Day 4 Confirmed; No Change Since Afternoon
 - **What**: CLI v0.38.2 (Apr 17) confirmed latest via GitHub releases. No new stable or nightly. API day 6 silent. ADK broke freeze (v1.31.1 only, **v1.32.0 does not exist** — afternoon correction). CLI freeze continues. I/O 28d.

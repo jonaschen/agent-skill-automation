@@ -16,6 +16,9 @@ Claude's tool use system allows the model to invoke external functions by return
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — Tool Use Stable; No Change
+- **What**: Stable. No changes since last sweep. All GA features holding.
+
 ### 2026-04-21 (evening) — Tool Use Stable; No Change
 - **What**: Stable. No changes since afternoon.
 

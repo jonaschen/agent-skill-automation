@@ -26,6 +26,11 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — Haiku 3 OFFICIALLY RETIRED; #49562 Still OPEN; 1M Beta 8d (Final Check, Closing)
+- **What**: Haiku 3 (`claude-3-haiku-20240307`) officially retired April 20 — platform release notes confirm "All requests to this model will now return an error." Page status flipped from "Deprecated" to retired. **Opus 4.7 #49562** still OPEN: 2 comments (github-actions + 1 community), zero staff responses, last update Apr 19. Third-party adaptive thinking compat issues growing: n8n #28635, openclaw #67888, pi-mono #3289 — all report `supportsAdaptiveThinking()` missing Opus 4.7 causing 400 errors + silent thinking fallback. **1M beta sunset 8 days** (Apr 30) — non-issue for fleet (GA 4.6 models). Final check done; closing this tracking item per directive.
+- **Significance**: Haiku 3 retirement is a non-event (guard was validated over 5+ sweeps). Opus 4.7 third-party compat issues suggest the adaptive reasoning API change is causing widespread integration pain, which may pressure Anthropic to respond on #49562 faster. 1M beta: closed.
+- **Source**: https://platform.claude.com/docs/en/release-notes/overview (Apr 20 entry), https://github.com/anthropics/claude-code/issues/49562 (gh CLI verified), https://github.com/n8n-io/n8n/issues/28635, https://github.com/openclaw/openclaw/issues/67888
+
 ### 2026-04-21 (evening) — Opus 4.7 #49562 Confirmed OPEN via gh CLI; No Change; 1M Beta 9d
 - **What**: Verified via `gh api repos/anthropics/claude-code/issues/49562`: state=open, comments=2, last updated 2026-04-19T14:19:26Z. Zero staff responses. No adaptive reasoning patch. 1M beta sunset 9 days (Apr 30). Non-issue for fleet.
 - **Significance**: Confirmation only. No new data.

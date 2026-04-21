@@ -22,6 +22,11 @@ The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic'
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — SDK Py v0.1.64, TS v0.2.116 Still Latest; Day 2 Post-Freeze Quiet
+- **What**: No new SDK releases. Python v0.1.64 and TypeScript v0.2.116 remain latest. Post-freeze quiet continues in lockstep with CC.
+- **Significance**: Confirmation only.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases (verified Apr 22)
+
 ### 2026-04-21 (evening) — SDK Py v0.1.64, TS v0.2.116 Confirmed Latest; No New Releases
 - **What**: Evening verification: Python v0.1.64 (Apr 20) and TypeScript v0.2.116 (Apr 20) remain latest. No v0.1.65 or v0.2.117.
 - **Significance**: Confirmation only.

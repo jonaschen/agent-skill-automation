@@ -15,6 +15,9 @@ Computer Use is a beta feature that enables Claude to interact with desktop envi
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — Computer Use Still Beta; No Change
+- **What**: Still beta. No GA announcement. Not mentioned further per directive.
+
 ### 2026-04-21 (evening) — Computer Use Still Beta; No Change
 - **What**: Still beta. No GA announcement.
 

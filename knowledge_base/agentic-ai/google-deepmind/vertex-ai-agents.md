@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-21 (afternoon)
+**Last updated**: 2026-04-22
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Agent Builder Day 63+; Frozen; Agent Designer Noted; Deep Research Ships via API Instead
+- **What**: Agent Builder last release Feb 18. Day 63+ without releases (verified — no April entries in release notes). **Agent Designer** (low-code visual canvas for orchestrating agents/subagents, export to ADK) noted as recent capability addition — date unclear from release notes but documented. **New features routing through Gemini API instead**: Deep Research Agent models (Apr 21) shipped as Interactions API endpoints, not Agent Builder features. This reinforces the pattern of API-first + ADK-first development bypassing Agent Builder. I/O relaunch of Agent Builder (possibly under "AI Applications" rebrand) remains near-certain. I/O 27d.
+- **Significance**: The Deep Research Agent shipping via Gemini API rather than Agent Builder is the strongest signal yet that Google's agentic strategy has shifted: the API is the primary surface, Agent Builder is the enterprise management layer. This matches the ADK-first development pattern observed since v1.29.0.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://ai.google.dev/gemini-api/docs/changelog
 
 ### 2026-04-21 (evening) — Agent Builder Day 62+; Confirmed Frozen; No Change
 - **What**: Agent Builder still frozen. ADK broke freeze (v1.31.1, **corrected from v1.32.0**). No Agent Builder activity. I/O 28d.

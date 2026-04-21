@@ -24,6 +24,11 @@ The Model Context Protocol (MCP) is an open protocol created by Anthropic that e
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — MCP Steady State; STDIO Media Amplification Continues
+- **What**: No new CVEs. No protocol changes. STDIO vulnerability media coverage continues: webanditnews.com (Apr 20) and bdtechtalks.com (Apr 20) both published amplification articles highlighting 150M+ installs and Anthropic's "expected behavior" stance. MCP Dev Summit North America held in NYC (~1,200 attendees). AWS, Google, and Cloudflare doubling down on MCP adoption.
+- **Significance**: Media pressure increasing but Anthropic position unchanged. No architectural impact.
+- **Source**: https://www.webanditnews.com/2026/04/20/anthropics-mcp-the-protocol-meant-to-link-ai-agents-now-risks-server-takeovers-across-150-million-installs/, https://bdtechtalks.com/2026/04/20/anthropic-mcp-vulnerability/
+
 ### 2026-04-21 (evening) — MCP Steady State; No Change Since Afternoon
 - **What**: No new CVEs. No new Anthropic response. STDIO media coverage amplifying. Steady state.
 - **Source**: Verified evening — no new security advisories

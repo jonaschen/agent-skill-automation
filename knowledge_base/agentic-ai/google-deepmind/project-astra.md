@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-21 (afternoon)
+**Last updated**: 2026-04-22
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,11 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — Astra: Steady State; Android XR Glasses Confirmed 2026; I/O 27d
+- **What**: No new Astra announcements. **Android XR glasses confirmed for 2026 launch**: monocular display version (Google + Samsung partnership), Gentle Monster + Warby Parker design partners, Gemini-powered context-aware assistance. "Adaptive Everywhere" I/O Day 2 track confirmed. Astra capabilities continue integration into Gemini Live. I/O 27d.
+- **Significance**: One sentence: Astra steady state, Android XR glasses are the I/O hardware story.
+- **Source**: https://deepmind.google/models/project-astra/, https://9to5google.com/2025/12/08/android-xr-glasses-displays-2026/
 
 ### 2026-04-21 (evening) — Astra: No Change; Confirmed Steady State
 - **What**: No change since afternoon. I/O 28d expected reveal.

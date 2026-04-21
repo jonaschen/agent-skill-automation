@@ -27,6 +27,11 @@ Claude Code is Anthropic's agentic CLI tool that reads codebases, executes comma
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 — v2.1.116 Still Latest (Day 2); Post-Freeze Burst Did Not Materialize
+- **What**: CC v2.1.116 remains latest (npm confirmed). No v2.1.117+. The directive predicted "Anthropic tends to ship daily after a freeze break" but 2 days of silence since Apr 20 release. Post-freeze burst has not materialized.
+- **Significance**: Unexpected quiet period. May indicate bundled release staging or focus on Opus 4.7 adaptive reasoning patch. Monitor continues.
+- **Source**: https://www.npmjs.com/package/@anthropic-ai/claude-code (verified Apr 22)
+
 ### 2026-04-21 (evening) — v2.1.116 Confirmed Latest; No v2.1.117; Release Cadence Normalizing
 - **What**: Evening verification confirms v2.1.116 (Apr 20) remains latest on GitHub releases. No v2.1.117. Freeze broke after ~130h with two releases (v2.1.115 bridge + v2.1.116 major). Release cadence expected to resume normal pace.
 - **Significance**: Confirmation only. No new action items.

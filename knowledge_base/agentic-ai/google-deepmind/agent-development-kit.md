@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-21 (afternoon)
+**Last updated**: 2026-04-22
 **Sources**:
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
@@ -19,6 +19,11 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — ADK v1.31.1 Day 1; No v1.32.0; TypeScript SDK Announced; Go SDK Announced
+- **What**: ADK v1.31.1 (Apr 21) confirmed latest via GitHub API. No v1.32.0 yet. v2.0.0a3 (Apr 9) still latest pre-release. **ADK ecosystem expanding**: TypeScript SDK officially announced (code-first approach, open-source), Go SDK announced. Java SDK at v1.1.0 (HITL, GoogleMapsTool, event compaction). ADK now has **4-language** production coverage: Python, Go, Java, TypeScript. Next Python release expected ~Apr 27-May 1. I/O 27d.
+- **Significance**: ADK 4-language coverage matches our observation of CLI agent convergence. The TypeScript SDK brings ADK to the Node.js ecosystem (Gemini CLI's runtime). No version change since yesterday.
+- **Source**: https://github.com/google/adk-python/releases, https://developers.googleblog.com/introducing-agent-development-kit-for-typescript-build-ai-agents-with-the-power-of-a-code-first-approach/
 
 ### 2026-04-21 (evening) — **CORRECTION**: Only v1.31.1 Shipped; v1.32.0 Does NOT Exist; RCE Fix Is in v1.31.1
 - **What**: **Evening verification corrects afternoon report.** Only **v1.31.1** (Apr 21) shipped. There is NO v1.32.0 — no tag, no GitHub Release, no PyPI entry. Verified via: (1) `gh api repos/google/adk-python/tags` — top stable tag is v1.31.1; (2) PyPI history — latest is 1.31.1; (3) `gh api compare/v1.31.1...e283ea0` — RCE commit is "behind" v1.31.1 (i.e., included in it). The **critical RCE fix** (nested YAML configurations, commit e283ea0) is in v1.31.1, along with: Vertex SDK version bump (commit 21ebe29), disabled bound token for mcp_tool (commit d0afddd), web OAuth flow and trace view improvements (commit c3dafdb). v2.0.0a3 (Apr 9) still latest pre-release. Bi-weekly cadence: v1.30.0 (Apr 13) → v1.31.0 (Apr 17) → v1.31.1 (Apr 21). Next release (actual v1.32.0) expected ~Apr 27-May 1. I/O 28d.

@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-21 (afternoon)
+**Last updated**: 2026-04-22
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
@@ -22,6 +22,11 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 — A2A v1.0.0 Day 41; No v1.1; Stable
+- **What**: A2A v1.0.0 (Mar 12) day 41. No v1.1.0 on GitHub (verified via `gh api`). No I/O pre-leaks for v1.1. I/O 27d.
+- **Significance**: One sentence: A2A unchanged, longest stable window continues.
+- **Source**: https://github.com/a2aproject/A2A/releases
 
 ### 2026-04-21 (evening) — A2A v1.0.0 Day 40; Confirmed Stable; No Change
 - **What**: A2A v1.0.0 (Mar 12) day 40. No v1.1.0. ADK broke freeze (v1.31.1) but A2A remains stable. I/O 28d.
