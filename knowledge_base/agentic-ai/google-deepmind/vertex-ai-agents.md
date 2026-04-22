@@ -1,16 +1,22 @@
 # Vertex AI Agents
+# Gemini Enterprise Agent Platform (formerly Vertex AI)
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-23
 **Sources**:
-- https://cloud.google.com/vertex-ai/docs/agents
+- https://cloud.google.com/gemini-enterprise/docs/agents
 - https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-next-26-agentic-ai-announcements
-- https://cloud.google.com/vertex-ai/docs/agent-builder/gke-sandbox
+- https://thenextweb.com/news/google-rebrands-vertex-ai-to-gemini-enterprise-agent-platform
 
 ## Overview
 
-Vertex AI Agent Builder (rebranding to **AI Applications**) is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution (via GKE Agent Sandbox) are now Generally Available, with billing starting February 2026.
+The **Gemini Enterprise Agent Platform** (formerly Vertex AI / AI Applications) is Google Cloud's consolidated enterprise hub for building, deploying, and managing "Agentic Enterprises." It provides a unified stack combining the Agent Development Kit (ADK) v1.0, Agent Engine (managed runtime), **Agent Studio** (low-code development), and **Agent Designer** (natural language agent creation). The platform is designed to move beyond individual AI tasks to autonomous agents that handle end-to-end business outcomes.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — Rebranding to Gemini Enterprise Agent Platform; Agent Studio & Agent Designer GA; Multi-Day Workflows
+- **What**: On the final day of Google Cloud Next '26, Google officially rebranded Vertex AI to the **Gemini Enterprise Agent Platform**: (1) **Consolidation**: The new name reflects a shift from "AI building blocks" to a unified agent orchestration platform. (2) **Agent Studio**: A low-code visual environment for non-technical users to build and deploy agents via "vibe coding" (natural language). (3) **Agent Designer**: An interface within the Gemini Enterprise app for creating schedule- or trigger-based agents. (4) **Multi-Day Workflows**: Agents can now run autonomously for several days, enabling long-horizon tasks such as deep research or sales prospecting. (5) **Agentic Data Cloud**: Integration with the Knowledge Catalog and Data Agent Kit for automated data grounding and science.
+- **Significance**: The rebranding to "Gemini Enterprise" signals Google's intent to own the "Agentic Operating System" for the enterprise. The support for multi-day workflows is a critical technical advancement for S2 (Multi-Agent Orchestration), moving from short-turn chat to long-horizon autonomous task completion.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-next-26-agentic-ai-announcements
 
 ### 2026-04-22 — Vertex AI "AI Applications" Relaunch: Memory Bank & GKE Agent Sandbox GA; Generative UI (A2UI); I/O 27 Days
 - **What**: Google Cloud finalized the rebranding of Agent Builder to **AI Applications** at Google Cloud Next '26 (Apr 21-23): (1) **Memory Bank GA** — Provides managed short-term session memory and long-term episodic memory for agents. (2) **GKE Agent Sandbox GA** — Secure, multi-tenant environment on GKE for executing AI-generated code, isolated from core infrastructure. (3) **Generative UI (A2UI)** — New capability for agents to dynamically generate UI components (forms, charts) based on conversation context. (4) **Model Context Protocol (MCP) Native Support** — Vertex AI agents can now connect to third-party data sources using standardized MCP servers. (5) **AP2 Integration** — Native support for the Agent Payments Protocol for autonomous financial transactions.

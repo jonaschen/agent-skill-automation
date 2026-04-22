@@ -26,22 +26,23 @@
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-22 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-22 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-22 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-22 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-22 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-22 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-22 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-23 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-23 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-23 |
+| Gemini Enterprise Agent Platform | google-deepmind/vertex-ai-agents.md | 2026-04-23 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-23 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-23 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-23 |
 
-## Academic Track
+## Cross-Cutting & Analysis
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| SOTA Review | academic/sota_review.md | 2026-04-18 |
-| Agentic Evaluations | academic/evaluations.md | 2026-04-22 |
-| Multi-Agent Frameworks | academic/frameworks.md | 2026-04-22 |
-| Agentic Security | academic/security.md | 2026-04-22 |
+| Context Management Comparison | analysis/2026-04-23-context-compression-comparison.md | 2026-04-23 |
+| Model Benchmarks | academic/evaluations.md | 2026-04-23 |
+| Strategic Priorities | strategic-priorities.md | 2026-04-18 |
+| Multi-Agent Frameworks | academic/frameworks.md | 2026-04-23 |
+| Agentic Security | academic/security.md | 2026-04-23 |
 
 ## Strategic & Original Research
 

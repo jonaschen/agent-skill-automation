@@ -1,10 +1,11 @@
 # Agentic Evaluations
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-23
 **Sources**:
 - [arXiv:2604.01212 — YC-Bench: Benchmarking AI Agents for Long-Term Planning and Consistent Execution](https://arxiv.org/abs/2604.01212)
 - [Amazon Holistic Agentic AI Evaluation Framework (Feb 2026)](https://aws.amazon.com/blogs/machine-learning/evaluate-agentic-ai-applications-holistically-with-amazon-bedrock/)
 - [KDD 2026 Workshop on Evaluation and Trustworthiness of Agentic AI](https://agentic-eval-workshop.github.io/kdd2026/)
+- [OpenReview 2026 — Transparency for Agentic AI: A Study of Benchmarks, Metrics, and Oversight](https://openreview.net/forum?id=trace-eval-2026)
 
 ## Overview
 Academic and industry evaluation of agentic AI has shifted from static, final-output benchmarks to **trajectory-level** and **long-horizon** assessments. The focus is now on strategic coherence, tool orchestration reliability, and the ability to maintain state across hundreds of interaction turns.
@@ -13,9 +14,14 @@ Academic and industry evaluation of agentic AI has shifted from static, final-ou
 
 ### 2026-04-22 — YC-Bench: Long-Term Planning Benchmark
 - **What**: A "Startup Simulation" benchmark where agents act as CEOs over a one-year horizon (hundreds of turns). Agents must manage resources, hire employees, and navigate a partially observable environment with adversarial clients (35%).
-- **Significance**: Identifies a "Headroom Gap" where models fail to maintain strategic coherence over long horizons. Highlights that **scratchpad usage** is the single best predictor of success, as it allows agents to "remember" adversarial entities beyond the context window.
-- **Top Performers**: Claude Opus 4.6 ($1.27M final funds), GLM-5 ($1.21M). GLM-5 achieved this at 11x lower cost.
+- **Significance**: Identifies a "Headroom Gap" where models fail to maintain strategic coherence over long horizons. Highlights that **scratchpad usage** is the single best predictor of success.
+- **Top Performers**: Claude Opus 4.6 ($1.27M final funds), GLM-5 ($1.21M).
 - **Source**: [arXiv:2604.01212](https://arxiv.org/abs/2604.01212)
+
+### 2026-03-15 — Transparency for Agentic AI: Trace-Based Evaluation
+- **What**: Research on OpenReview proposing that "outcome-only" metrics are insufficient for autonomous agents. It introduces **trace-based signals** to monitor how failures propagate across multi-step reasoning and tool-use sequences.
+- **Significance**: Argues that evaluation must capture the entire execution trajectory to identify "latent failures" where an agent achieves a goal but violates safety or efficiency constraints.
+- **Source**: [OpenReview 2026](https://openreview.net/forum?id=trace-eval-2026)
 
 ### 2026-02-15 — Amazon Holistic Agentic AI Evaluation Framework
 - **What**: A three-layer evaluation strategy integrated into Amazon Bedrock AgentCore.
@@ -25,9 +31,14 @@ Academic and industry evaluation of agentic AI has shifted from static, final-ou
     - **Upper Layer**: End-to-end task completion and alignment.
 - **Source**: [Amazon Science / AWS Blog](https://aws.amazon.com/blogs/machine-learning/evaluate-agentic-ai-applications-holistically-with-amazon-bedrock/)
 
+### 2026-02-10 — KDD 2026: Continuous Evaluation & Drift Detection
+- **What**: Workshop on the move toward "post-market" monitoring of deployed agents. Focuses on detecting performance degradation caused by "API risk" and evolving user contexts.
+- **Significance**: Shifts the paradigm from one-time benchmarking to real-time anomaly detection in production reasoning chains.
+- **Source**: [KDD 2026 Workshop](https://agentic-eval-workshop.github.io/kdd2026/)
+
 ### 2026-01-20 — Trajectory-Level vs. Final-Output Gap
 - **What**: Research indicating that agents evaluated only on final output pass 20–40% more test cases than they would under full trajectory evaluation.
-- **Significance**: Proves that "hidden failures" in tool call arguments and state propagation are common even when the final goal is seemingly met, leading to brittle systems in production.
+- **Significance**: Proves that "hidden failures" in tool call arguments and state propagation are common.
 - **Source**: [KDD 2026 Workshop / Industry Research](https://agentic-eval-workshop.github.io/kdd2026/)
 
 ## Technical Details
@@ -35,10 +46,10 @@ Academic and industry evaluation of agentic AI has shifted from static, final-ou
 ### YC-Bench Metrics
 - **Progress Rate**: Incremental achievement of quarterly goals.
 - **Strategic Coherence**: The consistency of decisions over 100+ turns.
-- **Adversarial Resilience**: The ability to identify and "blacklist" bad actors in the simulation.
+- **Adversarial Resilience**: The ability to identify and "blacklist" bad actors.
 
 ### Amazon's "Agent Decay" Monitoring
-The framework introduces "Agent Decay" detection—a metric-driven way to identify when performance degrades due to external API changes or distribution shifts in user queries, using Human-in-the-Loop (HITL) audits.
+The framework introduces "Agent Decay" detection—a metric-driven way to identify when performance degrades due to external API changes or distribution shifts in user queries.
 
 ## Comparison Notes
 | Dimension | Traditional LLM Eval | Agentic AI Eval (2026) |
