@@ -164,6 +164,8 @@ class AsyncEvalRunner:
             # Factory architectural analysis (unique to factory output)
             r"Permission class\**[:\s]",
             r"permission matrix",
+            r"Requirements Analysis",
+            r"Meta-Agent Factory",
             # Factory pipeline stage headers
             r"Stage [1-5]:\s*\w",
         ]
