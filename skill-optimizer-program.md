@@ -1,6 +1,6 @@
 ## Target
-- **Optimize**: .claude/skills/meta-agent-factory/SKILL.md
-- **Metric**: Bayesian posterior mean (run: `python3 eval/run_eval_async.py .claude/skills/meta-agent-factory/SKILL.md --no-cache`)
+- **Optimize**: .claude/agents/meta-agent-factory.md
+- **Metric**: Bayesian posterior mean (run: `python3 eval/run_eval_async.py --model claude-opus-4-7 .claude/agents/meta-agent-factory.md --no-cache`)
 - **Goal**: Posterior mean >= 0.90 AND CI lower bound >= 0.80
 
 ## What you may modify

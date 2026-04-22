@@ -99,6 +99,11 @@ PERF_EOF
   # Log session end
   log_session_end "$exit_code" "$duration"
 
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   check_cost_ceiling "factory" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
 
@@ -119,6 +124,10 @@ check_fleet_version "$CLAUDE" "$LOG_FILE"
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
 log_task_start "adopt-items"
+# Start incremental watchdog (P0 Discussion 2026-04-23)
+WATCHDOG_PID=$(start_incremental_watchdog "factory" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
 # Run Claude in a subshell to isolate process-group signals from the parent script
 (cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 

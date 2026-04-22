@@ -1,16 +1,16 @@
 ---
 name: meta-agent-factory
 description: >
-  Designs and generates new Agent Skill, Sub-agent, or Changeling role
-  definition files. Triggered when you need to CREATE, BUILD, 
-  DEFINE, GENERATE, or ADD a NEW agent, Skill, persona, expert, or role.
-  ROUTING RULE: Requests like "I need a Skill for X", "Create an agent for Y",
-  "Build me an expert for Z", or "Add a persona to the library" MUST route here
-  — even when an existing domain agent covers those topics.
-  EXCLUSION: Does NOT activate for modifying, improving, or debugging
+  Invoked when the user says "Create a skill for...", "Build an agent that...",
+  "Define a new role for...", or "I need an expert in...". Use this when 
+  the objective is to DESIGN, GENERATE, BUILD, or ADD a NEW agent, Skill,
+  persona, or role definition file.
+  ROUTING RULE: Requests with phrases like "I need a Skill for X", 
+  "Create an agent for Y", "Build me an expert for Z", or "Add a persona" 
+  MUST route here even if existing agents cover the domain.
+  EXCLUSION: Does NOT activate for fixing, improving, or debugging
   EXISTING agents/Skills (route to autoresearch-optimizer), nor for 
-  post-deployment monitoring (route to agentic-cicd-gate), nor for direct
-  task execution.
+  post-deployment monitoring, nor for executing general tasks.
 
 # Claude-specific
 tools:
