@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-22 (afternoon)
+**Last updated**: 2026-04-23
 **Sources**:
 - https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
@@ -20,6 +20,25 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — **ADK v2.0.0b1 SHIPPED (Apr 21/22)**: First Beta; Workflow(BaseNode) Graph Orchestration; v1.31.1 Still Latest Stable
+- **What**: **ADK v2.0.0b1** released on PyPI (Apr 21, pre-release). This is the **first beta** of the ADK 2.0 line (after v2.0.0a1, a2, a3 alphas). v1.31.1 remains latest stable. Key v2.0.0b1 features:
+  - **Workflow(BaseNode) graph orchestration** — full implementation of graph-based workflow execution
+  - **NodeRunner** for isolated per-node execution
+  - **DefaultNodeScheduler** enabling standalone node resume via `ctx.run_node()`
+  - **Explicit `ReAct` loop nodes** replace legacy single agent flows
+  - **BaseNode as root** supported in both Runner and CLI
+  - **HITL resume** via event reconstruction
+  - **Lazy scan deduplication** and dynamic node resumption
+  - **State/artifact delta flushing** onto yielded events
+  - **Performance**: bypass Mesh for leaf single-turn `LlmAgent` instances
+  - **Security**: RCE fix for nested YAML configuration handling (same fix as v1.31.1)
+  - **Web UI**: Workflow graph visualization with distinct icons, shapes, active node rendering
+  - **ADK docs site migrated**: google.github.io/adk-docs → adk.dev (301 redirect)
+  - **Breaking changes**: "Should not be used if you require backwards compatibility" per docs. Not for production environments.
+- **Significance**: **HIGH — Phase 5 design impact.** ADK v2.0 introduces a fundamentally different orchestration model (graph-based BaseNode workflows) vs. the v1.x agent-tree model. The `Workflow(BaseNode)` pattern is a graph orchestration primitive that directly competes with our Phase 5 TCI routing design. The `NodeRunner` + `DefaultNodeScheduler` pattern enables fine-grained execution control similar to our planned sprint-orchestrator. v2.0.0b1 → GA timeline likely aligns with I/O (May 19-20, 26d). This is the ADK v2.0 signal we've been monitoring since the TCI comparison framework was added to the factory queue.
+- **S2 impact**: ADK v2.0 BaseNode workflows = a third orchestration topology (beyond CC Agent tool trees and ADK v1.x agent hierarchies). The paper project should cite this as evidence of orchestration pattern divergence across vendors.
+- **Source**: https://pypi.org/project/google-adk/, https://github.com/google/adk-python/releases/tag/v2.0.0b1
 
 ### 2026-04-22 (afternoon) — ADK v1.31.1 Day 1 Confirmed (gh API); No v1.32.0; Java 1.0 Architecture Deep Dive
 - **What**: ADK v1.31.1 (Apr 21) confirmed latest stable via `gh api repos/google/adk-python/releases` — **v1.32.0 does NOT exist** (re-confirmed, WebFetch hallucinated v1.32.0 from GitHub HTML rendering). Next Python release expected ~Apr 27-May 1.

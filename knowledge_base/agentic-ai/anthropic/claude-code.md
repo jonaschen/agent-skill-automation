@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-23
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -23,9 +23,14 @@
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.116 (April 20, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.117 (April 22, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — v2.1.117 Still Latest; No v2.1.118; Day 1 Quiet
+- **What**: CC v2.1.117 (Apr 22) remains latest. No v2.1.118 on GitHub releases or changelog. First full quiet day since the v2.1.117 release.
+- **Significance**: Normal post-release cadence. The large v2.1.117 release (25+ changes) may warrant a stabilization day before the next release.
+- **Source**: https://github.com/anthropics/claude-code/releases, https://code.claude.com/docs/en/changelog (verified Apr 23)
 
 ### 2026-04-22 — v2.1.116 Still Latest (Day 2); Post-Freeze Burst Did Not Materialize
 - **What**: CC v2.1.116 remains latest (npm confirmed). No v2.1.117+. The directive predicted "Anthropic tends to ship daily after a freeze break" but 2 days of silence since Apr 20 release. Post-freeze burst has not materialized.

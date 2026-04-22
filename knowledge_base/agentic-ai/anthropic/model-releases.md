@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-23
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — No New Models; #49562 Day 4 Without Staff Response
+- **What**: No new model releases or announcements. Opus 4.7 #49562 still OPEN — zero staff responses, last user comment Apr 19, cross-reference to #51471 on Apr 21. CC v2.1.117's context window fix (200K→1M) may have reduced some token burn complaints but the core ~35% adaptive thinking cost increase is model behavior, not a CC bug.
+- **Significance**: The lack of staff response on #49562 for 4+ days with growing third-party ecosystem pressure (n8n, openclaw, pi-mono) is notable. No new model IDs detected.
+- **Source**: https://github.com/anthropics/claude-code/issues/49562 (verified Apr 23)
 
 ### 2026-04-22 — Haiku 3 OFFICIALLY RETIRED; #49562 Still OPEN; 1M Beta 8d (Final Check, Closing)
 - **What**: Haiku 3 (`claude-3-haiku-20240307`) officially retired April 20 — platform release notes confirm "All requests to this model will now return an error." Page status flipped from "Deprecated" to retired. **Opus 4.7 #49562** still OPEN: 2 comments (github-actions + 1 community), zero staff responses, last update Apr 19. Third-party adaptive thinking compat issues growing: n8n #28635, openclaw #67888, pi-mono #3289 — all report `supportsAdaptiveThinking()` missing Opus 4.7 causing 400 errors + silent thinking fallback. **1M beta sunset 8 days** (Apr 30) — non-issue for fleet (GA 4.6 models). Final check done; closing this tracking item per directive.

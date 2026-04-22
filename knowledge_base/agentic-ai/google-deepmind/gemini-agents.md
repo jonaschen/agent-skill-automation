@@ -1,6 +1,6 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-22 (afternoon)
+**Last updated**: 2026-04-23
 **Sources (latest first)**:
 - https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 22)
 - https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/
@@ -29,6 +29,14 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — CLI v0.38.2 Day 6 Stable; v0.39.0-preview.2 Day 1; gemini-embedding-2 GA; I/O Sessions Published
+- **What**: **Gemini CLI**: Stable v0.38.2 (Apr 17) day 6 — deepest stable freeze continues. No v0.38.3 or v0.39.0 stable. Preview v0.39.0-preview.2 (Apr 22) day 1. Nightly pipeline paused 7+ days.
+  - **Gemini API**: `gemini-embedding-2` released as **GA** (Apr 22) — multimodal embedding model supporting text, image, video, audio, and PDF inputs. First new GA model in 7+ days.
+  - **Google I/O 2026 sessions published** (9to5Google, Apr 14): May 19-20. Sessions include "What's new in Google AI" covering "intelligent agents", "What's new in Gemma open model family." Firebase described as "evolving into an agent-native platform." Android 17 highlights "agentic automation." No sessions explicitly mentioning ADK, A2A, or Gemini 4 by name — but generic "agents" coverage confirms agentic is the I/O theme.
+  - **No new Gemini CLI stable release, no v0.39.0 stable promotion.**
+- **Significance**: API quiet except for embedding GA. I/O sessions confirm agentic focus but no concrete product leaks (ADK v2.0, A2A v1.1, Gemini 4). I/O 26d.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases, https://ai.google.dev/gemini-api/docs/changelog, https://9to5google.com/2026/04/14/google-i-o-2026-sessions/
 
 ### 2026-04-22 (afternoon) — **CLI Preview Channel Breaks Freeze**: v0.39.0-preview.2 TODAY; Stable v0.38.2 Day 5; Deep Research Max Blog
 - **What**: **Gemini CLI preview channel broke freeze** — three preview releases in 8 days while stable remains frozen:

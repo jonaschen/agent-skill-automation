@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-23
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,11 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — Mariner: Steady State; Mariner Studio Q2 2026 Expected; I/O 26d
+- **What**: No new Mariner announcements. Steady state. **Mariner Studio** (visual builder for task flows) expected Q2 2026 per allaboutai.com. Cross-device sync Q3 2026. Agent marketplace Q4 2026. I/O 26d.
+- **Significance**: One sentence: Mariner unchanged, Q2 Studio timeline aligns with I/O window.
+- **Source**: https://www.allaboutai.com/ai-agents/project-mariner/
 
 ### 2026-04-22 (afternoon) — Mariner: Steady State; No Change; I/O 27d
 - **What**: No new Mariner announcements. Steady state continues. All prior findings confirmed. I/O 27d.

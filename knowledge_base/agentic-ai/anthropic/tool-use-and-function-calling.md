@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-23
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -15,6 +15,10 @@
 Claude's tool use system allows the model to invoke external functions by returning structured tool call requests that the application executes. Recent advances include three beta features (Tool Search Tool, Programmatic Tool Calling, Tool Use Examples) announced November 24, 2025, plus a Tool Runner in the Python/TypeScript/Ruby SDKs. These features dramatically improve scalability (hundreds of tools without context bloat), efficiency (37% token reduction), and accuracy (72% to 90% on complex parameter handling).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — Tool Use Stable; No Change
+- **What**: Stable. No changes since last sweep. All GA features holding.
+- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview (verified Apr 23)
 
 ### 2026-04-22 — Tool Use Stable; No Change
 - **What**: Stable. No changes since last sweep. All GA features holding.

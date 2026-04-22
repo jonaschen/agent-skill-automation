@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-21
+**Last updated**: 2026-04-23
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -23,6 +23,11 @@
 The Model Context Protocol (MCP) is an open protocol created by Anthropic that enables seamless integration between LLM applications and external data sources and tools. It uses JSON-RPC 2.0 messages for communication between hosts (LLM applications), clients (connectors), and servers (capability providers). As of early 2026, MCP has 97M+ monthly SDK downloads, 5,800+ servers, 300+ clients, and backing from Anthropic, OpenAI, Google, and Microsoft. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF) under the Linux Foundation.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — MCP Steady; No New CVEs or Protocol Changes
+- **What**: No new CVEs, no protocol changes, no spec updates. STDIO media cycle appears to be winding down. CC v2.1.117's declarative `mcpServers` in agent frontmatter (shipped Apr 22) is the most recent MCP-relevant change.
+- **Significance**: Steady state. One sentence per directive.
+- **Source**: https://modelcontextprotocol.io/ (verified Apr 23)
 
 ### 2026-04-22 — MCP Steady State; STDIO Media Amplification Continues
 - **What**: No new CVEs. No protocol changes. STDIO vulnerability media coverage continues: webanditnews.com (Apr 20) and bdtechtalks.com (Apr 20) both published amplification articles highlighting 150M+ installs and Anthropic's "expected behavior" stance. MCP Dev Summit North America held in NYC (~1,200 attendees). AWS, Google, and Cloudflare doubling down on MCP adoption.

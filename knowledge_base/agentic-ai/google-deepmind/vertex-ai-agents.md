@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-23
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 — Agent Builder Day 64+; Frozen; Vertex AI Minor Updates (Partner Eval, RAG Metadata)
+- **What**: Agent Builder last release Feb 18. Day 64+ without releases. **Vertex AI** (not Agent Builder specifically) added: partner model evaluation (Anthropic, Llama), SQL cells in Colab Enterprise (GA), schema-based metadata search in RAG Engine. No Agent Builder-specific features. Tool Governance blog (Cloud API Registry integration) positions Agent Builder for enterprise governance but no new release. I/O 26d.
+- **Significance**: One sentence: Agent Builder freeze deepens (day 64+), Vertex AI minor updates are platform-wide, not agent-specific.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://cloud.google.com/blog/products/ai-machine-learning/new-enhanced-tool-governance-in-vertex-ai-agent-builder
 
 ### 2026-04-22 (afternoon) — Agent Builder Day 63+; Frozen; Express Mode Free Tier Noted; No Change
 - **What**: Agent Builder last release Feb 18. Day 63+ without releases. **Express mode** for Agent Engine Runtime now available with free tier offering (new finding from search). No April entries in release notes. Deep Research continues routing through Gemini API, not Agent Builder. I/O 27d.
