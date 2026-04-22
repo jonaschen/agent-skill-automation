@@ -206,6 +206,35 @@ class AsyncEvalRunner:
         except Exception as e:
             if self.verbose: print(f"Cleanup error: {e}", file=sys.stderr)
 
+    def _update_flaky_history(self, test_ids, results):
+        """Append this run's pass/fail results to flaky_history.json for flaky detection."""
+        history_path = os.path.join(self.repo_root, "eval/flaky_history.json")
+        try:
+            if os.path.exists(history_path):
+                with open(history_path) as f:
+                    data = json.load(f)
+            else:
+                data = {"test_results": {}}
+
+            test_results = data.get("test_results", {})
+            for tid, result in zip(test_ids, results):
+                key = str(tid)
+                if key not in test_results:
+                    test_results[key] = []
+                # 1 = pass, 0 = fail; skip rate-limited results
+                if result.startswith("SKIP:"):
+                    continue
+                test_results[key].append(1 if result == "PASS" else 0)
+                # Keep last 20 results to bound file size
+                test_results[key] = test_results[key][-20:]
+
+            data["test_results"] = test_results
+            with open(history_path, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            if self.verbose:
+                print(f"Flaky history update error: {e}", file=sys.stderr)
+
     async def run_all(self, prompts_dir=None, expected_dir=None, split_filter=None, engine="claude"):
         if not prompts_dir:
             prompts_dir = os.path.join(self.repo_root, "eval/prompts")
@@ -261,6 +290,9 @@ class AsyncEvalRunner:
             print(f"SPLIT ({split_filter.upper()}): {stats['posterior_mean']:.3f} CI [{stats['ci_lower']:.3f}, {stats['ci_upper']:.3f}]")
             print("="*40)
             full_stats = stats # for threshold check
+
+        # Update flaky history with this run's results
+        self._update_flaky_history(test_ids, results)
 
         if self.verbose:
             for tid, res in zip(test_ids, results):
