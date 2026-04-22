@@ -1,0 +1,1 @@
+I need to add OAuth2 authentication to my existing MCP server. The server currently handles tool calls but doesn't verify caller identity. Can you help me add authentication?

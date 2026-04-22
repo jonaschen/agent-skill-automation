@@ -1,0 +1,1 @@
+I need an MCP integration for my project's GitHub workflow. Currently our CI pipeline doesn't have MCP support and I want to add it.

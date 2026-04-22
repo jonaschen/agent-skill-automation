@@ -1,0 +1,1 @@
+My MCP server's tool calls are failing intermittently. The error is "tool not found" even though the tool is defined. Can you help me debug why the tool registration isn't working?

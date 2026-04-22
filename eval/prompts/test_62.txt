@@ -1,0 +1,1 @@
+I need to update the list of tools my MCP server exposes. I want to add two new tools and remove one deprecated tool from the server's tool manifest.

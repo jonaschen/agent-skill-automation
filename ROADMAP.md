@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-22 (afternoon factory session): Phase 4 core complete. Shadow eval re-run protocol documented — per-test before/after comparison methodology for CC v2.1.117 upgrade (0.683 baseline contaminated by CC context window bug). ADK v2.0 TCI comparison framework pre-built — 5 design dimensions pre-filled, ADK columns blank for post-I/O filling, null hypothesis defined. Shadow eval NO-GO for claude-opus-4-7 (0.683, CI [0.535, 0.814]) — awaiting clean re-run after CC upgrade. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Eval suite at 59 tests (T=39, V=20). Countdowns: 1M context beta sunset 8d (Apr 30), Google I/O 27d (May 19-20). Phase 4 core complete.**
+**Status as of 2026-04-23 (night factory session): Phase 4 core complete. G20 MCP false-positive tests (test_60–64) implemented — 5 MCP ecosystem negative controls added to eval suite, splits updated (T=44, V=20), eval suite now at 64 tests. Orchestration taxonomy note created for S2 paper — agent-centric vs. workflow-centric vs. hybrid paradigm comparison. Shadow eval NO-GO for claude-opus-4-7 (0.683, CI [0.535, 0.814]) — awaiting clean re-run after CC upgrade. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Countdowns: 1M context beta sunset 7d (Apr 30), Google I/O 26d (May 19-20). Phase 4 core complete.**
 
 ---
 
@@ -107,7 +107,7 @@ SKILL.md files from natural language requirements.
 - [x] **G13**: Trigger pattern audit — case-insensitive matching + `write permission` pattern added to `run_eval_async.py`
 - [x] **G18**: 10 near-miss negative controls (test_45–54) — prompts containing agent vocabulary but clearly direct tasks. Added to Training set T. `splits.json` updated (T=36, V=18).
 - [x] **G19**: 5 real-world negative controls (test_55–59) — promoted from skill usage logs across 2 instrumented projects (49 entries). Includes multilingual (zh-TW), brief conversational, and technical-but-non-creation prompts. `splits.json` updated (T=39, V=20). P1 eval-suite-expansion proposal executed ✅ 2026-04-13
-- [ ] **G20**: 5 MCP ecosystem false-positive tests (test_60–64) — prompts using MCP vocabulary that should NOT trigger meta-agent-factory: add OAuth to existing MCP server, debug failing tool calls, update tool list, configure rate limiting, add MCP integration to existing workflow. Sequence: add prompts → update splits.json (T=44, V=20) → run `--update-baseline` → verify all 5 return no-trigger with current description → commit. Source: proposal 2026-04-16-mcp-falsepositive-tests.md — P2
+- [x] **G20**: 5 MCP ecosystem false-positive tests (test_60–64) — prompts using MCP vocabulary that should NOT trigger meta-agent-factory: add OAuth to existing MCP server, debug failing tool calls, update tool list, configure rate limiting, add MCP integration to existing workflow. `splits.json` updated (T=44, V=20). All 5 verified no-trigger with current description. Source: proposal 2026-04-16-mcp-falsepositive-tests.md ✅ 2026-04-23
 
 ### Acceptance Criteria
 | Metric | Target |

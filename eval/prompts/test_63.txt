@@ -1,0 +1,1 @@
+How do I configure rate limiting for my MCP server? I'm getting too many requests from clients and need to throttle them to 10 requests per minute per client.
