@@ -304,6 +304,11 @@ Include examples directly in tool definitions to demonstrate:
 - Programmatic tool calling: GA on first-party API, beta on Bedrock/Vertex
 - Standard tool use available on all Claude 3+ models
 
+### 2026-04-22 — CC v2.1.117 tool infrastructure updates
+- **What**: (1) **Native `bfs`/`ugrep`** replace Glob/Grep tools on macOS/Linux native builds — faster searches without separate tool round-trip. (2) **Advisor Tool** experimental improvements — dialog carries "experimental" label, learn-more link, startup notification; fixed "content could not be processed" errors. (3) **OTEL `effort` attribute** added to cost.usage, token.usage, api_request, and api_error events when model supports effort levels — enables external monitoring of adaptive thinking behavior.
+- **Significance**: The native `bfs`/`ugrep` replacement is a significant infrastructure change — moves search from dedicated tool invocations to embedded binaries, potentially changing how agents interact with file search. The OTEL `effort` attribute is an S1 observability gain — external monitoring systems can now track adaptive thinking effort levels per request.
+- **Source**: https://code.claude.com/docs/en/changelog
+
 ## Comparison Notes
 
 Claude tool use vs Google Gemini function calling:

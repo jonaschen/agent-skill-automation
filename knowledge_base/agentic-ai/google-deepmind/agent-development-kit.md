@@ -1,7 +1,8 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-22 (afternoon)
 **Sources**:
+- https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
 - https://developers.googleblog.com/agents-adk-agent-engine-a2a-enhancements-google-io/
 - https://developers.googleblog.com/adk-go-10-arrives/
@@ -19,6 +20,20 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 (afternoon) — ADK v1.31.1 Day 1 Confirmed (gh API); No v1.32.0; Java 1.0 Architecture Deep Dive
+- **What**: ADK v1.31.1 (Apr 21) confirmed latest stable via `gh api repos/google/adk-python/releases` — **v1.32.0 does NOT exist** (re-confirmed, WebFetch hallucinated v1.32.0 from GitHub HTML rendering). Next Python release expected ~Apr 27-May 1.
+  - **ADK Java 1.0 deep dive** (InfoQ, Apr 20): Major architecture details:
+    - **`App` class**: Top-level container for agentic applications, hosts root agent, holds global configs, handles plugin integration
+    - **`Plugins` base class**: Extensible plugin system for custom extensions (pre-built: logging, context filtering, global instruction management)
+    - **New external tools**: `GoogleMapsTool`, `UrlContextTool`, `ComputerUseTool` (Playwright-based browser automation), `ContainerCodeExecutor` (Docker), `VertexAICodeExecutor`
+    - **Event compaction**: Sliding window of recent events + older event summarization — prevents token overflow in extended sessions, reduces latency/costs
+    - **Human-in-the-loop**: Agents pause before critical actions, request approval, then resume
+    - **A2A protocol support**: Native Agent2Agent communication built in
+  - **4-language production coverage** confirmed: Python (v1.31.1), Go (v1.0), Java (v1.0), TypeScript (announced)
+  - v2.0.0a3 (Apr 9) still latest pre-release. I/O 27d.
+- **Significance**: The Java 1.0 architecture reveals Google's production agent design patterns: App→Agent→Plugin hierarchy, event compaction for long-running sessions, and ComputerUseTool bringing Playwright-based browser automation to ADK (comparable to Anthropic's Computer Use). Event compaction is particularly relevant for our Phase 5 — long-running orchestration sessions need context management. The v1.32.0 non-existence is confirmed for the third time — WebFetch consistently hallucinates this from GitHub HTML.
+- **Source**: https://github.com/google/adk-python/releases (verified via `gh api` Apr 22), https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 
 ### 2026-04-22 — ADK v1.31.1 Day 1; No v1.32.0; TypeScript SDK Announced; Go SDK Announced
 - **What**: ADK v1.31.1 (Apr 21) confirmed latest via GitHub API. No v1.32.0 yet. v2.0.0a3 (Apr 9) still latest pre-release. **ADK ecosystem expanding**: TypeScript SDK officially announced (code-first approach, open-source), Go SDK announced. Java SDK at v1.1.0 (HITL, GoogleMapsTool, event compaction). ADK now has **4-language** production coverage: Python, Go, Java, TypeScript. Next Python release expected ~Apr 27-May 1. I/O 27d.

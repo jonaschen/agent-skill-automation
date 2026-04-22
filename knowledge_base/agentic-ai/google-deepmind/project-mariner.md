@@ -18,6 +18,11 @@ Project Mariner is a Google DeepMind research prototype for autonomous web brows
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 (afternoon) — Mariner: Steady State; No Change; I/O 27d
+- **What**: No new Mariner announcements. Steady state continues. All prior findings confirmed. I/O 27d.
+- **Significance**: One sentence: Mariner unchanged.
+- **Source**: https://deepmind.google/models/project-mariner/
+
 ### 2026-04-22 — Mariner: Steady State; Cloud VM Architecture Confirmed; I/O 27d
 - **What**: No new Mariner announcements. Cloud-based VM infrastructure confirmed: Mariner runs in browsers on virtual machines in background, dashboard for task description/live preview, up to 10 concurrent tasks. DeepMind absorption, AI Ultra integration, Teach & Repeat all hold. Enterprise API still not announced. I/O 27d.
 - **Significance**: One sentence: Mariner steady state, no change.

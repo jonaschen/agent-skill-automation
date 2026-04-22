@@ -20,6 +20,11 @@ Vertex AI Agent Builder is Google Cloud's enterprise platform for building, depl
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 (afternoon) — Agent Builder Day 63+; Frozen; Express Mode Free Tier Noted; No Change
+- **What**: Agent Builder last release Feb 18. Day 63+ without releases. **Express mode** for Agent Engine Runtime now available with free tier offering (new finding from search). No April entries in release notes. Deep Research continues routing through Gemini API, not Agent Builder. I/O 27d.
+- **Significance**: One sentence: Agent Builder freeze continues, express mode + free tier is the only recent addition, all new agentic features route through API/ADK.
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes
+
 ### 2026-04-22 — Agent Builder Day 63+; Frozen; Agent Designer Noted; Deep Research Ships via API Instead
 - **What**: Agent Builder last release Feb 18. Day 63+ without releases (verified — no April entries in release notes). **Agent Designer** (low-code visual canvas for orchestrating agents/subagents, export to ADK) noted as recent capability addition — date unclear from release notes but documented. **New features routing through Gemini API instead**: Deep Research Agent models (Apr 21) shipped as Interactions API endpoints, not Agent Builder features. This reinforces the pattern of API-first + ADK-first development bypassing Agent Builder. I/O relaunch of Agent Builder (possibly under "AI Applications" rebrand) remains near-certain. I/O 27d.
 - **Significance**: The Deep Research Agent shipping via Gemini API rather than Agent Builder is the strongest signal yet that Google's agentic strategy has shifted: the API is the primary surface, Agent Builder is the enterprise management layer. This matches the ADK-first development pattern observed since v1.29.0.

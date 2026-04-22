@@ -19,6 +19,11 @@ Project Astra is Google DeepMind's research prototype toward building a universa
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 (afternoon) — Astra: Steady State; No Change; I/O 27d
+- **What**: No new Astra announcements. Steady state continues. All prior findings confirmed. I/O 27d.
+- **Significance**: One sentence: Astra unchanged.
+- **Source**: https://deepmind.google/models/project-astra/
+
 ### 2026-04-22 — Astra: Steady State; Android XR Glasses Confirmed 2026; I/O 27d
 - **What**: No new Astra announcements. **Android XR glasses confirmed for 2026 launch**: monocular display version (Google + Samsung partnership), Gentle Monster + Warby Parker design partners, Gemini-powered context-aware assistance. "Adaptive Everywhere" I/O Day 2 track confirmed. Astra capabilities continue integration into Gemini Live. I/O 27d.
 - **Significance**: One sentence: Astra steady state, Android XR glasses are the I/O hardware story.

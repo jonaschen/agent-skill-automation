@@ -315,6 +315,16 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 - **Tool parameter quoting**: Different JSON escaping in tool call arguments
 - **output_format deprecated**: Use `output_config.format` instead
 
+### 2026-04-22 — Opus 4.7 context window fix in CC v2.1.117
+- **What**: Claude Code v2.1.117 fixed a bug where Opus 4.7 sessions computed against a 200K context window instead of the native 1M. This caused inflated `/context` percentages and premature autocompacting. Additionally, Bedrock application-inference-profile requests backed by Opus 4.7 with thinking disabled no longer fail with 400.
+- **Significance**: This is the first concrete fix addressing Opus 4.7 usability issues since launch (Apr 16). While #49562 (adaptive thinking token burn) remains OPEN, the context window fix likely resolves a significant subset of user complaints — premature autocompacting would force re-reading context, amplifying token usage. Users who upgrade to v2.1.117 should see reduced effective token burn on long sessions.
+- **Source**: https://code.claude.com/docs/en/changelog
+
+### 2026-04-22 — Opus 4.7 #49562 status: OPEN, zero staff responses
+- **What**: Issue #49562 remains OPEN. Last activity Apr 19 (community comment requesting Opus 4.6 revert). Labels: bug, platform:windows, platform:vscode, area:cost, area:model. Duplicate bot flagged 3 related issues (#49356, #49541, #41771). Third-party ecosystem pressure continues: n8n #28635, openclaw #67888, pi-mono #3289 all report `supportsAdaptiveThinking()` breakage.
+- **Significance**: No staff engagement on the core adaptive thinking token issue. The v2.1.117 context window fix may relieve pressure but doesn't address the fundamental adaptive thinking cost increase (~35% per Finout).
+- **Source**: https://github.com/anthropics/claude-code/issues/49562
+
 ## Comparison Notes
 
 Claude 4.6 vs Gemini 2.5:

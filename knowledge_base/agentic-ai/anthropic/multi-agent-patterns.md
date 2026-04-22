@@ -301,6 +301,11 @@ Anthropic Subagents vs Agent Teams:
 - **Subagents**: Within single session, report to parent only, no peer communication, lower token cost, best for focused tasks
 - **Agent Teams**: Fully independent sessions, direct peer messaging, shared task list with self-coordination, higher token cost, best for collaborative/adversarial work
 
+### 2026-04-22 — CC v2.1.117 multi-agent updates
+- **What**: (1) Forked subagents can now be enabled on external builds via `CLAUDE_CODE_FORK_SUBAGENT=1` env var. (2) Subagent malware warning false positive fixed — subagents running a different model than main agent no longer incorrectly flag file reads. (3) Advisor Tool stability improvements — sessions no longer stuck with "content could not be processed" errors.
+- **Significance**: `CLAUDE_CODE_FORK_SUBAGENT=1` democratizes forked subagents beyond Anthropic's internal builds — external developers and enterprises can now use the fork-based isolation pattern. This is the first time forked subagents have been externally available. Relevant to S2 (orchestration patterns).
+- **Source**: https://code.claude.com/docs/en/changelog
+
 Anthropic vs A2A Protocol:
 - Anthropic's multi-agent patterns are intra-ecosystem (Claude agents talking to Claude agents)
 - A2A protocol (Google-originated) focuses on cross-vendor agent interoperability

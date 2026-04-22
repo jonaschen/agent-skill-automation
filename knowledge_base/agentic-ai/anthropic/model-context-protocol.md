@@ -313,6 +313,11 @@ The Model Context Protocol (MCP) is an open protocol created by Anthropic that e
 - 2025-11-25: Current version (added Elicitation, enhanced security model)
 - ~2026-06 (tentative): Next version with transport evolution and agent communication
 
+### 2026-04-22 — CC v2.1.117 MCP improvements
+- **What**: (1) Agent frontmatter `mcpServers` now loaded for main-thread agent sessions via `--agent` — agents can declare MCP server dependencies in their frontmatter. (2) Concurrent MCP server connections now default — faster startup when both local and claude.ai MCP servers configured. (3) Fixed MCP `elicitation/create` requests auto-cancelling in print/SDK mode when server finishes connecting mid-turn. (4) Fixed SDK `reload_plugins` reconnecting all user MCP servers serially (now concurrent).
+- **Significance**: The `mcpServers` frontmatter loading is architecturally significant — it means agent definitions can now declare their MCP dependencies declaratively, enabling portable agent specifications that carry their tool requirements. Relevant to S3 (agent definition portability). STDIO vulnerability coverage continues in media but no new CVEs.
+- **Source**: https://code.claude.com/docs/en/changelog
+
 ## Comparison Notes
 
 MCP vs Google's A2A (Agent-to-Agent) Protocol:

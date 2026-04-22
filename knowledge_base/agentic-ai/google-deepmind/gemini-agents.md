@@ -1,8 +1,9 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-22
+**Last updated**: 2026-04-22 (afternoon)
 **Sources (latest first)**:
-- https://github.com/google-gemini/gemini-cli/releases
+- https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 22)
+- https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/
 - https://ai.google.dev/gemini-api/docs/changelog
 - https://releasebot.io/updates/google/gemini-cli
 - https://github.com/google-gemini/gemini-cli/releases
@@ -28,6 +29,31 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-22 (afternoon) — **CLI Preview Channel Breaks Freeze**: v0.39.0-preview.2 TODAY; Stable v0.38.2 Day 5; Deep Research Max Blog
+- **What**: **Gemini CLI preview channel broke freeze** — three preview releases in 8 days while stable remains frozen:
+  - **v0.39.0-preview.2** (Apr 22, 00:45 UTC — TODAY): cherry-pick patch (commit d6f88f8)
+  - **v0.39.0-preview.1** (Apr 21, 22:52 UTC): cherry-pick patch (commit a4e98c0)
+  - **v0.39.0-preview.0** (Apr 14, 23:11 UTC): Major feature release with **45+ PRs merged**
+  - Key new features in preview.0:
+    - **`/memory inbox` command** for reviewing extracted skills (PR #24544)
+    - **Unified `invoke_subagent` tool** — refactored from separate subagent tools (PR #24489), legacy wrapping tools removed (PR #25053)
+    - **Subagent memory leak fixes** via AbortSignal in MessageBus (PR #25048)
+    - **JSONL streaming** for chat recording (PR #23749)
+    - **Plan mode: require user confirmation for `activate_skill`** (PR #24946)
+    - **`useAgentStream` hook** + AppContainer wiring (PRs #24292, #24297)
+    - **Dynamic session ID injection** fixing resume bugs (PR #24972)
+    - **Startup optimization** with lightweight parent process (PR #24667)
+    - **Sandbox security hardening**: centralized paths for Linux + macOS, read-only git worktree enforcement (PRs #24984, #24985, #25040)
+    - **Performance test harnesses**: memory usage, CPU, shell (PRs #24876, #24951, #24983)
+    - **OOM prevention**: remove buffer slice on large output streams (PR #25094)
+  - **Stable channel**: v0.38.2 (Apr 17) day 5, unchanged. Nightly: v0.40.0 (Apr 15), day 7 paused.
+  - **API**: No new entries after Apr 21 (Deep Research). Deep Research Max blog published Apr 21 by Lukas Haas — positions Deep Research Max as "step change for autonomous research agents."
+  - **Free tier changes (Apr 1)**: Pro models (Gemini 3.1 Pro) moved to paid-only. Flash models remain free with reduced quotas (2.5 Flash: 10 RPM/250 daily, 2.5 Flash-Lite: 15 RPM/1000 daily). Mandatory spending caps: Tier 1 $250/mo, Tier 2 $2K/mo, Tier 3 $20K-100K+/mo. Prepaid billing required for new accounts.
+  - **Model deprecations**: Gemini 2.0 Flash + 2.0 Flash-Lite → June 1, 2026. Robotics ER 1.5 → April 30, 2026.
+  - **I/O 27d**.
+- **Significance**: The CLI preview channel unfreeze is the headline finding. The unified `invoke_subagent` tool and `/memory inbox` command represent architectural changes — subagent invocation consolidated from multiple tools to one, and extracted skills now have a review workflow. The memory leak fixes and OOM prevention suggest the CLI team is addressing production-scale stability. Stable channel freeze continuing while preview ships means these features are being validated before broad release. The API free tier changes (Pro → paid-only, mandatory caps) are the most significant pricing shift since the Gemini API launched — this affects any developer relying on free Pro access.
+- **Source**: https://github.com/google-gemini/gemini-cli/releases (verified via `gh api` Apr 22), https://ai.google.dev/gemini-api/docs/changelog, https://help.apiyi.com/en/google-gemini-api-free-tier-changes-april-2026-guide-en.html
 
 ### 2026-04-22 — **NEW: Deep Research Agent API (Apr 21)**; CLI v0.38.2 Day 5 Frozen; API Breaks Silence
 - **What**: **Gemini API shipped two Deep Research Agent models on Apr 21** — a significant release breaking the API's 6-day silence:

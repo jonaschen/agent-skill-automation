@@ -26,6 +26,11 @@ Gemma is Google DeepMind's family of open-weight models built on the same resear
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-22 (afternoon) — Gemma 4 Day 20: Steady State; No Change; I/O 27d
+- **What**: Gemma 4 (Apr 2) day 20. No new model variants. Steady state. I/O 27d.
+- **Significance**: One sentence: Gemma 4 unchanged.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/
+
 ### 2026-04-22 — Gemma 4 Day 20: Steady State; 400M+ Downloads; No New Variants
 - **What**: Gemma 4 (Apr 2) day 20. No new model variants. 400M+ total downloads across Gemma family, 100K+ community variants. 31B Dense ranks #3 on Arena AI text leaderboard (open models), 26B MoE at #6 — outcompeting models with 20x more parameters. Apache 2.0 license. EAGLE3 merged. No new variants expected before I/O. I/O 27d.
 - **Significance**: One sentence: Gemma 4 steady state, ecosystem stable.
