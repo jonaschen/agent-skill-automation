@@ -4,7 +4,7 @@
 # Usage:
 #   ./scripts/run_test_suite.sh           # Static suites only (fast: permissions, security, changeling)
 #   ./scripts/run_test_suite.sh --full    # All suites including eval trigger tests (~30min)
-#   ./scripts/run_test_suite.sh --suite permissions|security|changeling|eval
+#   ./scripts/run_test_suite.sh --suite permissions|security|changeling|mcp|eval
 #
 # Output: JSON report to logs/test-reports/report-YYYY-MM-DD-HHMMSS.json
 # Exit codes: 0 = all passed, 1 = failures found, 2 = eval below deployment gate
@@ -69,6 +69,18 @@ should_run() {
   if [ "$RUN_MODE" = "single" ] && [ "$SINGLE_SUITE" = "$suite" ]; then return 0; fi
   if [ "$RUN_MODE" = "static" ] && [ "$suite" != "eval" ]; then return 0; fi
   return 1
+}
+
+# Helper: find all .mcp.json files in repo (root + nested projects)
+find_mcp_configs() {
+  local configs=()
+  if [ -f "$REPO_ROOT/.mcp.json" ]; then
+    configs+=("$REPO_ROOT/.mcp.json")
+  fi
+  for f in "$REPO_ROOT"/*/.mcp.json "$REPO_ROOT"/.claude/.mcp.json; do
+    [ -f "$f" ] && configs+=("$f")
+  done
+  printf '%s\n' "${configs[@]}"
 }
 
 # ============================================================
@@ -195,7 +207,64 @@ if should_run "changeling"; then
 fi
 
 # ============================================================
-# Suite 4: Eval Trigger Tests (expensive — only with --full or --suite eval)
+# Suite 4: MCP Config Validation
+# ============================================================
+if should_run "mcp"; then
+  echo "=== Suite: mcp ==="
+  SUITES_RUN+=("mcp")
+  MCP_PASS=0
+  MCP_FAIL=0
+  MCP_WARN=0
+  MCP_SUITE_STATUS="pass"
+  MCP_CHECKS=""
+
+  MCP_CONFIGS=$(find_mcp_configs)
+  if [ -z "$MCP_CONFIGS" ]; then
+    echo "  skip: no .mcp.json files found"
+    TOTAL_SKIPPED=$((TOTAL_SKIPPED + 1))
+    append_json SUITES_JSON "\"mcp\":{\"status\":\"skipped\",\"reason\":\"no .mcp.json files found\"}"
+  else
+    while IFS= read -r mcp_file; do
+      [ -z "$mcp_file" ] && continue
+      mcp_label=$(realpath --relative-to="$REPO_ROOT" "$mcp_file" 2>/dev/null || basename "$mcp_file")
+      TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+
+      set +e
+      mcp_output=$(bash "$EVAL_DIR/mcp_config_validator.sh" "$mcp_file" 2>&1)
+      mcp_rc=$?
+      set -e
+
+      # Extract error/warning counts from validator output
+      mcp_errors=$(echo "$mcp_output" | grep -oP '\d+(?= error)' || echo "0")
+      mcp_warnings=$(echo "$mcp_output" | grep -oP '\d+(?= warning)' || echo "0")
+      MCP_WARN=$((MCP_WARN + mcp_warnings))
+      TOTAL_WARNED=$((TOTAL_WARNED + mcp_warnings))
+
+      if [ $mcp_rc -eq 0 ]; then
+        MCP_PASS=$((MCP_PASS + 1))
+        TOTAL_PASSED=$((TOTAL_PASSED + 1))
+        status="pass"
+      else
+        MCP_FAIL=$((MCP_FAIL + 1))
+        TOTAL_FAILED=$((TOTAL_FAILED + 1))
+        MCP_SUITE_STATUS="fail"
+        OVERALL_EXIT=1
+        status="fail"
+        detail=$(echo "$mcp_output" | grep -iE 'ERROR' | head -1 | sed 's/"/\\"/g' | head -c 200)
+        append_json ALL_FAILURES "{\"suite\":\"mcp\",\"check\":\"$mcp_label\",\"details\":\"$detail\"}"
+      fi
+
+      append_json MCP_CHECKS "{\"config\":\"$mcp_label\",\"status\":\"$status\",\"errors\":$mcp_errors,\"warnings\":$mcp_warnings}"
+      echo "  $status: $mcp_label ($mcp_errors errors, $mcp_warnings warnings)"
+    done <<< "$MCP_CONFIGS"
+
+    append_json SUITES_JSON "\"mcp\":{\"status\":\"$MCP_SUITE_STATUS\",\"passed\":$MCP_PASS,\"failed\":$MCP_FAIL,\"warned\":$MCP_WARN,\"checks\":[$MCP_CHECKS]}"
+  fi
+  echo ""
+fi
+
+# ============================================================
+# Suite 5: Eval Trigger Tests (expensive — only with --full or --suite eval)
 # ============================================================
 if should_run "eval"; then
   echo "=== Suite: eval (this may take 15-30 minutes) ==="
