@@ -35,6 +35,11 @@ unset TERMINAL
 # Initiator-type context for post-tool-use.sh policy enforcement
 export GEMINI_INITIATOR_TYPE=cron-automated
 export CLAUDE_AGENT_NAME="factory-steward-gemini" # For session_log and cost_ceiling compat
+export AGENT_TRACK="B" # Factory steward is high-coupling (Track B)
+
+# Save goal to file for goal-consistency hook
+AGENT_GOAL_FILE="/tmp/factory_gemini_goal_${DATE}.txt"
+export AGENT_GOAL_FILE
 
 # Post-session commit recovery: if Gemini wrote files but failed to commit, catch them
 recover_uncommitted() {
@@ -94,6 +99,11 @@ PERF_EOF
   # Log session end
   log_session_end "$exit_code" "$duration"
 
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
   # Check duration against cost ceiling (advisory — logs warning if exceeded)
   # Use "factory-gemini" as agent name for cost ceiling to track separately from Claude
   check_cost_ceiling "factory-gemini" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
@@ -115,7 +125,11 @@ check_fleet_version "$GEMINI" "$LOG_FILE" < /dev/null
 echo "" >> "$LOG_FILE"
 echo "--- Implement ADOPT Items & Proposals ---" >> "$LOG_FILE"
 log_task_start "adopt-items"
-(cd "$REPO_ROOT" && timeout 2400 "$GEMINI" --approval-mode yolo -p "You are the steward agent for the 'factory' project. Read .gemini/skills/steward/SKILL.md for the shared execution flow, then read .gemini/skills/steward/configs/factory.yaml for project-specific configuration.
+# Start incremental watchdog (P0 Discussion 2026-04-23)
+WATCHDOG_PID=$(start_incremental_watchdog "factory-gemini" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
+ADOPT_PROMPT="You are the steward agent for the 'factory' project. Read .gemini/skills/steward/SKILL.md for the shared execution flow, then read .gemini/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .gemini/agents/*.md, .gemini/skills/, .gemini/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -129,7 +143,11 @@ Execute a factory improvement session:
 6. Update ROADMAP.md with completed work
 7. Commit: Stage all changed files and commit with message 'factory-gemini: implement ADOPT items from ${YESTERDAY} discussion'
 
-Focus on 1-2 high-impact improvements. Quality over quantity." < /dev/null) >> "$LOG_FILE" 2>&1 || true
+Focus on 1-2 high-impact improvements. Quality over quantity."
+
+echo "$ADOPT_PROMPT" > "$AGENT_GOAL_FILE"
+
+(cd "$REPO_ROOT" && timeout 2400 "$GEMINI" --approval-mode yolo -p "$ADOPT_PROMPT" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] ADOPT session complete" >> "$LOG_FILE"
 log_task_complete "adopt-items"
 
@@ -138,7 +156,10 @@ log_task_complete "adopt-items"
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
 log_task_start "performance-review"
-(cd "$REPO_ROOT" && timeout 2400 "$GEMINI" --approval-mode yolo -p "You are the steward agent for the 'factory' project. Read .gemini/skills/steward/SKILL.md for the shared execution flow, then read .gemini/skills/steward/configs/factory.yaml for project-specific configuration.
+# Reset watchdog segment timer for next task (P0 Directive 2026-04-23)
+watchdog_pulse "$WATCHDOG_PID"
+
+PERF_PROMPT="You are the steward agent for the 'factory' project. Read .gemini/skills/steward/SKILL.md for the shared execution flow, then read .gemini/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .gemini/agents/*.md, .gemini/skills/, .gemini/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -151,7 +172,11 @@ Run a performance review and tuning session:
 6. If eval infrastructure needs improvement (flaky tests, coverage gaps), make targeted fixes
 7. Commit: If you made any changes, stage and commit with message 'factory-gemini: tune agents based on performance review ($DATE)'
 
-Be conservative — only change agent scripts/definitions when there's clear evidence of a problem." < /dev/null) >> "$LOG_FILE" 2>&1 || true
+Be conservative — only change agent scripts/definitions when there's clear evidence of a problem."
+
+echo "$PERF_PROMPT" > "$AGENT_GOAL_FILE"
+
+(cd "$REPO_ROOT" && timeout 2400 "$GEMINI" --approval-mode yolo -p "$PERF_PROMPT" < /dev/null) >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Performance review session complete" >> "$LOG_FILE"
 log_task_complete "performance-review"
 

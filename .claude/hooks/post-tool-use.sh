@@ -86,6 +86,34 @@ if [[ "$TOOL_NAME" == mcp__* ]]; then
   fi
 fi
 
+# --- Goal-Consistency Hook (P2 Discussion 2026-04-23) ---
+# Hijacking mitigation for Track B (high-coupling) tasks.
+# Checks for goal drift every 5 tool calls.
+AGENT_TRACK="${AGENT_TRACK:-A}" # Default to Track A
+GOAL_FILE="${AGENT_GOAL_FILE:-}"
+
+if [ "$AGENT_TRACK" = "B" ] && [ -n "$GOAL_FILE" ]; then
+  SESSION_ID="${CLAUDE_SESSION_ID:-unknown}"
+  GOAL_COUNTER_FILE="/tmp/goal_check_${SESSION_ID}"
+  
+  # Read and increment counter
+  GOAL_COUNT=0
+  if [ -f "$GOAL_COUNTER_FILE" ]; then
+    GOAL_COUNT=$(cat "$GOAL_COUNTER_FILE" 2>/dev/null || echo "0")
+  fi
+  GOAL_COUNT=$((GOAL_COUNT + 1))
+  echo "$GOAL_COUNT" > "$GOAL_COUNTER_FILE"
+
+  if [ $((GOAL_COUNT % 5)) -eq 0 ]; then
+    GOAL_CONSISTENCY_CHECK="$REPO_ROOT/scripts/lib/goal_consistency_check.sh"
+    if [ -f "$GOAL_CONSISTENCY_CHECK" ]; then
+      # Run in background to minimize latency impact on tool use
+      # Or run in foreground if we want to be able to BLOCK (exit 1)
+      bash "$GOAL_CONSISTENCY_CHECK" "$GOAL_FILE" "$TOOL_NAME" "$TOOL_INPUT" &
+    fi
+  fi
+fi
+
 # Only act on Write/Edit tools for lifecycle tracking
 if [[ "$TOOL_NAME" != "Write" && "$TOOL_NAME" != "Edit" ]]; then
   exit 0

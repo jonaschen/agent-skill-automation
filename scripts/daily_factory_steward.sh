@@ -35,6 +35,12 @@ unset TERMINAL
 
 # Initiator-type context for post-tool-use.sh policy enforcement
 export CLAUDE_INITIATOR_TYPE=cron-automated
+export CLAUDE_AGENT_NAME="factory-steward"
+export AGENT_TRACK="B" # Factory steward is high-coupling (Track B)
+
+# Save goal to file for goal-consistency hook
+AGENT_GOAL_FILE="/tmp/factory_goal_${DATE}.txt"
+export AGENT_GOAL_FILE
 
 # Per-agent effort level (discussion 2026-04-09: prepared commented-out, enable if costs spike >50%)
 # Reasoning-heavy agent → high effort; uncomment to override default
@@ -128,8 +134,7 @@ log_task_start "adopt-items"
 WATCHDOG_PID=$(start_incremental_watchdog "factory" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
 echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
 
-# Run Claude in a subshell to isolate process-group signals from the parent script
-(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
+ADOPT_PROMPT="You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -143,7 +148,12 @@ Execute a factory improvement session:
 6. Update ROADMAP.md with completed work
 7. Commit: Stage all changed files and commit with message 'factory: implement ADOPT items from ${YESTERDAY} discussion'
 
-Focus on 1-2 high-impact improvements. Quality over quantity.") >> "$LOG_FILE" 2>&1 || true
+Focus on 1-2 high-impact improvements. Quality over quantity."
+
+echo "$ADOPT_PROMPT" > "$AGENT_GOAL_FILE"
+
+# Run Claude in a subshell to isolate process-group signals from the parent script
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "$ADOPT_PROMPT") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] ADOPT session complete" >> "$LOG_FILE"
 log_task_complete "adopt-items"
 
@@ -152,7 +162,10 @@ log_task_complete "adopt-items"
 echo "" >> "$LOG_FILE"
 echo "--- Agent Performance Review & Tuning ---" >> "$LOG_FILE"
 log_task_start "performance-review"
-(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
+# Reset watchdog segment timer for next task (P0 Directive 2026-04-23)
+watchdog_pulse "$WATCHDOG_PID"
+
+PERF_PROMPT="You are the steward agent for the 'factory' project. Read .claude/skills/steward/SKILL.md for the shared execution flow, then read .claude/skills/steward/configs/factory.yaml for project-specific configuration.
 
 IMPORTANT: You are running UNATTENDED via cron. You have full write permission to all files in this repo including .claude/agents/*.md, .claude/skills/, .claude/hooks/, eval/, scripts/, and ROADMAP.md. Do NOT ask for permission — proceed directly with all changes.
 
@@ -165,7 +178,11 @@ Run a performance review and tuning session:
 6. If eval infrastructure needs improvement (flaky tests, coverage gaps), make targeted fixes
 7. Commit: If you made any changes, stage and commit with message 'factory: tune agents based on performance review ($DATE)'
 
-Be conservative — only change agent scripts/definitions when there's clear evidence of a problem.") >> "$LOG_FILE" 2>&1 || true
+Be conservative — only change agent scripts/definitions when there's clear evidence of a problem."
+
+echo "$PERF_PROMPT" > "$AGENT_GOAL_FILE"
+
+(cd "$REPO_ROOT" && timeout 2400 "$CLAUDE" --dangerously-skip-permissions -p "$PERF_PROMPT") >> "$LOG_FILE" 2>&1 || true
 echo "[$(date)] Performance review session complete" >> "$LOG_FILE"
 log_task_complete "performance-review"
 
