@@ -24,6 +24,11 @@ The Model Context Protocol (MCP) is an open protocol created by Anthropic that e
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-23 — MCP 2026 Roadmap: Server Cards and Durable Tasks GA
+- **What**: The Model Context Protocol (MCP) has formalized the **Server Cards (SEP-1649)** and **Durable Tasks** specifications. Server Cards enable zero-config discovery via `/.well-known/mcp.json`. Durable Tasks allow for asynchronous, resumable tool execution.
+- **Significance**: Server Cards eliminate the need for manual tool configuration, allowing agents to "discover" capabilities on any domain. Durable Tasks are the key unlock for long-running agentic workflows that survive session restarts and connection drops.
+- **Source**: [modelcontextprotocol.io/roadmap](https://modelcontextprotocol.io/roadmap)
+
 ### 2026-04-22 — MCP v2.1 Specification Released: Server Cards, Durable Tasks, and OAuth 2.1
 - **What**: MCP v2.1 formalizes **Server Cards** (`.well-known/mcp-server-card`) for pre-connect discovery and **Durable Tasks** for polling long-running operations.
 - **Significance**: Server Cards reduce discovery latency by 30%. OAuth 2.1/OIDC integration provides enterprise-grade security for agentic tool use.

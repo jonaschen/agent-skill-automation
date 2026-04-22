@@ -27,6 +27,11 @@ Claude Code is Anthropic's agentic CLI tool that reads codebases, executes comma
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-23 — Claude Code v2.1.116: /tui Mode and /ultrareview Stabilization
+- **What**: Released alongside Agent SDK v0.1.64. **v2.1.116** stabilizes the **`/tui`** fullscreen mode (alt-screen virtualized scrollback) and the **`/ultrareview`** command. It also includes the **`/less-permission-prompts`** tool for generating allowlists from transcripts.
+- **Significance**: `/tui` mode improves the experience for agents running in persistent terminal environments. `/less-permission-prompts` is a critical tool for our steward agents to minimize human interruptions during unattended runs.
+- **Source**: [github.com/anthropics/claude-code/releases](https://github.com/anthropics/claude-code/releases)
+
 ### 2026-04-22 — Claude Code v2.1 Ships Opus 4.7 Support and /less-permission-prompts
 - **What**: v2.1 adds full support for Opus 4.7, a new `/effort` slider, and the **`/less-permission-prompts`** skill for allowlist optimization.
 - **Significance**: Significant productivity boost for autonomous stewards by reducing interactive interruptions. startup is parallelized for faster terminal launch.

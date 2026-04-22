@@ -1,6 +1,13 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-22 (Operational Recovery Sweep — Resolved 4-day commit blackout)
+- Last sweep: 2026-04-23 (Strategic Transition Sweep — Session Rewind & OTEL Specs)
+
+## Sweeps Index
+
+| Date | Key Highlights |
+| :--- | :--- |
+| [2026-04-23](./sweeps/2026-04-23.md) | **Strategic Transition**: Drafted **Session Rewind** and **OTEL Tracing** specs. Verified **Opus 4.7** regression (0.63) and **Haiku 3** clean audit. Updated Anthropic track with Agent SDK v0.1.64, SessionStore, and MCP Server Cards. |
+| [2026-04-22](./sweeps/2026-04-22.md) | **Operational Recovery**: Resolved "Observability Blackout". Fixed `scripts/daily_research_sweep_gemini.sh` bug where untracked files were ignored during recovery. Verified Opus 4.7 Shadow Eval (0.63 regression) and Haiku 3 retirement audit (Clean). |
 **Total entries**: 17
 
 ## Anthropic Track

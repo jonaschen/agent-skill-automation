@@ -22,6 +22,11 @@ The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic'
 
 ## Key Developments (reverse chronological)
 
+### 2026-04-23 — Agent SDK v0.1.64 (Python) and v0.2.111 (TS): SessionStore and Session Rewind GA
+- **What**: Released April 17-21, 2026. **Python SDK v0.1.64** adds **SessionStore** adapters for S3, Redis, and Postgres, matching the TypeScript SDK's persistence capabilities. **TypeScript SDK v0.2.111** officially supports Opus 4.7's `xhigh` effort and task-based token budgets. **Session Rewind** is now GA, enabling agents to roll back to a specific `message.uuid` checkpoint.
+- **Significance**: SessionStore allows scaling multi-agent fleets across distributed infrastructure while maintaining persistent state. Session Rewind enables our Phase 4 closed-loop pipeline to "undo" failed agent steps and retry from a known-good state.
+- **Source**: [github.com/anthropics/agent-sdk-python](https://github.com/anthropics/agent-sdk-python/releases)
+
 ### 2026-04-22 — Agent SDK v1.31.0 Introduces Session Rewind and Custom Service Registry
 - **What**: Released in early April 2026, v1.31.0 adds **Session Rewind** (state rollback to Invocation ID) and **Custom Service Registry** (dynamic MCP server discovery and registration).
 - **Significance**: Enables robust error recovery and decouples tool management from agent logic. Managed via **Vaults** for credential safety. Directly maps to Phase 5 "Changeling" role registration requirements.

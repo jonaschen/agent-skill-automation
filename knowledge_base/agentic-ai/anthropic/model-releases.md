@@ -26,7 +26,12 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-22 — Claude Opus 4.7 Shadow Eval Reveals Trigger Regression (0.63 vs 0.829)
+### 2026-04-23 — Claude Opus 4.7: SOTA Agentic Reasoning and Vision
+- **What**: Anthropic released **Claude Opus 4.7** (`claude-opus-4-7`) on April 16, 2026. Key benchmarks: **87.6% on SWE-bench Verified**, 64.3% on SWE-bench Pro. New capabilities: **128K output window**, **`xhigh` effort level**, and **1:1 coordinate mapping** for Computer Use (2576px long edge).
+- **Significance**: Opus 4.7 is optimized for "agentic persistence." The `xhigh` effort level provides a new tier for complex architectural reasoning. The high-resolution vision enables pixel-perfect UI automation without scaling artifacts.
+- **Source**: [anthropic.com/news/claude-4-7-opus](https://www.anthropic.com/news/claude-4-7-opus)
+
+### 2026-04-22 — Claude Opus 4.7 Shadow Eval reveals trigger regression (0.63 vs 0.829)
 - **What**: Empirical benchmarking of `claude-opus-4-7` using the `skill-quality-validator` eval suite showed a pass rate of **0.63**, a significant drop from the Opus 4.6 baseline of **0.829**.
 - **Significance**: Confirms the "literal instruction following" nature of 4.7 makes it less prone to triggering autonomous skills without explicit directives. Strategic priority S1 (Automatic Improvement) is now prioritized to adapt trigger descriptions for 4.7's literal style.
 - **Source**: Internal Shadow Eval; [nxcode.io](https://nxcode.io/blog/claude-opus-4-7-benchmarks)
