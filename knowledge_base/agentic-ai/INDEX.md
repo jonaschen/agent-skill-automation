@@ -1,32 +1,38 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-23 Wednesday night (thirty-sixth sweep, full confirmation)
-**Last analysis**: 2026-04-23 (Mode 2b L2-L3)
+**Last sweep**: 2026-04-23 Wednesday night-4 (thirty-ninth sweep, confirmation + corrections)
+**Last analysis**: 2026-04-23 night (Mode 2b L2-L3)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-23 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-23 |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-23 |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-23 |
+| Claude Code | anthropic/claude-code.md | 2026-04-23 (night) |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-23 (night) |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-23 (night) |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-23 (night) |
 | Computer Use | anthropic/computer-use.md | 2026-04-23 |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-23 |
-| Model Releases | anthropic/model-releases.md | 2026-04-23 |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-23 (night) |
+| Model Releases | anthropic/model-releases.md | 2026-04-23 (night) |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-23 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-23 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-23 |
-| Vertex AI Agents | google-deepmind/vertex-ai-agents.md | 2026-04-23 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-23 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-23 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-23 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-23 (night) |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-23 (night) |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-23 (night) |
+| Vertex AI Agents (→ Gemini Enterprise Agent Platform) | google-deepmind/vertex-ai-agents.md | 2026-04-23 (night) |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-23 (night) |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-23 (night) |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-23 (night) |
+
+Note: 2026-04-23 Wednesday night-4 (thirty-ninth sweep, confirmation + corrections): **NO NEW RELEASES since night-3.** CC v2.1.118 still latest (no v2.1.119). SDK Py v0.1.65, TS v0.2.118 unchanged. ADK v2.0.0b1/v1.31.1 unchanged. CLI v0.38.2 day 8. **Corrections**: (1) A2A spec version confirmed as **v1.2** per TheNextWeb Cloud Next coverage — GitHub still v1.0.0 tagged, spec-vs-tag divergence tracked. (2) 8th-gen TPUs officially named **TPU 8t** (training, 9,600/superpod, 3x Ironwood) and **TPU 8i** (inference, 1,152/pod, 80% better perf/$, millions of concurrent agents). (3) claude-code.md overview version corrected to v2.1.118. **#49562 day 7** confirmed: OPEN, 2 comments, zero staff responses. Cloud Next Day 2-3: partner awards + security additions, no new agent platform announcements beyond Day 1 keynote. **I/O 25d.** Action items unchanged: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**.
+
+Note: 2026-04-23 Wednesday night-3 (thirty-eighth sweep, full L1-L5): **GOOGLE CLOUD NEXT 2026 (Apr 22-24, Las Vegas) — LARGEST GOOGLE AI AGENT EVENT SINCE I/O 2025.** Previous sweeps missed Cloud Next due to timezone offset (keynote Apr 22 US time = Apr 23 Taiwan time). **Vertex AI → Gemini Enterprise Agent Platform** (official rebrand). New: Agent Studio (low-code, preview), **Agent Identity (SPIFFE-based crypto IDs)**, Agent Gateway, Agent Registry, Agent Observability, Agent Simulation, Agent Evaluation, **Model Armor** (prompt injection + tool poisoning defense), Agent Marketplace (Salesforce, ServiceNow, SAP, Atlassian, Adobe, Workday, Oracle), **Workspace Studio** (no-code agents for Gmail/Docs/Sheets). **Managed MCP servers** (BigQuery, Maps, Compute Engine, K8s Engine) + **Apigee as MCP bridge** — Google now full MCP ecosystem participant (S3 convergence). Agent Engine Sessions & Memory Bank **GA**. **Outcome-based pricing** (task completions vs tokens). **$750M partner investment**. **Ironwood 7th-gen TPU** (4.6 petaFLOPS/chip, Anthropic 1M units). **Gemini 3.1 Flash-Lite GA** (<50% cost of 3.1 Flash). **A2A Cloud Next upgrades**: signed agent cards, 50+ enterprise partners in production; **GitHub still v1.0.0** (no v1.1/v1.2 tagged). **ADK** showcased as core framework, PyPI still v2.0.0b1/v1.31.1, YAML RCE fix. **Mariner**: 83.5% WebVoyager, 10 concurrent tasks, AI Ultra US, "Teach and Repeat" persistent memory (S1 relevant), roadmap confirmed (Studio Q2, cross-device Q3, marketplace Q4). **Astra**: capabilities integrating into Gemini Live, no standalone product. **Gemma 4 benchmarks**: 31B — MMLU 85.2%, AIME 89.2%, LiveCodeBench 80.0%, GPQA Diamond 84.3% (2-4x over Gemma 3). CLI v0.38.2 day 8 (deepest freeze). **I/O 25d.** Cross-cutting: both vendors broke quiet simultaneously (CC v2.1.118 + Cloud Next same day), MCP convergence from both sides, agent identity emerging as differentiator, platform-as-agent-platform paradigm shift. Action items: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**, **update Phase 5 design refs for Gemini Enterprise Agent Platform (P1, factory)**, **Phase 5 agent identity evaluation (P1, factory)**.
+
+Note: 2026-04-23 Wednesday night-2 (thirty-seventh sweep, Anthropic only): **QUIET PERIOD BROKEN — 3 releases in <24h.** CC v2.1.118 (Apr 23, 00:42 UTC): **MCP tool hooks** (`type: "mcp_tool"`) — hooks invoke MCP tools directly (new S1 automation surface). Vim visual mode, custom themes, `DISABLE_UPDATES` env var, auto mode `$defaults`, plugin release tags. **8+ MCP OAuth bug fixes** (transient 401, credential corruption on Linux/Windows, macOS keychain race, cross-process lock contention). Fixed subagents via SendMessage not restoring cwd, agent-type hooks error, prompt hooks re-firing on verifier subagents. **SDK Py v0.1.65** (Apr 22): `SessionStore.list_session_summaries()` O(1) batch views, `import_session_to_store()` local→remote migration, **`ThinkingConfig.display`** overrides Opus 4.7 `"omitted"` default (first handle on thinking visibility, relevant to #49562), **`ServerToolUseBlock`** + `AdvisorToolResultBlock` surfaced (was silently dropped → empty messages). Bundles CC v2.1.118. **SDK TS v0.2.118** (Apr 23): `Options.managedSettings` for embedder policy-tier settings. **#49562 day 7**, zero staff responses, downgrade to P2 if silent by Apr 28. **No new models.** Analysis: 4 findings — (1) MCP tool hooks S1 primitive (MODERATE-HIGH, requires SDK migration or MCP server to use in cron pipeline), (2) ServerToolUseBlock silent data loss (MODERATE, zero current pipeline impact), (3) thinking display observability (LOW-MODERATE, diagnostics not cost fix), (4) #49562 extended silence suggests model-level response (LOW). Discussion: 1 net-new ADOPT (MCP tool hooks S1 design note, P3 10min), 2 DEFERs, 1 REJECT. Factory queue ~16 items. Action items: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**.
 
 Note: 2026-04-23 Wednesday night analysis (Mode 2b): **ADK v2.0.0b1 graph orchestration deep analysis.** Four findings: (1) Workflow(BaseNode) vs. TCI routing — MODERATE gap, complementary not competing. Static TCI dispatch sufficient for our linear pipeline; dynamic graph routing adds value for unpredictable branching. TCI comparison framework correctly scoped, fill post-I/O GA not beta. (2) Fourth agent definition paradigm — BaseNode as root complicates S3 format comparison (agent vs. workflow-node abstraction). (3) Vendor orchestration philosophy divergence crystallized — Anthropic agent-centric vs. Google workflow-centric. Citable S2 paper finding. (4) #49562 day 5 silence — LOW risk (fleet on Opus 4.6). Three cross-pollination: NodeRunner isolation → Phase 5 subagent isolation design input, explicit ReAct → optimizer branch control (Phase 5 backlog), graph viz → Phase 7 observability reference. Three threats assessed all LOW-MODERATE, mitigations in place. **Zero ADOPTs generated** — factory queue throttling per directive. Action items unchanged: **UPGRADE CC v2.1.117 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**.
 

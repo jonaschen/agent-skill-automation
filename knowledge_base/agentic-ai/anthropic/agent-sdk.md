@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -22,9 +22,29 @@ The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic'
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — SDK Py v0.1.64, TS v0.2.116 Still Latest; Day 3 Post-Freeze Quiet
+### 2026-04-23 — SDK Py v0.1.65 (Apr 22) + TS v0.2.118 (Apr 23): Batch Session Summaries, Thinking Display, ServerToolUseBlock, ManagedSettings
+- **What**: Two SDK releases discovered this cycle:
+  - **Python v0.1.65** (Apr 22): Four features + critical bug fix:
+    1. **Batch session summaries**: `SessionStore.list_session_summaries()` optional protocol method + `fold_session_summary()` helper for O(1)-per-session list views. Stores with append-time summary sidecars serve `list_sessions_from_store()` without loading full transcripts (N round-trips → 1) (#847)
+    2. **Import local sessions to store**: `import_session_to_store()` replays local on-disk sessions into any `SessionStore` adapter, enabling migration from local to remote stores (#858)
+    3. **Thinking display control**: `display` field on `ThinkingConfig`, forwarded as `--thinking-display` to CLI. Lets callers override Opus 4.7's default `"omitted"` behavior to receive summarized thinking text (#830)
+    4. **Server tool use blocks**: Added `ServerToolUseBlock` + `AdvisorToolResultBlock` content block types, surfacing server-executed tool calls (e.g., `advisor`, `web_search`) that were previously **silently dropped** (#836)
+    - **Bug fix**: `server_tool_use` and `advisor_tool_result` content blocks being silently dropped by message parser → messages with only server-side tool calls arrived as empty `AssistantMessage(content=[])` (#836)
+    - **Doc fix**: `permission_mode` docstrings corrected — `dontAsk` now correctly described as denying unapproved tools (was inverted) (#863)
+    - Bundles CC v2.1.118
+  - **TypeScript v0.2.118** (Apr 23):
+    - `Options.managedSettings` for embedders to pass policy-tier settings to spawned CLI in-memory, honored below IT-controlled managed sources
+    - Maintains CC version parity at v2.1.118
+- **Significance**: HIGH. Three findings with pipeline impact:
+  1. **Thinking display control** (#830) — directly relevant to #49562 (Opus 4.7 token burn). Callers can now override the default `"omitted"` thinking display, potentially giving visibility into where tokens are consumed. This is the first programmatic handle on Opus 4.7's thinking behavior.
+  2. **ServerToolUseBlock** (#836) — the silent drop bug means any SDK integration relying on server-side tool calls (advisor, web_search) was receiving empty messages. This was a data integrity bug affecting downstream message processing. Now fixed.
+  3. **Batch session summaries** (#847) — completes the SessionStore O(1) list story from v0.1.64. Session management at scale is now production-ready for remote stores (S3, Redis, Postgres).
+  4. **managedSettings** (TS) — enterprise embedding feature. Enables IDE/platform embedders to ship policy-tier settings without requiring managed-settings infrastructure.
+- **Source**: https://pypi.org/project/claude-agent-sdk/, https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md, https://github.com/anthropics/claude-agent-sdk-typescript/releases
+
+### 2026-04-23 — SDK Py v0.1.64, TS v0.2.116 Still Latest; Day 3 Post-Freeze Quiet (superseded)
 - **What**: No new SDK releases. Python v0.1.64 and TypeScript v0.2.116 remain latest. Day 3 since last SDK release (Apr 20).
-- **Significance**: SDK releases typically lag CC releases by 1-2 days. If CC v2.1.117 introduced SDK-relevant changes (e.g., forked subagents), a corresponding SDK release may follow.
+- **Significance**: SDK releases typically lag CC releases by 1-2 days. **Note**: Py v0.1.65 (Apr 22) and TS v0.2.118 (Apr 23) discovered this night cycle — the afternoon sweep missed v0.1.65 on PyPI.
 - **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases (verified Apr 23)
 
 ### 2026-04-22 — SDK Py v0.1.64, TS v0.2.116 Still Latest; Day 2 Post-Freeze Quiet

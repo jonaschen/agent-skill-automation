@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -26,9 +26,13 @@ Anthropic's Claude model family has progressed through Claude 3 (March 2024), Cl
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — No New Models; #49562 Day 4 Without Staff Response
-- **What**: No new model releases or announcements. Opus 4.7 #49562 still OPEN — zero staff responses, last user comment Apr 19, cross-reference to #51471 on Apr 21. CC v2.1.117's context window fix (200K→1M) may have reduced some token burn complaints but the core ~35% adaptive thinking cost increase is model behavior, not a CC bug.
-- **Significance**: The lack of staff response on #49562 for 4+ days with growing third-party ecosystem pressure (n8n, openclaw, pi-mono) is notable. No new model IDs detected.
+### 2026-04-23 (night) — No New Models; #49562 Day 7 Without Staff Response; SDK v0.1.65 Adds Thinking Display Control
+- **What**: No new model releases. #49562 still OPEN — zero staff responses, day 7. Last community comment Apr 19 (datafortify). Multiple cross-referenced duplicates (#50617 tokenizer inflation, #50471 model picker, #50295 "opus 4.6 > 4.7"). However, **SDK Py v0.1.65 adds `ThinkingConfig.display` field** (#830) — callers can now override Opus 4.7's default `"omitted"` thinking display behavior to receive summarized thinking text. This is the first programmatic handle on the thinking token consumption issue.
+- **Significance**: The thinking display control in SDK v0.1.65 is an indirect but relevant response to #49562's token burn complaints. It doesn't reduce token consumption, but it gives visibility into where tokens go. If #49562 is still silent by day 10 (Apr 28), per directive: downgrade to P2.
+- **Source**: https://github.com/anthropics/claude-code/issues/49562, https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md
+
+### 2026-04-23 — No New Models; #49562 Day 4 Without Staff Response (superseded)
+- **What**: No new model releases or announcements. Opus 4.7 #49562 still OPEN — zero staff responses, last user comment Apr 19. **Note**: Night cycle updates day count to 7 and notes SDK v0.1.65 thinking display control (see above).
 - **Source**: https://github.com/anthropics/claude-code/issues/49562 (verified Apr 23)
 
 ### 2026-04-22 — Haiku 3 OFFICIALLY RETIRED; #49562 Still OPEN; 1M Beta 8d (Final Check, Closing)

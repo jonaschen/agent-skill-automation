@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -23,13 +23,33 @@
 
 ## Overview
 
-Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.117 (April 22, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
+Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.118 (April 23, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — v2.1.117 Still Latest; No v2.1.118; Day 1 Quiet
+### 2026-04-23 — v2.1.118 Released: MCP Tool Hooks, Vim Visual Mode, Custom Themes, Massive OAuth Fix Sweep
+- **What**: CC v2.1.118 shipped Apr 23 (00:42 UTC). Major release with:
+  - **MCP tool hooks**: Hooks can now invoke MCP tools directly via `type: "mcp_tool"` — enables hook-driven MCP tool orchestration
+  - **Vim visual mode**: Added `v` (visual) and `V` (visual-line) with selection, operators, and visual feedback
+  - **Custom themes**: Create/switch named themes from `/theme`, hand-edit JSON in `~/.claude/themes/`; plugins can ship themes via `themes/` directory
+  - **Unified `/usage`**: Merged `/cost` and `/stats` into `/usage` (both remain as typing shortcuts)
+  - **`DISABLE_UPDATES` env var**: Completely blocks all update paths including manual `claude update` — stricter than `DISABLE_AUTOUPDATER`
+  - **WSL settings inheritance**: `wslInheritsWindowsSettings` policy key for Windows-side managed settings
+  - **Auto mode `$defaults`**: Include `"$defaults"` in `autoMode.allow`/`soft_deny`/`environment` to ADD custom rules alongside built-ins instead of replacing
+  - **Plugin release tags**: `claude plugin tag` creates release git tags with version validation
+  - **Session resume improvements**: `--continue`/`--resume` now find sessions that added CWD via `/add-dir`
+  - **Color sync**: `/color` syncs accent to claude.ai/code when Remote Control connected
+  - **Model picker overrides**: `/model` honors `ANTHROPIC_DEFAULT_*_MODEL_NAME`/`_DESCRIPTION` with custom `ANTHROPIC_BASE_URL`
+  - **8+ MCP OAuth bug fixes**: Fixed HTTP/SSE stuck auth after transient 401, OAuth token response missing `expires_in`, step-up auth silent refresh, cross-process lock contention on token refresh, macOS keychain race, token refresh after server revoke, credential save crash on Linux/Windows corrupting `.credentials.json`, and more
+  - **Agent/hook fixes**: Fixed agent-type hooks "Messages are required" error, `prompt` hooks re-firing on verifier subagent tool calls, subagents via `SendMessage` not restoring explicit `cwd`
+  - **Other fixes**: `/fork` writing full parent conversation per fork, Alt key freezes, Remote Control archive on CCR init blips, file watcher errors on invalid paths
+- **Significance**: HIGH. MCP tool hooks (`type: "mcp_tool"`) is the headline feature — it enables hooks to trigger MCP tools, creating a new automation surface for agent pipelines. The massive OAuth fix sweep (8+ fixes) signals MCP auth stabilization after the STDIO deprecation push. `DISABLE_UPDATES` is important for enterprise/managed deployments. Custom themes + plugin theme shipping extends the plugin ecosystem.
+- **S1 relevance**: MCP tool hooks create a new automation primitive — hooks can now trigger external tools without going through the agent loop. This could enable pre/post-processing pipelines that invoke MCP servers directly.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-04-23 — v2.1.117 Still Latest; No v2.1.118; Day 1 Quiet (superseded same day)
 - **What**: CC v2.1.117 (Apr 22) remains latest. No v2.1.118 on GitHub releases or changelog. First full quiet day since the v2.1.117 release.
-- **Significance**: Normal post-release cadence. The large v2.1.117 release (25+ changes) may warrant a stabilization day before the next release.
+- **Significance**: Normal post-release cadence. The large v2.1.117 release (25+ changes) may warrant a stabilization day before the next release. **Note**: v2.1.118 shipped later the same day (see above).
 - **Source**: https://github.com/anthropics/claude-code/releases, https://code.claude.com/docs/en/changelog (verified Apr 23)
 
 ### 2026-04-22 — v2.1.116 Still Latest (Day 2); Post-Freeze Burst Did Not Materialize

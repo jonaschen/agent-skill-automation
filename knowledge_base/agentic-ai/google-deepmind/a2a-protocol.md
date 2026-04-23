@@ -1,6 +1,6 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
@@ -22,6 +22,20 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — **Cloud Next 2026**: A2A Protocol Upgrades Announced; 50+ Enterprise Partners; Signed Agent Cards; GitHub Still v1.0.0
+- **What**: **Google Cloud Next 2026** (Apr 22-24) featured A2A prominently:
+  - **"Agent2Agent protocol is getting an upgrade"** — official Google Cloud blog post. Cloud Next showcased expanded A2A capabilities.
+  - **Signed Agent Cards** — cryptographic signatures for agent identity verification. A receiving agent can verify the card was issued by the domain owner.
+  - **50+ enterprise software partners** now running A2A in production: Salesforce, ServiceNow, SAP, Atlassian, Microsoft, AWS.
+  - **Native A2A support** built into: Google ADK, LangGraph, CrewAI, LlamaIndex Agents, Semantic Kernel, AutoGen.
+  - **150+ organizations** total (up from prior count), 22K+ GitHub stars.
+  - **Production deployments** confirmed in Azure AI Foundry, Amazon Bedrock AgentCore, and multiple enterprise environments.
+  - **"A2A Protocol v1.2"** — TheNextWeb explicitly reports v1.2 as the Cloud Next version, with cryptographic signatures for domain verification. Multiple sources corroborate v1.2 as the spec-level version.
+  - **GitHub release**: Still v1.0.0 (Mar 12, verified via `gh api` Apr 23). No v1.1.0 or v1.2.0 tagged. The spec has advanced to v1.2 per Cloud Next announcements and press coverage, but the GitHub repo has not tagged a corresponding release. This gap between spec version and tagged release needs monitoring — v1.2 may ship as a tagged release at or before I/O.
+  - **A2A one-year anniversary** (Apr 9, 2026) — PR Newswire marked the milestone.
+- **Significance**: A2A is gaining enterprise traction faster than any competing protocol. The signed agent cards feature is the first cryptographic identity layer for agent interop — directly relevant to our Phase 5 security design and the S2 paper's agent identity section. The gap between blog announcements and GitHub releases needs monitoring — Google may be pre-announcing features for I/O.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/agent2agent-protocol-is-getting-an-upgrade, https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, https://stellagent.ai/insights/a2a-protocol-google-agent-to-agent, https://github.com/google/A2A/releases (verified via gh api)
 
 ### 2026-04-23 — A2A v1.0.0 Day 42; No v1.1; Stable; Linux Foundation Governance Confirmed
 - **What**: A2A v1.0.0 (Mar 12) day 42. No v1.1. No I/O pre-leaks. **Linux Foundation governance** confirmed — A2A project officially under LF umbrella. 150+ organizations. 22K+ GitHub stars. Production deployments in Azure AI Foundry and Amazon Bedrock AgentCore. I/O 26d.

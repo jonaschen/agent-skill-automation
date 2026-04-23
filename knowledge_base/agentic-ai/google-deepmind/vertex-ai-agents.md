@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,35 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — **CLOUD NEXT 2026: Vertex AI → Gemini Enterprise Agent Platform**; Major Rebrand + New Components; Agent Identity; Agent Gateway; Model Armor; Outcome-Based Pricing
+- **What**: **Google Cloud Next 2026** (Apr 22-24, Las Vegas) announced the most significant platform change since Vertex AI launched:
+  - **Vertex AI rebranded to Gemini Enterprise Agent Platform** — official name change. URL: `cloud.google.com/products/gemini-enterprise-agent-platform`. Documentation already migrated: `docs.cloud.google.com/gemini-enterprise-agent-platform/`.
+  - **Google Agentspace merged** into unified Gemini Enterprise product.
+  - **New components announced**:
+    - **Agent Studio** — low-code visual interface for agent design (preview). Replaces Agent Designer.
+    - **Agent Identity** — every agent gets a unique cryptographic ID based on **SPIFFE standard**. Strongly attested, tied to agent lifecycle, mapped to resource URI. First enterprise-grade agent identity system.
+    - **Agent Gateway** — "air traffic control" for agent interactions. Secure routing and access management.
+    - **Agent Registry** — centralized catalog for agent discovery and governance.
+    - **Agent Observability** — monitoring and tracing for deployed agents.
+    - **Agent Simulation** — stress-testing agents before deployment.
+    - **Agent Evaluation** — quality assessment framework.
+    - **Model Armor** — defense against prompt injection, tool poisoning, sensitive data leakage. Zero-trust architecture for decentralized agent systems.
+    - **Agent Marketplace / Agent Gallery** — third-party agents from Salesforce, ServiceNow, SAP, Atlassian, Adobe, Workday, Oracle, and others available directly in the Gemini Enterprise app.
+  - **Agent Engine Sessions & Memory Bank** — **GA** (was preview). Persistent agent context now production-ready.
+  - **Outcome-based pricing** — task completions vs. token usage on select products. Phase 7 reference: Google is experimenting with the exact pricing model our ROADMAP Phase 7 envisions.
+  - **Semantic layer** — lets agents reason across enterprise data sources.
+  - **$750M partner investment** to accelerate agentic AI development.
+  - **Managed MCP servers** — Google Maps, BigQuery, Compute Engine, Kubernetes Engine. Apigee as MCP bridge for API-to-agent translation.
+  - **Agent Builder 2.0** — pre-built templates for enterprise workflows.
+  - **Ironwood 7th-gen TPU** — 4.6 petaFLOPS/chip. Anthropic committed to 1M units.
+- **Significance**: This is the most consequential Google Cloud announcement for our pipeline since the A2A launch. Five direct impacts:
+  1. **Phase 5 design**: Agent Identity (SPIFFE-based) and Agent Gateway are production references for our multi-agent security design.
+  2. **Phase 7 pricing**: Outcome-based pricing validates our AaaS commercialization approach.
+  3. **S2 paper**: The full governance stack (Identity + Gateway + Registry + Observability) is the most complete enterprise multi-agent orchestration framework published — citable.
+  4. **S3 convergence**: Managed MCP servers + Apigee bridge = Google is now a full MCP ecosystem participant. Tool portability convergence accelerates.
+  5. **Agent Builder freeze explained**: The 65+ day freeze was preparation for this rebrand. The freeze is now RESOLVED — future releases will be under the Gemini Enterprise Agent Platform branding.
+- **Source**: https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform, https://cloud.google.com/blog/products/ai-machine-learning/the-new-gemini-enterprise-one-platform-for-agent-development, https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, https://oplexa.com/google-cloud-next-2026/, https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview
 
 ### 2026-04-23 — Agent Builder Day 64+; Frozen; Vertex AI Minor Updates (Partner Eval, RAG Metadata)
 - **What**: Agent Builder last release Feb 18. Day 64+ without releases. **Vertex AI** (not Agent Builder specifically) added: partner model evaluation (Anthropic, Llama), SQL cells in Colab Enterprise (GA), schema-based metadata search in RAG Engine. No Agent Builder-specific features. Tool Governance blog (Cloud API Registry integration) positions Agent Builder for enterprise governance but no new release. I/O 26d.

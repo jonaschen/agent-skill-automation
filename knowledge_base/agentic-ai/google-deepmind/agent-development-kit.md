@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
@@ -20,6 +20,18 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — **Cloud Next 2026**: ADK Showcased as Core Agent Framework; Agent Engine Integration; v2.0.0b1 Still Latest Pre-release
+- **What**: **Google Cloud Next 2026** (Apr 22-24) positioned ADK as the central development framework in the new Gemini Enterprise Agent Platform:
+  - **ADK "2.0" branding** used in Cloud Next materials for stateful multi-step agent support, enhanced debugging, and Vertex AI Agent Engine integration. Note: this is the marketing/platform version — PyPI latest pre-release remains v2.0.0b1 (Apr 22), latest stable remains v1.31.1 (Apr 21). No v1.32.0 or v2.0.0b2.
+  - **Agent Engine integration** — ADK agents deploy directly to the Gemini Enterprise Agent Platform's managed runtime.
+  - **ADK stable across 4 languages**: Python, Go, Java, TypeScript (all at v1.0 GA per Cloud Next framing).
+  - **Resolved RCE vulnerability** in v2.0.0b1 related to nested YAML configurations.
+  - **ADK v1.31.0 (Apr 16)**: Major UI redesign — Live UI, Graph View, session display names, trace view, event filtering, Computer Use View, Vertex AI integration enhancements.
+  - **ADK v1.30.0 (Apr 13)**: Parameter Manager + Secret Manager integrations, Gemma 4 model support, Firestore database support, BigQuery tools stable.
+  - **ADK Java 1.0** (Apr 20) — App/Plugin architecture, ComputerUseTool (Playwright), event compaction, HITL, A2A support (already tracked).
+- **Significance**: Cloud Next confirms ADK is Google's answer to Claude Code's agent SDK — a unified development framework. The Agent Engine integration means ADK agents get managed infrastructure (our Phase 5 should reference this for managed runtime comparison). The YAML RCE fix is a security note for anyone evaluating ADK.
+- **Source**: https://oplexa.com/google-cloud-next-2026/, https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, https://github.com/google/adk-python/releases
 
 ### 2026-04-23 — **ADK v2.0.0b1 SHIPPED (Apr 21/22)**: First Beta; Workflow(BaseNode) Graph Orchestration; v1.31.1 Still Latest Stable
 - **What**: **ADK v2.0.0b1** released on PyPI (Apr 21, pre-release). This is the **first beta** of the ADK 2.0 line (after v2.0.0a1, a2, a3 alphas). v1.31.1 remains latest stable. Key v2.0.0b1 features:

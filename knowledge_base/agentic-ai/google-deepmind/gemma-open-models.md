@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://github.com/vllm-project/vllm/issues/38893
 - https://deepmind.google/models/gemma/
@@ -25,6 +25,21 @@
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — Gemma 4 Benchmarks Detailed; Cloud Next 2026 Positions Gemma 4 in Model Garden; I/O 25d
+- **What**: Detailed Gemma 4 benchmark data now available from DeepMind page:
+  - **Gemma 4 31B vs Gemma 3 27B benchmarks**:
+    - MMLU: 85.2% vs 67.6% (+17.6pp)
+    - AIME 2026 Mathematics: 89.2% vs 20.8% (+68.4pp)
+    - LiveCodeBench: 80.0% vs 29.1% (+50.9pp)
+    - GPQA Diamond: 84.3% vs 42.4% (+41.9pp)
+  - **Four variants**: E2B (~2.3B, edge), E4B (~4.5B, edge), 26B (consumer GPU), 31B (flagship).
+  - **Model IDs confirmed**: `gemma-4-26b-a4b-it`, `gemma-4-31b-it` (from Gemini API changelog Apr 2).
+  - **Cloud Next 2026**: Gemma 4 included in Model Garden (200+ models). ADK v1.30.0 (Apr 13) added Gemma 4 support.
+  - **Apache 2.0 license** confirmed. Available on Hugging Face, Ollama, Kaggle, LM Studio, Docker.
+  - I/O 25d — confirmed I/O session "What's new in Gemma open model family."
+- **Significance**: Gemma 4's benchmark leap over Gemma 3 is dramatic (2-4x on math and coding). The 31B model approaches frontier performance while running on a single GPU. For our pipeline's S3 priority, Gemma 4's agent capabilities (native function calling) make it the strongest open-weight alternative for agent portability experiments. ADK already supports it.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/, https://ai.google.dev/gemini-api/docs/changelog, https://oplexa.com/google-cloud-next-2026/
 
 ### 2026-04-23 — Gemma 4 Day 21: Steady State; Android Agentic Intelligence Blog Noted; I/O 26d
 - **What**: Gemma 4 (Apr 2) day 21. No new model variants. **Android Developers Blog** (Apr) positions Gemma 4 as "the new standard for local agentic intelligence on Android" — E2B (~2.3B) and E4B (~4.5B) variants optimized for edge. Apache 2.0 license. I/O session "What's new in Gemma open model family" confirmed. I/O 26d.

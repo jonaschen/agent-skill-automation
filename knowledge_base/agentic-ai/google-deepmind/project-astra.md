@@ -1,6 +1,6 @@
 # Project Astra
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://deepmind.google/models/project-astra/
 - https://deepmind.google/technologies/gemini/project-astra/
@@ -18,6 +18,17 @@
 Project Astra is Google DeepMind's research prototype toward building a universal AI assistant. It processes multimodal input (text, images, audio, video) in real time with low latency, enabling natural conversational interaction with contextual understanding. At Google I/O 2025, Astra capabilities were integrated into Google Search (Search Live), the Gemini app, and made available to third-party developers.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — Astra: Capabilities Integrating into Gemini Live; I/O 25d
+- **What**: Per Google's latest communications, Astra capabilities are being progressively integrated into Gemini Live:
+  - **Native audio** — more natural voice output.
+  - **Improved memory** + **computer control** added to Gemini Live.
+  - Gathering feedback from trusted testers, working to bring capabilities to Gemini Live, Search, Live API for developers, and **new form factors (glasses)**.
+  - Android XR glasses with Gemini confirmed for 2026.
+  - No standalone "Project Astra" product announcement at Cloud Next 2026 — Astra's capabilities are being absorbed into Gemini ecosystem products rather than launching as a separate product.
+  - **I/O 25d** — I/O session "What's new in Google AI" may include Astra-derived capabilities.
+- **Significance**: Astra is following the classic Google research-to-product path: capabilities get folded into existing products (Gemini Live, Search) rather than launching standalone. For our pipeline, this means Astra's multimodal agent patterns are accessible via the Gemini API/Live API, not a separate agent framework.
+- **Source**: https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-universal-ai-assistant/, https://deepmind.google/models/project-astra/
 
 ### 2026-04-23 — Astra: Steady State; I/O 26d
 - **What**: No new Astra announcements. Steady state. I/O 26d. I/O session list includes "What's new in Google AI" covering multimodal capabilities — may include Astra updates.

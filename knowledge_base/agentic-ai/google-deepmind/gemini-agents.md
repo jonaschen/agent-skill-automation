@@ -1,7 +1,12 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources (latest first)**:
+- https://cloud.google.com/blog/products/ai-machine-learning/the-new-gemini-enterprise-one-platform-for-agent-development
+- https://oplexa.com/google-cloud-next-2026/
+- https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era
+- https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-1-flash-lite
+- https://ai.google.dev/gemini-api/docs/changelog
 - https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 22)
 - https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/
 - https://ai.google.dev/gemini-api/docs/changelog
@@ -29,6 +34,26 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — **GOOGLE CLOUD NEXT 2026 (Apr 22-24)**: Gemini Enterprise Agent Platform; Gemini 3.1 Flash-Lite GA; Managed MCP Servers; Workspace Studio; CLI v0.38.2 Day 8 Stable
+- **What**: **Google Cloud Next 2026** keynote Apr 22 (Las Vegas). Massive announcements:
+  - **Gemini Enterprise Agent Platform** — Vertex AI rebranded and expanded. Unified platform for agent development, deployment, governance, and optimization. Components: Agent Studio (low-code visual), Agent Identity (SPIFFE-based crypto IDs), Agent Gateway, Agent Registry, Agent Observability, Agent Simulation, Agent Evaluation, Model Armor (prompt injection defense, tool poisoning, data leakage protection).
+  - **Gemini 3.1 Flash-Lite GA** — cheapest production-grade AI inference model as of Apr 2026, <50% cost of Gemini 3.1 Flash. Model ID: `gemini-3.1-flash-lite`.
+  - **Workspace Studio** — no-code agent builder for Gmail, Docs, Sheets, Drive, Meet, Chat. Integrates Asana, Jira, Mailchimp, Salesforce. Webhooks + Apps Script for custom logic.
+  - **Managed MCP servers** — Google Maps, BigQuery, Compute Engine, Kubernetes Engine. **Apigee as MCP bridge** — API-to-agent translation. Major S3 signal: Google is a full MCP adopter now.
+  - **Agent Garden** — prebuilt agent solutions for customer service, data analysis, creative tasks.
+  - **Agent Engine Sessions & Memory Bank** — GA (was preview).
+  - **Model Garden** — 200+ models including Gemini, Gemma, Claude, Llama.
+  - **Express mode** — free tier entry point.
+  - **$750M partner investment** to accelerate agentic AI development.
+  - **Outcome-based pricing** — task completions vs. token usage on select products.
+  - **Partner agents** — Salesforce, ServiceNow, SAP, Atlassian, Box, Workday, Accenture, Adobe, Oracle, Palo Alto Networks, Replit, S&P Global, Dun & Bradstreet in Agent Marketplace.
+  - **Ironwood (7th-gen TPU)** — 4.6 petaFLOPS/chip; 9,216-chip superpods at 42.5 exaFLOPS. Anthropic committed to 1M units. **8th-gen TPUs** also announced: **TPU 8t** (training, codename Sunfish — Broadcom/TSMC 2nm late 2027, 9,600 TPUs/superpod via ICI, 3x Ironwood processing power, 2x perf/Watt) and **TPU 8i** (inference, codename Zebrafish — MediaTek/TSMC, 1,152 TPUs/pod via Boardfly topology, 3x on-chip SRAM, 80% better perf/$ vs prior gen, designed for millions of concurrent agents).
+  - **Gemini CLI**: v0.38.2 day 8 stable (deepest freeze extends). No v0.39.0 stable. Preview channel unchanged.
+  - **Gemini API April releases** (non-Next): Gemini Robotics ER 1.6 preview (Apr 14), gemini-3.1-flash-tts-preview (Apr 15), Deep Research new models (Apr 21), gemini-embedding-2 GA (Apr 22), Flex/Priority inference tiers (Apr 1).
+  - **I/O 25d** (May 19-20).
+- **Significance**: Cloud Next 2026 is the largest Google AI agent announcement event since I/O 2025. The Vertex AI → Gemini Enterprise Agent Platform rebrand signals Google is going all-in on agents as the platform paradigm. Managed MCP servers make Google a full MCP ecosystem participant (S3 convergence). Outcome-based pricing is a Phase 7 reference point.
+- **Source**: https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, https://oplexa.com/google-cloud-next-2026/, https://cloud.google.com/blog/products/ai-machine-learning/the-new-gemini-enterprise-one-platform-for-agent-development, https://ai.google.dev/gemini-api/docs/changelog
 
 ### 2026-04-23 — CLI v0.38.2 Day 6 Stable; v0.39.0-preview.2 Day 1; gemini-embedding-2 GA; I/O Sessions Published
 - **What**: **Gemini CLI**: Stable v0.38.2 (Apr 17) day 6 — deepest stable freeze continues. No v0.38.3 or v0.39.0 stable. Preview v0.39.0-preview.2 (Apr 22) day 1. Nightly pipeline paused 7+ days.

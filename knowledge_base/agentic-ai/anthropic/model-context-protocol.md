@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP)
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://modelcontextprotocol.io/specification/2025-11-25
 - https://modelcontextprotocol.io/specification/draft/basic/authorization
@@ -24,9 +24,17 @@ The Model Context Protocol (MCP) is an open protocol created by Anthropic that e
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — MCP Steady; No New CVEs or Protocol Changes
+### 2026-04-23 — CC v2.1.118 Ships MCP Tool Hooks + 8 OAuth Fixes; No Protocol Changes
+- **What**: CC v2.1.118 (Apr 23) adds two MCP-relevant feature categories:
+  1. **MCP tool hooks** (`type: "mcp_tool"`): Hooks can now invoke MCP tools directly. This creates a new automation surface — pre/post-processing hooks that trigger MCP server tools without going through the agent conversation loop.
+  2. **8+ MCP OAuth bug fixes**: Fixed HTTP/SSE stuck auth after transient 401, missing `expires_in` in token response, step-up auth silent refresh, cross-process lock contention on refresh, macOS keychain race on concurrent refresh, server-revoked token before local expiry, credential save crash on Linux/Windows corrupting `.credentials.json`, and OAuth flow timeout/cancellation unhandled rejection.
+  - No protocol-level changes. No new CVEs. Spec unchanged at 2025-11-25.
+- **Significance**: MODERATE. MCP tool hooks are a significant new MCP integration surface. The OAuth fix sweep (8+ fixes) signals MCP auth reaching production stability — this was a major pain point during the STDIO→HTTP migration push. The credential corruption fix (Linux/Windows) was a data loss bug.
+- **Source**: https://github.com/anthropics/claude-code/releases
+
+### 2026-04-23 — MCP Steady; No New CVEs or Protocol Changes (superseded)
 - **What**: No new CVEs, no protocol changes, no spec updates. STDIO media cycle appears to be winding down. CC v2.1.117's declarative `mcpServers` in agent frontmatter (shipped Apr 22) is the most recent MCP-relevant change.
-- **Significance**: Steady state. One sentence per directive.
+- **Significance**: Steady state. **Note**: v2.1.118 shipped later same day with MCP tool hooks + 8 OAuth fixes (see above).
 - **Source**: https://modelcontextprotocol.io/ (verified Apr 23)
 
 ### 2026-04-22 — MCP Steady State; STDIO Media Amplification Continues

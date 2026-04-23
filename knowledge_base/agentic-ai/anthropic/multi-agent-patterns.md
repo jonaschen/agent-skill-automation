@@ -1,6 +1,6 @@
 # Multi-Agent Patterns
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf
 - https://zenvanriel.com/ai-engineer-blog/claude-code-swarms-multi-agent-orchestration/
@@ -20,9 +20,16 @@ Anthropic has developed multi-agent orchestration patterns both in Claude Code (
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — Multi-Agent Patterns Stable; No Change
-- **What**: No new patterns published. Existing patterns (Teams, Subagents, Three-Agent Harness, Orchestrator-Worker) holding. CC v2.1.117's `CLAUDE_CODE_FORK_SUBAGENT=1` (shipped Apr 22) is the most recent multi-agent relevant change.
-- **Source**: https://www.anthropic.com/engineering/multi-agent-research-system (verified Apr 23)
+### 2026-04-23 — v2.1.118 Adds SendMessage cwd Fix for Subagents; SDK v0.1.65 Adds ServerToolUseBlock
+- **What**: Two multi-agent relevant changes:
+  1. **CC v2.1.118**: Fixed subagents resumed via `SendMessage` not restoring explicit `cwd`. This was a correctness bug in multi-agent workflows where resumed subagents lost their working directory context.
+  2. **SDK Py v0.1.65**: `ServerToolUseBlock` + `AdvisorToolResultBlock` now surfaced — server-executed tool calls were previously silently dropped, meaning multi-agent systems using server-side tools (advisor, web_search) received empty messages for those interactions.
+  - No new orchestration patterns published. Four-pattern taxonomy unchanged.
+- **Significance**: LOW-MODERATE. The SendMessage cwd fix is a correctness improvement for persistent multi-agent workflows. The ServerToolUseBlock surfacing is more significant — it means multi-agent pipelines that route messages between agents can now see the full tool call chain including server-side tools.
+- **Source**: https://github.com/anthropics/claude-code/releases, https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md
+
+### 2026-04-23 — Multi-Agent Patterns Stable; No Change (superseded)
+- **What**: No new patterns published. Existing patterns holding. **Note**: v2.1.118 shipped later same day with SendMessage cwd fix (see above).
 
 ### 2026-04-22 — Multi-Agent Patterns Stable; No Change
 - **What**: Stable. Five-pattern taxonomy holds. No new patterns or announcements.

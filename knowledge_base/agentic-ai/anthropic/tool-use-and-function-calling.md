@@ -1,6 +1,6 @@
 # Tool Use and Function Calling
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
 - https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling
@@ -16,9 +16,15 @@ Claude's tool use system allows the model to invoke external functions by return
 
 ## Key Developments (reverse chronological)
 
-### 2026-04-23 — Tool Use Stable; No Change
-- **What**: Stable. No changes since last sweep. All GA features holding.
-- **Source**: https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview (verified Apr 23)
+### 2026-04-23 (night) — SDK v0.1.65 Surfaces ServerToolUseBlock; MCP Tool Hooks in CC v2.1.118
+- **What**: Two tool-use relevant changes:
+  1. **SDK Py v0.1.65**: `ServerToolUseBlock` + `AdvisorToolResultBlock` content block types now surfaced. Server-executed tool calls (advisor, web_search) were previously **silently dropped** by the message parser — messages with only server-side calls arrived as empty `AssistantMessage(content=[])`. Fixed in #836.
+  2. **CC v2.1.118**: Hooks can invoke MCP tools directly via `type: "mcp_tool"`, creating a new tool invocation path outside the conversation loop.
+- **Significance**: The ServerToolUseBlock fix is a correctness-critical change. Any SDK integration processing assistant messages was missing server-side tool calls entirely. MCP tool hooks extend tool invocation beyond the conversation → hook → MCP server chain.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md, https://github.com/anthropics/claude-code/releases
+
+### 2026-04-23 — Tool Use Stable; No Change (superseded)
+- **What**: Stable. No changes since last sweep. **Note**: Night cycle found SDK v0.1.65 ServerToolUseBlock fix and CC v2.1.118 MCP tool hooks (see above).
 
 ### 2026-04-22 — Tool Use Stable; No Change
 - **What**: Stable. No changes since last sweep. All GA features holding.

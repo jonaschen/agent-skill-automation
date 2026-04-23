@@ -1,6 +1,6 @@
 # Project Mariner
 
-**Last updated**: 2026-04-23
+**Last updated**: 2026-04-23 (night)
 **Sources**:
 - https://deepmind.google/models/project-mariner/
 - https://deepmind.google/technologies/project-mariner/
@@ -17,6 +17,17 @@
 Project Mariner is a Google DeepMind research prototype for autonomous web browsing. Built on Gemini 2.0, it can read screen content, plan multi-step workflows, and execute actions in a Chrome browser on behalf of the user. Originally unveiled in December 2024 as a limited research preview, it expanded to broader availability at Google I/O 2025 and has been evolving toward a full consumer product integrated into Google's AI Ultra subscription tier.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-23 (night) — **Cloud Next 2026**: Mariner Showcased; 83.5% WebVoyager; 10 Concurrent Tasks; AI Ultra US; Roadmap Confirmed
+- **What**: **Google Cloud Next 2026** (Apr 22-24) featured Project Mariner updates:
+  - **83.5% on WebVoyager benchmark** — strong performance on web navigation tasks.
+  - **10 concurrent tasks** — system of agents can complete up to 10 different tasks simultaneously (bookings, research, purchases, information lookup).
+  - **Available to Google AI Ultra subscribers (US)**.
+  - **"Teach and Repeat"** — persistent cross-session memory allows users to teach workflows once, then have Mariner repeat them autonomously. Relevant to S1 (self-improving agent patterns).
+  - **Roadmap confirmed**: Mariner Studio (visual task flow builder) Q2 2026, cross-device sync Q3 2026, agent marketplace Q4 2026.
+  - Built on Gemini 2.0 (unchanged).
+- **Significance**: Mariner is evolving from research prototype toward consumer product faster than expected. "Teach and Repeat" is the first major vendor implementation of persistent agent learning from user demonstrations — directly relevant to our S1 strategic priority. The Q2 Mariner Studio timeline aligns with I/O (May 19-20).
+- **Source**: https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era, https://deepmind.google/models/project-mariner/, https://www.allaboutai.com/ai-agents/project-mariner/
 
 ### 2026-04-23 — Mariner: Steady State; Mariner Studio Q2 2026 Expected; I/O 26d
 - **What**: No new Mariner announcements. Steady state. **Mariner Studio** (visual builder for task flows) expected Q2 2026 per allaboutai.com. Cross-device sync Q3 2026. Agent marketplace Q4 2026. I/O 26d.
