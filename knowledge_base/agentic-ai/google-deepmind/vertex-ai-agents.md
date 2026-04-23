@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,28 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — **Agent Identity SPIFFE Deep Technical Details**; Context-Aware Access Security Architecture; Cloud Next Breakout Component Specs
+- **What**: **Agent Identity documentation now live** at `docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview`. Deep technical details:
+  - **SPIFFE ID format**: `spiffe://TRUST_DOMAIN/resources/SERVICE/RESOURCE_PATH` — e.g., `spiffe://agents.global.org-123456789012.system.id.goog/resources/aiplatform/projects/.../reasoningEngines/my-test-agent`
+  - **IAM principal format**: `principal://TRUST_DOMAIN/resources/SERVICE/RESOURCE_PATH`
+  - **X.509 certificates**: Auto-provisioned per agent, **24-hour validity**, auto-refreshed, cryptographically bound to access tokens via DPoP to prevent token theft
+  - **Authentication flow models**:
+    - **User-Delegated Authority (3-legged OAuth)** — agents act on behalf of users
+    - **Agent's Own Authority** — Cloud-based identity for GCP services
+    - **OAuth 2.0 (2-legged)** — external machine-to-machine
+    - **API key auth** and HTTP basic auth (not recommended)
+  - **Agent Identity Auth Manager (Preview)**: Secure credential vault — stores API keys, OAuth client credentials, delegated tokens. Automated OAuth flow management including user sign-in dialogs. End-user access visibility and revocation. IAM-governed via agent SPIFFE IDs. Encrypted credentials decrypted at gateway (when used with Agent Gateway).
+  - **Context-Aware Access (CAA) agent security** (`docs.cloud.google.com/access-context-manager/docs/caa-agent-security`):
+    - **mTLS** enforced for agent-to-gateway communication with certificate-based token binding
+    - **Demonstrating Proof of Possession (DPoP)**: Authorization DPoP proofs generated during identity assignment, resource DPoP proofs at gateway. Same private key signs both proofs.
+    - **Credential binding**: Tokens restricted to specific Cloud Run containers — useless outside provisioned runtime (prevents credential theft and account takeover)
+    - **Non-shared by default**: Unlike service accounts, agent identities cannot be shared, impersonated, or generate long-lived keys
+    - **Opt-out**: `GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES=False`
+  - **Supported services**: Gemini Enterprise Agent Platform Runtime, Gemini Enterprise (Preview)
+  - **MCP integration**: Agent Identity authenticates to MCP servers using SPIFFE credentials
+- **Significance**: **HIGH — Phase 5 security design reference.** This is the most detailed vendor implementation of cryptographic agent identity published to date. Key Phase 5 design inputs: (1) SPIFFE standard as identity framework, (2) 24-hour X.509 cert rotation, (3) DPoP-based credential binding to prevent token theft, (4) Auth Manager as credential vault pattern. Anthropic has no equivalent — Claude Code agents authenticate via file-path-based permissions, not cryptographic identity. The CAA security architecture (mTLS + DPoP + credential binding) is the production reference for our Phase 5 inter-agent security design. For S2 paper: citable as first enterprise-grade agent identity implementation.
+- **Source**: https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview, https://docs.cloud.google.com/access-context-manager/docs/caa-agent-security
 
 ### 2026-04-23 (night) — **CLOUD NEXT 2026: Vertex AI → Gemini Enterprise Agent Platform**; Major Rebrand + New Components; Agent Identity; Agent Gateway; Model Armor; Outcome-Based Pricing
 - **What**: **Google Cloud Next 2026** (Apr 22-24, Las Vegas) announced the most significant platform change since Vertex AI launched:

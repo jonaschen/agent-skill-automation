@@ -1,7 +1,9 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
+- https://a2a-protocol.org/latest/specification/ (verified Apr 24 — spec version 1.0.0)
+- https://github.com/a2aproject/A2A/releases (verified via gh API Apr 24 — tag v1.0.0)
 - https://github.com/a2aproject/A2A/releases
 - https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
 - https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/
@@ -22,6 +24,16 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — **A2A VERSION DIVERGENCE RESOLVED**: Spec IS v1.0.0, NOT v1.2; TheNextWeb Misreported; Signed Agent Cards Are a v1.0.0 Feature
+- **What**: **Version divergence resolved.** Triple verification:
+  1. **GitHub**: `gh api repos/a2aproject/A2A/releases` — latest tag is `v1.0.0` (Mar 12). No v1.1.0 or v1.2.0.
+  2. **Official spec site**: `a2a-protocol.org/latest/specification/` — header reads "Latest Released Version `1.0.0`". Version history: 0.1.0, 0.2.6, 0.3.0, 1.0.0. No v1.1 or v1.2.
+  3. **Spec content**: Signed agent cards (cryptographic signatures, canonicalization requirements, signature format, signature verification) are documented as **v1.0.0 features**, not v1.2.
+  - **Conclusion**: TheNextWeb's "A2A Protocol v1.2" claim is a **media reporting error**. The protocol is at v1.0.0 across all authoritative sources. The "v1.2" may have been a misinterpretation of internal development versions discussed at Cloud Next, or confusion with the spec's iteration count. No version divergence exists — spec = GitHub tag = v1.0.0.
+  - A2A v1.0.0 day 43. I/O 25d.
+- **Significance**: **HIGH — clears a P1 tracking item.** The version divergence that appeared to gate our Phase 5 design references is resolved. We can cite A2A v1.0.0 with confidence. Signed agent cards ARE in v1.0.0 (not pending in a future version). Phase 5 inter-agent communication design can reference the current spec without version ambiguity. The spec includes: JSON-RPC, gRPC, HTTP/REST protocol bindings; OAuth2, mutual TLS, API key authentication; signed agent cards with domain verification.
+- **Source**: https://a2a-protocol.org/latest/specification/, https://github.com/a2aproject/A2A/releases (verified via gh API Apr 24)
 
 ### 2026-04-23 (night) — **Cloud Next 2026**: A2A Protocol Upgrades Announced; 50+ Enterprise Partners; Signed Agent Cards; GitHub Still v1.0.0
 - **What**: **Google Cloud Next 2026** (Apr 22-24) featured A2A prominently:

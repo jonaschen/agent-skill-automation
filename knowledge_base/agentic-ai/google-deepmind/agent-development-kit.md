@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
 - https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
@@ -20,6 +20,11 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — ADK v2.0.0b1 Day 2 Pre-release; v1.31.1 Day 3 Stable; No v1.32.0 or v2.0.0b2
+- **What**: ADK v2.0.0b1 (Apr 22) day 2 pre-release. v1.31.1 (Apr 21) day 3 stable. **No v1.32.0, no v2.0.0b2** (verified via `gh api repos/google/adk-python/releases` Apr 24). Next stable release expected ~Apr 27-May 1. I/O 25d.
+- **Significance**: One sentence: ADK unchanged, both stable and pre-release tracks holding.
+- **Source**: https://github.com/google/adk-python/releases (verified via gh API Apr 24)
 
 ### 2026-04-23 (night) — **Cloud Next 2026**: ADK Showcased as Core Agent Framework; Agent Engine Integration; v2.0.0b1 Still Latest Pre-release
 - **What**: **Google Cloud Next 2026** (Apr 22-24) positioned ADK as the central development framework in the new Gemini Enterprise Agent Platform:

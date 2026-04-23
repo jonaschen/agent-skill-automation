@@ -1,7 +1,11 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources (latest first)**:
+- https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 24)
+- https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview
+- https://docs.cloud.google.com/access-context-manager/docs/caa-agent-security
+- https://siliconangle.com/2026/04/22/google-brings-agentic-development-optimization-governance-one-roof-gemini-enterprise-agent-platform/
 - https://cloud.google.com/blog/products/ai-machine-learning/the-new-gemini-enterprise-one-platform-for-agent-development
 - https://oplexa.com/google-cloud-next-2026/
 - https://thenextweb.com/news/google-cloud-next-ai-agents-agentic-era
@@ -34,6 +38,34 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — **CLI v0.39.0 STABLE RELEASED**; v0.40.0-preview.2; Cloud Next Day 2-3 Breakout Details; Agent Platform Component Deep Dive
+- **What**: **Gemini CLI v0.39.0 stable released** (Apr 23) — **the 6-day stable freeze is broken.** Verified via `gh api repos/google-gemini/gemini-cli/releases`. Simultaneously: **v0.40.0-preview.2** (Apr 23) and **v0.41.0-nightly** (Apr 23). The CLI release cadence has fully resumed.
+  - **v0.39.0 stable highlights**:
+    - **`/memory inbox` command** for reviewing extracted skills + skill patching support
+    - **Unified `invoke_subagent` tool** — refactored from separate subagent tools, legacy wrapping tools removed
+    - **MCP authentication** — auth blocks in MCP servers configuration
+    - **`useAgentStream` hook** for improved agent integration
+    - **Tool-controlled display protocol** (Steps 2-3)
+    - **Plan mode**: required user confirmation for `activate_skill` actions, silent fallback for model routing
+    - **Memory leak fixes**: PTY exhaustion, orphan MCP subprocess leaks, lifecycle memory leaks
+    - **Sandbox hardening**: centralized paths for Linux + macOS, read-only git worktree enforcement, Windows symlink bypass fix, native ACL optimization
+    - **Session management**: dynamic session ID injection, session ID passed to interactive shell
+    - **Architecture**: decoupled ContextManager + Sidecar architecture, consolidated ExecuteOptions
+    - **9 new contributors** joined the project
+  - **Cloud Next Day 2-3 breakout session details** (Apr 23-24):
+    - **Agent Studio**: Low-code visual interface — drag-and-drop agent logic. Can export to ADK for full-code customization. Replaces Agent Designer.
+    - **Agent Runtime**: Revamped for simple provisioning. Supports multiday workflows and agent-to-agent orchestration.
+    - **Agent Memory Bank**: Dynamically generates long-term memories from conversations. **Memory Profiles** for high-accuracy, low-latency detail recall.
+    - **Agent Registry**: Central library indexing internal agents, tools, and agent skills. Access restricted to approved assets.
+    - **Agent Gateway**: "Air traffic control" — oversees entire agent fleet, enforces consistent security policies and Model Armor protections.
+    - **Agent Simulation**: Tests agents on synthetic workloads with virtualized tools.
+    - **Agent Evaluation**: Continuously scores agent performance.
+    - **Agent Observability**: Visual tracing of agent reasoning + debugging.
+    - **Model Armor**: Runtime protection for model/agent interactions. Integrates with Agent Gateway, Agent Runtime, LangChain (preview), Firebase (GA). Inline enforcement and sanitization without code changes.
+  - **I/O 25d** (May 19-20).
+- **Significance**: CLI v0.39.0 stable is the most significant CLI release since v0.38.0. The `/memory inbox` and unified `invoke_subagent` features are direct S3 comparison targets — Gemini CLI's agent architecture is evolving toward a unified tool model similar to Claude Code's Agent tool. The MCP auth blocks feature adds another MCP convergence data point. Cloud Next breakout details fill in the Gemini Enterprise Agent Platform component specifications — Agent Memory Bank's "Memory Profiles" and Agent Simulation are new capabilities not in the keynote. **S3 blocker note**: Jonas can now install Gemini CLI v0.39.0 stable (most mature stable release to date).
+- **Source**: https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 24), https://siliconangle.com/2026/04/22/google-brings-agentic-development-optimization-governance-one-roof-gemini-enterprise-agent-platform/
 
 ### 2026-04-23 (night) — **GOOGLE CLOUD NEXT 2026 (Apr 22-24)**: Gemini Enterprise Agent Platform; Gemini 3.1 Flash-Lite GA; Managed MCP Servers; Workspace Studio; CLI v0.38.2 Day 8 Stable
 - **What**: **Google Cloud Next 2026** keynote Apr 22 (Las Vegas). Massive announcements:

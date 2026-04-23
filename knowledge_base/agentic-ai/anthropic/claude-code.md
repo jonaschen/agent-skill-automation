@@ -1,6 +1,6 @@
 # Claude Code
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
 - https://code.claude.com/docs/en/changelog
 - https://github.com/anthropics/claude-code/releases
@@ -26,6 +26,11 @@
 Claude Code is Anthropic's agentic CLI tool that reads codebases, executes commands, and modifies files through a layered system of permissions, hooks, MCP integrations, and subagents. As of February 2026, 4% of public GitHub commits (~135,000 per day) are authored by Claude Code -- a 42,896x growth in 13 months since the research preview -- and 90% of Anthropic's own code is AI-written. The current version is v2.1.118 (April 23, 2026), with the v2.1.x series seeing 30+ releases in March-April 2026 alone.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — No New Release; v2.1.118 Day 1 Stabilization
+- **What**: CC v2.1.118 (Apr 23) remains latest. No v2.1.119 on GitHub releases, npm, or changelog. Normal post-major-release stabilization day.
+- **Significance**: LOW. Expected quiet day after the large v2.1.118 release. The weekly "What's New" digest covers through Week 15 (Apr 6-10, v2.1.92–v2.1.101); Week 16+ not yet published.
+- **Source**: https://github.com/anthropics/claude-code/releases, https://code.claude.com/docs/en/whats-new
 
 ### 2026-04-23 — v2.1.118 Released: MCP Tool Hooks, Vim Visual Mode, Custom Themes, Massive OAuth Fix Sweep
 - **What**: CC v2.1.118 shipped Apr 23 (00:42 UTC). Major release with:

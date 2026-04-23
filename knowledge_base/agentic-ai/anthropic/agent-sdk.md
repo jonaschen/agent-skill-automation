@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,11 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 20, 2026, Python is at v0.1.64 and TypeScript is at v0.2.116. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, skills, and SessionStore adapters.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — No New SDK Releases
+- **What**: SDK Py v0.1.65 (Apr 22) and TS v0.2.118 (Apr 23) remain latest. No new releases on PyPI or GitHub.
+- **Significance**: LOW. Normal cadence after paired release.
+- **Source**: https://pypi.org/project/claude-agent-sdk/, https://github.com/anthropics/claude-agent-sdk-python/releases
 
 ### 2026-04-23 — SDK Py v0.1.65 (Apr 22) + TS v0.2.118 (Apr 23): Batch Session Summaries, Thinking Display, ServerToolUseBlock, ManagedSettings
 - **What**: Two SDK releases discovered this cycle:

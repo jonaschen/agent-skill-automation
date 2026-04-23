@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-23 (night)
+**Last updated**: 2026-04-24
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,12 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-24 — No New Models; #49562 Day 8
+- **What**: Opus 4.7 (Apr 16) remains latest model. No new model announcements. #49562 ("burns through all tokens") is now day 8, still OPEN, zero staff responses. Bot flagged as potential duplicate (Apr 16) but not auto-closed — community comment on Apr 19 prevented auto-closure. Last API platform change was Apr 20 (Haiku 3 retirement).
+- **Significance**: LOW. Normal. Per directive: downgrade #49562 to P2 if still silent by day 10 (Apr 28).
+- **Source**: https://github.com/anthropics/claude-code/issues/49562, https://platform.claude.com/docs/en/release-notes/overview
+
 
 ### 2026-04-23 (night) — No New Models; #49562 Day 7 Without Staff Response; SDK v0.1.65 Adds Thinking Display Control
 - **What**: No new model releases. #49562 still OPEN — zero staff responses, day 7. Last community comment Apr 19 (datafortify). Multiple cross-referenced duplicates (#50617 tokenizer inflation, #50471 model picker, #50295 "opus 4.6 > 4.7"). However, **SDK Py v0.1.65 adds `ThinkingConfig.display` field** (#830) — callers can now override Opus 4.7's default `"omitted"` thinking display behavior to receive summarized thinking text. This is the first programmatic handle on the thinking token consumption issue.

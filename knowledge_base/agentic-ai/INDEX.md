@@ -1,34 +1,36 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-23 Wednesday night-4 (thirty-ninth sweep, confirmation + corrections)
-**Last analysis**: 2026-04-23 night (Mode 2b L2-L3)
+**Last sweep**: 2026-04-24 Thursday (forty-first sweep, Google/DeepMind afternoon — CLI v0.39.0 stable, A2A divergence resolved, Agent Identity SPIFFE deep details)
+**Last analysis**: 2026-04-24 (Mode 2b L2-L3, both tracks)
 **Total entries**: 17
 
 ## Anthropic Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-23 (night) |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-23 (night) |
-| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-23 (night) |
-| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-23 (night) |
-| Computer Use | anthropic/computer-use.md | 2026-04-23 |
-| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-23 (night) |
-| Model Releases | anthropic/model-releases.md | 2026-04-23 (night) |
+| Claude Code | anthropic/claude-code.md | 2026-04-24 |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-24 |
+| Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-24 |
+| Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-24 |
+| Computer Use | anthropic/computer-use.md | 2026-04-24 |
+| Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-24 |
+| Model Releases | anthropic/model-releases.md | 2026-04-24 |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-23 (night) |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-23 (night) |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-23 (night) |
-| Vertex AI Agents (→ Gemini Enterprise Agent Platform) | google-deepmind/vertex-ai-agents.md | 2026-04-23 (night) |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-23 (night) |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-23 (night) |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-23 (night) |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-24 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-24 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-24 |
+| Vertex AI Agents (→ Gemini Enterprise Agent Platform) | google-deepmind/vertex-ai-agents.md | 2026-04-24 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-24 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-24 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-24 |
 
-Note: 2026-04-23 Wednesday night-4 (thirty-ninth sweep, confirmation + corrections): **NO NEW RELEASES since night-3.** CC v2.1.118 still latest (no v2.1.119). SDK Py v0.1.65, TS v0.2.118 unchanged. ADK v2.0.0b1/v1.31.1 unchanged. CLI v0.38.2 day 8. **Corrections**: (1) A2A spec version confirmed as **v1.2** per TheNextWeb Cloud Next coverage — GitHub still v1.0.0 tagged, spec-vs-tag divergence tracked. (2) 8th-gen TPUs officially named **TPU 8t** (training, 9,600/superpod, 3x Ironwood) and **TPU 8i** (inference, 1,152/pod, 80% better perf/$, millions of concurrent agents). (3) claude-code.md overview version corrected to v2.1.118. **#49562 day 7** confirmed: OPEN, 2 comments, zero staff responses. Cloud Next Day 2-3: partner awards + security additions, no new agent platform announcements beyond Day 1 keynote. **I/O 25d.** Action items unchanged: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**.
+Note: 2026-04-24 Thursday afternoon (forty-first sweep, Google/DeepMind): **GEMINI CLI v0.39.0 STABLE RELEASED (Apr 23)** — 6-day stable freeze broken. Simultaneously v0.40.0-preview.2 + v0.41.0-nightly. Features: unified `invoke_subagent`, `/memory inbox`, MCP auth blocks, `useAgentStream` hook, sandbox hardening, decoupled ContextManager + Sidecar, session ID fixes. **A2A VERSION DIVERGENCE RESOLVED**: Triple verification (GitHub tag, a2a-protocol.org spec, spec content) confirms A2A is at **v1.0.0**, NOT v1.2. TheNextWeb's "v1.2" was a **media reporting error**. Signed agent cards ARE v1.0.0 features. **Agent Identity SPIFFE deep technical details**: SPIFFE ID format, X.509 certs (24h validity), DPoP + mTLS, Auth Manager (Preview), Context-Aware Access credential binding. **Cloud Next breakout details**: Agent Studio, Agent Runtime (multiday workflows), Agent Memory Bank (Memory Profiles), Agent Simulation, Model Armor (LangChain preview, Firebase GA). **ADK unchanged**: v2.0.0b1/v1.31.1. **Mariner, Astra, Gemma: steady.** **I/O 25d.** Zero net-new ADOPTs. 1 correction (A2A version refs). Action items: **UPGRADE CC v2.1.118 (P0, Jonas)**, **INSTALL GEMINI CLI v0.39.0 (S3, RE-ESCALATED)**.
+
+Note: 2026-04-23 Wednesday night-4 (thirty-ninth sweep, confirmation + corrections): **NO NEW RELEASES since night-3.** CC v2.1.118 still latest (no v2.1.119). SDK Py v0.1.65, TS v0.2.118 unchanged. ADK v2.0.0b1/v1.31.1 unchanged. CLI v0.38.2 day 8. **Corrections**: (1) A2A spec version reported as "v1.2" per TheNextWeb Cloud Next coverage — GitHub still v1.0.0 tagged, spec-vs-tag divergence tracked. **[CORRECTED 2026-04-24: "v1.2" was a media error. Spec IS v1.0.0. See Apr 24 afternoon note.]** (2) 8th-gen TPUs officially named **TPU 8t** (training, 9,600/superpod, 3x Ironwood) and **TPU 8i** (inference, 1,152/pod, 80% better perf/$, millions of concurrent agents). (3) claude-code.md overview version corrected to v2.1.118. **#49562 day 7** confirmed: OPEN, 2 comments, zero staff responses. Cloud Next Day 2-3: partner awards + security additions, no new agent platform announcements beyond Day 1 keynote. **I/O 25d.** Action items unchanged: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**.
 
 Note: 2026-04-23 Wednesday night-3 (thirty-eighth sweep, full L1-L5): **GOOGLE CLOUD NEXT 2026 (Apr 22-24, Las Vegas) — LARGEST GOOGLE AI AGENT EVENT SINCE I/O 2025.** Previous sweeps missed Cloud Next due to timezone offset (keynote Apr 22 US time = Apr 23 Taiwan time). **Vertex AI → Gemini Enterprise Agent Platform** (official rebrand). New: Agent Studio (low-code, preview), **Agent Identity (SPIFFE-based crypto IDs)**, Agent Gateway, Agent Registry, Agent Observability, Agent Simulation, Agent Evaluation, **Model Armor** (prompt injection + tool poisoning defense), Agent Marketplace (Salesforce, ServiceNow, SAP, Atlassian, Adobe, Workday, Oracle), **Workspace Studio** (no-code agents for Gmail/Docs/Sheets). **Managed MCP servers** (BigQuery, Maps, Compute Engine, K8s Engine) + **Apigee as MCP bridge** — Google now full MCP ecosystem participant (S3 convergence). Agent Engine Sessions & Memory Bank **GA**. **Outcome-based pricing** (task completions vs tokens). **$750M partner investment**. **Ironwood 7th-gen TPU** (4.6 petaFLOPS/chip, Anthropic 1M units). **Gemini 3.1 Flash-Lite GA** (<50% cost of 3.1 Flash). **A2A Cloud Next upgrades**: signed agent cards, 50+ enterprise partners in production; **GitHub still v1.0.0** (no v1.1/v1.2 tagged). **ADK** showcased as core framework, PyPI still v2.0.0b1/v1.31.1, YAML RCE fix. **Mariner**: 83.5% WebVoyager, 10 concurrent tasks, AI Ultra US, "Teach and Repeat" persistent memory (S1 relevant), roadmap confirmed (Studio Q2, cross-device Q3, marketplace Q4). **Astra**: capabilities integrating into Gemini Live, no standalone product. **Gemma 4 benchmarks**: 31B — MMLU 85.2%, AIME 89.2%, LiveCodeBench 80.0%, GPQA Diamond 84.3% (2-4x over Gemma 3). CLI v0.38.2 day 8 (deepest freeze). **I/O 25d.** Cross-cutting: both vendors broke quiet simultaneously (CC v2.1.118 + Cloud Next same day), MCP convergence from both sides, agent identity emerging as differentiator, platform-as-agent-platform paradigm shift. Action items: **UPGRADE CC v2.1.118 (P0, Jonas)**, **install Gemini CLI (S3, Jonas)**, **update Phase 5 design refs for Gemini Enterprise Agent Platform (P1, factory)**, **Phase 5 agent identity evaluation (P1, factory)**.
 
