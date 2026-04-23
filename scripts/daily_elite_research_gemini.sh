@@ -14,16 +14,48 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
+PERF_DIR="$REPO_ROOT/logs/performance"
+SECURITY_LOG_DIR="$REPO_ROOT/logs/security"
 DATE=$(date +"%Y-%m-%d")
 LOG_FILE="$LOG_DIR/elite-research-gemini-${DATE}.log"
 GEMINI="/home/jonas/.nvm/versions/node/v24.14.0/bin/gemini"
 # Ensure the correct Node version is used for gemini-cli and its dependencies
 export PATH="/home/jonas/.nvm/versions/node/v24.14.0/bin:$PATH"
 
-mkdir -p "$LOG_DIR"
+mkdir -p "$LOG_DIR" "$PERF_DIR" "$SECURITY_LOG_DIR"
 
 # Source shared libraries
+source "$SCRIPT_DIR/lib/cost_ceiling.sh"
 source "$SCRIPT_DIR/lib/session_log.sh"
+
+START_TIME=$(date +%s)
+
+finalize() {
+  local exit_code=$?
+  set +euo pipefail
+
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
+  local end_time=$(date +%s)
+  local duration=$((end_time - ${START_TIME:-$end_time}))
+
+  log_session_end "$exit_code" "$duration"
+
+  # Check duration against cost ceiling
+  check_cost_ceiling "elite-research" "$duration" "$PERF_DIR" "$SECURITY_LOG_DIR" 2>> "$LOG_FILE" || true
+
+  echo "" >> "$LOG_FILE" 2>/dev/null
+  echo "Finished: $(date)" >> "$LOG_FILE" 2>/dev/null
+}
+
+# Start incremental watchdog
+WATCHDOG_PID=$(start_incremental_watchdog "elite-research" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
+trap finalize EXIT INT TERM HUP
 
 echo "=== Gemini Elite Research Session — $DATE ===" >> "$LOG_FILE"
 echo "Started: $(date)" >> "$LOG_FILE"
@@ -81,6 +113,4 @@ This is the document we will use to publish our progress." < /dev/null) >> "$LOG
 
 log_task_complete "joint-paper"
 
-echo "" >> "$LOG_FILE"
-echo "Finished: $(date)" >> "$LOG_FILE"
 exit 0

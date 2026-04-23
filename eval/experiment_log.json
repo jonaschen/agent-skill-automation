@@ -90,6 +90,18 @@
       "change_description": "Opus 4.7 Shadow Eval: First run on new model. Revealed significant trigger regression (0.63 vs 0.829 baseline). Opus 4.7 literal style appears to over-comply with exclusion rules or fail on previously working imperative triggers. Blocking upgrade until Phase 3 L10 re-baseline.",
       "git_commit": "d74a058",
       "outcome": "regression-detected"
+    },
+    {
+      "iteration": 9,
+      "timestamp": "2026-04-23T05:30:00Z",
+      "branch": "literal-style-opt",
+      "pass_rate": 0.796,
+      "posterior_mean": 0.787,
+      "ci_lower": 0.677,
+      "ci_upper": 0.879,
+      "change_description": "L10 Iteration 1: Applied literal-style triggers ('Invoked when the user says...') and updated eval regex patterns to handle Opus 4.7 conversational headers. Improved pass rate from 0.63 to 0.796. Further optimization blocked by quota until 11am.",
+      "git_commit": "working",
+      "outcome": "improvement"
     }
   ]
 }

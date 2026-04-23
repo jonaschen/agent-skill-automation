@@ -63,6 +63,11 @@ finalize() {
   local exit_code=$?
   set +euo pipefail
 
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
   local end_time=$(date +%s)
   local duration=$((end_time - ${START_TIME:-$end_time}))
   local post_commit
@@ -104,6 +109,11 @@ PERF_EOF
   find "$LOG_DIR" -name "research-lead-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "research-lead-*.json" -mtime +30 -delete 2>/dev/null
 }
+
+# Start incremental watchdog
+WATCHDOG_PID=$(start_incremental_watchdog "research-lead" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
 trap finalize EXIT INT TERM HUP
 
 echo "=== Research Lead Session — $DATE ===" >> "$LOG_FILE"

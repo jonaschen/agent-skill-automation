@@ -115,7 +115,7 @@ class AsyncEvalRunner:
             # Future: add CLI-sensitivity to cache if needed
             if cached:
                 if self.verbose: print(f"  ⚡ Test {test_id}: CACHE HIT")
-                return cached["result"]
+                return (test_id, cached["result"])
 
         async with self.semaphore:
             for attempt in range(MAX_RETRIES):
@@ -137,9 +137,9 @@ class AsyncEvalRunner:
                 if self.inter_test_delay > 0:
                     if self.verbose: print(f"    (inter-test delay {self.inter_test_delay}s)", file=sys.stderr)
                     await asyncio.sleep(self.inter_test_delay)
-                return result
+                return (test_id, result)
 
-            return f"SKIP:rate-limit:{cli}"
+            return (test_id, f"SKIP:rate-limit:{cli}")
 
     def _evaluate(self, output, expect_trigger):
         import re
@@ -257,14 +257,26 @@ class AsyncEvalRunner:
             tasks.append(self.run_test(tid, prompt, exp, cli))
             test_ids.append(tid)
 
-        results = await asyncio.gather(*tasks)
+        results = []
+        for coro in asyncio.as_completed(tasks):
+            res = await coro
+            results.append(res)
+            # Find the tid for this result (requires run_test to return it)
+            # Wait, run_test returns (tid, result)
+            tid, outcome = res
+            print(f"Test {tid:2d}: {outcome}")
+            sys.stdout.flush()
         
-        # Split analysis (only if running all, otherwise just show current set)
+        # Sort results by tid for consistent summary
+        results.sort(key=lambda x: x[0])
+        final_outcomes = [r[1] for r in results]
+
+        # Split analysis
         if not split_filter:
-            train_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("train", [])]
-            val_results = [r for tid, r in zip(test_ids, results) if tid in self.splits.get("validation", [])]
+            train_results = [r[1] for r in results if r[0] in self.splits.get("train", [])]
+            val_results = [r[1] for r in results if r[0] in self.splits.get("validation", [])]
             
-            full_stats = get_stats(results)
+            full_stats = get_stats(final_outcomes)
             train_stats = get_stats(train_results)
             val_stats = get_stats(val_results)
 
@@ -274,15 +286,11 @@ class AsyncEvalRunner:
             print(f"VAL:     {val_stats['posterior_mean']:.3f} CI [{val_stats['ci_lower']:.3f}, {val_stats['ci_upper']:.3f}]")
             print("="*40)
         else:
-            stats = get_stats(results)
+            stats = get_stats(final_outcomes)
             print("\n" + "="*40)
             print(f"SPLIT ({split_filter.upper()}): {stats['posterior_mean']:.3f} CI [{stats['ci_lower']:.3f}, {stats['ci_upper']:.3f}]")
             print("="*40)
             full_stats = stats # for threshold check
-
-        if self.verbose:
-            for tid, res in zip(test_ids, results):
-                print(f"Test {tid:2d}: {res}")
 
         # Final exit code logic
         if full_stats['posterior_mean'] >= 0.9 and full_stats['ci_lower'] >= 0.8: return 0

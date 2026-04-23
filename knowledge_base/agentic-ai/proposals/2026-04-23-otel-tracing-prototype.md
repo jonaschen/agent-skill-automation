@@ -1,86 +1,75 @@
-# Prototype: Multi-Agent OTEL Tracing with Claude Agent SDK
+# OTEL Tracing Prototype (Multi-Agent)
 
 **Date**: 2026-04-23
-**Status**: Draft
-**Topic**: S2 (Multi-Agent Orchestration) / Observability
-**Reference**: [2026-04-22-directive.md](../directives/2026-04-22-directive.md)
+**Status**: DRAFT (P1 Strategic Research)
 
-## 1. Overview
-This prototype demonstrates how to implement distributed tracing across a multi-agent system using the Claude Agent SDK's native OpenTelemetry (OTEL) support. By leveraging `claude-agent-sdk[otel]`, we can visualize the relationship between a "Lead Agent" and its "Researcher" sub-agents as a nested trace waterfall.
+## Objective
+Demonstrate distributed tracing across multiple agent sessions using the `claude-agent-sdk[otel]` integration. This provides observability into "Lead-to-Subagent" call chains, latency attribution, and token consumption spans.
 
-## 2. Implementation Script (`otel_multi_agent_prototype.py`)
+## Prototype Implementation
+
+### 1. Requirements
+```bash
+pip install claude-agent-sdk[otel] opentelemetry-exporter-otlp
+```
+
+### 2. Multi-Agent Lead Script (`otel_lead.py`)
+This script acts as the "Lead" which spawns a "Researcher" sub-session.
 
 ```python
-import asyncio
 import os
-from typing import List
+from claude_agent_sdk import Agent, Session
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.instrumentation.claude_agent_sdk import ClaudeAgentSdkInstrumentor
-from claude_agent_sdk import query, ClaudeAgentOptions
 
-# 1. Setup OTEL Provider
-resource = Resource.create({"service.name": "agent-skill-pipeline"})
-provider = TracerProvider(resource=resource)
-# Console exporter for prototype verification
-processor = BatchSpanProcessor(ConsoleSpanExporter())
+# 1. Setup OTEL SDK
+provider = TracerProvider()
+processor = BatchSpanProcessor(ConsoleSpanExporter()) # Outputs to stdout for prototype
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 
-# 2. Instrument the SDK
-instrumentor = ClaudeAgentSdkInstrumentor()
-instrumentor.instrument(tracer_provider=provider)
-
 tracer = trace.get_tracer(__name__)
 
-async def run_agent(name: str, prompt: str, model: str = "claude-3-5-sonnet-20241022"):
-    """Execution wrapper with automatic span nesting."""
-    print(f"[{name}] Starting...")
-    async for message in query(
-        prompt=prompt,
-        options=ClaudeAgentOptions(model=model)
-    ):
-        pass # Handle tool calls/messages
-    print(f"[{name}] Completed.")
-
-async def main():
-    # 3. Root Span: Multi-Agent Session
-    with tracer.start_as_current_span("skill-optimization-run") as root_span:
-        root_span.set_attribute("pipeline.phase", "Phase 4 - Closed Loop")
-        
-        # Phase A: Lead Agent (Orchestration)
-        with tracer.start_as_current_span("lead-orchestrator-phase"):
-            print("Lead: Analyzing skill gaps...")
-            await run_agent("Lead", "Analyze the trigger failures in meta-agent-factory.md and propose a research plan.")
-
-        # Phase B: Researcher Agent (Parallel Investigation)
-        with tracer.start_as_current_span("researcher-sub-session") as sub_span:
-            sub_span.set_attribute("agent.role", "specialist-researcher")
-            print("Researcher: Investigating platform changes...")
-            await run_agent("Researcher", "Find the latest benchmarks for Claude Opus 4.7 literal instruction following.")
+async def run_multi_agent_research():
+    with tracer.start_as_current_span("research-lead-workflow") as parent_span:
+        # 2. Initialize Lead Session
+        async with Session(agent=Agent("agentic-ai-research-lead")) as lead_session:
+            parent_span.set_attribute("session.id", lead_session.id)
+            
+            # 3. Spawn Researcher Sub-session (automatically inherits trace context)
+            print(f"[Lead] Delegating to Researcher...")
+            async with lead_session.subagent("agentic-ai-researcher") as researcher:
+                # This call creates a child span in the OTEL trace
+                result = await researcher.run("Research the latest OTEL standards for agents.")
+                
+            print(f"[Lead] Received result. Synthesizing...")
+            await lead_session.run(f"Summarize this research: {result}")
 
 if __name__ == "__main__":
-    # Ensure ANTHROPIC_API_KEY is set
-    asyncio.run(main())
+    import asyncio
+    asyncio.run(run_multi_agent_research())
 ```
 
-## 3. Trace Topology
-When executed, the OTEL collector (or console) will show a trace hierarchy:
-- `skill-optimization-run` (Root)
-    - `lead-orchestrator-phase` (Span)
-        - `invoke_agent` (SDK Internal Span)
-            - `execute_tool: Bash` (SDK Internal Span)
-    - `researcher-sub-session` (Span)
-        - `invoke_agent` (SDK Internal Span)
-            - `execute_tool: WebSearch` (SDK Internal Span)
+## Trace Structure Expectation
 
-## 4. Key Takeaways for Phase 5
-1.  **Context Propagation**: By using `tracer.start_as_current_span()`, the `query()` function automatically detects the active span and attaches its internal operations as children. No manual ID passing is required.
-2.  **Observability Parity**: This allows us to measure "Orchestration Overhead" vs "Execution Time" by comparing the duration of the parent spans against the `invoke_agent` child spans.
-3.  **Cost Attribution**: Spans include token usage metadata (`gen_ai.usage.input_tokens`), allowing us to calculate the exact cost of a multi-agent sub-workflow.
+The ConsoleSpanExporter will output a tree-like structure:
 
-## 5. Next Steps
-- [ ] Integrate `OTLPSpanExporter` to send traces to the pipeline's Honeycomb/Jaeger instance.
-- [ ] Add `trace_id` to the `performance.json` output for cross-referencing logs with traces.
+1.  **Span: `research-lead-workflow`** (Root)
+    - Attributes: `session.id`, `initiator=cron`
+    - **Span: `subagent-call`** (Child)
+        - Attributes: `subagent.name=agentic-ai-researcher`
+        - **Span: `claude-api-call`** (Child of Subagent)
+            - Attributes: `model=claude-opus-4-7`, `tokens.input=450`, `tokens.output=1200`
+    - **Span: `claude-api-call`** (Child of Root)
+        - Attributes: `model=claude-sonnet-4-6`, `tokens.input=1500`, `tokens.output=300`
+
+## Strategic Alignment (S2)
+This prototype addresses **S2 (Multi-Agent Orchestration)** by providing the mandatory foundation for:
+- **Latency Attribution**: Identifying which subagent is causing the bottleneck.
+- **Cost Tracking**: Summing tokens across the entire span tree for a single high-level task.
+- **Error Propagation**: Seeing exactly where in a nested chain a tool call failed.
+
+## Next Steps
+- Implement in `scripts/lib/otel_logger.py` for use in all Phase 5 scripts.
+- Evaluate `OTEL_EXPORTER_OTLP_ENDPOINT` for aggregation in a central Jaeger/Tempo instance.

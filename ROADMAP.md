@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-22: Phase 4 core complete. Joint Technical Report synthesized (2026-04-22) — Stochastic-Aware Semantic Forking (SASF) adopted as Phase 5 core recovery logic; Bayesian Significance Gating (BSG) confirmed Gemini-3-Flash parity (0.8390 CI lower). Opus 4.7 Shadow Eval (Step 1) triggered BLOCK: 0.63 trigger accuracy vs 0.829 baseline. Meta-agent-factory description refined to address Opus 4.7 literal style regression. LTC-Gemini enabled in crontab. Phase 5 OTEL tracing and CLI-to-SDK migration adopted as design requirements.**
+**Status as of 2026-04-23: Phase 4 core complete. Adversarial Synthesis Report (2026-04-23) identifies 'Consistency Gap' and 'Orchestrator Vulnerability' as critical Phase 5 risks. Transactional Rewind (StateManifest) and Zero-Trust Delegation (A2A-MCP Bridge) adopted as strategic recovery paths. Opus 4.7 migration officially BLOCKED pending Semantic Triggering research. LTC-Gemini enabled in crontab. Phase 5 design Requirements updated to include EnvironmentSnapshot.**
 
 ---
 
@@ -214,6 +214,8 @@ Attempting both together on a single pipeline run makes failure modes unattribut
 - [x] **Incremental Budget Gates (P0)**: Implemented "Watchdog Pulse" in `scripts/lib/cost_ceiling.sh`. Alert and halt if a single task segment consumes >25% of the 30-day average session budget. Integrated into `daily_factory_steward.sh` and `daily_factory_steward_gemini.sh`. ✅ 2026-04-23
 - [x] **Goal-Consistency Hook (P2)**: Implemented Haiku-based goal hijacking detection in `post-tool-use.sh`. Checks for goal drift every 5 tool calls for Track B (high-coupling) tasks. Verified with `scripts/test_goal_hook.sh`. ✅ 2026-04-23
 - [x] **Opus 4.7 Recovery (P0)**: Updated `skill-optimizer-program.md` to target Opus 4.7 "literal" style regression (Restore posterior_mean ≥0.85). Added "De-abstract trigger verbs" strategy. ✅ 2026-04-23
+- [x] **OTEL Tracing Prototype (P1)**: Created technical spec and Python prototype for multi-agent distributed tracing using `claude-agent-sdk[otel]`. ✅ 2026-04-23
+- [x] **Session Rewind Implementation Spec (P1)**: Created technical spec for migrating `autoresearch-optimizer` to stateful checkpoint/rewind using Agent SDK. ✅ 2026-04-23
 - [x] **Regression test script**: `scripts/regression_test.sh` — runs eval suite, computes Bayesian posterior, compares against stored baseline. Supports `--update-baseline`, `--check-only`, auto-comparison modes. Detects regression when CI lower drops >0.05 below baseline ✅ 2026-04-09
 - [x] **Regression baseline established**: `eval/regression_baseline.json` — T=0.895, 33/36, CI [0.781, 0.970]. Fixed bayesian_eval.py to support `--passes`/`--total` args; removed scipy dependency from regression_test.sh fallback path ✅ 2026-04-10. **Note**: Baseline is stale after T expanded from 36→39 (2026-04-13 eval expansion). Re-baseline with `--update-baseline` after next eval run.
 - [x] Regression test: run regression_test.sh after pilot run to confirm no existing agent trigger rates degrade. Fixed regression_test.sh (missing skill_path arg, stale output parsing). Re-baselined on T=39: 33/39 PASS, mean 0.829, CI [0.702, 0.927]. Comparison run: NO REGRESSION ✅ 2026-04-15

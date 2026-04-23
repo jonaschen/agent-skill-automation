@@ -60,6 +60,11 @@ finalize() {
   local exit_code=$?
   set +euo pipefail
 
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
   local end_time=$(date +%s)
   local duration=$((end_time - ${START_TIME:-$end_time}))
   local post_commit
@@ -94,6 +99,11 @@ PERF_EOF
   find "$LOG_DIR" -name "kings-hand-gemini-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "kings-hand-gemini-*.json" -mtime +30 -delete 2>/dev/null
 }
+
+# Start incremental watchdog
+WATCHDOG_PID=$(start_incremental_watchdog "kings-hand-gemini" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
 trap finalize EXIT INT TERM HUP
 
 echo "=== King's Hand Steward Session (Gemini) — $DATE ===" >> "$LOG_FILE"

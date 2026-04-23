@@ -178,6 +178,11 @@ finalize() {
   local exit_code=$?
   set +euo pipefail  # ensure cleanup completes even on errors
 
+  # Kill watchdog if still running
+  if [ -n "${WATCHDOG_PID:-}" ]; then
+    kill "$WATCHDOG_PID" 2>/dev/null || true
+  fi
+
   # Recover any uncommitted changes from this session
   recover_uncommitted "$REPO_ROOT" "researcher" "$LOG_FILE"
 
@@ -222,6 +227,11 @@ PERF_EOF
   find "$LOG_DIR" -name "sweep-*.log" -mtime +30 -delete 2>/dev/null
   find "$PERF_DIR" -name "researcher-*.json" -mtime +30 -delete 2>/dev/null
 }
+
+# Start incremental watchdog
+WATCHDOG_PID=$(start_incremental_watchdog "researcher" "$$" "$PERF_DIR" "$SECURITY_LOG_DIR")
+echo "[$(date)] Started cost watchdog (PID: $WATCHDOG_PID)" >> "$LOG_FILE"
+
 trap finalize EXIT INT TERM HUP
 
 echo "=== Agentic AI Research Sweep — $DATE ===" >> "$LOG_FILE"
