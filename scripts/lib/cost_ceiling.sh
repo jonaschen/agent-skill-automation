@@ -60,7 +60,34 @@ compute_duration_ceiling() {
 }
 
 # check_cost_ceiling <agent_name> <actual_duration> <perf_dir> <security_log_dir>
-# ... (rest of check_cost_ceiling remains unchanged) ...
+# Call AFTER a run completes. Checks if actual_duration exceeds the ceiling.
+# Returns 0 always (advisory, not blocking). Logs alerts to security dir.
+check_cost_ceiling() {
+  local agent_name="$1"
+  local actual_duration="$2"
+  local perf_dir="$3"
+  local security_log_dir="$4"
+
+  local ceiling
+  ceiling=$(compute_duration_ceiling "$agent_name" "$perf_dir")
+  
+  # Ensure ceiling is a valid integer, fallback to default if empty or invalid
+  if ! [[ "$ceiling" =~ ^[0-9]+$ ]]; then
+    ceiling="$DEFAULT_CEILING_SECONDS"
+  fi
+
+  if [ "$actual_duration" -gt "$ceiling" ]; then
+    mkdir -p "$security_log_dir"
+    local multiplier="unknown"
+    if [ "$ceiling" -gt 0 ]; then
+      multiplier=$(awk "BEGIN {printf \"%.1f\", $actual_duration / $ceiling}")
+    fi
+    echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"level\":\"WARNING\",\"agent\":\"$agent_name\",\"actual_duration\":$actual_duration,\"ceiling\":$ceiling,\"multiplier\":\"${multiplier}x\",\"max_multiplier\":\"${MAX_DURATION_MULTIPLIER}x\"}" >> "$security_log_dir/cost_alert.jsonl"
+    echo "COST WARNING: $agent_name ran for ${actual_duration}s (ceiling: ${ceiling}s, ${multiplier}x of limit)" >&2
+    return 1
+  fi
+  return 0
+}
 
 # watchdog_pulse <watchdog_pid>
 # Resets the segment timer for the watchdog.
