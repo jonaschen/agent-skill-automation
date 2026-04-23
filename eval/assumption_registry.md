@@ -38,8 +38,62 @@ Even without a new model release, revisit this table quarterly. Model capabiliti
 
 ---
 
+## Capability Diff — Worked Example
+
+**Purpose**: S1 proof-of-concept demonstrating how a "capability diff" would connect the researcher's release tracking to assumption stress-testing. This worked example uses CC v2.1.117 as the input event.
+
+### Input Event
+
+**Release**: Claude Code v2.1.117 (2026-04-22)
+**Changelog summary**: Context window computation fix — resolved bug where `mcpServers` configuration in agent frontmatter was incorrectly counted against the context window, reducing effective context from ~195K to ~180K tokens for agents with MCP server configs.
+
+### Step 1: Extract Capability Changes
+
+From the researcher's sweep report (2026-04-22), extract structured change entries:
+
+| Change ID | Type | Affected Subsystem | Description |
+|-----------|------|-------------------|-------------|
+| CW-1 | Bug fix | Context window | MCP config no longer counted against context budget |
+| CW-2 | Behavior change | Agent frontmatter | `mcpServers` field processing changed |
+
+### Step 2: Match Against Assumption Registry
+
+For each change, scan the assumption table for rows whose "Stress Test" or "Simplification Path" would be affected:
+
+| Change ID | Matched Agent | Matched Assumption | Impact |
+|-----------|--------------|-------------------|--------|
+| CW-1 | `autoresearch-optimizer` | "Descriptions can't be optimized in single pass" | INDIRECT — more context budget means optimizer could potentially process longer description histories per iteration. Current 2-5 iteration count may decrease. |
+| CW-1 | `skill-quality-validator` | "Factory can't self-evaluate accurately" | INDIRECT — more context for self-eval could improve factory self-evaluation accuracy. Worth re-running stress test. |
+| CW-2 | `meta-agent-factory` | "Requirements can't be converted to SKILL.md in one pass with correct permissions" | NO IMPACT — MCP config processing is runtime behavior, not generation quality. |
+
+### Step 3: Generate Actions
+
+| Priority | Action | Gated On |
+|----------|--------|----------|
+| P2 | Re-run `skill-quality-validator` stress test (factory self-eval vs. validator score) under v2.1.117 to check if expanded context changes the result | CC upgrade to v2.1.117+ |
+| P3 | Monitor optimizer iteration counts over next 5 runs post-upgrade for natural reduction | CC upgrade to v2.1.117+ |
+| — | No action needed for `meta-agent-factory` | — |
+
+### Step 4: Update Registry
+
+After stress tests complete, update the "Last Tested" and "Result" columns in the agent assumption table above.
+
+### Observations for S1 Architecture
+
+This worked example reveals the manual steps a capability diff system would automate:
+
+1. **Structured changelog parsing**: The researcher's sweep is prose — extracting `(change_type, subsystem, description)` tuples requires either structured output from the researcher or a post-processing step.
+2. **Assumption category matching**: The current registry has 5 rows with free-text assumptions. Matching a context window change to "descriptions can't be optimized in single pass" requires semantic understanding, not keyword matching. A production system would need either (a) an LLM matching step, or (b) a structured category ontology (e.g., `context_budget`, `tool_permissions`, `output_format`).
+3. **Action generation**: The actions are straightforward once matches are identified — re-run the stress test with the new version. This step is automatable.
+4. **Gating**: Most actions are gated on the CC upgrade actually being installed. The capability diff system should produce a "pending actions" queue that triggers when the gate opens.
+
+**Conclusion**: The core matching logic (Step 2) is the hardest part to automate and the highest-value S1 contribution. Steps 1, 3, and 4 are mechanical. A minimal viable capability diff would focus exclusively on Step 2 — given a structured changelog entry and the assumption table, output matched rows with impact assessment.
+
+---
+
 ## Change Log
 
 | Date | Change |
 |---|---|
+| 2026-04-24 | Added Capability Diff worked example (CC v2.1.117) — S1 proof-of-concept per discussion 2026-04-23 A3 |
 | 2026-04-06 | Initial registry created with 5 core agents (Opus 4.6 baseline) |

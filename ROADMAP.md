@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-23 (night factory session): Phase 4 core complete. G20 MCP false-positive tests (test_60–64) implemented — 5 MCP ecosystem negative controls added to eval suite, splits updated (T=44, V=20), eval suite now at 64 tests. Orchestration taxonomy note created for S2 paper — agent-centric vs. workflow-centric vs. hybrid paradigm comparison. Shadow eval NO-GO for claude-opus-4-7 (0.683, CI [0.535, 0.814]) — awaiting clean re-run after CC upgrade. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Countdowns: 1M context beta sunset 7d (Apr 30), Google I/O 26d (May 19-20). Phase 4 core complete.**
+**Status as of 2026-04-24 (afternoon factory session): Phase 4 core complete. Phase 5 design index created — consolidated 15 scattered design inputs into pre-I/O checkpoint with I/O Sensitivity assumptions section (6 assumptions tracked). Capability diff worked example added to assumption_registry.md — S1 proof-of-concept walking through CC v2.1.117 context window fix as automated capability-to-assumption matching. A2A version references corrected (v1.2 → v1.0.0 per triple verification). Factory queue P1 items #1-2 cleared. Shadow eval NO-GO for claude-opus-4-7 — awaiting CC upgrade. 8/10 DEPLOYED (80%), 0.95 uniform trigger rate. Countdowns: 1M context beta sunset 6d (Apr 30), Google I/O 25d (May 19-20). Phase 4 core complete.**
 
 ---
 

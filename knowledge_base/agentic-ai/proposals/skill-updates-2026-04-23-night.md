@@ -39,7 +39,7 @@ Tonight's sweep was dominated by Cloud Next 2026 announcements and CC v2.1.118 r
 
 2. **Post-I/O terminology (26 days)**: Google I/O may introduce new agent framework terminology ("Agent Studio", "Gemini Enterprise Agent Platform" workflows, ADK v2.0 GA node types) that enters developer vocabulary. If users start requesting "create an Agent Studio skill" or "build an ADK node", meta-agent-factory's description may need new trigger patterns or exclusions.
 
-3. **A2A v1.2 vocabulary**: If A2A v1.2 introduces new inter-agent concepts beyond current Agent Card vocabulary, cross-cutting skills may need terminology updates. Monitor for tagged GitHub release.
+3. **A2A v1.0.0 vocabulary**: If future A2A releases introduce new inter-agent concepts beyond current Agent Card vocabulary, cross-cutting skills may need terminology updates. Note: A2A is confirmed at v1.0.0 (TheNextWeb's "v1.2" was a media error; triple-verified via GitHub, a2a-protocol.org, and spec content).
 
 4. **MCP tool hooks vocabulary**: CC v2.1.118's `type: "mcp_tool"` hook type creates a new concept. If users start requesting "create a hook that calls an MCP tool" or "build an MCP tool hook skill", we may need to distinguish this from meta-agent-factory's scope. Low probability — MCP tool hooks are developer configuration, not agent creation.
 
