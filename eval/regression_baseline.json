@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-15T04:08:39Z",
-  "git_sha": "3322bbf",
+  "timestamp": "2026-04-23T19:11:44Z",
+  "git_sha": "2c8a2f3",
   "split": "train",
-  "pass_count": 33,
-  "total_count": 39,
-  "posterior_mean": 0.829,
-  "ci_lower": 0.702,
-  "ci_upper": 0.927
+  "pass_count": 38,
+  "total_count": 44,
+  "posterior_mean": 0.848,
+  "ci_lower": 0.732,
+  "ci_upper": 0.935
 }
