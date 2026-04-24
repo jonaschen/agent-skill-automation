@@ -1,7 +1,7 @@
 # ROADMAP.md
 
 Agent Skill Automation — Development Roadmap
-**Status as of 2026-04-23: Phase 4 core complete. Adversarial Synthesis Report (2026-04-23) identifies 'Consistency Gap' and 'Orchestrator Vulnerability' as critical Phase 5 risks. Transactional Rewind (StateManifest) and Zero-Trust Delegation (A2A-MCP Bridge) adopted as strategic recovery paths. Opus 4.7 migration officially BLOCKED pending Semantic Triggering research. LTC-Gemini enabled in crontab. Phase 5 design Requirements updated to include EnvironmentSnapshot.**
+**Status as of 2026-04-24: Phase 4 core complete. Claude Code upgraded to 2.1.119. Shadow Consensus Validator (P1) implemented in eval runner. Watchdog Pulse (P0) hardened against PID bugs and death spirals; rolled out to all daily scripts. meta-agent-factory optimized for Opus 4.7 literal style (mean 0.85+). Immediate priority: 50-Skill throughput test.**
 
 ---
 
@@ -665,11 +665,9 @@ The optimizer and the eval runner compete for the same API quota. Running the op
 
 ## Immediate Next Actions
 
-1. **Phase 4**: Monitor Gemini agent stability after Node v24 + non-interactive fixes (2026-04-21)
-2. **Phase 4**: Evaluate adding `daily_ltc_steward_gemini.sh` to crontab (currently only Claude version running)
-3. **Phase 3**: Convergence check — confirm optimizer loop terminates correctly
-4. **Phase 4**: Stress test — 50 Skills generated/validated/deployed in 24 hours
+1. **Phase 4**: Execute full 50-Skill stress test (GENERATE→VALIDATE→DEPLOY) in 24h
+2. **Phase 4**: Monitor Shadow Validator (P1) logs for vendor-specific regressions
+3. **Phase 5**: Pilot 'distill-then-cache' pattern using Gemini CLI context compression
+4. **Phase 5**: Build 50-task TCI benchmark dataset
 5. **Phase 4**: Changeling latency validation (≤ 2s role switching)
-6. **Phase 5 prep**: Build 50-task TCI benchmark dataset
-7. **P2**: Implement sprint contract manifest — factory outputs `manifest.json` for validator
-8. **P1**: Roll cost ceiling to remaining 5 steward scripts (already completed for Gemini)
+6. **P2**: Implement sprint contract manifest — factory outputs `manifest.json` for validator

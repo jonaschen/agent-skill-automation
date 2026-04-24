@@ -317,6 +317,7 @@ cd "$REPO_ROOT"
 echo "" >> "$LOG_FILE"
 echo "--- Anthropic Track ---" >> "$LOG_FILE"
 log_task_start "anthropic-track"
+watchdog_pulse "$WATCHDOG_PID"
 # Run Claude in a subshell to isolate process-group signals from the parent script
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
@@ -331,6 +332,7 @@ log_task_complete "anthropic-track"
 echo "" >> "$LOG_FILE"
 echo "--- Google/DeepMind Track ---" >> "$LOG_FILE"
 log_task_start "google-deepmind-track"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the GOOGLE/DEEPMIND track only. For each topic (Gemini Agents, A2A Protocol, ADK, Vertex AI Agents, Project Mariner, Project Astra, Gemma):
@@ -344,6 +346,7 @@ log_task_complete "google-deepmind-track"
 echo "" >> "$LOG_FILE"
 echo "--- Academic/Literature Track ---" >> "$LOG_FILE"
 log_task_start "academic-track"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 Research the ACADEMIC/LITERATURE track only. For each topic (Agentic Evaluations, Multi-Agent Frameworks, Agentic Security):
@@ -357,6 +360,7 @@ log_task_complete "academic-track"
 echo "" >> "$LOG_FILE"
 echo "--- Sweep Report & Index ---" >> "$LOG_FILE"
 log_task_start "sweep-report"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher. Read .claude/agents/agentic-ai-researcher.md for format specs.
 ${DIRECTIVE_PREAMBLE}
 1. Read all files in knowledge_base/agentic-ai/anthropic/, knowledge_base/agentic-ai/google-deepmind/, and knowledge_base/agentic-ai/academic/
@@ -368,6 +372,7 @@ log_task_complete "sweep-report"
 echo "" >> "$LOG_FILE"
 echo "--- Deep Analysis (L2-L3) ---" >> "$LOG_FILE"
 log_task_start "deep-analysis"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2b: Deep Analysis.
 Read .claude/agents/agentic-ai-researcher.md for the full L2-L3 instructions.
 ${DIRECTIVE_PREAMBLE}
@@ -383,6 +388,7 @@ log_task_complete "deep-analysis"
 echo "" >> "$LOG_FILE"
 echo "--- Improvement Discussion (L3.5) ---" >> "$LOG_FILE"
 log_task_start "discussion"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are facilitating a structured discussion between two expert perspectives about how today's research findings can improve the agent-skill-automation pipeline.
 ${DIRECTIVE_PREAMBLE}
 First, read these files to understand the context:
@@ -414,6 +420,7 @@ log_task_complete "discussion"
 echo "" >> "$LOG_FILE"
 echo "--- Strategic Planning (L4) ---" >> "$LOG_FILE"
 log_task_start "strategic-planning"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2c: Strategic Planning.
 Read .claude/agents/agentic-ai-researcher.md for the full L4 instructions.
 ${DIRECTIVE_PREAMBLE}
@@ -431,6 +438,7 @@ log_task_complete "strategic-planning"
 echo "" >> "$LOG_FILE"
 echo "--- Action (L5) ---" >> "$LOG_FILE"
 log_task_start "action"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-researcher running Mode 2d: Action.
 Read .claude/agents/agentic-ai-researcher.md for the full L5 instructions and safety constraints.
 ${DIRECTIVE_PREAMBLE}
@@ -446,6 +454,7 @@ log_task_complete "action"
 echo "" >> "$LOG_FILE"
 echo "--- Academic Paper Drafting ---" >> "$LOG_FILE"
 log_task_start "paper-drafting"
+watchdog_pulse "$WATCHDOG_PID"
 ("$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-research-writer (Technical Scrivener).
 Read .claude/agents/agentic-ai-research-writer.md for your instructions.
 1. Read the most recent hypotheses from knowledge_base/agentic-ai/hypotheses/

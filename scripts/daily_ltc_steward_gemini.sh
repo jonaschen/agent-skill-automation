@@ -138,6 +138,7 @@ fi
 echo "" >> "$LOG_FILE"
 echo "--- Phase Work ---" >> "$LOG_FILE"
 log_task_start "phase-work"
+watchdog_pulse "$WATCHDOG_PID"
 PHASE_WORK_START=$(date +%s)
 (cd "$TARGET_REPO" && timeout 2400 "$GEMINI" --approval-mode yolo -p "You are the steward agent (Gemini) for the 'ltc' project. Read $REPO_ROOT/.gemini/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.gemini/skills/steward/configs/ltc.yaml for project-specific configuration.
 
@@ -169,6 +170,7 @@ if [ "$PHASE_WORK_DURATION" -lt 60 ]; then
   exit 0
 fi
 log_task_start "research"
+watchdog_pulse "$WATCHDOG_PID"
 (cd "$TARGET_REPO" && timeout 2400 "$GEMINI" --approval-mode yolo -p "You are the steward agent (Gemini) for the 'ltc' project. Read $REPO_ROOT/.gemini/skills/steward/SKILL.md for the shared execution flow, then read $REPO_ROOT/.gemini/skills/steward/configs/ltc.yaml for project-specific configuration.
 
 Run a research and quality session:

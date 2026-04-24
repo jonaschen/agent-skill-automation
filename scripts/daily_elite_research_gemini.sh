@@ -64,6 +64,7 @@ init_session_log "elite-research" "$REPO_ROOT"
 echo "" >> "$LOG_FILE"
 echo "--- Cross-Vendor Adversarial Synthesis ---" >> "$LOG_FILE"
 log_task_start "adversarial-synthesis"
+watchdog_pulse "$WATCHDOG_PID"
 
 (cd "$REPO_ROOT" && "$GEMINI" --approval-mode yolo -p "You are the Gemini Research Lead. Execute the 'Adversarial Synthesis' cycle.
 
@@ -84,6 +85,7 @@ log_task_complete "adversarial-synthesis"
 echo "" >> "$LOG_FILE"
 echo "--- Elite Hypothesis Formulation ---" >> "$LOG_FILE"
 log_task_start "elite-hypothesis"
+watchdog_pulse "$WATCHDOG_PID"
 
 (cd "$REPO_ROOT" && "$GEMINI" --approval-mode yolo -p "You are the Gemini Technical Scrivener.
 Based on today's 'Joint Synthesis Report' (knowledge_base/agentic-ai/analysis/${DATE}-joint-synthesis.md), formulate ONE high-novelty Academic Hypothesis.
@@ -96,6 +98,7 @@ log_task_complete "elite-hypothesis"
 echo "" >> "$LOG_FILE"
 echo "--- Joint Paper Generation ---" >> "$LOG_FILE"
 log_task_start "joint-paper"
+watchdog_pulse "$WATCHDOG_PID"
 
 (cd "$REPO_ROOT" && "$GEMINI" --approval-mode yolo -p "You are the Agentic AI Research Writer.
 Generate the final daily Technical Report.

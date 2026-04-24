@@ -13,7 +13,7 @@
 # Fallback ceiling for first run (no history): DEFAULT_CEILING_SECONDS.
 
 MAX_DURATION_MULTIPLIER="${MAX_DURATION_MULTIPLIER:-5}"
-DEFAULT_CEILING_SECONDS="${DEFAULT_CEILING_SECONDS:-3600}"
+DEFAULT_CEILING_SECONDS="${DEFAULT_CEILING_SECONDS:-18000}"
 
 # compute_average_duration <agent_name> <perf_dir>
 compute_average_duration() {
@@ -25,20 +25,30 @@ compute_average_duration() {
 
   for f in "$perf_dir/${agent_name}"-*.json; do
     [ -f "$f" ] || continue
-    local dur
-    dur=$(jq -r '.duration_seconds // empty' "$f" 2>/dev/null) || continue
-    if [ -n "$dur" ] && [ "$dur" -gt 0 ] 2>/dev/null; then
+    local dur exit_code
+    # Only include successful runs in the average to avoid "Death Spiral" from kills/skips
+    exit_code=$(jq -r '.exit_code // empty' "$f" 2>/dev/null)
+    dur=$(jq -r '.duration_seconds // empty' "$f" 2>/dev/null)
+    if [ "$exit_code" = "0" ] && [ -n "$dur" ] && [ "$dur" -gt 60 ] 2>/dev/null; then
       sum=$((sum + dur))
       count=$((count + 1))
     fi
   done
 
+  # Fallback to a reasonable baseline if no history or average is too low (e.g., skips/minor tasks)
+  local baseline=$((DEFAULT_CEILING_SECONDS / MAX_DURATION_MULTIPLIER))
   if [ "$count" -eq 0 ]; then
-    echo "$((DEFAULT_CEILING_SECONDS / MAX_DURATION_MULTIPLIER))"
+    echo "$baseline"
     return
   fi
 
-  echo "$((sum / count))"
+  local avg=$((sum / count))
+  if [ "$avg" -lt 1800 ]; then
+    # If average is < 30m, use the baseline (likely mostly skips or very small sessions)
+    echo "$baseline"
+  else
+    echo "$avg"
+  fi
 }
 
 # compute_duration_ceiling <agent_name> <perf_dir>
@@ -128,7 +138,7 @@ start_incremental_watchdog() {
     local alerted_25=0
     local alerted_50=0
     local alerted_75=0
-    local watchdog_pid=$$
+    local watchdog_pid=$BASHPID
     local pulse_file="/tmp/watchdog_pulse_${watchdog_pid}"
 
     while kill -0 "$parent_pid" 2>/dev/null; do

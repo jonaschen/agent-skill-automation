@@ -127,6 +127,7 @@ log_session_start "direction"
 echo "" >> "$LOG_FILE"
 echo "--- Research Direction Session ---" >> "$LOG_FILE"
 log_task_start "direction-session"
+watchdog_pulse "$WATCHDOG_PID"
 (cd "$REPO_ROOT" && timeout 1800 "$CLAUDE" --dangerously-skip-permissions -p "You are the agentic-ai-research-lead. Read .claude/agents/agentic-ai-research-lead.md for your full instructions.
 
 IMPORTANT: You are running UNATTENDED via cron. Today is ${DATE}. You have write permission to knowledge_base/agentic-ai/directives/ and knowledge_base/agentic-ai/proposals/. Do NOT ask for permission — proceed directly.
