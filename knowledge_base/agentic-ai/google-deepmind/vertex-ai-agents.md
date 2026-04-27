@@ -1,6 +1,6 @@
 # Vertex AI Agents
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
 - https://docs.cloud.google.com/agent-builder/overview
 - https://docs.cloud.google.com/agent-builder/release-notes
@@ -19,6 +19,11 @@
 Vertex AI Agent Builder is Google Cloud's enterprise platform for building, deploying, and managing AI agents at scale. It provides a full-stack foundation combining the Agent Development Kit (ADK), Agent Engine (managed runtime), Agent Designer (low-code visual tool), and Agent Garden (prebuilt agent library). Sessions, Memory Bank, and Code Execution are now Generally Available, with billing starting February 2026.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — Vertex/Gemini Enterprise: No Net-New Platform Updates Post-Cloud Next; Tool Governance & Model Garden Adds Holding Steady
+- **What**: One sentence per directive (deprioritized after Cloud Next coverage closed). Re-checked the Vertex AI Agent Builder release notes and the Gemini Enterprise Agent Platform release notes Apr 28 — no new platform-level entries since the Apr 22-24 Cloud Next batch. Tool Governance via Cloud API Registry, GLM 5 + Claude Opus 4.6 in Model Garden, schema-based metadata search in RAG Engine all hold from prior coverage.
+- **Significance**: One sentence — platform unchanged; next signal expected at I/O (T-21d).
+- **Source**: https://docs.cloud.google.com/agent-builder/release-notes, https://docs.cloud.google.com/gemini/enterprise/docs/release-notes (re-checked Apr 28)
 
 ### 2026-04-24 — **Agent Identity SPIFFE Deep Technical Details**; Context-Aware Access Security Architecture; Cloud Next Breakout Component Specs
 - **What**: **Agent Identity documentation now live** at `docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview`. Deep technical details:

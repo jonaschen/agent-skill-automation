@@ -1,6 +1,6 @@
 # Model Releases
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
 - https://platform.claude.com/docs/en/about-claude/models/overview
 - https://platform.claude.com/docs/en/release-notes/overview (April 7 entry)
@@ -25,6 +25,11 @@
 Anthropic's Claude model family has progressed through Claude 3 (March 2024), Claude 3.5 (June 2024), Claude 4 (May 2025), Claude 4.5 (October-November 2025), Claude 4.6 (February 2026), and Claude 4.7 (April 2026). The current flagship models are Opus 4.7 (1M context, 128K output, $5/$25 per MTok) and Sonnet 4.6 (1M context, 64K output, $3/$15 per MTok). Mythos remains a gated research preview for defensive cybersecurity (Project Glasswing).
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — Anthropic Postmortem Confirms #49562 Was Harness/Prompt Regression, NOT Opus 4.7; Issue Day 12, P2 Threshold Triggered
+- **What**: Anthropic's Apr 23 public postmortem (covered Apr 25-27 by VentureBeat, Yahoo Finance, others) names three engineering missteps as the actual root cause of the Claude Code performance decline that #49562 reported: (1) Mar 4 default reasoning effort dropped high→medium (reverted Apr 7), (2) Mar 26 caching bug wiping thinking history every turn (fixed Apr 10), (3) Apr 16 system-prompt verbosity cap of ~25 words between tool calls (reverted Apr 20 in v2.1.116). Anthropic reset usage limits Apr 23. Issue #49562 itself: still **OPEN** with **zero staff responses**, last activity Apr 19 (community comment). Today is day 12 since opening (Apr 16 → Apr 28). Per directive's day-10 P2 downgrade rule, this issue downgrades to P2 (Watch Only) effective today. Related ecosystem issues remain: n8n #28635, openclaw #67888, pi-mono #3289 all reported `supportsAdaptiveThinking()` breakage tied to Opus 4.7 token-usage increase; the postmortem does not directly address adaptive-thinking token cost, only the harness regressions.
+- **Significance**: HIGH (closes a 12-day investigation). **Opus 4.7 the model is exonerated; the harness/system-prompt regressions caused the degradation perception**. This validates: (a) shadow eval methodology — eval same model across CC versions catches harness regressions, (b) Bayesian CI-overlap discipline — raw pass-rate dips during Mar 4–Apr 20 would have appeared as model regressions but were software-stack regressions. For our pipeline: the Apr 10 caching fix (CC v2.1.105+) and the Apr 20 verbosity revert (v2.1.116+) mean any shadow eval run against v2.1.116 or later represents the post-regression baseline. Adaptive-thinking token cost (~37% increase) is a separate, still-unaddressed concern from the postmortem.
+- **Source**: https://finance.yahoo.com/sectors/technology/articles/anthropic-says-engineering-missteps-were-172112849.html, https://venturebeat.com/technology/mystery-solved-anthropic-reveals-changes-to-claudes-harnesses-and-operating-instructions-likely-caused-degradation, https://github.com/anthropics/claude-code/issues/49562
 
 ### 2026-04-24 — No New Models; #49562 Day 8
 - **What**: Opus 4.7 (Apr 16) remains latest model. No new model announcements. #49562 ("burns through all tokens") is now day 8, still OPEN, zero staff responses. Bot flagged as potential duplicate (Apr 16) but not auto-closed — community comment on Apr 19 prevented auto-closure. Last API platform change was Apr 20 (Haiku 3 retirement).

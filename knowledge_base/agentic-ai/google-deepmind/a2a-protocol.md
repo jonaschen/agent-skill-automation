@@ -1,7 +1,8 @@
 # Agent2Agent (A2A) Protocol
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
+- https://github.com/a2aproject/A2A/releases (re-verified via gh API Apr 28 — top tag v1.0.0 unchanged since Mar 12)
 - https://a2a-protocol.org/latest/specification/ (verified Apr 24 — spec version 1.0.0)
 - https://github.com/a2aproject/A2A/releases (verified via gh API Apr 24 — tag v1.0.0)
 - https://github.com/a2aproject/A2A/releases
@@ -24,6 +25,11 @@
 Agent2Agent (A2A) is an open protocol created by Google for enabling secure communication and collaboration between AI agents across different platforms, vendors, and frameworks. Launched in April 2025, it was donated to the Linux Foundation in June 2025 and has grown to over 150 supporting organizations. A2A is designed to complement (not compete with) Anthropic's Model Context Protocol (MCP), with MCP handling tool/context provision and A2A handling inter-agent communication.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — A2A v1.0.0 Day 47: No New Tag Since Mar 12; "v1.2" Misreport Reappears in Search But Tags Unchanged
+- **What**: Re-verified `gh api repos/a2aproject/A2A/releases` and `tags` on Apr 28: top tag still `v1.0.0` (2026-03-12), unchanged. No v1.1, no v1.2 — across both releases and raw tags. A separate WebSearch result on Apr 28 (PRNewswire's "150 organizations" anniversary post + secondary blog reposts) again surfaced "v1.2 with signed agent cards" wording — this is the same TheNextWeb-origin error already debunked Apr 24. Signed agent cards are v1.0.0 features (per the verified spec).
+- **Significance**: One sentence — A2A protocol is steady at v1.0.0; the v1.2 misreport is now a recurring search-result artifact and should be discounted on sight. Phase 5 references continue to cite v1.0.0.
+- **Source**: `gh api repos/a2aproject/A2A/tags` (Apr 28). PRNewswire "150 orgs" anniversary release: https://www.prnewswire.com/news-releases/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year-302737641.html
 
 ### 2026-04-24 — **A2A VERSION DIVERGENCE RESOLVED**: Spec IS v1.0.0, NOT v1.2; TheNextWeb Misreported; Signed Agent Cards Are a v1.0.0 Feature
 - **What**: **Version divergence resolved.** Triple verification:

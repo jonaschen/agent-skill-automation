@@ -1,6 +1,6 @@
 # Agent Development Kit (ADK)
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
 - https://www.infoq.com/news/2026/04/google-adk-1-0-new-architecture/
 - https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/
@@ -20,6 +20,11 @@
 Google's Agent Development Kit (ADK) is an open-source, code-first framework for building, evaluating, and deploying AI agents and multi-agent systems. Introduced at Google Cloud NEXT 2025, ADK is optimized for Gemini but is model-agnostic (supports Anthropic, Meta, Mistral via LiteLLM), deployment-agnostic, and compatible with other frameworks. It is now production-ready across Python (v1.0), Go (v1.0), Java (v1.0), and TypeScript.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — ADK Stabilization Continues: v2.0.0b1 Day 6 Pre-release; v1.31.1 Day 7 Stable; Still No v1.32.0 / v2.0.0b2
+- **What**: Verified via `gh api repos/google/adk-python/releases` and `gh api repos/google/adk-python/tags` on Apr 28: top 5 releases are unchanged from Apr 24 sweep — `v2.0.0b1` (2026-04-22), `v1.31.1` (2026-04-21), `v1.31.0` (2026-04-17), `v1.30.0` (2026-04-13), `v2.0.0a3` (2026-04-09). The directive's "expected v1.32.0 / v2.0.0b2 ~Apr 27-May 1" timing has not yet hit; both tracks are in stabilization. Note: the v1.31.1 release body header is auto-labeled `## [1.32.0]` by release-please tooling but the **actual published tag is v1.31.1** (the candidate version was demoted to a patch — confirmed against the published tag list, not just the rendered notes). I/O T-21d.
+- **Significance**: One sentence — ADK unchanged this cycle. ADK v2.0.0b1's Workflow(BaseNode) graph orchestration remains the latest signal; nothing new since Apr 22 to revise our Phase 5 reference points. Watch for v2.0.0b2 / v1.32.0 next sweep.
+- **Source**: https://github.com/google/adk-python/releases (verified via `gh api` Apr 28 17:00 UTC)
 
 ### 2026-04-24 — ADK v2.0.0b1 Day 2 Pre-release; v1.31.1 Day 3 Stable; No v1.32.0 or v2.0.0b2
 - **What**: ADK v2.0.0b1 (Apr 22) day 2 pre-release. v1.31.1 (Apr 21) day 3 stable. **No v1.32.0, no v2.0.0b2** (verified via `gh api repos/google/adk-python/releases` Apr 24). Next stable release expected ~Apr 27-May 1. I/O 25d.

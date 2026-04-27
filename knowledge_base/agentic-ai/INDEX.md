@@ -1,6 +1,6 @@
 # Agentic AI Knowledge Base -- Index
 
-**Last sweep**: 2026-04-24 Thursday (forty-first sweep, Google/DeepMind afternoon — CLI v0.39.0 stable, A2A divergence resolved, Agent Identity SPIFFE deep details)
+**Last sweep**: 2026-04-28 Tuesday afternoon-2 (forty-fourth sweep, US-morning catch-up window, both tracks — eight community regressions documented against CC v2.1.119/v2.1.120 (yurukusa gist, Apr 24) + 3 new Apr 27 issues (#53972 OTel parent-span loss, #53973 model over-generates, #53976 `/login`/`/mcp` modal freeze in `--resume`); upgrade-target revision: v2.1.119 preferred over v2.1.120; no new releases either vendor since morning sweep)
 **Last analysis**: 2026-04-24 (Mode 2b L2-L3, both tracks)
 **Total entries**: 17
 
@@ -8,25 +8,29 @@
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Claude Code | anthropic/claude-code.md | 2026-04-24 |
-| Agent SDK | anthropic/agent-sdk.md | 2026-04-24 |
+| Claude Code | anthropic/claude-code.md | 2026-04-28 (afternoon) |
+| Agent SDK | anthropic/agent-sdk.md | 2026-04-28 |
 | Model Context Protocol | anthropic/model-context-protocol.md | 2026-04-24 |
 | Tool Use & Function Calling | anthropic/tool-use-and-function-calling.md | 2026-04-24 |
 | Computer Use | anthropic/computer-use.md | 2026-04-24 |
 | Multi-agent Patterns | anthropic/multi-agent-patterns.md | 2026-04-24 |
-| Model Releases | anthropic/model-releases.md | 2026-04-24 |
+| Model Releases | anthropic/model-releases.md | 2026-04-28 |
 
 ## Google/DeepMind Track
 
 | Topic | File | Last Updated |
 |-------|------|-------------|
-| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-24 |
-| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-24 |
-| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-24 |
-| Vertex AI Agents (→ Gemini Enterprise Agent Platform) | google-deepmind/vertex-ai-agents.md | 2026-04-24 |
-| Project Mariner | google-deepmind/project-mariner.md | 2026-04-24 |
-| Project Astra | google-deepmind/project-astra.md | 2026-04-24 |
-| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-24 |
+| Gemini Agents | google-deepmind/gemini-agents.md | 2026-04-28 |
+| A2A Protocol | google-deepmind/a2a-protocol.md | 2026-04-28 |
+| Agent Development Kit | google-deepmind/agent-development-kit.md | 2026-04-28 |
+| Vertex AI Agents (→ Gemini Enterprise Agent Platform) | google-deepmind/vertex-ai-agents.md | 2026-04-28 |
+| Project Mariner | google-deepmind/project-mariner.md | 2026-04-28 |
+| Project Astra | google-deepmind/project-astra.md | 2026-04-28 |
+| Gemma / Open Models | google-deepmind/gemma-open-models.md | 2026-04-28 |
+
+Note: 2026-04-28 Tuesday afternoon-2 (forty-fourth sweep, US-morning catch-up window, both tracks): **Confirmation/refinement pass — no new releases from either vendor in the US-morning window.** CC tags `gh api` re-verified: v2.1.120 (Apr 24, day 4 silent) > v2.1.119 (Apr 23, latest GitHub Release) > v2.1.118 > v2.1.117 > v2.1.116. Latest SDK Py v0.1.68 (Apr 25). Latest SDK TS v0.2.119 (Apr 23). ADK unchanged: v2.0.0b1 (Apr 22, day 6) + v1.31.1 (Apr 21, day 7). gemini-cli unchanged at tag level: stable v0.39.1, preview v0.40.0-preview.4, latest tag `v0.41.0-nightly.20260427`. **NEW CONTEXT — community regressions on CC v2.1.119/v2.1.120**: yurukusa gist (Apr 24) documents **eight regressions** with workarounds and a rollback recommendation to v2.1.117; key v2.1.120-only breakages are `claude --resume` `TypeError` crash (#53044/#53041) and silently broken auto-update (#53028). Three additional bugs filed Apr 27: **#53972** (`claude` subprocess does not inherit OTel parent span — direct relevance to S1 if we wire OTEL across the cron chain), **#53973** (Claude 4.7 ignores project constraints — model-behavior single data point), **#53976** (`/login` & `/mcp` auth modals freeze in `--resume`, same family as gist #5). **Upgrade-target revision**: morning recommended v2.1.119 over v2.1.120 due to silent release; afternoon evidence elevates that recommendation — v2.1.120 is actively breaking. Pipeline impact: **v2.1.119** is the recommended upgrade target (not v2.1.120) for our fleet; **v2.1.117** if cautious. Cron does not use `--resume`, so the v2.1.120-specific blocker is the silently broken auto-update masking version drift, not the resume crash. **#49562** verified unchanged via `gh api`: 2 comments, last update Apr 19, day 12 — P2 watch-only per directive's day-10 rule. **No new I/O signals** (T-21d). Zero net-new ADOPTs. Action items unchanged: **CC upgrade target now v2.1.119 (P0, Jonas)**, **Gemini CLI install (S3, Jonas)**.
+
+Note: 2026-04-28 Tuesday afternoon (forty-third sweep, Google/DeepMind): **STABILIZATION CONTINUES.** gemini-cli release cadence is healthy: **v0.39.1 stable patch** (Apr 24 02:03 UTC, first v0.39.x patch), **v0.40.0-preview.3** (Apr 24 02:02 UTC), **v0.40.0-preview.4** (Apr 25 00:27 UTC) — v0.40.0 stable still pending; **v0.41.0-nightlies** active through Apr 27. Web changelog (`geminicli.com/docs/changelogs/`) lags reality: only v0.39.0 is documented, missing v0.39.1 + v0.40 previews + v0.41 nightlies. ADK unchanged: v2.0.0b1 (Apr 22) + v1.31.1 (Apr 21) hold; **v1.32.0/v2.0.0b2 expected ~Apr 27-May 1 have NOT shipped** (verified `gh api releases` Apr 28). Note: v1.31.1 release body header is auto-labeled "1.32.0" by release-please tooling but the published tag is v1.31.1 — not a hallucination, a release-please artifact. **A2A v1.0.0 day 47** — gh tags re-verified, no v1.1/v1.2; the "v1.2 + signed agent cards" misreport reappeared in WebSearch via PRNewswire/blog reposts and should be discounted on sight (signed agent cards are v1.0.0 features). **Vertex / Gemini Enterprise**: no platform-level entries since Cloud Next; release notes pages re-checked Apr 28. **Mariner, Astra, Gemma 4: steady state, one-sentence each per directive**. **I/O T-21d** — pre-I/O signal window opens ~May 2-4. **Zero net-new ADOPTs.** Action items unchanged: **CC v2.1.119/.120 upgrade (P0, Jonas)**, **install Gemini CLI v0.39.0+ (S3, Jonas)** — neither repeated in detail per directive's "stop repeating verbatim" rule.
 
 Note: 2026-04-24 Thursday afternoon (forty-first sweep, Google/DeepMind): **GEMINI CLI v0.39.0 STABLE RELEASED (Apr 23)** — 6-day stable freeze broken. Simultaneously v0.40.0-preview.2 + v0.41.0-nightly. Features: unified `invoke_subagent`, `/memory inbox`, MCP auth blocks, `useAgentStream` hook, sandbox hardening, decoupled ContextManager + Sidecar, session ID fixes. **A2A VERSION DIVERGENCE RESOLVED**: Triple verification (GitHub tag, a2a-protocol.org spec, spec content) confirms A2A is at **v1.0.0**, NOT v1.2. TheNextWeb's "v1.2" was a **media reporting error**. Signed agent cards ARE v1.0.0 features. **Agent Identity SPIFFE deep technical details**: SPIFFE ID format, X.509 certs (24h validity), DPoP + mTLS, Auth Manager (Preview), Context-Aware Access credential binding. **Cloud Next breakout details**: Agent Studio, Agent Runtime (multiday workflows), Agent Memory Bank (Memory Profiles), Agent Simulation, Model Armor (LangChain preview, Firebase GA). **ADK unchanged**: v2.0.0b1/v1.31.1. **Mariner, Astra, Gemma: steady.** **I/O 25d.** Zero net-new ADOPTs. 1 correction (A2A version refs). Action items: **UPGRADE CC v2.1.118 (P0, Jonas)**, **INSTALL GEMINI CLI v0.39.0 (S3, RE-ESCALATED)**.
 

@@ -1,6 +1,6 @@
 # Gemma / Open Models
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
 - https://github.com/vllm-project/vllm/issues/38893
 - https://deepmind.google/models/gemma/
@@ -25,6 +25,11 @@
 Gemma is Google DeepMind's family of open-weight models built on the same research as Gemini. Gemma 4 (April 2026) is the latest generation — the most capable open models to date, purpose-built for advanced reasoning and agentic workflows with native function calling. Gemma 3 (March 2025) was the first version optimized for agentic workflows. Gemma 3n (2025) adds mobile-first on-device capabilities with audio support. The family ranges from 270M to 31B parameters, with all models designed to run on a single GPU or TPU, making them ideal for edge and on-device agent deployments.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — Gemma 4 Day 26: Steady State; No New Variants; I/O T-21d
+- **What**: One sentence per directive (deprioritized). Gemma 4 (Apr 2) day 26. No new variants since the original 4-size family (E2B / E4B / 26B MoE / 31B Dense). Apache 2.0 license. Press coverage continues to highlight benchmark performance (#3 on Arena AI for the 31B Dense, #6 for 26B MoE) but no new product news.
+- **Significance**: One sentence — Gemma 4 unchanged.
+- **Source**: https://deepmind.google/models/gemma/gemma-4/ (re-checked Apr 28)
 
 ### 2026-04-24 — Gemma 4 Day 22: Steady State; No New Variants; I/O 25d
 - **What**: Gemma 4 (Apr 2) day 22. No new model variants. Apache 2.0 license. I/O session "What's new in Gemma open model family" confirmed. I/O 25d.

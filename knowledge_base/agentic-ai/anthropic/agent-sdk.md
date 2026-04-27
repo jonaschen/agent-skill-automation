@@ -1,6 +1,6 @@
 # Claude Agent SDK
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources**:
 - https://platform.claude.com/docs/en/agent-sdk/overview
 - https://cvefeed.io/vuln/detail/CVE-2026-35020
@@ -21,6 +21,26 @@
 The Claude Agent SDK (formerly Claude Code SDK, renamed late 2025) is Anthropic's general-purpose agent runtime that gives developers the same tools, agent loop, and context management that power Claude Code as a programmable library. As of April 20, 2026, Python is at v0.1.64 and TypeScript is at v0.2.116. It supports built-in tools, hooks, subagents, MCP integration, permissions, session management, plugins, skills, and SessionStore adapters.
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — Subagent Resumability Documented; Tool Renamed Task→Agent (v2.1.63 partial migration confirmed)
+- **What**: Per the current `code.claude.com/docs/en/agent-sdk/subagents` page (fetched Apr 28), Anthropic has documented two API contracts that materially affect our pipeline: (1) **Subagent resumability**: subagents now expose an `agentId` in Agent tool results; the parent can resume a subagent by passing `resume: sessionId` to `query()` and naming the `agentId` in the prompt. Subagent transcripts persist independently of the main conversation, are stored in separate files, are not affected by main-conversation compaction, and are auto-cleaned after `cleanupPeriodDays` (default 30). (2) **Tool rename Task→Agent (v2.1.63)**: dispatch is via the `Agent` tool with `subagent_type` parameter; SDK still emits `"Task"` in `system:init` tools list and `result.permission_denials[].tool_name`, requiring callers to match BOTH names for compatibility. Subagent recursion is explicitly blocked: the `Agent` tool must NOT appear in a subagent's `tools` array. Windows long-prompt limit: 8191 chars.
+- **Significance**: HIGH for S2. Subagent resumability is a new orchestration primitive — it lets a Scrum-style team checkpoint a subagent's work, dispatch other agents, then resume. This is the first long-running multi-agent pattern available without external state stores. Direct relevance to our Phase 5 watchdog circuit-breaker: a failed subagent can be resumed after pipeline recovery, not re-run from scratch. The Task→Agent rename is a compatibility footgun for the autoresearch-optimizer's subagent-detection logic — must check both names.
+- **Source**: https://code.claude.com/docs/en/agent-sdk/subagents
+
+### 2026-04-25 — SDK Py v0.1.68: CC v2.1.119 Bundle Bump
+- **What**: Python SDK v0.1.68 published Apr 25 02:07 UTC. Single change: "Updated bundled Claude CLI to version 2.1.119". No code changes. PyPI: https://pypi.org/project/claude-agent-sdk/0.1.68/
+- **Significance**: LOW. Routine bundled-CLI bump.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.68
+
+### 2026-04-25 — SDK Py v0.1.67: Trio Compatibility Restored (regression in v0.1.51 fixed); Bundled CC v2.1.120
+- **What**: Python SDK v0.1.67 published Apr 25 00:27 UTC. Headline: **trio compatibility restored** — `RuntimeError: no running event loop` when using `ClaudeSDKClient` or `query()` under trio (regression introduced in v0.1.51) is fixed (#870). Implementation uses **sniffio-based dispatch** to select the correct async primitive (`asyncio.Task` vs `trio.lowlevel.spawn_system_task`) at runtime while preserving the asyncio CPU-spin and cancel-scope fixes from #746. New explicit dependency: `sniffio>=1.0.0` (already a transitive anyio dep). Internal: bundled Claude CLI updated to **v2.1.120** (note: this is the silent CC release with no GitHub Release or CHANGELOG entry — see claude-code.md).
+- **Significance**: MEDIUM. (a) Trio support matters for any agent built on a non-asyncio event loop — the regression had been live for 16 versions (Mar 27 → Apr 25). (b) The sniffio runtime-dispatch pattern is a cleaner architecture than version-locking; worth borrowing for our own agent-runtime logic if we expand beyond asyncio. (c) **Bundled CC v2.1.120 is the only public confirmation that v2.1.120 is shipping** — Anthropic's own SDK release proves the build is stable enough for production bundling.
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.67
+
+### 2026-04-23 — SDK Py v0.1.66 + SDK TS v0.2.119: CC v2.1.119 Bundle + TS Cache/Reconnect/SessionStore Retries
+- **What**: (1) **Python v0.1.66** (Apr 23 23:36 UTC): bundled CLI bump to v2.1.119 only, no code changes. (2) **TypeScript v0.2.119** (Apr 23 23:24 UTC, paired with CC v2.1.119): three changes — (a) `excludeDynamicSections` now keeps **static auto-memory instructions in the cacheable system-prompt block**; only the per-user memory directory path and per-machine environment values are relocated to the first user message (improves prompt-cache hit rate for long sessions with auto-memory); (b) long-running SDK sessions now **reconnect claude.ai-proxied MCP servers after a transport-stream abort** (closes a class of long-running orchestration failures); (c) **`SessionStore.append()` failures are retried up to 3 times with short backoff** before the batch is dropped and `mirror_error` is emitted (improves reliability of S3/Redis/Postgres session storage for the v0.2.116 SessionStore feature).
+- **Significance**: HIGH for S2 + S1. The cache-block change directly affects auto-memory cost: if a session has stable static auto-memory but the dynamic env changes (e.g., file paths), the cache will now reuse the static block — meaningful for our long-running daily cron sessions which embed CLAUDE.md context. The MCP transport reconnect closes a known long-running-orchestration failure mode; relevant to the Phase 5 watchdog. The SessionStore retry policy is the second reliability fix in two SDK releases — the SDK is stabilizing the multi-instance session-store path that landed in v0.2.116 (Apr 21).
+- **Source**: https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.66, https://github.com/anthropics/claude-agent-sdk-typescript/releases/tag/v0.2.119
 
 ### 2026-04-24 — No New SDK Releases
 - **What**: SDK Py v0.1.65 (Apr 22) and TS v0.2.118 (Apr 23) remain latest. No new releases on PyPI or GitHub.

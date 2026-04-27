@@ -1,7 +1,9 @@
 # Gemini Agents
 
-**Last updated**: 2026-04-24
+**Last updated**: 2026-04-28
 **Sources (latest first)**:
+- https://github.com/google-gemini/gemini-cli/tags (verified via gh API Apr 28)
+- https://geminicli.com/docs/changelogs/ (Apr 28)
 - https://github.com/google-gemini/gemini-cli/releases (verified via gh API Apr 24)
 - https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview
 - https://docs.cloud.google.com/access-context-manager/docs/caa-agent-security
@@ -38,6 +40,17 @@
 - https://deepmind.google/blog/introducing-codemender-an-ai-agent-for-code-security/
 
 ## Key Developments (reverse chronological)
+
+### 2026-04-28 — Gemini CLI Cadence Resumed: v0.39.1 Patch (Apr 24), v0.40.0-preview.4 (Apr 25), v0.41.0 Nightlies Active; v0.40.0 Stable Still Pending
+- **What**: Verified via `gh api repos/google-gemini/gemini-cli/tags` and individual commit timestamps on Apr 28. Since the Apr 24 sweep, Google has shipped four new gemini-cli artifacts:
+  - **v0.39.1** — stable patch on the v0.39.x branch — published 2026-04-24 02:03 UTC (`chore(release): v0.39.1`). First v0.39.x patch since v0.39.0 stable (Apr 23).
+  - **v0.40.0-preview.3** — 2026-04-24 02:02 UTC (1 minute before v0.39.1, indicating coordinated release-please cut).
+  - **v0.40.0-preview.4** — 2026-04-25 00:27 UTC. Latest v0.40.x preview.
+  - **v0.41.0-nightly.20260427.g42587de73** — 2026-04-27. v0.41 nightly cadence continues since first v0.41 nightly on Apr 23. Nightly stream remained active through Apr 23 → Apr 27.
+- **No v0.40.0 stable yet** — preview.4 is current. Per directive's "v0.40.0: Preview active" — confirmed: still preview-only, ~9 days into the v0.40 cycle. v0.39.1 is the only stable since Apr 23.
+- **Web changelog lag**: `geminicli.com/docs/changelogs/` only documents through v0.39.0 stable (Apr 23) — v0.39.1, v0.40.0-preview.3/.4, and v0.41 nightlies are NOT yet in the rendered changelog (verified Apr 28). Anyone relying on the web changelog will miss the v0.39.1 patch. The git tags + npm registry are the authoritative source.
+- **Significance**: One-sentence summary — gemini-cli release cadence is healthy: stable patch shipped, v0.40 previews iterating, v0.41 nightlies active. No new public dispatch-primitive (`invoke_subagent`) or skill-format changes detected in tag names; deeper changelog inspection deferred to v0.40.0 stable announcement.
+- **Source**: `gh api repos/google-gemini/gemini-cli/tags` (Apr 28), individual `gh api repos/google-gemini/gemini-cli/commits/<sha>` queries for tag dates.
 
 ### 2026-04-24 — **CLI v0.39.0 STABLE RELEASED**; v0.40.0-preview.2; Cloud Next Day 2-3 Breakout Details; Agent Platform Component Deep Dive
 - **What**: **Gemini CLI v0.39.0 stable released** (Apr 23) — **the 6-day stable freeze is broken.** Verified via `gh api repos/google-gemini/gemini-cli/releases`. Simultaneously: **v0.40.0-preview.2** (Apr 23) and **v0.41.0-nightly** (Apr 23). The CLI release cadence has fully resumed.
