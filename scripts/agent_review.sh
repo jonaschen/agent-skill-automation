@@ -315,6 +315,23 @@ else
 fi
 echo ""
 
+# CC Version Advisory (Adopt #4 from 2026-04-28 discussion)
+# Single source: eval/model_migration_runbook.md "## CC Version Advisory" section
+ADVISORY_FILE="$REPO_ROOT/eval/model_migration_runbook.md"
+if [ -f "$ADVISORY_FILE" ] && grep -q "^## CC Version Advisory" "$ADVISORY_FILE"; then
+    echo -e "${BOLD}--- CC Version Advisory ---${RESET}"
+    echo ""
+    ADV_RECOMMENDED=$(grep -oP '\*\*Recommended\*\*:\s*\`\K[^\`]+' "$ADVISORY_FILE" | head -1)
+    ADV_AVOID=$(grep -oP '\*\*Avoid\*\*:\s*\`\K[^\`]+' "$ADVISORY_FILE" | head -1)
+    ADV_MIN=$(grep -oP '\*\*Minimum\*\*:\s*\`\K[^\`]+' "$ADVISORY_FILE" | head -1)
+    ADV_UPDATED=$(grep -oP '\*\*Last updated\*\*:\s*\K[0-9-]+' "$ADVISORY_FILE" | head -1)
+    [ -n "$ADV_RECOMMENDED" ] && echo -e "  Recommended: ${GREEN}$ADV_RECOMMENDED${RESET}"
+    [ -n "$ADV_AVOID" ]       && echo -e "  Avoid:       ${RED}$ADV_AVOID${RESET}"
+    [ -n "$ADV_MIN" ]         && echo "  Minimum:     $ADV_MIN"
+    [ -n "$ADV_UPDATED" ]     && echo "  Updated:     $ADV_UPDATED"
+    echo ""
+fi
+
 # Model Migration Status
 echo -e "${BOLD}--- Model Migration Status ---${RESET}"
 echo ""

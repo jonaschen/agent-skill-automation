@@ -42,6 +42,88 @@ Items below document Phase 5 design assumptions that Google I/O (May 19-20) is m
 | MCP tool hooks are CC v2.1.118 feature — not yet in our pipeline | #6, #11 | LOW | I/O unlikely to affect CC-specific features. But if Google announces MCP hook equivalents, the S3 comparison surface expands. |
 | Gemini CLI dispatch uses `invoke_subagent` (v0.39.0) | #3 | MODERATE | Gemini CLI v0.40.0+ could rename or restructure dispatch primitives, invalidating the S3 dispatch comparison. |
 | OTEL is the right tracing standard for multi-agent observability | #7 | LOW | Both vendors already support OTEL. Risk is if I/O announces a competing agent-specific observability standard. |
+| Subagent resumability API (`agentId` in Agent tool result, `resume: sessionId`, 30-day cleanup) remains as documented Apr 28 | §5.4 below | MODERATE | I/O could rename `agentId` → `subagentId`, change `resume:` parameter location, alter cleanup default, or restrict resume to same-parent sessions. Phase 5.4 Inspect-Resume design references the *contract* (handle + corrective prompt), not field names — rename absorbs cleanly; semantic changes (e.g., transcript-not-preserved-across-resume) require redesign. |
+| Dispatch primitives (`subagent_type` in Anthropic Agent tool, `invoke_subagent` in Gemini CLI) remain as today | #3, canonical schema (planned `tools/dispatch-transpiler/canonical-skill-schema.json`) | MODERATE | ADK v2.0 GA could change the dispatch surface (rename, restructure parameters, expose `invoke_subagent` differently). Canonical schema's portable subset would need re-derivation; transpiler implementations (deferred D1) gated on this. |
+
+---
+
+## 5.4 Recovery: Inspect-Resume Pattern
+
+**Source**: Discussion 2026-04-28 Round 1 Adopt #1 (P1). Composes Anthropic's Apr 28 subagent-resumability primitive with our planned topology-aware watchdog. **Novel pattern — not present in either vendor's published documentation.** Citable in the S2 paper recovery-pattern section.
+
+**Status**: Design note only. Implementation deferred to Phase 5 (post-I/O); this section captures the architectural commitment so when Phase 5 begins, the watchdog (5.4) is built on resume semantics, not kill+retry.
+
+### Why Inspect-Resume
+
+The earlier Phase 5.4 watchdog assumption was kill+retry: a misbehaving subagent terminates and re-launches from scratch. That loses the in-session reasoning context, doubles token cost, and gives the operator no inspection point. Subagent resumability (Anthropic Agent SDK, documented Apr 28) inverts the loop:
+
+```
+DETECTED_ANOMALY → PAUSED → HUMAN_INSPECT → (RESUMED with corrective context | ABORTED)
+```
+
+Subagent transcripts persist in separate files, are unaffected by main-conversation compaction, and have a 30-day cleanup default — making "pause now, inspect later, resume with correction" architecturally feasible without an external state store.
+
+### State Machine
+
+```
+┌──────────────┐
+│ EXECUTING    │  (subagent running, parent monitoring)
+└──────┬───────┘
+       │ anomaly signal (cost / cmd-chain / MCP-depth / tool-sequence / operator-flag)
+       ▼
+┌──────────────┐
+│ PAUSED       │  (parent persists sessionId + agentId + anomaly payload)
+└──────┬───────┘
+       │ human triage (or automated policy for known-fatal signals, e.g. cost ceiling)
+       ▼
+┌────────────────────────┐
+│ HUMAN_INSPECT          │  (operator reads preserved subagent transcript, decides)
+└──┬─────────────────┬───┘
+   │ approve+context │ reject
+   ▼                 ▼
+┌──────────────────┐  ┌────────────────┐
+│ RESUMED          │  │ ABORTED        │
+│ Agent(           │  │ (transcript    │
+│   subagent=X,    │  │  archived,     │
+│   resume=sid,    │  │  task          │
+│   prompt=fix)    │  │  re-routed)    │
+└──────────────────┘  └────────────────┘
+```
+
+### Anomaly Signals (today's detectability)
+
+| Signal | Detectable Today? | Source |
+|--------|------------------|--------|
+| Cost ceiling breach | YES | `scripts/lib/cost_ceiling.sh` (deployed) |
+| Command-chain anomaly (>30 subcommands) | YES | `scripts/cmd_chain_monitor.sh` + `post-tool-use.sh` |
+| MCP depth attack (>15 calls) | YES | `post-tool-use.sh` MCP depth monitor |
+| Tool-sequence pattern (e.g., 5 consecutive Bash to deny-adjacent binary) | YES | `post-tool-use.sh` (extension hook point) |
+| Operator-flagged behavior | YES | manual signal via dashboard |
+| Token-burn anomaly | **NO** | No per-session token counter exposed today. Design must remain honest about this gap; reachable when Anthropic exposes per-session token telemetry. |
+
+### Resume Contract
+
+- Parent stores `(sessionId, agentId, anomaly_payload)` in `logs/phase5_task_state.jsonl` (Phase 5.3.2 external session state store).
+- Resume invocation: `Agent(subagent_type=X, resume=sessionId, prompt=corrective_context)`.
+- The corrective `prompt` carries the operator's observation + what to do differently. Subagent transcript is intact; fresh-context isolation within the subagent's own session is preserved.
+- Automated-policy fallback (no human required) for unambiguous fatal signals: cost ceiling = always ABORT; MCP depth ≥ block threshold = always ABORT; cmd-chain anomaly = PAUSE then auto-ABORT after operator timeout.
+
+### Implementation Order (Phase 5, post-I/O)
+
+1. Capture `agentId` from Agent tool result into router task state log.
+2. Add PAUSE state to `topology-aware-router` (today: dispatch-only; pause = synthetic operator-injected halt).
+3. Minimal `scripts/inspect_resume.sh` for human-driven triage (display preserved transcript, prompt for approval + corrective context, emit resume invocation).
+4. Wire automated PAUSE triggers from existing detectors (cost ceiling, cmd-chain, MCP depth).
+
+### Boundaries (DO NOT)
+
+- Create a standalone file `evaluations/inspect-resume-pattern.md` (REJECT R1 in discussion 2026-04-28 — fragments the Phase 5 design surface).
+- Implement before Phase 5 begins (this is a design note, not implementation work).
+- Cite as a vendor-published pattern (it's our composition).
+
+### S2 Paper Anchor
+
+This section is empirical anchor #5 for the S2 multi-agent-orchestration paper (joining SPIFFE, Memory Profiles, dispatch convergence, agent definition format portability). The composition of resumability + topology-aware watchdog is the novel contribution.
 
 ---
 
@@ -62,3 +144,4 @@ Items below document Phase 5 design assumptions that Google I/O (May 19-20) is m
 | Date | Change |
 |------|--------|
 | 2026-04-24 | Initial index created from 15 scattered design inputs. I/O Sensitivity section added per discussion A4. |
+| 2026-04-28 | Added §5.4 Recovery: Inspect-Resume Pattern (Adopt #1 from 2026-04-28 discussion, P1) — composes Apr 28 subagent-resumability primitive with topology-aware watchdog; novel pattern, S2 paper anchor #5. Added 2 rows to I/O Sensitivity table (Adopt #6, P2): subagent resumability API + dispatch primitives. |

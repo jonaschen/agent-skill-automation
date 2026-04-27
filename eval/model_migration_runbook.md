@@ -6,6 +6,19 @@
 
 ---
 
+## CC Version Advisory
+
+Single source of truth for the recommended Claude Code CLI version. The `agent_review.sh` dashboard reads this section via `grep -A 5 "## CC Version Advisory"` to surface the current advisory whenever Jonas runs the dashboard. Update on each new CC release (researcher action — one-line update in next sweep).
+
+- **Recommended**: `2.1.119`
+- **Avoid**: `2.1.120` (silent release, eight community-documented regressions, broken auto-update, `--resume` TypeError crash per #53041 / #53044)
+- **Reason**: v2.1.119 is the natural upgrade target — it lands the documented bugfixes without the v2.1.120 regression cluster. v2.1.121 (next-fix point, ETA 2-4 days from 2026-04-28) may revise this once shipped.
+- **Minimum**: `2.1.116` (prior post-#49562 stabilization point — Apr 20)
+- **Expires**: When v2.1.121 (or later confirmed-stable release) ships and is verified by the researcher.
+- **Last updated**: 2026-04-28 (factory-steward, ADOPT #4 from 2026-04-28 discussion)
+
+---
+
 ## When to Execute
 
 - A new Claude model is released that will replace the current default (Opus 4.6)
