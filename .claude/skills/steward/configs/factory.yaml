@@ -92,8 +92,8 @@ assessment_commands:
     purpose: recent agent performance overview
 
 quality_gates:
-  - command: "bash eval/check-permissions.sh"
-    description: permission matrix validation
+  - command: "bash scripts/check_all_permissions.sh --quiet"
+    description: permission matrix validation across all agents and skills
   - command: "python3 eval/run_eval_async.py --split train"
     description: eval suite (training set)
     condition: only if agent descriptions changed
